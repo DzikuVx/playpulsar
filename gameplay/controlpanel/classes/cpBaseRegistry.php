@@ -737,3 +737,4 @@ abstract class cpBaseRegistry{
 		}
 
 	}
+	?>

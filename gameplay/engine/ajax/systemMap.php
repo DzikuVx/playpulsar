@@ -26,5 +26,4 @@ $map = new systemMap ( $userID, $systemID, $shipPosition );
 
 $map->render ();
 
-echo $map->out ();
-?>
+echo TranslateController::translate($map->out ());

@@ -15,8 +15,8 @@ class newsAgencyRegistry extends simpleRegistry {
 		$actionPanel .= $registry->get ( $shipPosition );
 		unset($registry);
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 
 	}
@@ -41,7 +41,7 @@ class newsAgencyRegistry extends simpleRegistry {
 			//@todo: dostęp do innych systemów dla kont pro
 			$retVal .= "<h1>" . TranslateController::getDefault()->get ( 'newsAgency' ) . " System " . $shipPosition->System . "</h1>";
 
-			$retVal .= "<table class=\"transactionList\" cellspacing=\"2\" cellpadding=\"0\">";
+			$retVal .= "<table class=\"table table-striped table-condensed\">";
 
 			$tQuery = "SELECT
         newsagency.*

@@ -80,11 +80,6 @@ function weaponsPanelClass() {
 }
 weaponsPanelClass.prototype = new basePanelClass();
 
-function cargoPanelClass() {
-	this.name = 'cargoPanel';
-}
-cargoPanelClass.prototype = new basePanelClass();
-
 function shortShipStatsPanelClass() {
 	this.name = 'shortShipStatsPanel';
 }
@@ -113,12 +108,40 @@ navigationPanelClass.prototype = new basePanelClass();
 function activeScannerClass() {
 	this.name = 'activeScanner';
 
+	this.populate = function(xml) {
+		var tString = '';
+		var tAction = '';
+		var tContent = '';
+		tString = parseXmlValue(xml, this.name);
+		tAction = parseXmlValue(tString, 'action');
+		tContent = parseXmlValue(tString, 'content');
+
+		if (tContent != "") {
+			$("#activeScannerContent").html(tContent);
+		}
+
+		switch (tAction) {
+		case "show":
+			this.show();
+			break;
+
+		case "hide":
+			this.hide();
+			break;
+		}
+
+		return true;
+	};
+
 	this.show = function() {
-		$('#' + this.name).css('top', 20 + 'px');
-		$('#' + this.name).css('height', $(window).height() - 50 + 'px');
-		$('#' + this.name).css('left', Math.round(($(window).width() - 900) /2 )+ 'px');
-		$('#' + this.name).css('width', 900);
-		$('#' + this.name).show();
+		$("#mainGameplay").hide();
+		$("#systemMap").hide();
+		$("#activeScanner").show();
+	};
+
+	this.hide = function() {
+		$("#mainGameplay").show();
+		$("#activeScanner").hide();
 	};
 
 }

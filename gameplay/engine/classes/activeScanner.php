@@ -141,21 +141,21 @@ class activeScanner extends systemMap {
 	protected function getShips() {
 
 		global $shipProperties;
-		
+
 		$tQuery = "SELECT
-				sp.UserID,
-				us.Cloak,
-				sp.X,
-				sp.Y
-			FROM 
-				shippositions AS sp JOIN userships AS us USING(UserID)
-			WHERE 
-				sp.System = '{$this->system->SystemID}' AND
-        sp.X >= '{$this->X['start']}' AND
-        sp.X <= '{$this->X['stop']}' AND
-        sp.Y >= '{$this->Y['start']}' AND
-        sp.Y <= '{$this->Y['stop']}' AND
-        sp.Docked='no'
+		sp.UserID,
+		us.Cloak,
+		sp.X,
+		sp.Y
+		FROM
+		shippositions AS sp JOIN userships AS us USING(UserID)
+		WHERE
+		sp.System = '{$this->system->SystemID}' AND
+		sp.X >= '{$this->X['start']}' AND
+		sp.X <= '{$this->X['stop']}' AND
+		sp.Y >= '{$this->Y['start']}' AND
+		sp.Y <= '{$this->Y['stop']}' AND
+		sp.Docked='no'
 		";
 		$tQuery = \Database\Controller::getInstance()->execute($tQuery);
 		while ($tResult = \Database\Controller::getInstance()->fetch($tQuery)) {
@@ -199,9 +199,7 @@ class activeScanner extends systemMap {
 
 	public function renderHeader() {
 
-		global $userID;
-		$retVal = '<div style="float: right;"><img src="gfx/del2.gif" class="link" onclick="activeScanner.hide();" /></div>';
-		$retVal .= "<h1>" . TranslateController::getDefault()->get ( 'system' ) . ": " . $this->system->Name . "</h1>";
+		$retVal = "<h1>{T:System Scan}: " . $this->system->Name . "</h1>";
 		$retVal .= miniMap::renderHeader ();
 		return $retVal;
 	}

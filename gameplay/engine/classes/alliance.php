@@ -126,8 +126,8 @@ class alliance extends baseItem {
 
 		$actionPanel = \General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"executeAction('allianceKickExecute',null,null,'{$kickedID}')","executeAction('allianceDetail',null,null,'{$userAlliance->AllianceID}')");
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 	}
 
@@ -188,8 +188,8 @@ class alliance extends baseItem {
 		message::sInsert(null, $kickedID, $tString);
 
 		$actionPanel = self::sGetDetail($userAlliance->AllianceID);
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 	}
 
@@ -207,8 +207,8 @@ class alliance extends baseItem {
 
 		$actionPanel = \General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), TranslateController::getDefault()->get('wantLeaveAlliance'),"executeAction('allianceLeaveExecute',null,null,null)","executeAction('allianceDetail',null,null,'{$userAlliance->AllianceID}')");
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 	}
 
@@ -267,8 +267,8 @@ class alliance extends baseItem {
 
 		//@todo RELACJE z INNYMI SOJUSZAMI
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 	}
 
@@ -301,8 +301,8 @@ class alliance extends baseItem {
 
 		$actionPanel = $template;
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 	}
 
@@ -314,7 +314,7 @@ class alliance extends baseItem {
 	 */
 	static public function sNewExe($values) {
 
-		global $shortUserStatsPanel, $actionPanel, $portPanel, $userAlliance, $userID, $t, $userAllianceObject, $userStats, $config, $shipProperties;
+		global $actionPanel, $portPanel, $userAlliance, $userID, $t, $userAllianceObject, $userStats, $config, $shipProperties;
 
 		if (!empty($userAlliance->AllianceID)) {
 			throw new securityException();
@@ -379,8 +379,8 @@ class alliance extends baseItem {
 
 		$actionPanel = self::sGetDetail($userAlliance->AllianceID);
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 	}
 
@@ -416,8 +416,8 @@ class alliance extends baseItem {
 
 		$actionPanel = $template;
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 	}
 
@@ -472,8 +472,8 @@ class alliance extends baseItem {
 
 		$actionPanel = self::sGetDetail($userAlliance->AllianceID);
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 
 		announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'saved' ) );
@@ -486,7 +486,7 @@ class alliance extends baseItem {
 	 */
 	static public function sGetDetail($allianceID) {
 
-		global $shipProperties, $userID, $userAlliance, $t;
+		global $shipProperties, $userID, $userAlliance;
 
 		$template  = new \General\Templater('../templates/allianceDetail.html');
 

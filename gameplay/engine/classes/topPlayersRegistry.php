@@ -19,8 +19,8 @@ class topPlayersRegistry extends simpleRegistry {
 		$actionPanel .= $registry->get ( $sortOrder );
 		unset($registry);
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 
 	}
@@ -98,7 +98,7 @@ class topPlayersRegistry extends simpleRegistry {
 */
 		$retVal .= '</div>';
 
-		$retVal .= "<table class=\"transactionList\" cellspacing=\"2\" cellpadding=\"0\">";
+		$retVal .= "<table class='table table-striped table-condensed'>";
 
 		$retVal .= "<tr>";
 		$retVal .= "<th style='width: 2em;'>#</th>";

@@ -18,4 +18,4 @@ function __autoload($klasa) {
 	}
 }
  
-echo user::sPasswordHash('Admin', 'superpassword');
+echo user::sPasswordHash('Romek', 'superpassword');

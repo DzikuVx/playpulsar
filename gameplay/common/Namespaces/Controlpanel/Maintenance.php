@@ -148,7 +148,7 @@ class Maintenance extends BaseItem {
 
 		$text = '<form method="post" name="myForm" style="margin: 0; padding: 0;">';
 
-		$tData = gameplayMessage::getRaw();
+		$tData = \gameplayMessage::getRaw();
 
 		$values = array('info'=>'Info','warning'=>'Warning','error'=>'Error');
 
@@ -180,7 +180,7 @@ class Maintenance extends BaseItem {
 
 		global $config;
 
-		gameplayMessage::write($_REQUEST['type'], $_REQUEST['text']);
+		\gameplayMessage::write($_REQUEST['type'], $_REQUEST['text']);
 
 		return Controls::sUiDialog( "Confirmation", "<strong>Operation completed</strong>", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=detail'");
 	}

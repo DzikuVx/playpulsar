@@ -285,8 +285,8 @@ class user {
 		$template->add ( 'saveButton', \General\Controls::renderButton ( TranslateController::getDefault()->get ( 'Save' ), 'user.editExecute();', null, 'closeButton' ) );
 
 		$actionPanel = (string) $template;
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 	}
 

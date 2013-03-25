@@ -72,6 +72,9 @@ class navigation {
 			/**
 			 * Pobierz współrzędne docelowe
 			 */
+			
+			$tCoords = new \stdClass();
+			
 			if ($shipPosition->System == $shipRouting->System) {
 				$tCoords->System = $shipRouting->System;
 				$tCoords->X = $shipRouting->X;

@@ -6,7 +6,7 @@ if ($action == "equipFromCargo") {
 		$error = true;
 		throw new warningException ( TranslateController::getDefault()->get ( 'notEnoughTurns' ) . "" );
 	}
-
+ 
 	$onBoard = false;
 
 	if ($subaction == "weapon") {
@@ -59,17 +59,14 @@ if ($action == "equipFromCargo") {
 	/**
 	 * Odświerz panele
 	 */
-	$weaponsPanel->render ();
-	shipStatsPanel::getInstance()->render ();
-	$cargoPanel->render ( $shipProperties );
 
 	$action = "cargoManagement";
 }
 
 if ($action == "cargoManagement") {
 	shipCargo::management ( $userID );
-	sectorShipsPanel::getInstance()->hide ();
-	sectorResourcePanel::getInstance()->hide ();
+	\Gameplay\Panel\SectorShips::getInstance()->hide ();
+	\Gameplay\Panel\SectorResources::getInstance()->hide ();
 	$portPanel = "&nbsp;";
 }
 
@@ -104,9 +101,9 @@ if ($action == "buyStorageRoom") {
 
 	portProperties::sReset ( $portProperties );
 
-	sectorShipsPanel::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
+	\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
 
-	sectorResourcePanel::getInstance()->hide ();
+	\Gameplay\Panel\SectorResources::getInstance()->hide ();
 	$action = "portStorehouse";
 	portProperties::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
 	clearActionPanel ();
@@ -175,7 +172,6 @@ if ($action == "jettison") {
 
 	sectorProperties::sResetResources( $shipPosition, $sectorProperties );
 	portProperties::sReset ( $portProperties );
-	$cargoPanel->render ( $shipProperties );
 	shipCargo::management ( $userID );
 	$portPanel = "&nbsp;";
 }
@@ -292,9 +288,8 @@ if ($action == "gather") {
 		sectorProperties::sResetResources ( $shipPosition, $sectorProperties );
 		portProperties::sReset ( $portProperties );
 
-		sectorShipsPanel::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
-		sectorResourcePanel::getInstance()->render ( $shipPosition, $shipProperties, $sectorProperties );
-		$cargoPanel->render ( $shipProperties );
+		\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
+		\Gameplay\Panel\SectorResources::getInstance()->render ( $shipPosition, $shipProperties, $sectorProperties );
 		clearActionPanel ();
 	}
 }
@@ -388,7 +383,6 @@ if ($action == 'toCargohold') {
 		sectorProperties::sResetResources ( $shipPosition, $sectorProperties );
 		portProperties::sReset ( $portProperties );
 
-		$cargoPanel->render ( $shipProperties );
 		clearActionPanel ();
 	}
 }
@@ -492,7 +486,6 @@ if ($action == 'toStorehouse') {
 		sectorProperties::sResetResources ( $shipPosition, $sectorProperties );
 		portProperties::sReset ( $portProperties );
 
-		$cargoPanel->render ( $shipProperties );
 	}
 }
 
@@ -545,11 +538,10 @@ if ($action == "itemSell") {
 
 	//Wypełnij odpowiednie pola
 	portProperties::sReset ( $portProperties );
-	sectorShipsPanel::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
-	sectorResourcePanel::getInstance()->hide ();
+	\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
+	\Gameplay\Panel\SectorResources::getInstance()->hide ();
 	$action = "portMarketplace";
 	portProperties::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
-	$cargoPanel->render ( $shipProperties );
 	clearActionPanel ();
 }
 
@@ -604,11 +596,10 @@ if ($action == "productSell") {
 
 	//Wypełnij odpowiednie pola
 	portProperties::sReset ( $portProperties );
-	sectorShipsPanel::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
-	sectorResourcePanel::getInstance()->hide ();
+	\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
+	\Gameplay\Panel\SectorResources::getInstance()->hide ();
 	$action = "portMarketplace";
 	portProperties::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
-	$cargoPanel->render ( $shipProperties );
 	clearActionPanel ();
 }
 
@@ -672,10 +663,9 @@ if ($action == "productBuy") {
 
 	//Wypełnij odpowiednie pola
 	portProperties::sReset ( $portProperties );
-	sectorResourcePanel::getInstance()->hide ();
+	\Gameplay\Panel\SectorResources::getInstance()->hide ();
 	$action = "portMarketplace";
 	portProperties::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
-	$cargoPanel->render ( $shipProperties );
 	clearActionPanel ();
 }
 
@@ -711,10 +701,9 @@ if ($action == "mapBuy") {
 	$portProperties->Cash += $productPrice * $value;
 
 	portProperties::sReset ( $portProperties );
-	sectorResourcePanel::getInstance()->hide ();
+	\Gameplay\Panel\SectorResources::getInstance()->hide ();
 	$action = "portMarketplace";
 	portProperties::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
-	$cargoPanel->render ( $shipProperties );
 	navigationPanel::getInstance()->render($shipPosition, $shipRouting, $shipProperties);
 	clearActionPanel ();
 }

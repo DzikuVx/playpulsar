@@ -14,9 +14,7 @@
 <meta name="robots" content="index, follow" />
 <meta name="description" content="{T:pageDescription}" />
 <meta name="keywords" content="{T:pageKeywords}" />
-<link href="{cdnUrl}common/bootstrap_slate/css/bootstrap.min.css"
-	rel="stylesheet" />
-<link href="{cdnUrl}css/index.css" rel="stylesheet" />
+{css}
 <link rel="shortcut icon" href="favicon.ico" />
 </head>
 <body>
@@ -45,11 +43,11 @@
 				{C:loginForm}
 				<form method="post" action="login.php"
 					class="navbar-form pull-right" name="loginForm">
-					<input type="text" name="login" class="input-medium"
+					<input type="text" name="login" class="span2"
 						placeholder="{T:username}"
 						onkeyup="javascript:return mask(this.value,this,32,7)"
 						onblur="javascript:return mask(this.value,this,32,7)" /> <input
-						type="password" name="password" class="input-medium"
+						type="password" name="password" class="span2"
 						placeholder="{T:password}"
 						onkeyup="javascript:return mask(this.value,this,32,7)"
 						onblur="javascript:return mask(this.value,this,32,7)" /> <input
@@ -151,10 +149,6 @@
 			xfbml : true
 		});
 	</script>
-	<script type="text/javascript" src="{cdnUrl}js/index.js"></script>
-	<script type="text/javascript" src="{cdnUrl}common/js/mask.js"></script>
-	<script type="text/javascript"
-		src="{cdnUrl}common/js/jquery.1.7.1.min.js"></script>
-	<script src="common/bootstrap_slate/js/bootstrap.min.js"></script>
+	{scripts}
 </body>
 </html>

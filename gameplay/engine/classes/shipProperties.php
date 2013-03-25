@@ -20,7 +20,7 @@ class shipProperties extends baseItem {
 	 */
 	static public function sDropRookie($shipProperties, $shipPropertiesObject) {
 
-		global $userID, $portPanel, $shortUserStatsPanel, $userStats, $shortShipStatsPanel;
+		global $userID, $portPanel, $userStats;
 
 		$shipProperties->RookieTurns = 0;
 
@@ -74,7 +74,7 @@ class shipProperties extends baseItem {
 	 */
 	static public function sStationRepair() {
 
-		global $action, $value, $shortUserStatsPanel, $shortShipStatsPanel, $config, $portProperties, $shipPosition, $shipProperties, $subaction, $userStats;
+		global $action, $value, $config, $portProperties, $shipPosition, $shipProperties, $subaction, $userStats;
 
 		/*
 		 * Warunki
@@ -363,7 +363,7 @@ class shipProperties extends baseItem {
 	 */
 	public function generateTurns($shipProperties, $userTimes) {
 
-		global $config, $actualTime, $shortShipStatsPanel, $userStats;
+		global $config, $actualTime, $userStats;
 
 		/*
 		 * Reset fame
@@ -426,7 +426,7 @@ class shipProperties extends baseItem {
 	 */
 	public function autoRepair($shipProperties, $userTimes, $display = true) {
 
-		global $shortShipStatsPanel, $config;
+		global $config;
 
 		$actualTime = time ();
 
@@ -643,7 +643,7 @@ class shipProperties extends baseItem {
 	 */
 	static public function sBuy($shipID) {
 
-		global $shipPropertiesObject, $weaponsPanel, $shipCargo, $shipWeapons, $userProperties, $cargoPanel, $action, $shortUserStatsPanel, $userStats, $shortShipStatsPanel, $shipProperties, $shipPosition, $portProperties, $shipEquipment;
+		global $shipPropertiesObject, $shipCargo, $shipWeapons, $userProperties, $action, $userStats, $shipProperties, $shipPosition, $portProperties, $shipEquipment;
 
 		if ($shipPosition->Docked == 'no') {
 			throw new securityException ( );
@@ -689,9 +689,6 @@ class shipProperties extends baseItem {
 		$shipWeapons->computeOffensiveRating ( $shipProperties );
 		self::computeDefensiveRating ( $shipProperties );
 
-		shipStatsPanel::getInstance()->render ();
-		$cargoPanel->render ( $shipProperties );
-		$weaponsPanel->render ();
 		$action = "portHangar";
 
 		announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'shipBought' ) . $tShip->Price . '$' );

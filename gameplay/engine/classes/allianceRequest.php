@@ -60,8 +60,8 @@ class allianceRequest extends baseItem {
 
 		\Cache\Controller::getInstance()->clear('allianceRequest::sGetCount', $allianceID);
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 	}
 
@@ -104,8 +104,8 @@ class allianceRequest extends baseItem {
 
 		$actionPanel = $template;
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 	}
 
@@ -243,8 +243,8 @@ class allianceRequest extends baseItem {
 		$actionPanel .= $registry->get ($userAlliance->AllianceID);
 		unset($registry);
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 
 	}
@@ -290,8 +290,8 @@ class allianceRequest extends baseItem {
 
 		$actionPanel = \General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"executeAction('allianceAcceptExecute',null,null,'{$apprenticeID}')","executeAction('allianceAppliances',null,null,null)");
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 	}
 
@@ -410,8 +410,8 @@ class allianceRequest extends baseItem {
 
 		$actionPanel = \General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"executeAction('allianceDeclineExecute',null,null,'{$apprenticeID}')","executeAction('allianceAppliances',null,null,null)");
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 	}
 

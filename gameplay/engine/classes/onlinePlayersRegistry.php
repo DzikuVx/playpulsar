@@ -21,7 +21,7 @@ class onlinePlayersRegistry extends simpleRegistry {
 
 		$retVal .= "<h1>" . TranslateController::getDefault()->get ( 'onlinePlayers' ) . "</h1>";
 
-		$retVal .= "<table class='transactionList' cellspacing='2' cellpadding='0'>";
+		$retVal .= "<table class='table table-striped table-condensed'>";
 
 		$retVal .= "<tr>";
 		$retVal .= "<th>" . TranslateController::getDefault()->get ( 'name' ) . "</th>";

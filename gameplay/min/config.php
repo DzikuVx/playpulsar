@@ -32,7 +32,7 @@ $min_errorLogger = false;
  * Allow use of the Minify URI Builder app. If you no longer need 
  * this, set to false.
  **/
-$min_enableBuilder = true;
+$min_enableBuilder = false;
 
 
 /**
@@ -43,6 +43,8 @@ $min_enableBuilder = true;
 //$min_cachePath = '/tmp';
 // $min_cachePath = preg_replace('/^\\d+;/', '', session_save_path());
 
+require 'lib/Minify/Cache/APC.php';
+$min_cachePath = new Minify_Cache_APC();
 
 /**
  * Leave an empty string to use PHP's $_SERVER['DOCUMENT_ROOT'].
@@ -103,7 +105,7 @@ $min_serveOptions['maxAge'] = 1800;
  * Set to true to disable the "f" GET parameter for specifying files.
  * Only the "g" parameter will be considered.
  */
-$min_serveOptions['minApp']['groupsOnly'] = false;
+$min_serveOptions['minApp']['groupsOnly'] = true;
 
 /**
  * Maximum # of files that can be specified in the "f" GET parameter

@@ -28,13 +28,15 @@ class mapSector {
 
 		if ($this->border) {
 			$tBgColor = "00a000";
-		} else {
+		}
+		else {
 			$tBgColor = $this->bgColor;
 		}
 
 		if (empty($this->gfx)) {
 			$retVal = "<td style=\"background-color: #000; color: #" . $this->iconColor . ";\" ";
-		}else {
+		}
+		else {
 			$retVal = "<td title='{$this->Name}' style=\"background-color: #000; background-image:url('{$config['general']['cdn']}gfx/sectors/thumbs/{$this->gfx}'); color: #" . $this->iconColor . ";\" ";
 		}
 
@@ -47,31 +49,33 @@ class mapSector {
 		if ($mapType == 'miniMap') {
 
 			$module = 'mapSectorMarker';
-			$property = $this->X.'|'.$this->Y;
+			$property = $this->system.'|'.$this->X.'|'.$this->Y;
 
 			if (additional::checkRand($this->showPercentage,100)) {
-				$retVal .= '<img src="gfx/shipMarker.png" style="position: absolute; margin-top: -5px;" />';
+				$retVal .= '<img src="gfx/shipMarker.png" style="position: absolute; margin-top: -1px;" />';
 				\Cache\Controller::getInstance()->set($module, $property, 1);
-			}else {
+			}
+			else {
 
 				/*
 				 * Marker że był kontakt
 				 */
 				$tMarker = \Cache\Controller::getInstance()->get($module, $property);
 				if ($tMarker === 1) {
-					$retVal .= '<img src="gfx/shipMarker.png" style="position: absolute; margin-top: -5px; opacity: 0.5;"/>';
+					$retVal .= '<img src="gfx/shipMarker.png" style="position: absolute; margin-top: -1px; opacity: 0.5;"/>';
 					\Cache\Controller::getInstance()->set($module, $property, 0);
 				}
 
 			}
-		}elseif ($mapType == 'activeScanner') {
+		}
+		elseif ($mapType == 'activeScanner') {
 			if (additional::checkRand($this->showPercentage,100)) {
-				$retVal .= '<img src="gfx/shipMarker.png" style="position: absolute; margin-top: -5px;" />';
+				$retVal .= '<img src="gfx/shipMarker.png" style="position: absolute; margin-top: -1px;" />';
 			}
 		}
 
 		if ($this->border) {
-			$retVal .= '<img src="gfx/csMarker.png" style="position: absolute; margin-top: -5px;" />';
+			$retVal .= '<img src="gfx/csMarker.png" style="position: absolute; margin-top: -1px;" />';
 		}
 
 		$retVal .= '<span>'.$this->icon.'</span>';

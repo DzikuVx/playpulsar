@@ -15,7 +15,7 @@ progressBar.counter = 0;
 progressBar.timer;
 
 progressBar.update = function() {
-
+ 
 	progressBar.counter = progressBar.counter + 2;
 	if (progressBar.counter > 100) {
 		progressBar.counter = 0;
@@ -25,7 +25,6 @@ progressBar.update = function() {
 };
 
 progressBar.start = function() {
-
 	$('#wait-window').dialog( {
 		modal : true,
 		resizable : false,
@@ -39,4 +38,5 @@ progressBar.start = function() {
 progressBar.stop = function() {
 	$('#wait-window').dialog('close');
 	clearInterval(progressBar.timer);
+	progressBar.counter = 0;
 };

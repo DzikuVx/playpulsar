@@ -74,15 +74,12 @@ miniMapPanel = new miniMapClass();
 sectorPanel = new sectorPanelClass();
 portInfoPanel = new portInfoPanelClass();
 movePanel = new movePanelClass();
-weaponsPanel = new weaponsPanelClass();
-cargoPanel = new cargoPanelClass();
 shortShipStatsPanel = new shortShipStatsPanelClass();
 shortUserStatsPanel = new shortUserStatsPanelClass();
 sectorShipsPanel = new sectorShipsPanelClass();
 sectorResourcePanel = new sectorResourcePanelClass();
 navigationPanel = new navigationPanelClass();
 shipStatsPanel = new shipStatsPanelClass();
-linksPanel = new linksPanelClass();
 iconPanel = new iconPanelClass();
 activeScanner = new activeScannerClass();
 announcementPanel = new announcementPanelClass();
@@ -308,12 +305,15 @@ function getXmlRpc(targetHtml, method, param0, param1, param2, param3) {
 			$('#' + targetHtml).show();
 			$('#' + targetHtml).css('top', mouseY - 75);
 			$('#' + targetHtml).css('left', mouseX - 100);
+			$('#' + targetHtml).prepend('<button class="close" style="margin: 0.5em;" title="x" onclick="$(this).parent().hide()"><i class="icon-white icon-remove" /></i></button>');
 		}
 
 		progressBar.stop();
 	});
 
 }
+
+var wasInCombat = false;
 
 /**
  * @param action
@@ -375,15 +375,12 @@ function executeAction(action, subaction, value, id, auth) {
 						sectorPanel.populate(data);
 						portInfoPanel.populate(data);
 						movePanel.populate(data);
-						weaponsPanel.populate(data);
-						cargoPanel.populate(data);
 						shortShipStatsPanel.populate(data);
 						shortUserStatsPanel.populate(data);
 						sectorShipsPanel.populate(data);
 						sectorResourcePanel.populate(data);
 						navigationPanel.populate(data);
 						shipStatsPanel.populate(data);
-						linksPanel.populate(data);
 						iconPanel.populate(data);
 						announcementPanel.populate(data);
 						activeScanner.populate(data);
@@ -419,7 +416,6 @@ function executeAction(action, subaction, value, id, auth) {
 						if (tString != "") {
 							$('#portPanel').html(tString);
 							if (tString == "&nbsp;") {
-								document.getElementById('portPanel').style.display = "none";
 								$('#portPanel').hide();
 							} else {
 								$('#portPanel').show();
@@ -443,11 +439,21 @@ function executeAction(action, subaction, value, id, auth) {
 							$('#mainPanel').show();
 						}
 
+						if (trim($('#sectorShipsPanel').html()) == ''
+								&& trim($('#sectorResourcePanel').html()) == '') {
+							$('#primaryPanel').hide();
+						} else {
+							$('#primaryPanel').show();
+						}
+
 						tString = parseXmlValue(data, 'combatScreen');
 						if (tString != '') {
+
+							wasInCombat = true;
+
 							$('#combatScreen').html(tString);
-							$("#mainGameplay").slideUp("fast");
-							$('#combatScreen').slideDown('fast');
+							$("#mainGameplay").hide();
+							$('#combatScreen').show();
 
 							clearTimeout(fireWeaponsTimeout);
 							fireWeaponsTimeout = setTimeout(
@@ -455,9 +461,15 @@ function executeAction(action, subaction, value, id, auth) {
 									$('#salvoInterval').val() * 1000);
 
 						} else {
-							$("#mainGameplay").slideDown("slow");
-							$("#combatScreen").slideUp("slow");
+							if (wasInCombat) {
+								wasInCombat = false;
+								$("#mainGameplay").show();
+								$("#combatScreen").hide();
+							}
 						}
+
+						$('.knob').knob();
+
 						progressBar.stop();
 					});
 
@@ -465,9 +477,15 @@ function executeAction(action, subaction, value, id, auth) {
 
 function trim(str) {
 	var tString;
-	tString = str;
-	tString = tString.replace(/^\s\s*/, '').replace(/\s\s*$/, '').replace(
-			'&nbsp;', '');
 
-	return tString;
+	if (str) {
+
+		tString = str;
+		tString = tString.replace(/^\s\s*/, '').replace(/\s\s*$/, '').replace(
+				'&nbsp;', '');
+
+		return tString;
+	} else {
+		return '';
+	}
 }

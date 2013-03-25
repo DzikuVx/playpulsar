@@ -25,6 +25,13 @@ $registry = new portalMainNews ( $userProperties->Language );
 $template->add('mottoText', $registry->render ());
 unset($registry);
 
+/*
+* Attach JS and CSS scripts
+*/
+$template->add('scripts',\General\Minify::getInstance()->getScript('portal_js'));
+$template->add('css',\General\Minify::getInstance()->getCss('portal_css'));
+
+
 $template->add('cdnUrl',$config['general']['cdn']);
 $template->add('appId',$config['facebook']['appId']);
 

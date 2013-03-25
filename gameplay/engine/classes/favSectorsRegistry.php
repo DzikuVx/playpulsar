@@ -19,11 +19,11 @@ class favSectorsRegistry extends simpleRegistry {
 
 		$retVal .= "<h1>" . TranslateController::getDefault()->get ( 'favSectors' ) . "</h1>";
 
-		$retVal .= "<table class=\"transactionList\" cellspacing=\"2\" cellpadding=\"0\">";
+		$retVal .= "<table class='table table-striped table-condensed'>";
 
 		$retVal .= "<tr>";
 		$retVal .= "<th>" . TranslateController::getDefault()->get ( 'sector' ) . "</th>";
-		$retVal .= "<th style=\"width: 6em;\">&nbsp;</th>";
+		$retVal .= "<th style='width: 6em;'>&nbsp;</th>";
 		$retVal .= "</tr>";
 
 		$tQuery = "SELECT System, X, Y FROM favouritesectors WHERE UserID='{$this->userID}' ORDER BY System, X, Y";

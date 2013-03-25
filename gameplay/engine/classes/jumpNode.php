@@ -94,6 +94,8 @@ class jumpNode extends baseItem {
 	 */
 	public function getDestination($position, $jumpNode = null) {
 
+		$retVal = new stdClass();
+		
 		if ($jumpNode == null)
 		$jumpNode = $this->dataObject;
 

@@ -73,8 +73,8 @@ class buddyList extends baseItem {
 
 		$actionPanel = \General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"executeAction('buddyAcceptExecute',null,null,'{$id}')","executeAction('showBuddy',null,null,null)");
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 	}
 
@@ -103,8 +103,8 @@ class buddyList extends baseItem {
 
 		$actionPanel = \General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"executeAction('buddyDecline',null,null,'{$id}')","executeAction('showBuddy',null,null,null)");
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 	}
 
@@ -146,8 +146,8 @@ class buddyList extends baseItem {
 		$actionPanel .= $registry->get ();
 		unset($registry);
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 
 	}

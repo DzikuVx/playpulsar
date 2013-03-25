@@ -1,27 +1,29 @@
 <?php
 
-$portPanel .= "<h1>" . TranslateController::getDefault()->get ( 'storehouse' ) . "</h1>";
+use General\Formater;
+
+$portPanel .= "<h1>{T:storehouse}</h1>";
 
 $storageCargo = new storageCargo ( $userID, $portProperties->PortID, $userProperties->Language );
 
 //Sprawdz, czy gracz ma wykupione miejsce w magazynie
 $totalStorageRoom = storageCargo::sGetTotalUserSpace ( $userID, $portProperties->PortID );
 $usedStorageRoom = $storageCargo->getUsage ();
-
+ 
 if ($totalStorageRoom == 0) {
 	//Brak wykupionego miejsca w magazynie
-	$portPanel .= "<h2 style='color: #f00000;'>" . TranslateController::getDefault()->get ( 'noStorageSpace' ) . "</h2>";
+	$portPanel .= "<h2 style='color: #f00000;'>{T:noStorageSpace}</h2>";
 } else {
 	//Pokaż przedmioty w magazynie
 
-	$portPanel .= "<table class='transactionList' cellspacing='2' cellpadding='0'>";
+	$portPanel .= "<table class='table table-striped table-condensed'>";
 
 	$portPanel .= "<tr>";
-	$portPanel .= "<th>" . TranslateController::getDefault()->get ( 'cargo' ) . "</th>";
-	$portPanel .= "<th style='width: 60px;'>" . TranslateController::getDefault()->get ( 'size' ) . "</th>";
-	$portPanel .= "<th style='width: 60px;'>" . TranslateController::getDefault()->get ( 'amount' ) . "</th>";
-	$portPanel .= "<th style='width: 60px;'>" . TranslateController::getDefault()->get ( 'total' ) . "</th>";
-	$portPanel .= "<th style='width: 6em;'>&nbsp;</th>";
+	$portPanel .= "<th>{T:cargo}</th>";
+	$portPanel .= "<th style='width: 60px;'>{T:size}</th>";
+	$portPanel .= "<th style='width: 60px;'>{T:amount}</th>";
+	$portPanel .= "<th style='width: 60px;'>{T:total}</th>";
+	$portPanel .= "<th style='width: 8em;'>&nbsp;</th>";
 	$portPanel .= "</tr>";
 
 	$tQuery = $storageCargo->getProducts ();
@@ -29,14 +31,14 @@ if ($totalStorageRoom == 0) {
 		$actionString = '';
 		if ($shipPosition->Docked == 'yes') {
 
-			$actionString .= \General\Controls::renderImgButton ( 'left', "executeAction('toCargohold','product','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toCargoholdOne' ) );
-			$actionString .= \General\Controls::renderImgButton ( 'leftFar', "executeAction('toCargohold','product','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toCargoholdAll' ) );
+			$actionString .= \General\Controls::renderImgButton ( 'left', "executeAction('toCargohold','product','1','{$tR1->ID}',null);", '{T:toCargoholdOne}');
+			$actionString .= \General\Controls::renderImgButton ( 'leftFar', "executeAction('toCargohold','product','all','{$tR1->ID}',null);", '{T:toCargoholdAll}');
 
 		} else {
 			$actionString = "&nbsp;";
 		}
 
-		$portPanel .= storageCargo::displayTableRow ( $tR1, $actionString, "transactionListGreen" );
+		$portPanel .= storageCargo::displayTableRow ( $tR1, $actionString, "green" );
 	}
 
 	//Itemy
@@ -51,7 +53,7 @@ if ($totalStorageRoom == 0) {
 			$actionString = "&nbsp;";
 		}
 
-		$portPanel .= storageCargo::displayTableRow ( $tR1, $actionString, "transactionListYellow" );
+		$portPanel .= storageCargo::displayTableRow ( $tR1, $actionString, "yellow" );
 
 	}
 
@@ -69,7 +71,7 @@ if ($totalStorageRoom == 0) {
 			$actionString = "&nbsp;";
 		}
 
-		$portPanel .= storageCargo::displayTableRow ( $tR1, $actionString, "transactionListRed" );
+		$portPanel .= storageCargo::displayTableRow ( $tR1, $actionString, "red" );
 	}
 
 	//Equipment
@@ -86,7 +88,7 @@ if ($totalStorageRoom == 0) {
 		} else {
 			$actionString = "&nbsp;";
 		}
-		$portPanel .= storageCargo::displayTableRow ( $tR1, $actionString, "transactionList" );
+		$portPanel .= storageCargo::displayTableRow ( $tR1, $actionString );
 	}
 	$portPanel .= "</table>";
 }
@@ -94,9 +96,9 @@ if ($totalStorageRoom == 0) {
 unset($storageCargo);
 
 //Możliwość zakupu nowego miejsca
-$portPanel .= "<h2>" . TranslateController::getDefault()->get ( 'storageSpaceParameters' ) . "</h2>";
-$portPanel .= "<div class='infoLine'><b>" . TranslateController::getDefault()->get ( 'totalSpace' ) . ": </b> " . $totalStorageRoom . "</div>";
-$portPanel .= "<div class='infoLine'><b>" . TranslateController::getDefault()->get ( 'freeSpace' ) . ": </b> " . ($totalStorageRoom - $usedStorageRoom) . "</div>";
-$portPanel .= "<div class='infoLine'><b>" . TranslateController::getDefault()->get ( 'buy' ) . ": </b>";
-$portPanel .= \General\Controls::renderButton($config ['port'] ['storageSpace'] . " " . TranslateController::getDefault()->get ( 'buyFor' ) . " " . $config ['port'] ['storageSpacePrice'] . "$", "executeAction('buyStorageRoom',null,null,null,null);");
+$portPanel .= "<h2>{T:storageSpaceParameters}</h2>";
+$portPanel .= "<div class='infoLine'><b>{T:totalSpace}: </b> " . $totalStorageRoom . "</div>";
+$portPanel .= "<div class='infoLine'><b>{T:freeSpace}: </b> " . ($totalStorageRoom - $usedStorageRoom) . "</div>";
+$portPanel .= "<div class='infoLine'><b>{T:buy}: </b>";
+$portPanel .= \General\Controls::bootstrapButton($config ['port'] ['storageSpace'] . " " . '{T:buyFor}' . " " . Formater::formatValue($config ['port'] ['storageSpacePrice']), "executeAction('buyStorageRoom',null,null,null,null);");
 $portPanel .= "</div>";

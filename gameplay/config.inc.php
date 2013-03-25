@@ -154,7 +154,7 @@ $config ['weapon'] ['repairCost'] ['cash'] = 0.5;
 
 
 /**
- * EMP auto repair ratio 
+ * EMP auto repair ratio
  * (how many emp units are repaired every second)
  */
 $config ['emp'] ['repairRatio'] = 5;
@@ -180,7 +180,6 @@ $itemJettisonCost = 1;
 */
 $config ['turns'] ['capLimit'] = 200; //Max Am amount = Speed * Cap
 $config ['turns'] ['multiplier'] = 1; //Am regeneration multilier
-
 
 /*
  * Port configuration
@@ -303,8 +302,8 @@ $config['facebook']['cookie'] = true;
 
 /*
  * Google Analytics settings
- * leave empty to disable
- */
+* leave empty to disable
+*/
 $config['analytics']['id'] = 'UA-7536599-7';
 $config['analytics']['domain'] = '.playpulsar.com';
 

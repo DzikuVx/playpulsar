@@ -164,8 +164,8 @@ class allianceRights extends baseItem {
 
 		$actionPanel = (string) $template;
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 
 	}
@@ -193,11 +193,11 @@ class allianceRights extends baseItem {
 		$registry = new allianceRightsRegistry( $userID );
 		$registry->setDisableCache(true);		
 		$actionPanel .= $registry->get ($userAlliance->AllianceID);
-		$actionPanel .= "<div style=\"text-align: center;\">" . \General\Controls::sStandardButton ( TranslateController::getDefault()->get('close'), "executeAction('allianceDetail',null,null,'{$userAlliance->AllianceID}');" ) . "</div>";
+		$actionPanel .= "<div style=\"text-align: center;\">" . \General\Controls::bootstrapButton ( '{T:close}', "executeAction('allianceDetail',null,null,'{$userAlliance->AllianceID}');" ) . "</div>";
 		unset($registry);
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 
 	}

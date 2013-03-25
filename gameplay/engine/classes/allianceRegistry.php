@@ -35,8 +35,8 @@ class allianceRegistry extends simpleRegistry {
 		$actionPanel .= $registry->get ();
 		unset($registry);
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 
 	}
@@ -56,7 +56,7 @@ class allianceRegistry extends simpleRegistry {
 			$retVal = '';
 			//@todo: nawigacja po stronach
 			$retVal .= "<h1>" . TranslateController::getDefault()->get ( 'alliances' ) . "</h1>";
-			$retVal .= "<table class=\"transactionList linked\" cellspacing=\"2\" cellpadding=\"0\">";
+			$retVal .= "<table class=\"table table-striped table-condensed linked\">";
 
 			$retVal .= '<thead>';
 			$retVal .= '<tr>';

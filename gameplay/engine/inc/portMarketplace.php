@@ -5,13 +5,13 @@ $portPanel .= "<h1>" . TranslateController::getDefault()->get ( 'marketplace' ) 
 $nameField = "Name" . strtoupper ( $userProperties->Language );
 
 $portPanel .= "<h2>" . TranslateController::getDefault()->get ( 'buy' ) . "</h2>";
-$portPanel .= "<table class=\"transactionList\" cellspacing=\"2\" cellpadding=\"0\">";
+$portPanel .= "<table class='table table-striped table-condensed'>";
 
 $portPanel .= "<tr>";
 $portPanel .= "<th>" . TranslateController::getDefault()->get ( 'cargo' ) . "</th>";
 $portPanel .= "<th>" . TranslateController::getDefault()->get ( 'instock' ) . "</th>";
 $portPanel .= "<th>" . TranslateController::getDefault()->get ( 'price' ) . " [$]</th>";
-$portPanel .= "<th style=\"width: 7em;\">&nbsp;</th>";
+$portPanel .= "<th style=\"width: 10em;\">&nbsp;</th>";
 $portPanel .= "</tr>";
 
 $portCargo = new portCargo ( $userID, $portProperties, $userProperties->Language );
@@ -41,8 +41,8 @@ while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 	$portPanel .= "<td>" . $tR1->Name . "</td>";
 	$portPanel .= "<td>" . number_format ( $tR1->Amount, 0 ) . "</td>";
 	$portPanel .= "<td>" . number_format ( $productPrice, 0 ) . "</td>";
-	$portPanel .= "<td><input onkeyup=\"javascript:return maskNumber(this.value,this,0,$buyAmount)\" onblur=\"javascript:return maskNumber(this.value,this,0,$buyAmount)\" type=\"text\" class='ui-corner-all ui-state-default' size=\"3\" id=\"buy_" . $tR1->ID . "\" value=\"" . $buyAmount . "\" />";
-	$portPanel .= \General\Controls::renderImgButton('yes', "executeAction('productBuy',null,null,'{$tR1->ID}',null);", 'OK');
+	$portPanel .= "<td><input class='input-mini noSpacing' onkeyup='maskNumber(this.value,this,0,{$buyAmount})' onblur=\"javascript:return maskNumber(this.value,this,0,$buyAmount)\" type='text' id=\"buy_" . $tR1->ID . "\" value='{$buyAmount}' />";
+	$portPanel .= \General\Controls::renderImgButton('buy', "executeAction('productBuy',null,null,'{$tR1->ID}',null);", TranslateController::getDefault()->get('buy'));
 	$portPanel .= "</td>";
 	$portPanel .= "</tr>";
 
@@ -50,13 +50,13 @@ while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 $portPanel .= "</table>";
 
 $portPanel .= "<h2>" . TranslateController::getDefault()->get ( 'sell' ) . "</h2>";
-$portPanel .= "<table class=\"transactionList\" cellspacing=\"2\" cellpadding=\"0\">";
+$portPanel .= "<table class='table table-striped table-condensed'>";
 
 $portPanel .= "<tr>";
 $portPanel .= "<th>" . TranslateController::getDefault()->get ( 'cargo' ) . "</th>";
 $portPanel .= "<th>" . TranslateController::getDefault()->get ( 'instock' ) . "</th>";
 $portPanel .= "<th>" . TranslateController::getDefault()->get ( 'price' ) . " [$]</th>";
-$portPanel .= "<th style=\"width: 75px;\">&nbsp;</th>";
+$portPanel .= "<th style=\"width: 10em;\">&nbsp;</th>";
 $portPanel .= "</tr>";
 
 $tQuery = $portCargo->getProductsBuy ();
@@ -74,8 +74,8 @@ while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 	if ($tR1->ShipAmount == 0) {
 		$portPanel .= "&nbsp;";
 	} else {
-		$portPanel .= "<input onkeyup=\"javascript:return maskNumber(this.value,this,0,{$tR1->ShipAmount})\" onblur=\"javascript:return maskNumber(this.value,this,0,{$tR1->ShipAmount})\" class='ui-corner-all ui-state-default' type=\"text\" size=\"3\" id=\"sell_" . $tR1->ID . "\" value=\"" . $tR1->ShipAmount . "\" />";
-		$portPanel .= \General\Controls::renderImgButton('yes', "executeAction('productSell',null,null,'{$tR1->ID}',null);", 'OK');
+		$portPanel .= "<input class='input-mini noSpacing' onkeyup='maskNumber(this.value,this,0,{$tR1->ShipAmount})' onblur=\"javascript:return maskNumber(this.value,this,0,{$tR1->ShipAmount})\" type=\"text\" size=\"3\" id=\"sell_" . $tR1->ID . "\" value=\"" . $tR1->ShipAmount . "\" />";
+		$portPanel .= \General\Controls::renderImgButton('sell', "executeAction('productSell',null,null,'{$tR1->ID}',null);", TranslateController::getDefault()->get('sell'));
 	}
 	$portPanel .= "</td>";
 	$portPanel .= "</tr>";
@@ -102,7 +102,7 @@ if ($portProperties->Items != '') {
 	while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 		if ($tR1->ShipAmount == null)
 		$tR1->ShipAmount = 0;
-		$portPanel .= "<tr class=\"transactionListYellow\">";
+		$portPanel .= "<tr class='yellow'>";
 		$portPanel .= "<td>" . $tR1->Name . "</td>";
 		$portPanel .= "<td>-</td>";
 		$portPanel .= "<td>" . number_format ( $tR1->Price ) . "</td>";
@@ -111,8 +111,8 @@ if ($portProperties->Items != '') {
 		if ($tR1->ShipAmount == 0) {
 			$portPanel .= "&nbsp;";
 		} else {
-			$portPanel .= "<input onkeyup=\"javascript:return maskNumber(this.value,this,0,{$tR1->ShipAmount})\" onblur=\"javascript:return maskNumber(this.value,this,0,{$tR1->ShipAmount})\" class=\"ui-corner-all ui-state-default\" type=\"text\" size=\"3\" id=\"item_sell_" . $tR1->ItemID . "\" value=\"" . $tR1->ShipAmount . "\" />";
-			$portPanel .= \General\Controls::renderImgButton('yes', "executeAction('itemSell',null,null,'{$tR1->ItemID}',null);", 'OK');
+			$portPanel .= "<input class='input-mini noSpacing' onkeyup=\"maskNumber(this.value,this,0,{$tR1->ShipAmount})\" onblur=\"maskNumber(this.value,this,0,{$tR1->ShipAmount})\" type=\"text\" id=\"item_sell_" . $tR1->ItemID . "\" value=\"" . $tR1->ShipAmount . "\" />";
+			$portPanel .= \General\Controls::renderImgButton('yes', "executeAction('itemSell',null,null,'{$tR1->ItemID}',null);", TranslateController::getDefault()->get('buy'));
 		}
 		$portPanel .= "</td>";
 		$portPanel .= "</tr>";
@@ -124,12 +124,12 @@ $portPanel .= "</table>";
 $portPanel .= "<h1>" . TranslateController::getDefault()->get ( 'Maps' ) . "</h1>";
 
 $portPanel .= "<h2>" . TranslateController::getDefault()->get ( 'buy' ) . "</h2>";
-$portPanel .= "<table class=\"transactionList\" cellspacing=\"2\" cellpadding=\"0\">";
+$portPanel .= "<table class='table table-striped table-condensed'>";
 
 $portPanel .= "<tr>";
 $portPanel .= "<th>" . TranslateController::getDefault()->get ( 'System' ) . "</th>";
 $portPanel .= "<th>" . TranslateController::getDefault()->get ( 'price' ) . " [$]</th>";
-$portPanel .= "<th style=\"width: 7em;\">&nbsp;</th>";
+$portPanel .= "<th style=\"width: 10em;\">&nbsp;</th>";
 $portPanel .= "</tr>";
 
 $portCargo = new portCargo ( $userID, $portProperties, $userProperties->Language );
@@ -143,7 +143,7 @@ while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 	$portPanel .= "<td>";
 
 	if ($userStats->Cash >=  $config ['port'] ['mapPrice']) {
-		$portPanel .= \General\Controls::renderImgButton('yes', "executeAction('mapBuy',null,null,'{$tR1->SystemID}',null);", 'OK');
+		$portPanel .= \General\Controls::renderImgButton('buy', "executeAction('mapBuy',null,null,'{$tR1->SystemID}',null);", 'OK');
 	}else {
 		$portPanel .= '&nbsp;';
 	}

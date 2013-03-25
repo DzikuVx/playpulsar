@@ -19,8 +19,8 @@ class shipWeaponsRegistry extends simpleRegistry {
 		$actionPanel .= $registry->get ( $shipPosition, $portProperties, $action, $subaction, $value, $id );
 		unset($registry);
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 
 	}
@@ -44,13 +44,13 @@ class shipWeaponsRegistry extends simpleRegistry {
 
 		$retVal .= "<h1>" . TranslateController::getDefault()->get ( 'weapons' ) . "</h1>";
 
-		$retVal .= "<table class=\"transactionList\" cellspacing=\"2\" cellpadding=\"0\">";
+		$retVal .= "<table class=\"table table-striped table-condensed\">";
 
 		$retVal .= "<tr>";
 		$retVal .= "<th>" . TranslateController::getDefault()->get ( 'name' ) . "</th>";
-		$retVal .= "<th style=\"width: 60px;\">" . TranslateController::getDefault()->get ( 'size' ) . "</th>";
-		$retVal .= "<th style=\"width: 6em;\">" . TranslateController::getDefault()->get ( 'ammo' ) . "</th>";
-		$retVal .= "<th style=\"width: 10em;\">&nbsp;</th>";
+		$retVal .= "<th style=\"width: 4em;\">" . TranslateController::getDefault()->get ( 'size' ) . "</th>";
+		$retVal .= "<th style=\"width: 3em;\">" . TranslateController::getDefault()->get ( 'ammo' ) . "</th>";
+		$retVal .= "<th style=\"width: 16em;\">&nbsp;</th>";
 		$retVal .= "</tr>";
 
 		$tQuery = $shipWeapons->get ( "all" );
@@ -73,11 +73,6 @@ class shipWeaponsRegistry extends simpleRegistry {
 			$retVal .= '<td ' . $modifier . '>' . $tR1->Name . '</td>';
 			$retVal .= '<td ' . $modifier . '>' . $tR1->Size . '</td>';
 			$retVal .= '<td ' . $modifier . '>' . $tR1->Ammo . '/' . $tR1->MaxAmmo;
-
-			$tReloadPrice = weapon::sGetReloadPrice ( $tR1->WeaponID, $tR1->Ammo );
-			if ($shipPosition->Docked == 'yes' && $portProperties->Type == 'station' && $tR1->MaxAmmo > 0 && $tR1->Ammo != $tR1->MaxAmmo && $userStats->Cash > $tReloadPrice) {
-				$retVal .= \General\Controls::renderImgButton ( 'reload', "executeAction('weaponReload',null,null,{$tR1->ShipWeaponID},null);", TranslateController::getDefault()->get ( 'Reload for' ) . ' ' . $tReloadPrice . '$' );
-			}
 			$retVal .= '</td>';
 
 			$tString = '';
@@ -92,9 +87,9 @@ class shipWeaponsRegistry extends simpleRegistry {
 			if ($tR1->Damaged == '0') {
 
 				if ($tR1->Enabled == 0) {
-					$tString .= \General\Controls::renderImgButton ( 'add', "executeAction('switchWeaponState','slow',null,{$tR1->ShipWeaponID},null);", TranslateController::getDefault()->get ( 'On') );
+					$tString .= \General\Controls::renderImgButton ( 'on', "executeAction('switchWeaponState','slow',null,{$tR1->ShipWeaponID},null);", TranslateController::getDefault()->get ( 'On') );
 				} else {
-					$tString .= \General\Controls::renderImgButton ( 'remove', "executeAction('switchWeaponState','slow',null,{$tR1->ShipWeaponID},null);",TranslateController::getDefault()->get (  'Off') );
+					$tString .= \General\Controls::renderImgButton ( 'off', "executeAction('switchWeaponState','slow',null,{$tR1->ShipWeaponID},null);",TranslateController::getDefault()->get (  'Off') );
 				}
 
 				if ($shipPosition->Docked == 'yes' && $portProperties->Type == 'station') {
@@ -120,6 +115,11 @@ class shipWeaponsRegistry extends simpleRegistry {
 
 			}
 
+			$tReloadPrice = weapon::sGetReloadPrice ( $tR1->WeaponID, $tR1->Ammo );
+			if ($shipPosition->Docked == 'yes' && $portProperties->Type == 'station' && $tR1->MaxAmmo > 0 && $tR1->Ammo != $tR1->MaxAmmo && $userStats->Cash > $tReloadPrice) {
+				$tString .= \General\Controls::renderImgButton ( 'reload', "executeAction('weaponReload',null,null,{$tR1->ShipWeaponID},null);", TranslateController::getDefault()->get ( 'Reload for' ) . ' ' . $tReloadPrice . '$' );
+			}
+			
 			if (empty ( $tString )) {
 				$tString = '&nbsp;';
 			}

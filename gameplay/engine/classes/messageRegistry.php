@@ -18,7 +18,7 @@ class messageRegistry extends simpleRegistry {
 		//@todo: nawigacja po stronach
 		$retVal .= "<h1>" . TranslateController::getDefault()->get ( 'messages' ) . "</h1>";
 
-		$retVal .= "<table class=\"transactionList\" cellspacing=\"2\" cellpadding=\"0\">";
+		$retVal .= "<table class=\"table table-striped table-condensed\">";
 
 		$retVal .= "<tr>";
 		$retVal .= "<th>" . TranslateController::getDefault()->get ( 'date' ) . "</th>";

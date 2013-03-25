@@ -18,15 +18,15 @@ class shipCargo {
 
 		global $actionPanel, $shipPosition, $itemJettisonCost, $shipCargo, $shipProperties, $portProperties, $userProperties;
 
-		$actionPanel .= "<h1>" . TranslateController::getDefault()->get ( 'cargo' ) . "</h1>";
+		$actionPanel .= "<h1>{T:cargo}</h1>";
 
-		$actionPanel .= "<table class='transactionList' cellspacing='2' cellpadding=\"0\">";
+		$actionPanel .= "<table class='table table-striped table-condensed'>";
 
 		$actionPanel .= "<tr>";
-		$actionPanel .= "<th>" . TranslateController::getDefault()->get ( 'cargo' ) . "</th>";
-		$actionPanel .= "<th style='width: 60px;'>" . TranslateController::getDefault()->get ( 'size' ) . "</th>";
-		$actionPanel .= "<th style='width: 60px;'>" . TranslateController::getDefault()->get ( 'amount' ) . "</th>";
-		$actionPanel .= "<th style='width: 60px;'>" . TranslateController::getDefault()->get ( 'total' ) . "</th>";
+		$actionPanel .= "<th>{T:cargo}</th>";
+		$actionPanel .= "<th>{T:size}</th>";
+		$actionPanel .= "<th>{T:amount}</th>";
+		$actionPanel .= "<th>{T:total}</th>";
 		$actionPanel .= "<th style='width: 6em;'>&nbsp;</th>";
 		$actionPanel .= "</tr>";
 
@@ -47,8 +47,8 @@ class shipCargo {
 			$actionString = '';
 			if ($shipPosition->Docked == 'no') {
 				if ($shipProperties->Turns >= $itemJettisonCost) {
-					$actionString .= \General\Controls::renderImgButton ( 'delete', "executeAction('jettison','product','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonOne' ) );
-					$actionString .= \General\Controls::renderImgButton ( 'deleteall', "executeAction('jettison','product','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonAll' ) );
+					$actionString .= \General\Controls::renderImgButton ( 'jettison', "executeAction('jettison','product','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonOne' ) );
+					$actionString .= \General\Controls::renderImgButton ( 'jettisonAll', "executeAction('jettison','product','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonAll' ) );
 				}
 			} else {
 				if ($totalStorageRoom - $usedStorageRoom > 0) {
@@ -61,7 +61,7 @@ class shipCargo {
 				$actionString = '&nbsp;';
 			}
 
-			$actionPanel .= shipCargo::displayTableRow ( $tR1, $actionString, "transactionListGreen" );
+			$actionPanel .= shipCargo::displayTableRow ( $tR1, $actionString, "green" );
 		}
 
 		//Itemy
@@ -71,8 +71,8 @@ class shipCargo {
 
 			if ($shipPosition->Docked == 'no') {
 				if ($shipProperties->Turns >= $itemJettisonCost) {
-					$actionString .= \General\Controls::renderImgButton ( 'delete', "executeAction('jettison','item','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonOne' ) );
-					$actionString .= \General\Controls::renderImgButton ( 'deleteall', "executeAction('jettison','item','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonAll' ) );
+					$actionString .= \General\Controls::renderImgButton ( 'jettison', "executeAction('jettison','item','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonOne' ) );
+					$actionString .= \General\Controls::renderImgButton ( 'jettisonAll', "executeAction('jettison','item','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonAll' ) );
 				}
 			} else {
 				if ($totalStorageRoom - $usedStorageRoom > 0) {
@@ -83,7 +83,7 @@ class shipCargo {
 			if ($actionString == '') {
 				$actionString = '&nbsp;';
 			}
-			$actionPanel .= shipCargo::displayTableRow ( $tR1, $actionString, "transactionListYellow" );
+			$actionPanel .= shipCargo::displayTableRow ( $tR1, $actionString, "yellow" );
 		}
 
 		//Uzbrojenie
@@ -94,8 +94,8 @@ class shipCargo {
 
 			if ($shipPosition->Docked == 'no') {
 				if ($shipProperties->Turns >= $itemJettisonCost) {
-					$actionString .= \General\Controls::renderImgButton ( 'delete', "executeAction('jettison','weapon','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonOne' ) );
-					$actionString .= \General\Controls::renderImgButton ( 'deleteall', "executeAction('jettison','weapon','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonAll' ) );
+					$actionString .= \General\Controls::renderImgButton ( 'jettison', "executeAction('jettison','weapon','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonOne' ) );
+					$actionString .= \General\Controls::renderImgButton ( 'jettisonAll', "executeAction('jettison','weapon','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonAll' ) );
 				}
 			} else {
 				if ($shipProperties->CurrentWeapons < $shipProperties->MaxWeapons && $shipProperties->WeaponSize >= $tR1->Size) {
@@ -112,7 +112,7 @@ class shipCargo {
 			if (empty ( $actionString )) {
 				$actionString = '&nbsp;';
 			}
-			$actionPanel .= shipCargo::displayTableRow ( $tR1, $actionString, "transactionListRed" );
+			$actionPanel .= shipCargo::displayTableRow ( $tR1, $actionString, "red" );
 		}
 		//Equipment
 		$tQuery = $shipCargo->getEquipments ();
@@ -123,8 +123,8 @@ class shipCargo {
 
 			if ($shipPosition->Docked == 'no') {
 				if ($shipProperties->Turns >= $itemJettisonCost) {
-					$actionString .= \General\Controls::renderImgButton ( 'delete', "executeAction('jettison','equipment','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonOne' ) );
-					$actionString .= \General\Controls::renderImgButton ( 'deleteall', "executeAction('jettison','equipment','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonAll' ) );
+					$actionString .= \General\Controls::renderImgButton ( 'jettison', "executeAction('jettison','equipment','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonOne' ) );
+					$actionString .= \General\Controls::renderImgButton ( 'jettisonAll', "executeAction('jettison','equipment','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonAll' ) );
 				}
 			} else {
 				if ($shipProperties->CurrentEquipment < $shipProperties->MaxEquipment) {

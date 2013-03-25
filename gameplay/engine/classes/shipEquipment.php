@@ -31,6 +31,28 @@ class shipEquipment {
 	}
 
 	/**
+	 * Get number o fully operational equipment
+	 * return int
+	 */
+	public function getOperationalCount() {
+	
+		$retVal = 0;
+	
+		$tQuery = "SELECT
+			COUNT(*) AS ILE
+		FROM
+			shipequipment
+		WHERE
+			UserID='{$this->userID}' AND
+			Damaged='0'
+		";
+		$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
+		$retVal = \Database\Controller::getInstance()->fetch($tQuery)->ILE;
+	
+		return $retVal;
+	}
+	
+	/**
 	 * Uszkodzenie losowego wyposażenia
 	 *
 	 * @return boolean
@@ -286,7 +308,7 @@ class shipEquipment {
 	 */
 	static public function sBuy($equipmentID) {
 
-		global $cargoPanel, $action, $shortUserStatsPanel, $userStats, $shortShipStatsPanel, $shipProperties, $shipPosition, $t, $portProperties, $shipEquipment, $error;
+		global $action, $userStats, $shipProperties, $shipPosition, $t, $portProperties, $shipEquipment, $error;
 
 		if ($shipPosition->Docked == 'no') {
 			throw new securityException ( );
@@ -327,8 +349,6 @@ class shipEquipment {
 
 			announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'equipmentBought' ) . $tEquipment->Price . '$' );
 			shipProperties::computeMaxValues ( $shipProperties );
-			shipStatsPanel::getInstance()->render ();
-			$cargoPanel->render ( $shipProperties );
 			$action = "portHangar";
 		}
 	}
@@ -340,7 +360,7 @@ class shipEquipment {
 	 */
 	static public function sStationRepair($equipmentID) {
 
-		global $cargoPanel, $shortUserStatsPanel, $userStats, $shortShipStatsPanel, $shipProperties, $shipPosition, $portProperties, $shipEquipment, $error;
+		global $userStats, $shipProperties, $shipPosition, $portProperties, $shipEquipment, $error;
 
 		if ($shipPosition->Docked == 'no') {
 			throw new securityException ( );
@@ -364,14 +384,12 @@ class shipEquipment {
 			announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'equipmentRepaired' ) . $tRepairPrice . '$' );
 			shipProperties::computeMaxValues ( $shipProperties );
 			shipEquipmentRegistry::sRender ();
-			shipStatsPanel::getInstance()->render ();
-			$cargoPanel->render ( $shipProperties );
 		}
 	}
 
 	static public function sSellFromCargo($weaponID) {
 
-		global $cargoPanel, $portPanel, $shipCargo, $userID, $shortUserStatsPanel, $userStats, $weaponsPanel, $shortShipStatsPanel, $shipProperties, $shipPosition, $portProperties, $shipWeapons;
+		global $portPanel, $shipCargo, $userID, $userStats, $shipProperties, $shipPosition, $portProperties, $shipWeapons;
 
 
 		if ($shipPosition->Docked == 'no') {
@@ -404,11 +422,9 @@ class shipEquipment {
 
 		shipProperties::updateUsedCargo ( $shipProperties );
 		
-		$cargoPanel->render($shipProperties);
-		
 		shipCargo::management ( $userID );
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 		announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'equipmentSold' ) . $tPrice . '$' );
 	}
@@ -420,7 +436,7 @@ class shipEquipment {
 	 */
 	static public function sSell($equipmentID) {
 
-		global $cargoPanel, $action, $shortUserStatsPanel, $userStats, $shortShipStatsPanel, $shipProperties, $shipPosition, $portProperties, $shipEquipment, $error;
+		global $action, $userStats, $shipProperties, $shipPosition, $portProperties, $shipEquipment, $error;
 
 		if ($shipPosition->Docked == 'no') {
 			throw new securityException ( );
@@ -456,8 +472,6 @@ class shipEquipment {
 			announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'equipmentSold' ) . $tPrice . '$' );
 			shipProperties::computeMaxValues ( $shipProperties );
 			shipEquipmentRegistry::sRender ();
-			shipStatsPanel::getInstance()->render ();
-			$cargoPanel->render ( $shipProperties );
 		}
 	}
 

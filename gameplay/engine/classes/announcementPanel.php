@@ -19,15 +19,15 @@ class announcementPanel extends basePanel {
 
 		switch ($type) {
 			case 'info' :
-				$this->retVal = "<div class=\"infoAnnouncement\">" . $text . "</div>";
+				$this->retVal .= "<div class=\"infoAnnouncement\">" . $text . "</div>";
 				break;
 
 			case 'warning' :
-				$this->retVal = "<div class=\"warningAnnouncement\">" . $text . "</div>";
+				$this->retVal .= "<div class=\"warningAnnouncement\">" . $text . "</div>";
 				break;
 
 			case 'error' :
-				$this->retVal = "<div class=\"errorAnnouncement\">" . $text . "</div>";
+				$this->retVal .= "<div class=\"errorAnnouncement\">" . $text . "</div>";
 				break;
 		}
 	}

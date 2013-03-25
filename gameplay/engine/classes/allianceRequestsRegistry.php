@@ -29,7 +29,7 @@ class allianceRequestsRegistry extends simpleRegistry {
 
 		$retVal .= "<h1>" . TranslateController::getDefault()->get ( 'allianceAppliances' ) . "</h1>";
 
-		$retVal .= "<table class=\"transactionList\" cellspacing=\"2\" cellpadding=\"0\">";
+		$retVal .= "<table class=\"table table-striped table-condensed\">";
 
 		$retVal .= "<tr>";
 		$retVal .= "<th>" . TranslateController::getDefault()->get ( 'name' ) . "</th>";
@@ -65,7 +65,7 @@ class allianceRequestsRegistry extends simpleRegistry {
 			$retVal .= '</tr>';
 		}
 		$retVal .= "</table>";
-		$retVal .= "<div style=\"text-align: center;\">" . \General\Controls::sStandardButton( TranslateController::getDefault()->get('close'), "executeAction('allianceDetail',null,null,'{$allianceID}');") . "</div>";
+		$retVal .= "<div style=\"text-align: center;\">" . \General\Controls::bootstrapButton( '{T:close}', "executeAction('allianceDetail',null,null,'{$allianceID}');") . "</div>";
 		return $retVal;
 	}
 

@@ -42,8 +42,8 @@ class alliancePost extends baseItem {
 
 		$actionPanel = \General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), TranslateController::getDefault()->get('wantDeleteAlliancePost'),"executeAction('alliancePostDeleteExe',null,null,{$id})","executeAction('allianceDetail',null,null,'{$userAlliance->AllianceID}')");
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 	}
 
@@ -79,8 +79,8 @@ class alliancePost extends baseItem {
 
 		$actionPanel = alliance::sGetDetail($userAlliance->AllianceID);
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 	}
 
@@ -107,8 +107,8 @@ class alliancePost extends baseItem {
 
 		$actionPanel = $template;
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 	}
 
@@ -147,8 +147,8 @@ class alliancePost extends baseItem {
 
 		$actionPanel = alliance::sGetDetail($userAlliance->AllianceID);
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 	}
 

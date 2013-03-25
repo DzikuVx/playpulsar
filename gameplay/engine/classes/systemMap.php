@@ -38,7 +38,7 @@ class systemMap extends miniMap {
 		global $userID, $shipRouting;
 
 		if (!isset($attr['class'])) {
-			$attr['class'] = 'plot';
+			$attr['class'] = 'plot span1';
 		}
 
 		if (!isset($attr['id'])) {
@@ -96,13 +96,12 @@ class systemMap extends miniMap {
 	public function renderHeader() {
 
 		global $userID;
-		$retVal = "<h1>" . TranslateController::getDefault()->get ( 'system' ) . ": " . $this->system->Name . "</h1>";
+		$retVal = "<h1>{T:system}: " . $this->system->Name . "</h1>";
 
-		$retVal .= '<div style="text-align: left;">';
+		$retVal .= '<div style="float: left; margin-right: 1em;">';
 		$tArray = array();
 		$tArray['onchange'] = 'systemMap.show($(this).val());';
-		$tArray['class'] = 'ui-corner-all';
-		$tArray['style'] = 'background-color: #323232; color: #999;';
+		$tArray['class'] = 'input-small';
 		$retVal .= self::sRenderAvaibleSystemsSelect($tArray, false, true);
 		$retVal .= '</div>';
 

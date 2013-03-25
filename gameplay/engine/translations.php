@@ -10,6 +10,11 @@ $translationTable ['en'] ['pageKeywords'] = "game, online, mmorpg, browser game,
 $translationTable ['pl'] ['Cancel'] = "Anuluj";
 $translationTable ['pl'] ['You have been logged out'] = "Zostałeś wylogowany z gry";
 
+$translationTable ['pl'] ['Details'] = "Szczegóły";
+$translationTable ['pl'] ['Links'] = "Linki";
+$translationTable ['pl'] ['Resources'] = "Zasoby";
+$translationTable ['pl'] ['System Scan'] = "Skan systemu";
+
 $translationTable ['pl'] ['Help'] = "Pomoc";
 $translationTable ['pl'] ['helpFiles'] = "http://pl.guide.playpulsar.com/";
 $translationTable ['en'] ['helpFiles'] = "http://en.guide.playpulsar.com/";
@@ -21,6 +26,9 @@ $translationTable ['pl'] ['notEnoughFame'] = "Brak traxium";
 $translationTable ['en'] ['notEnoughFame'] = "Not enough traxium";
 $translationTable ['en'] ['experienceForNextLevel'] = "Next.Lvl";
 $translationTable ['pl'] ['experienceForNextLevel'] = "Nast.Poziom";
+
+$translationTable ['en'] ['engageActiveScanner'] = "Engage Active Scanner";
+$translationTable ['pl'] ['engageActiveScanner'] = "Uruchom Skaner Aktywny";
 
 $translationTable ['pl'] ['chooseName'] = "Wybierz nazwę swojego gracza i wciśnij 'Dalej'...";
 $translationTable ['en'] ['chooseName'] = "Choose player's name and click 'Continue'...";

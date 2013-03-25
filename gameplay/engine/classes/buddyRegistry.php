@@ -12,7 +12,7 @@ class buddyRegistry extends simpleRegistry{
 
 			$retVal = '';
 			$retVal .= "<h1>" . TranslateController::getDefault()->get ( 'Buddy List' ) . "</h1>";
-			$retVal .= "<table class=\"transactionList linked\" cellspacing=\"2\" cellpadding=\"0\">";
+			$retVal .= "<table class='table table-striped table-condensed linked'>";
 
 			$retVal .= '<thead>';
 			$retVal .= '<tr>';

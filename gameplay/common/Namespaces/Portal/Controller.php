@@ -6,7 +6,7 @@ class Controller {
 	private function __construct() {
 
 	}
-
+ 
 	static public function mainPage() {
 
 		global $deploymentMode, $config, $portalNews2Page;
@@ -104,8 +104,6 @@ class Controller {
 
 		$template->add ( 'languageVar', $language );
 		$template->add ( 'mainContent', $mainContent );
-		$template->add('cdnUrl',$config['general']['cdn']);
-		$template->add('appId',$config['facebook']['appId']);
 
 		$registry = new \portalMainNews ( $language );
 		$template->add('mottoText', $registry->render ());
@@ -120,6 +118,12 @@ class Controller {
 		$template->add('pageTitle',$config ['general'] ['pageTitle']);
 
 		/*
+		 * Attach JS and CSS scripts
+		*/
+		$template->add('scripts',\General\Minify::getInstance()->getScript('portal_js'));
+		$template->add('css',\General\Minify::getInstance()->getCss('portal_css'));
+
+		/*
 		 * google analytics
 		*/
 		if (!empty($config['analytics']['id'])) {
@@ -129,6 +133,9 @@ class Controller {
 		else {
 			$template->remove('googleAnalytics');
 		}
+
+		$template->add('cdnUrl',$config['general']['cdn']);
+		$template->add('appId',$config['facebook']['appId']);
 
 		echo $template;
 

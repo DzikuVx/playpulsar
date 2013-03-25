@@ -42,8 +42,7 @@ class miniMap extends basePanel {
 	 */
 	protected function renderHeader() {
 
-		$retVal = "<div align='center'>";
-		$retVal .= "<table class='{$this->sectorClass}' cellspacing='0' cellpadding='0'>";
+		$retVal = "<table class='{$this->sectorClass}'>";
 		return $retVal;
 	}
 
@@ -69,15 +68,16 @@ class miniMap extends basePanel {
 
 	public function render() {
 		$this->rendered = true;
-		if ($this->shipPosition == null)
-		return false;
+		if ($this->shipPosition == null) {
+			return false;
+		}
 
 		$this->retVal = "";
 
 		$this->retVal .= $this->renderHeader ();
 
 		if (! $this->checkAvaible ()) {
-			$this->retVal .= TranslateController::getDefault()->get ( 'nomapavaible' );
+			$this->retVal .= '{T:nomapavaible}';
 			$this->retVal .= $this->renderFooter ();
 			return true;
 		}
@@ -244,7 +244,7 @@ class miniMap extends basePanel {
 
 			/*
 			 * Zapisz do cache
-			 */
+			*/
 			\Cache\Controller::getInstance()->set($module, $property, serialize($this->sector), 86400);
 
 		}
@@ -278,7 +278,7 @@ class miniMap extends basePanel {
 	protected function getShips() {
 
 		global $shipProperties, $userID;
-		
+
 		if ($this->shipPosition->Docked != 'no') {
 			return;
 		}

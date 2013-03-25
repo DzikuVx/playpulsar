@@ -7,7 +7,7 @@ class allianceFinance extends baseItem {
 
 	static public function sCashoutExe($id, $value) {
 
-		global $shipProperties, $shortUserStatsPanel, $actionPanel, $portPanel, $userAlliance, $userID;
+		global $shipProperties, $actionPanel, $portPanel, $userAlliance, $userID;
 
 		$value = \Database\Controller::getInstance()->quote($value);
 		$id = \Database\Controller::getInstance()->quote($id);
@@ -76,8 +76,8 @@ class allianceFinance extends baseItem {
 
 		$actionPanel = alliance::sGetDetail($userAlliance->AllianceID);
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 	}
 
@@ -109,13 +109,13 @@ class allianceFinance extends baseItem {
 
 		$actionPanel = $template;
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 	}
 
 	static public function sDeposit() {
-		global $userStats, $portProperties, $shipProperties, $shipPosition, $action, $value, $userAlliance, $shortUserStatsPanel;
+		global $userStats, $portProperties, $shipProperties, $shipPosition, $action, $value, $userAlliance;
 
 		$value = \Database\Controller::getInstance()->quote($value);
 

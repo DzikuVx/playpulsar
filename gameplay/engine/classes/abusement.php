@@ -54,8 +54,8 @@ class abusement extends baseItem {
 
 		$actionPanel = $template;
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 	}
 
@@ -82,8 +82,8 @@ class abusement extends baseItem {
 
 		shipExamine ( $id, $userID );
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 
 		announcementPanel::getInstance()->write('info', TranslateController::getDefault()->get('opSuccess'));

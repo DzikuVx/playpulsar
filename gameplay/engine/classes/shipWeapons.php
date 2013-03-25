@@ -339,6 +339,30 @@ class shipWeapons {
 	}
 
 	/**
+	 * Get number o fully operational weapons
+	 * return int
+	 */
+	public function getOperationalCount() {
+		
+		$retVal = 0;
+		
+		$tQuery = "SELECT
+			COUNT(*) AS ILE
+		FROM
+			shipweapons
+		WHERE
+			UserID='{$this->userID}' AND
+			Enabled='1' AND
+			Damaged='0' AND
+			(Ammo IS NULL OR Ammo > 0)
+		";
+		$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
+		$retVal = \Database\Controller::getInstance()->fetch($tQuery)->ILE;
+		
+		return $retVal;
+	}
+	
+	/**
 	 * Pobranie uzbrojenia okrętu
 	 *
 	 * @param string $mode
@@ -511,7 +535,7 @@ class shipWeapons {
 	 */
 	static public function sMoveUp($shipWeaponID) {
 
-		global $t, $error, $shipWeapons, $weaponsPanel;
+		global $t, $error, $shipWeapons;
 
 		$tData = $shipWeapons->getSingle ( $shipWeaponID );
 
@@ -534,7 +558,6 @@ class shipWeapons {
 			$shipWeapons->setSequence ( $shipWeaponID, $tOtherWeapon->Sequence );
 			$shipWeapons->setSequence ( $tOtherWeapon->ShipWeaponID, $tData->Sequence );
 
-			$weaponsPanel->render ();
 			shipWeaponsRegistry::sRender ();
 		}
 		return true;
@@ -548,7 +571,7 @@ class shipWeapons {
 	 */
 	static public function sMoveDown($shipWeaponID) {
 
-		global $t, $error, $shipWeapons, $weaponsPanel;
+		global $t, $error, $shipWeapons;
 
 		$tData = $shipWeapons->getSingle ( $shipWeaponID );
 
@@ -571,7 +594,6 @@ class shipWeapons {
 			$shipWeapons->setSequence ( $shipWeaponID, $tOtherWeapon->Sequence );
 			$shipWeapons->setSequence ( $tOtherWeapon->ShipWeaponID, $tData->Sequence );
 
-			$weaponsPanel->render ();
 			shipWeaponsRegistry::sRender ();
 		}
 		return true;
@@ -584,7 +606,7 @@ class shipWeapons {
 	 */
 	static public function sSell($weaponID) {
 
-		global $userID, $shortUserStatsPanel, $userStats, $weaponsPanel, $shortShipStatsPanel, $shipProperties, $shipPosition, $portProperties, $shipWeapons, $error;
+		global $userID, $userStats, $shipProperties, $shipPosition, $portProperties, $shipWeapons, $error;
 
 		static::sUpdateCount ( $shipProperties, $userID );
 
@@ -623,16 +645,14 @@ class shipWeapons {
 			}
 
 			announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'weaponSold' ) . $tPrice . '$' );
-			$weaponsPanel->render ();
 			shipWeaponsRegistry::sRender ();
 			$shipWeapons->computeOffensiveRating ( $shipProperties );
-			shipStatsPanel::getInstance()->render ();
 		}
 	}
 
 	static public function sSellFromCargo($weaponID) {
 
-		global $cargoPanel, $portPanel, $shipCargo, $userID, $shortUserStatsPanel, $userStats, $weaponsPanel, $shortShipStatsPanel, $shipProperties, $shipPosition, $portProperties, $shipWeapons;
+		global $portPanel, $shipCargo, $userID, $userStats, $shipProperties, $shipPosition, $portProperties, $shipWeapons;
 
 
 		if ($shipPosition->Docked == 'no') {
@@ -665,11 +685,9 @@ class shipWeapons {
 
 		shipProperties::updateUsedCargo ( $shipProperties );
 
-		$cargoPanel->render($shipProperties);
-
 		shipCargo::management ( $userID );
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 		announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'weaponSold' ) . $tPrice . '$' );
 	}
@@ -681,7 +699,7 @@ class shipWeapons {
 	 */
 	static public function sReload($shipWeaponID) {
 
-		global $shipProperties, $error, $shipWeapons, $shipPosition, $portProperties, $userStats, $shortShipStatsPanel, $shortUserStatsPanel, $weaponsPanel;
+		global $shipProperties, $error, $shipWeapons, $shipPosition, $portProperties, $userStats;
 
 		$tData = $shipWeapons->getSingle ( $shipWeaponID );
 
@@ -723,8 +741,6 @@ class shipWeapons {
 			$portProperties->Cash += $tReloadPrice;
 
 			announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'weaponReloadedFor' ) . $tReloadPrice . '$' );
-			$weaponsPanel->render ();
-			shipStatsPanel::getInstance()->render ();
 			shipWeaponsRegistry::sRender ();
 		}
 
@@ -737,7 +753,7 @@ class shipWeapons {
 	 */
 	static public function sRepair($shipWeaponID) {
 
-		global $shipProperties, $error, $shipWeapons, $shipPosition, $portProperties, $userStats, $shortShipStatsPanel, $shortUserStatsPanel, $weaponsPanel;
+		global $shipProperties, $error, $shipWeapons, $shipPosition, $portProperties, $userStats;
 
 		$tData = $shipWeapons->getSingle ( $shipWeaponID );
 
@@ -762,8 +778,6 @@ class shipWeapons {
 			$portProperties->Cash += $tRepairPrice;
 
 			announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'weaponRepairedFor' ) . $tRepairPrice . '$' );
-			$weaponsPanel->render ();
-			shipStatsPanel::getInstance()->render ();
 			shipWeaponsRegistry::sRender ();
 		}
 
@@ -776,7 +790,7 @@ class shipWeapons {
 	 */
 	static public function sBuy($weaponID) {
 
-		global $userID, $action, $shortUserStatsPanel, $userStats, $weaponsPanel, $shortShipStatsPanel, $shipProperties, $shipPosition, $portProperties, $shipWeapons, $error;
+		global $userID, $action, $userStats, $shipProperties, $shipPosition, $portProperties, $shipWeapons, $error;
 
 		static::sUpdateCount ( $shipProperties, $userID );
 
@@ -812,10 +826,8 @@ class shipWeapons {
 		$portProperties->Cash += $tWeapon->Price;
 
 		announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'weaponBought' ) . $tWeapon->Price . '$' );
-		$weaponsPanel->render ();
 		$action = "portHangar";
 		$shipWeapons->computeOffensiveRating ( $shipProperties );
-		shipStatsPanel::getInstance()->render ();
 	}
 
 }

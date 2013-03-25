@@ -39,7 +39,7 @@ class systemRouting {
 	 */
 	public function next($current) {
 
-		$retVal = null;
+		$retVal = new \stdClass();
 
 		if ($this->routeTable == null)
 		return false;
@@ -62,7 +62,6 @@ class systemRouting {
 		/*
 		 * Pobierz pierwszą wartość:
 		 */
-
 		$tClass = array_pop ( $this->tArray );
 
 		$retVal->X = $tClass->X;

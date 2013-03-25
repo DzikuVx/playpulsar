@@ -9,8 +9,12 @@
  * changes. http://yourdomain/min/builder/
  **/
 
-return array(
-    // 'js' => array('//js/file1.js', '//js/file2.js'),
+require_once dirname(__FILE__).'/../common/Namespaces/General/Minify.php';
+
+return \General\Minify::getInstance()->getGroups();
+
+// return array(
+//     'js' => array('//pulsar_public/gameplay/js/index.js')
     // 'css' => array('//css/file1.css', '//css/file2.css'),
 
     // custom source example
@@ -31,4 +35,4 @@ return array(
             'minifier' => array('Minify_Packer', 'minify')
         ))
     ),//*/
-);
+// );

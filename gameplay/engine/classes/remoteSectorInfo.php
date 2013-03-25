@@ -5,16 +5,52 @@
  * @version $Rev: 460 $
  * @package Engine
  */
-class remoteSectorInfo extends sectorPanel {
+use General\Controls;
+
+class remoteSectorInfo extends \Gameplay\Panel\Sector {
 	protected $panelTag = "remoteSectorInfo";
 	protected $renderCloser = true;
 
+	static private $instance = null;
+	
+	/**
+	 * @throws \Exception
+	 * @return \Gameplay\Panel\ShortStats
+	 */
+	static public function getInstance() {
+	
+		if (empty(self::$instance)) {
+			throw new \Exception('Panel not initialized');
+		}
+		else {
+			return self::$instance;
+		}
+	
+	}
+	
+	/**
+	 * 
+	 * @param string $language
+	 * @param int $localUserID
+	 */
+	static public function initiateInstance($language = 'pl', $localUserID = null) {
+		self::$instance = new self($language, $localUserID);
+	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see Gameplay\Panel.Sector::render()
+	 */
 	public function render($sectorProperties, $systemProperties, $shipPosition = null) {
 
 		global $userProperties;
 
 		parent::render ( $sectorProperties, $systemProperties, $shipPosition );
 
+		$this->retVal = '<button onclick="$(this).parent().hide();" class="close" title="{T:close}"><i class="icon-white icon-remove"></i></button>'.$this->retVal;
+		
+		$this->retVal .= '<div style="clear: both;"></div>';
+		
 		$item = new portProperties ( );
 		$portProperties = $item->load ( $shipPosition, true, true );
 		unset($item);
@@ -26,12 +62,14 @@ class remoteSectorInfo extends sectorPanel {
 
 		if ($portProperties->PortID != null || ! empty ( $jumpNode )) {
 
+			$shipProperties = new stdClass();
 			$shipProperties->RookieTurns = 1;
 
-			$item = new portInfoPanel ( );
+			\Gameplay\Panel\Port::initiateInstance($userProperties->Language);
+			$item = \Gameplay\Panel\Port::getInstance();
 			$item->render ( $shipPosition, $portProperties, $shipProperties, $jumpNode );
 			$this->retVal .= $item->getRetVal ();
-
+			$this->retVal .= '<div style="clear: both;"></div>';
 			if (!empty($portProperties->PortID)) {
 					
 				//Sprzedaż portu
@@ -114,7 +152,7 @@ class remoteSectorInfo extends sectorPanel {
 		}
 
 		$this->retVal .= "<div style='margin-top: 4px; text-align: center;'>";
-		$this->retVal .= "<input onclick=\"systemMap.plot('{$shipPosition->System}', '{$shipPosition->X}', '{$shipPosition->Y}')\" type=\"button\" class=\"smallButton\" value=\"" . TranslateController::getDefault()->get ( 'setNavPoint' ) . "\" />";
+		$this->retVal .= Controls::bootstrapButton(TranslateController::getDefault()->get ( 'setNavPoint' ),"systemMap.plot('{$shipPosition->System}', '{$shipPosition->X}', '{$shipPosition->Y}')",'btn-mini','icon-forward');
 		$this->retVal .= "</div>";
 
 		return true;

@@ -15,7 +15,7 @@ $portPanel .= "<h3>" . TranslateController::getDefault()->get ( 'shipValue' ) . 
 $nameField = "Name" . strtoupper ( $userProperties->Language );
 
 $portPanel .= "<h2>" . TranslateController::getDefault()->get ( 'ships' ) . "</h2>";
-$portPanel .= "<table class=\"transactionList\" cellspacing=\"2\" cellpadding=\"0\">";
+$portPanel .= "<table class='table table-striped table-condensed'>";
 
 $portPanel .= "<tr>";
 $portPanel .= "<th>" . TranslateController::getDefault()->get ( 'name' ) . "</th>";

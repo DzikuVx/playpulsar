@@ -320,7 +320,7 @@ class Controls {
 		$retVal .= "<div class=\"errorTitle\">Błąd</div>";
 		$retVal .= "<div class=\"errorText\">{$dialogText}</div>";
 		if ($returnLink != null) {
-			$retVal .= "<div style=\"text-align: center; margin-top: 1em;\">" . self::sStandardButton ( "Zamknij", $returnLink ) . "</div>";
+			$retVal .= "<div style=\"text-align: center; margin-top: 1em;\">" . self::bootstrapButton ( "{T:Zamknij}", $returnLink ) . "</div>";
 		}
 		$retVal .= "</div>";
 		$retVal .= "</center>";
@@ -345,7 +345,7 @@ class Controls {
 		$retVal .= "<h1>{$dialogTitle}</h1>";
 		$retVal .= "<h2>{$dialogText}</h2>";
 		if ($returnLink != null) {
-			$retVal .= "<div style=\"text-align: center; margin-top: 1em;\">" . self::sStandardButton( Translate::getDefault()->get('continue'), $returnLink) . "</div>";
+			$retVal .= "<div style=\"text-align: center; margin-top: 1em;\">" . self::bootstrapButton( '{T:continue}', $returnLink) . "</div>";
 		}
 		$retVal .= "</div>";
 
@@ -366,17 +366,17 @@ class Controls {
 	 * @return string
 	 */
 	static function sRenderDialog($dialogTitle, $dialogText, $yesLink = null, $noLink = null) {
-
+//@todo przerobić na dialog z bootstrapa
 		$retVal = '';
 		$retVal .= "<div class='confirmBox panel' centerable='true'>";
 		$retVal .= "<h1>{$dialogTitle}</h1>";
 		$retVal .= "<h2>{$dialogText}</h2>";
 		$retVal .= "<div style=\"text-align: center; margin-top: 1em;\">";
 		if ($yesLink != null) {
-			$retVal .= self::sStandardButton ( Translate::getDefault()->get ( 'yes' ), $yesLink, 'closeButton greenButton');
+			$retVal .= self::bootstrapButton ( '{T:yes}', $yesLink, 'btn-success', 'icon-ok');
 		}
 		if ($noLink != null) {
-			$retVal .= self::sStandardButton ( Translate::getDefault()->get ( 'no' ), $noLink, 'closeButton redButton');
+			$retVal .= self::bootstrapButton ( '{T:no}', $noLink, 'btn-danger', 'icon-remove');
 		}
 		$retVal .= "</div>";
 		$retVal .= "</div>";
@@ -388,57 +388,8 @@ class Controls {
 		return $retVal;
 	}
 
-
-
 	/**
 	 *
-	 * Przycisk zgodny z jQuery UI
-	 * @param string $text Napis
-	 * @param string $onclick Zdarzenie onclick
-	 * @param string $icon Nazwa ikony
-	 * @param boolean $ajaxParser
-	 * @return string
-	 * @since 2010-08-07
-	 * @deprecated
-	 */
-	static public function sUiButton($text = '', $onclick = null, $icon = null, $ajaxParser = false, $style = null) {
-		$retVal = '';
-
-		if (empty($text)) {
-			$text = '';
-		}
-
-		if (!empty($icon)) {
-			$icon = ' iconName="'.$icon.'" ';
-		}else {
-			$icon = '';
-		}
-
-		if (!empty($onclick)) {
-			$onclick = ' onclick="'.$onclick.'" ';
-		}else {
-			$onclick = '';
-		}
-
-		if (!empty($ajaxParser)) {
-			$ajaxParser = ' ajaxParse="true" ';
-		}else {
-			$ajaxParser = '';
-		}
-
-		if (!empty($style)) {
-			$style = " style='{$style}' ";
-		}else {
-			$style = '';
-		}
-
-		$retVal = "<button {$onclick} {$icon} {$ajaxParser} {$style} title='{$text}'>".$text."</button>";
-
-		return $retVal;
-	}
-
-	/**
-	 * 
 	 * Render basic button with Twitter Bootstrap
 	 * @param string $text
 	 * @param string $onclick
@@ -503,7 +454,7 @@ class Controls {
 			$icon = '';
 		}
 
-	if (!empty($onclick)) {
+		if (!empty($onclick)) {
 			$onclick = ' onclick="'.str_replace('\\', '\\\\', $onclick).'" ';
 		}else {
 			$onclick = '';
@@ -554,12 +505,12 @@ class Controls {
 
 			$retVal .= ',buttons: {';
 			$retVal .= $okText.': function() {
-		'.$okFunction.'
+			'.$okFunction.'
 		}';
 			if (!empty($onCancel)) {
 				$retVal .= ','.$cancelText.': function() {
-		'.$calcelFunction.'
-		}';
+				'.$calcelFunction.'
+			}';
 			}
 			$retVal .= '}';
 		}
@@ -600,31 +551,6 @@ class Controls {
 	}
 
 	/**
-	 * @deprecated
-	 */
-	static public function sStandardButton($name, $onclick, $class = 'closeButton') {
-		return self::renderButton($name, $onclick, null, $class);
-	}
-
-	/**
-	* @deprecated
-	*/
-	static function renderSubmitButton($name, $style = null, $class = null) {
-
-		if ($style != null) {
-			$style = "style=\"" . $style . "\"";
-		} else {
-			$style = "";
-		}
-
-		if ($class == null) {
-			$class = "formButton";
-		}
-
-		return "<input $style class=\"$class\" type=\"submit\" value=\"$name\" />";
-	}
-
-	/**
 		* Funkcja renderująca przycisk typu IMG
 		* @param $type - typ przycisku: info/edit/delete/... etc.
 		* @param $onclick - zdarzenie onclick
@@ -642,31 +568,47 @@ class Controls {
 				break;
 
 			case "reload" :
-				$imgAddr = "gfx/ui_icons/small/reload.png";
+				return self::bootstrapIconButton($name, $onclick,'btn-success btn-mini','icon-repeat');
 				break;
 
 			case "sell" :
-				$imgAddr = "gfx/ui_icons/small/sell.png";
+				return self::bootstrapIconButton($name, $onclick,'btn-mini btn-warning','icon-briefcase');
 				break;
 
 			case "buy" :
-				$imgAddr = "gfx/ui_icons/small/buy.png";
+				return self::bootstrapIconButton($name, $onclick,'btn-success btn-mini','icon-shopping-cart');
 				break;
 
 			case "repair" :
-				$imgAddr = "gfx/ui_icons/small/repair.png";
+				return self::bootstrapIconButton($name, $onclick,'btn-success btn-mini','icon-wrench');
 				break;
 
 			case "info" :
-				$imgAddr = "gfx/ui_icons/small/info.png";
+				return self::bootstrapIconButton($name, $onclick,'btn-info btn-mini','icon-exclamation-sign');
 				break;
 
+			case "off" :
+				return self::bootstrapIconButton($name, $onclick,'btn-mini','icon-off');
+				break;
+				
+			case "on" :
+				return self::bootstrapIconButton($name, $onclick,'btn-mini','icon-star-empty');
+				break;
+				
 			case "add" :
-				$imgAddr = 'gfx/ui_icons/small/add.png';
+				return self::bootstrapIconButton($name, $onclick,'btn-success btn-mini','icon-plus');
 				break;
 
 			case "remove" :
-				$imgAddr = 'gfx/ui_icons/small/remove.png';
+				return self::bootstrapIconButton($name, $onclick,'btn-danger btn-mini','icon-minus');
+				break;
+				
+			case "jettison" :
+				return self::bootstrapIconButton($name, $onclick,'btn-warning btn-mini','icon-trash');
+				break;
+				
+			case "jettisonAll" :
+				return self::bootstrapIconButton($name, $onclick,'btn-danger btn-mini','icon-trash');
 				break;
 
 			case "gather" :
@@ -686,7 +628,7 @@ class Controls {
 				break;
 
 			case 'delete' :
-				$imgAddr = 'gfx/ui_icons/small/trash.png';
+				return self::bootstrapIconButton($name, $onclick,'btn-danger btn-mini','icon-trash');
 				break;
 
 			case 'deleteall' :
@@ -702,35 +644,35 @@ class Controls {
 				break;
 
 			case "yes" :
-				$imgAddr = "gfx/ui_icons/small/yes.png";
+				return self::bootstrapIconButton($name, $onclick,'btn-mini btn-success','icon-ok');
 				break;
 
 			case 'no' :
-				$imgAddr = "gfx/ui_icons/small/no.png";
+				return self::bootstrapIconButton($name, $onclick,'btn-mini btn-danger','icon-remove');
 				break;
 
 			case 'up' :
-				$imgAddr = 'gfx/ui_icons/small/up.png';
+				return self::bootstrapIconButton($name, $onclick,'btn-mini','icon-chevron-up');
 				break;
 
 			case 'down' :
-				$imgAddr = 'gfx/ui_icons/small/down.png';
+				return self::bootstrapIconButton($name, $onclick,'btn-mini','icon-chevron-down');
 				break;
 
 			case 'left' :
-				$imgAddr = 'gfx/left.gif';
+				return self::bootstrapIconButton($name, $onclick,'btn-mini','icon-chevron-left');
 				break;
 
 			case 'leftFar' :
-				$imgAddr = 'gfx/left_far.gif';
+				return self::bootstrapIconButton($name, $onclick,'btn-mini','icon-backward');
 				break;
 
 			case 'right' :
-				$imgAddr = 'gfx/right.gif';
+				return self::bootstrapIconButton($name, $onclick,'btn-mini','icon-chevron-right');
 				break;
 
 			case "rightFar" :
-				$imgAddr = "gfx/right_far.gif";
+				return self::bootstrapIconButton($name, $onclick,'btn-mini','icon-forward');
 				break;
 
 			case "popupOpen" :
@@ -755,7 +697,7 @@ class Controls {
 
 			default:
 				$imgAddr ='gfx/'.$type.'.png';
-			break;
+				break;
 
 		}
 

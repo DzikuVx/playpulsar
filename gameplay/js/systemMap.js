@@ -19,15 +19,10 @@ function systemMapClass() {
 
 		$.post('engine/ajax/systemMap.php', sendXML, function(data) {
 
-			$('#systemMap').css('top', 10 + 'px');
-			$('#systemMap').css('height', $(window).height() - 30 + 'px');
-			$('#systemMap').css('left', 10 + 'px');
-			$('#systemMap').css('width', $(window).width() - 30 + 'px');
-
 			$('#systemMapContent').html(parseXmlValue(data, 'content'));
 
-			$("#mainGameplay").slideUp("fast");
-			$("#systemMap").slideDown("fast");
+			$("#mainGameplay").hide();
+			$("#systemMap").show();
 		});
 	};
 
@@ -36,8 +31,8 @@ function systemMapClass() {
 	 */
 	this.hide = function() {
 		panel.hide('remoteSectorInfo');
-		$("#mainGameplay").slideDown("fast");
-		$("#systemMap").slideUp("fast");
+		$("#mainGameplay").show();
+		$("#systemMap").hide();
 	};
 
 	/**

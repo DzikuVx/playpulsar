@@ -26,7 +26,6 @@ class portProperties extends baseItem {
 
 	/**
 	 * Panel portu
-	 *
 	 * @param int $userID
 	 * @param stdClass $shipPosition
 	 * @param stdClass $portProperties
@@ -49,79 +48,63 @@ class portProperties extends baseItem {
 
 			case "station" :
 				if ($action == "portHangar") {
-					$fix = "Current";
+					$fix = "btn-inverse";
 				} else {
 					$fix = "";
 				}
-
-				$portPanel .= "<div onclick=\"executeAction('portHangar',null,null,null,null);\" class=\"portMenuButton" . $fix . "\">" . TranslateController::getDefault()->get ( 'hangar' ) . "</div>";
+				$portPanel .= \General\Controls::bootstrapButton('{T:hangar}',"executeAction('portHangar',null,null,null,null);", $fix);
+				
 				if ($action == "portMarketplace") {
-					$fix = "Current";
+					$fix = "btn-inverse";
 				} else {
 					$fix = "";
 				}
-
-				$portPanel .= "<div onclick=\"executeAction('portMarketplace',null,null,null,null);\" class=\"portMenuButton" . $fix . "\">" . TranslateController::getDefault()->get ( 'marketplace' ) . "</div>";
+				$portPanel .= \General\Controls::bootstrapButton('{T:marketplace}',"executeAction('portMarketplace',null,null,null,null);", $fix);
+				
 				if ($action == "portShipyard") {
-					$fix = "Current";
+					$fix = "btn-inverse";
 				} else {
 					$fix = "";
 				}
-
-				$portPanel .= "<div onclick=\"executeAction('portShipyard',null,null,null,null);\" class=\"portMenuButton" . $fix . "\">" . TranslateController::getDefault()->get ( 'shipyard' ) . "</div>";
+				$portPanel .= \General\Controls::bootstrapButton('{T:shipyard}' ,"executeAction('portShipyard',null,null,null,null);", $fix);
 
 				if ($action == "portBank") {
-					$fix = "Current";
+					$fix = "btn-inverse";
 				} else {
 					$fix = "";
 				}
-				$portPanel .= "<div onclick=\"executeAction('portBank',null,null,null,null);\" class=\"portMenuButton" . $fix . "\">" . TranslateController::getDefault()->get ( 'Bank' ) . "</div>";
-
-				//				if ($action == "portBar") {
-				//					$fix = "Current";
-				//				} else {
-				//					$fix = "";
-				//				}
-				//				$portPanel .= "<div onclick=\"executeAction('portBar',null,null,null,null);\" class=\"portMenuButton" . $fix . "\">" . TranslateController::getDefault()->get ( 'bar' ) . "</div>";
-				//
+				$portPanel .= \General\Controls::bootstrapButton('{T:Bank}',"executeAction('portBank',null,null,null,null);", $fix);
 
 				if ($action == "portStorehouse") {
-					$fix = "Current";
+					$fix = "btn-inverse";
 				} else {
 					$fix = "";
 				}
-				$portPanel .= "<div onclick=\"executeAction('portStorehouse',null,null,null,null);\" class=\"portMenuButton" . $fix . "\">" . TranslateController::getDefault()->get ( 'storehouse' ) . "</div>";
+				$portPanel .= \General\Controls::bootstrapButton('{T:storehouse}',"executeAction('portStorehouse',null,null,null,null);", $fix);
 				break;
 					
 			case "port" :
 				if ($action == "portHangar") {
-					$fix = "Current";
+					$fix = "btn-inverse";
 				} else {
 					$fix = "";
 				}
-				$portPanel .= "<div onclick=\"executeAction('portHangar',null,null,null,null);\" class=\"portMenuButton" . $fix . "\">" . TranslateController::getDefault()->get ( 'hangar' ) . "</div>";
+				$portPanel .= \General\Controls::bootstrapButton('{T:hangar}',"executeAction('portHangar',null,null,null,null);", $fix);
 
 				if ($action == "portMarketplace") {
-					$fix = "Current";
+					$fix = "btn-inverse";
 				} else {
 					$fix = "";
 				}
-				$portPanel .= "<div onclick=\"executeAction('portMarketplace',null,null,null,null);\" class=\"portMenuButton" . $fix . "\">" . TranslateController::getDefault()->get ( 'marketplace' ) . "</div>";
-
-				//				if ($action == "portBar") {
-				//					$fix = "Current";
-				//				} else {
-				//					$fix = "";
-				//				}
-				//				$portPanel .= "<div onclick=\"executeAction('portBar',null,null,null,null);\" class=\"portMenuButton" . $fix . "\">" . TranslateController::getDefault()->get ( 'bar' ) . "</div>";
+				$portPanel .= \General\Controls::bootstrapButton('{T:marketplace}',"executeAction('portMarketplace',null,null,null,null);", $fix);
 
 				if ($action == "portStorehouse") {
-					$fix = "Current";
+					$fix = "btn-inverse";
 				} else {
 					$fix = "";
 				}
 
-				$portPanel .= "<div onclick=\"executeAction('portStorehouse',null,null,null,null);\" class=\"portMenuButton" . $fix . "\">" . TranslateController::getDefault()->get ( 'storehouse' ) . "</div>";
+				$portPanel .= \General\Controls::bootstrapButton('{T:storehouse}',"executeAction('portStorehouse',null,null,null,null);", $fix);
 				break;
 		}
 

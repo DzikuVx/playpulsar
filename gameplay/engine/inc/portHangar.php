@@ -22,7 +22,7 @@ if ($portProperties->Type == 'station') {
 	$nameField = "Name" . strtoupper ( $userProperties->Language );
 
 	$portPanel .= "<h2>" . TranslateController::getDefault()->get ( 'weapons' ) . "</h2>";
-	$portPanel .= "<table class=\"transactionList\" cellspacing=\"2\" cellpadding=\"0\">";
+	$portPanel .= "<table class='table table-striped table-condensed'>";
 
 	$portPanel .= "<tr>";
 	$portPanel .= "<th>" . TranslateController::getDefault()->get ( 'name' ) . "</th>";
@@ -69,7 +69,7 @@ if ($portProperties->Type == 'station') {
 	$portPanel .= "</table>";
 
 	$portPanel .= "<h2>" . TranslateController::getDefault()->get ( 'equipment' ) . "</h2>";
-	$portPanel .= "<table class=\"transactionList\" cellspacing=\"2\" cellpadding=\"0\">";
+	$portPanel .= "<table class='table table-striped table-condensed'>";
 
 	$portPanel .= "<tr>";
 	$portPanel .= "<th>" . TranslateController::getDefault()->get ( 'name' ) . "</th>";

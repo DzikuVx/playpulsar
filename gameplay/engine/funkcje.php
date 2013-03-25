@@ -46,54 +46,55 @@ function shipExamine($id, $userID) {
 		$avatar = "avatars/unknown.jpg";
 	}
 
-	sectorResourcePanel::getInstance()->hide ();
-	sectorShipsPanel::getInstance()->hide ();
+	\Gameplay\Panel\SectorResources::getInstance()->hide ();
+	\Gameplay\Panel\SectorShips::getInstance()->hide ();
 
-	$actionPanel = "<div align=\"center\">";
+	$actionPanel = "";
+	$actionPanel .= \General\Controls::bootstrapIconButton('{T:close}',"executeAction('shipRefresh',null,null,null,null)",'pull-right close','icon-remove');
+	$actionPanel .= "<div>";
+	$actionPanel .= "<table class='table table-striped'>";
+	$actionPanel .= "<tr><th>{T:playername}</th><td>" . $otheruserParameters->Name . "</td>";
+	$actionPanel .= "<td rowspan='3' colspan='2' class='center'><img src=\"" . $avatar . "\" class='avatar' style='width: 100px; height: 100px;' /></td></tr>";
+	$actionPanel .= "<tr><th>{T:playerid}</th><td> " . $id . "</td></tr>";
+	$actionPanel .= "<tr><th>{T:specialization}</th><td>" . $othershipParameters->SpecializationName . "</td></tr>";
+	$actionPanel .= "<tr><th>{T:alliance}</th><td>" . $othershipAlliance->Name . "</td>";
+	$actionPanel .= "<th>{T:lastaction}</th><td>" . date ( "Y-m-d H:i", $otheruserTimes->LastAction ) . "</td></tr>";
+	$actionPanel .= "<tr><th>{T:experiencefull}</th><td>" . $otheruserStats->Experience . "</td>";
+	$actionPanel .= "<th>{T:level}</th><td>" . $otheruserStats->Level . "</td></tr>";
+	$actionPanel .= "<tr><th>{T:kills}</th><td>" . $otheruserStats->Kills . "</td>";
+	$actionPanel .= "<th>{T:deaths}</th><td>" . $otheruserStats->Deaths . "</td></tr>";
+	// 	$actionPanel .= "<tr><th>{T:pirates}</th><td>" . $otheruserStats->Pirates . "</td>";
+	// 	$actionPanel .= "<th>{T:raids}</th><td>" . $otheruserStats->Raids . "</td></tr>";
+	$actionPanel .= "</table>";
+
 	if ($otheruserParameters->Type == 'player' && $id != $userID) {
-		$actionPanel .= '<div class="panel" style="width: 150px; float: right; text-align: center;">';
-		$actionPanel .= General\Controls::renderButton ( TranslateController::getDefault()->get ( 'sendMessage' ), "executeAction('sendMessage',null,null,'{$id}',null);", "width: 140px; margin: 2px;" );
+
+		$actionPanel .= \General\Controls::bootstrapButton('{T:sendMessage}',"executeAction('sendMessage',null,null,'{$id}');",null,'icon-white icon-envelope');
 
 		if (!buddyList::sCheckEntry($userID, $id)) {
-			$actionPanel .= General\Controls::renderButton ( TranslateController::getDefault()->get ( 'Send buddy request' ), "executeAction('addToFiends',null,null,'{$id}',null);", "width: 140px; margin: 2px;" );
+			$actionPanel .= \General\Controls::bootstrapButton('{T:Send buddy request}',"executeAction('addToFiends',null,null,'{$id}',null);",null,'icon-white icon-heart');
 		}
 
-		$actionPanel .= General\Controls::renderButton ( TranslateController::getDefault()->get ( 'Report abusement' ), "executeAction('reportAbusement',null,null,'{$id}',null);", "width: 140px; margin: 2px;" );
+		$actionPanel .= \General\Controls::bootstrapButton('{T:Report abusement}',"executeAction('reportAbusement',null,null,'{$id}',null);",null,'icon-white icon-flag');
 
-		$actionPanel .= "</div>";
-	}elseif ($id == $userID) {
-		$actionPanel .= '<div class="panel" style="width: 150px; float: right; text-align: center;">';
-		$actionPanel .= General\Controls::renderButton ( TranslateController::getDefault()->get ( 'Account settings' ), "executeAction('accountSettings',null,null,null,null);", "width: 140px; margin: 2px;" );
+	}
+	elseif ($id == $userID) {
+		$actionPanel .= \General\Controls::bootstrapButton('{T:Account settings}',"executeAction('accountSettings',null,null,null,null);",null,'icon-white icon-edit');
 
 		if ($othershipParameters->RookieTurns > 0) {
-			$actionPanel .= General\Controls::renderButton ( TranslateController::getDefault()->get ( 'Drop rookie turns' ), "executeAction('dropRookie',null,null,null,null);", "width: 140px; margin: 2px;" );
+			$actionPanel .= \General\Controls::bootstrapButton('{T:Drop rookie turns}',"executeAction('dropRookie',null,null,null,null);",null,'icon-white icon-remove');
 		}
 
 		//@todo Reset konta
-		$actionPanel .= "</div>";
 	}
-	$actionPanel .= "<div class=\"panel infoLine\">";
-	$actionPanel .= "<div class=\"avatar\"><img src=\"" . $avatar . "\" class=\"avatar\" style='width: 100px; height: 100px;' /></div>";
-	$actionPanel .= "<div><b>" . TranslateController::getDefault()->get ( 'playername' ) . ": </b> " . $otheruserParameters->Name . "</div>";
-	$actionPanel .= "<div><b>" . TranslateController::getDefault()->get ( 'playerid' ) . ": </b> " . $id . "</div>";
-	$actionPanel .= "<div><b>" . TranslateController::getDefault()->get ( 'specialization' ) . ": </b> " . $othershipParameters->SpecializationName . "</div>";
-	$actionPanel .= "<div><b>" . TranslateController::getDefault()->get ( 'alliance' ) . ": </b> " . $othershipAlliance->Name . "</div>";
-	$actionPanel .= "<div><b>" . TranslateController::getDefault()->get ( 'lastaction' ) . ": </b> " . date ( "Y-m-d H:i", $otheruserTimes->LastAction ) . "</div>";
-	$actionPanel .= "<div><b>" . TranslateController::getDefault()->get ( 'experiencefull' ) . ": </b> " . $otheruserStats->Experience . "</div>";
-	$actionPanel .= "<div><b>" . TranslateController::getDefault()->get ( 'level' ) . ": </b> " . $otheruserStats->Level . "</div>";
-	$actionPanel .= "<div><b>" . TranslateController::getDefault()->get ( 'kills' ) . ": </b> " . $otheruserStats->Kills . "</div>";
-	$actionPanel .= "<div><b>" . TranslateController::getDefault()->get ( 'pirates' ) . ": </b> " . $otheruserStats->Pirates . "</div>";
-	$actionPanel .= "<div><b>" . TranslateController::getDefault()->get ( 'raids' ) . ": </b> " . $otheruserStats->Raids . "</div>";
-	$actionPanel .= "<div><b>" . TranslateController::getDefault()->get ( 'deaths' ) . ": </b> " . $otheruserStats->Deaths . "</div>";
-	$actionPanel .= "</div>";
-	$actionPanel .= "<div class=\"closeButton\" onClick=\"executeAction('shipRefresh',null,null,null,null);\">" . TranslateController::getDefault()->get ( 'close' ) . "</div>";
+
 	$actionPanel .= "</div>";
 }
 
 function writeDebug($text) {
 
 	global $debug;
-	$debug .= $text . "<br />";
+	$debug .= "<span style='margin-right: 1em;'>".$text."</span>";
 }
 
 function getParameterColor($current, $max) {
@@ -109,11 +110,11 @@ function getParameterColor($current, $max) {
 	$temp = $current / $max;
 
 	if ($temp > 0.66)
-	$out .= $colorTable ['green'];
+		$out .= $colorTable ['green'];
 	if (($temp <= 0.66) and ($temp >= 0.33))
-	$out .= $colorTable ['yellow'];
+		$out .= $colorTable ['yellow'];
 	if ($temp < 0.33)
-	$out .= $colorTable ['red'];
+		$out .= $colorTable ['red'];
 
 	$out .= ";\"";
 	return $out;

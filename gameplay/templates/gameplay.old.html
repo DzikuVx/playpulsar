@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pl" xml:lang="pl">
+<head>
+<title>{pageTitle}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="{cdnUrl}common/bootstrap_slate/css/bootstrap.min.css"
+	rel="stylesheet" />
+<link rel="stylesheet" type="text/css"
+	href="{cdnUrl}common/css/dark-hive/jquery-ui-1.8.5.custom.css" />
+<link rel="stylesheet" type="text/css" href="{cdnUrl}css/gameplay.css" />
+<link rel="shortcut icon" href="favicon.ico" />
+<script type="text/javascript" src="{cdnUrl}js/chatClass.js"></script>
+<script type="text/javascript" src="{cdnUrl}js/panelClasses.js"></script>
+<script type="text/javascript" src="{cdnUrl}js/gameplay.js"></script>
+<script type="text/javascript" src="{cdnUrl}js/systemMap.js"></script>
+<script type="text/javascript" src="{cdnUrl}common/js/mask.js"></script>
+<script type="text/javascript"
+	src="{cdnUrl}common/js/jquery.1.7.1.min.js"></script>
+<script type="text/javascript"
+	src="{cdnUrl}common/js/jquery-ui-1.8.4.custom.min.js"></script>
+<script type="text/javascript"
+	src="{cdnUrl}common/js/jquery.knob-1.1.2.js"></script>
+<script type="text/javascript" src="{cdnUrl}common/js/progress-wait.js"></script>
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		$(document).mousemove(function(e) {
+			mouseX = e.pageX;
+			mouseY = e.pageY;
+		});
+		executeAction('pageReload');
+		globalChat.get();
+	})
+</script>
+</head>
+<body>
+	<div class="hiddenDiv" id="userID">{sessionUserID}</div>
+	<div class="hiddenDiv" id="authCode">0</div>
+
+	<div class="navbar navbar-fixed-top">
+
+		<div class="navbar-inner">
+
+			<div class="container">
+
+				<div class="nav-collapse">
+					<ul class="nav">
+						<li id="iconPanel"></li>
+					</ul>
+				</div>
+
+				<div class="nav-collapse pull-right">
+					<ul class="nav">
+						<li><a href="#"
+							onclick="executeAction('examineMe',null,null,null,null)">{T:My
+								profile}</a></li>
+						<li class="dropdown"><a class="dropdown-toggle"
+							data-toggle="dropdown" href="#">{T:Links}<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="#"
+									onclick="executeAction('showOnlinePlayers',null, null, null);">{T:onlinePlayers}</a></li>
+								<li><a href="#"
+									onclick="executeAction('showMessages',null, null, null);">{T:messages}</a></li>
+								<li><a href="#"
+									onclick="executeAction('topPlayersShow','Experience', null, null);">{T:topPlayers}</a></li>
+								<li><a href="#"
+									onclick="executeAction('allianceDetail',null, null, '{$userAlliance->AllianceID}');">{T:myAlliance}</a></li>
+								<li><a href="#"
+									onclick="executeAction('showAlliances',null, null, null);">{T:alliances}</a></li>
+								<li><a href="#"
+									onclick="executeAction('showBuddy',null, null, null);">{T:Buddy
+										List}</a></li>
+								<li class="divider"></li>
+								<li><a href="{T:helpFiles}" target='_blank'>{T:Help}</a></li>
+								<li><a href='http://board.playpulsar.com' target='_blank'>{T:Forum}</a></li>
+
+							</ul></li>
+						<li><a href="logout.php">{T:Logout}</a></li>
+					</ul>
+				</div>
+
+				<!--/.nav-collapse -->
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<div class="container">
+		<div class="row">
+			<div class="span4">
+				<div class="panel">
+					<div id="shortShipStatsPanel">&nbsp;</div>
+					<hr />
+					<div id="shortUserStatsPanel" style="margin-top: 1em;">&nbsp;</div>
+					<!-- 
+				
+				<div id="newsAgencyPanel" style="cursor: pointer;"
+					onclick="executeAction('newsAgency',null,null,null,null);">&nbsp;</div>
+				<div id="globalChatPanel">
+					<h1>{T:Chat}</h1>
+					<input type="text" onkeypress="globalChat.submitListener(event);"
+						id="globalChatInput" class="ui-state-default ui-corner-all" /><img
+						src="gfx/right2s.png" class="linkSmall"
+						onclick="globalChat.send()" />
+					<div id="globalChatPanelTxt"></div>
+				</div>
+ -->
+				</div>
+			</div>
+
+			<div class="span8">
+				<div>
+					<div class="column50">
+						<div id="navigationPanel">&nbsp;</div>
+					</div>
+					<div class="column25">
+						<div id="miniMap">&nbsp;</div>
+					</div>
+					<div class="column25">
+						<div id="movePanel">&nbsp;</div>
+					</div>
+				</div>
+				<div>
+					<div id="sectorShipsPanel"></div>
+				</div>
+				<div id="sectorResourcePanel"></div>
+				<div id="mainPanel">
+					<div id="actionPanel" style="display: none;"></div>
+					<div id="portPanel" style="display: none;"></div>
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<!--
+	
+	<div id="mainGameplay"
+		style="display: none; width: 1010px; margin: 0 auto;">
+
+		<table border="0" width="100%" cellpadding="0" cellspacing="0">
+			<tr>
+				<td class="mainTableCell" width="400"><div
+						class="panel panelSectorInfo" id="sectorPanel"
+						style="height: 108px;">&nbsp;</div></td>
+				<td class="mainTableCell">
+					<div class="panel panelOut" id="miniMap" style="height: 108px;">&nbsp;</div>
+				</td>
+				<td class="mainTableCell" width="400"><div
+						class="panel panelSectorInfo" id="portInfoPanel"
+						style="height: 108px;">&nbsp;</div></td>
+			</tr>
+		</table>
+		<table border="0" width="100%" cellpadding="0" cellspacing="0">
+			<tr>
+				<td width="200" class="mainTableCell">
+					<div class="panel panelOut" id="weaponsPanel">&nbsp;</div>
+					<div class="panel panelOut" id="cargoPanel"
+						style="cursor: pointer;"
+						onclick="executeAction('cargoManagement',null,null,null,null);">&nbsp;</div>
+					<div class="panel panelOut" id="shipStatsPanel"
+						style="cursor: pointer;"
+						onclick="executeAction('equiapmentManagement',null,null,null,null);">&nbsp;</div>
+				</td>
+				<td class="mainTableCell">
+					<div class="panel panelMiddle" id="announcementPanel">&nbsp;</div>
+					<table border="0" width="100%" cellpadding="0" cellspacing="0">
+						<tr>
+							<td width="33%">
+								<div class="panel" id="shortShipStatsPanel"
+									style="height: 120px;">&nbsp;</div>
+							</td>
+							<td width="33%">
+								<div class="panel" id="movePanel" style="height: 120px;">&nbsp;</div>
+							</td>
+							<td width="33%">
+								<div class="panel" id="navigationPanel" style="height: 120px;">&nbsp;</div>
+							</td>
+						</tr>
+					</table>
+					<div class="panel panelMiddle" id="sectorShipsPanel"></div>
+					<div class="panel panelMiddle" id="sectorResourcePanel"></div>
+					<div class="panel panelMiddle" id="mainPanel">
+						<div class="panelHidden" id="actionPanel" style="display: none;"></div>
+						<div class="panelHidden" id="portPanel" style="display: none;"></div>
+					</div> {C:debugPanel}
+					<div class="panel panelMiddle tsmall" id="debugPanel">&nbsp;</div>
+					{/C:debugPanel}</td>
+				<td width="200" class="mainTableCell">
+					<div class="panel panelOut" id="iconPanel">&nbsp;</div>
+					<div class="panel panelOut" id="shortUserStatsPanel"
+						style="cursor: pointer;"
+						onclick="executeAction('examineMe',null,null,null,null);">&nbsp;</div>
+					<div class="panel panelOut" id="linksPanel">&nbsp;</div>
+					<div class="panel panelOut" id="newsAgencyPanel"
+						style="cursor: pointer;"
+						onclick="executeAction('newsAgency',null,null,null,null);">&nbsp;</div>
+					<div class="panel panelOut" id="globalChatPanel">
+						<h1>{T:Chat}</h1>
+						<input type="text" onkeypress="globalChat.submitListener(event);"
+							id="globalChatInput" class="ui-state-default ui-corner-all" /><img
+							src="gfx/right2s.png" class="linkSmall"
+							onclick="globalChat.send()" />
+						<div id="globalChatPanelTxt"></div>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	<div id="combatScreen" class="panel">&nbsp;</div>
+
+	 -->
+</body>
+</html>

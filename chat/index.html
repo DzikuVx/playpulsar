@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Sockets.io</title>
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="http://localhost:1337/socket.io/socket.io.js"></script>
+<script>
+	//var socket = io.connect('http://playpulsar.com:1337');
+	var socket = io.connect('http://localhost:1337');
+	socket.on('chat', function(data) {
+		$('#log').html(
+				$('#log').html() + '<p>Just received: ' + data['userName'] + ': ' + data['text']
+						+ '</p>');
+	});
+
+	function MySocket() {
+
+		this.send = function() {
+
+			if ($('#sendText').val() != '') {
+				socket.emit('chat', {
+					text : $('#sendText').val(),
+					userName : $('#userName').val()
+
+				});
+				$('#sendText').val('');
+			}
+
+		};
+
+	};
+
+	var mySocket = new MySocket();
+</script>
+
+</head>
+<body>
+	<div id="log"></div>
+	<input type="text" id="sendText" />
+	<input type="text" id="userName" value="userName" />
+	<input type="button" onclick="mySocket.send();" />
+</body>
+</html>

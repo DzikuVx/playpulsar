@@ -105,8 +105,8 @@ class message extends baseItem {
 
 		global $userID, $portPanel, $actionPanel;
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 
 		$tMessage = self::quickLoad ( $messageID );
@@ -116,7 +116,7 @@ class message extends baseItem {
 		}
 
 		$actionPanel .= "<h1>" . TranslateController::getDefault()->get ( 'messageDetail' ) . "</h1>";
-		$actionPanel .= "<table class=\"transactionList\" cellspacing=\"2\" cellpadding=\"0\">";
+		$actionPanel .= "<table class=\"table table-striped table-condensed\">";
 		/**
 		 * @since 2010-07-31
 		 */
@@ -136,14 +136,14 @@ class message extends baseItem {
 
 		$actionPanel .= "</table>";
 
-		$actionPanel .= \General\Controls::sStandardButton ( TranslateController::getDefault()->get ( 'close' ), "executeAction('showMessages',null,null,null);");
+		$actionPanel .= \General\Controls::bootstrapButton ( '{T:close}', "executeAction('showMessages',null,null,null);");
 		/**
 		 * @since 2010-07-31
 		 */
 		if (!empty($tMessage->Author)) {
-			$actionPanel .= \General\Controls::sStandardButton ( TranslateController::getDefault()->get ( 'reply' ), "executeAction('sendMessage',null,null,'{$tMessage->Author}');");
+			$actionPanel .= \General\Controls::bootstrapButton ( '{T:reply}', "executeAction('sendMessage',null,null,'{$tMessage->Author}');",'btn-success');
 		}
-		$actionPanel .= \General\Controls::sStandardButton ( TranslateController::getDefault()->get ( 'delete' ), "executeAction('deleteMessage',null,null,'{$tMessage->MessageID}');");
+		$actionPanel .= \General\Controls::bootstrapButton ( '{T:delete}', "executeAction('deleteMessage',null,null,'{$tMessage->MessageID}');",'btn-danger');
 
 		$tQuery = "UPDATE messages SET Received='yes' WHERE MessageID='{$messageID}'";
 		\Database\Controller::getInstance()->execute ( $tQuery );
@@ -219,13 +219,13 @@ class message extends baseItem {
 
 		global $actionPanel, $portPanel;
 
-		sectorShipsPanel::getInstance()->hide ();
-		sectorResourcePanel::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 
 		$actionPanel .= "<h1>" . TranslateController::getDefault()->get ( 'newMessage' ) . "</h1>";
 
-		$actionPanel .= "<table class=\"transactionList\" cellspacing=\"2\" cellpadding=\"0\">";
+		$actionPanel .= "<table class=\"table table-striped table-condensed\">";
 
 		$item = new userProperties ( );
 		$otheruserParameters = $item->load ( $receiver, true, true );

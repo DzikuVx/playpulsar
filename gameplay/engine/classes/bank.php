@@ -10,7 +10,7 @@ class bank {
 	 */
 	static public function sWithdraw($value) {
 
-		global $userStats, $portProperties, $shipPosition, $action, $shipProperties, $shortUserStatsPanel;
+		global $userStats, $portProperties, $shipPosition, $action, $shipProperties;
 
 		$value = \Database\Controller::getInstance()->quote($value);
 
@@ -49,7 +49,7 @@ class bank {
 	 */
 	static public function sDeposit($value) {
 
-		global $userStats, $portProperties, $shipPosition, $action, $shortUserStatsPanel, $shipProperties;
+		global $userStats, $portProperties, $shipPosition, $action, $shipProperties;
 
 		$value = \Database\Controller::getInstance()->quote($value);
 
