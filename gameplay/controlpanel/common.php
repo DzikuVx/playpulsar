@@ -1,0 +1,46 @@
+<?php
+
+header('Content-Type: text/html; charset=utf-8');
+
+ini_set ( 'date.timezone', 'Europe/Warsaw' );
+ini_set ( 'date.default_latitude', '31.7667' );
+ini_set ( 'date.default_longitude', '35.2333' );
+ini_set ( 'date.sunrise_zenith', '90.583333' );
+ini_set ( 'date.sunset_zenith', '90.583333' );
+date_default_timezone_set ( "Europe/Warsaw" );
+
+if (empty ( $_SESSION ['cpLoggedUserID'] )) {
+	$_SESSION ['cpLoggedUserID'] = null;
+}
+if (empty ( $_SESSION ['cpLoggedUserName'] )) {
+	$_SESSION ['cpLoggedUserName'] = '';
+}
+if (! isset ( $_REQUEST ['class'] )) {
+	$_REQUEST ['class'] = '\Controlpanel\Welcome';
+}
+if (! isset ( $_REQUEST ['method'] )) {
+	$_REQUEST ['method'] = 'browse';
+}
+
+require_once '../common/Namespaces/General/Autoloader.php';
+\General\Autoloader::register();
+
+/**
+ * Rozpocznij sesję
+ */
+session_start ();
+
+require_once '../deployment.php';
+require_once '../db.ini.php';
+require_once '../config.inc.php';
+require_once 'config.inc.php';
+
+psDebug::create ();
+
+$cache = \Cache\Session::getInstance();
+
+TranslateController::setDefaultLanguage('en');
+$t = TranslateController::getDefault();
+
+$userProperties = new stdClass();
+$userProperties->Language = 'en';

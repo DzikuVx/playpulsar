@@ -1,0 +1,18 @@
+<h1>{FormName}</h1>
+<table class="transactionList" cellspacing="2" cellpadding="0">
+	<tbody>
+		<tr>
+			<th>{T:playername}</th>
+			<td>{playerName}</td>
+		</tr>
+		<tr>
+			<th>{T:allianceDescription}</th>
+			<td><textarea cols="60" rows="4" id="postText"
+				onkeyup="mask(this.value, this, 1024,'plText');"
+				onblur="mask(this.value, this, 1024,'plText');"></textarea></td>
+		</tr>
+	</tbody>
+</table>
+<center>
+<div class="closeButton" onclick="{action}">{T:dialogSave}</div>
+</center>

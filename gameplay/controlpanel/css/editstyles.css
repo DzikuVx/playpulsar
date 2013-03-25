@@ -1,0 +1,32 @@
+@CHARSET "UTF-8";
+
+/* WYMeditor */
+
+/* Obrazek nagłówka */
+.imgRight p /* p*/ {
+   float: right;
+    text-align: justify;
+    /* float: right;
+    text-align: justify; */
+}
+
+/* TEXT: Do prawej */
+.textRight p /* p*/ {
+    text-align: right;
+    /* text-align: right; */
+}
+
+/* TEXT: Do lewej */
+.textLeft p /* p*/ {
+    text-align: left;
+    /* text-align: left; */
+}
+
+/* TEXT: Centruj */
+.textLeft p /* p*/ {
+    text-align: justify;
+    /* text-align: justify; */
+}
+
+/* /WYMeditor */
+/* END EDITOR RELATED STYLES */

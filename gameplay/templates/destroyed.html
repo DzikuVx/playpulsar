@@ -1,0 +1,14 @@
+<combatScreen>
+<h1>{T:youDestroyed}</h1>
+
+<div style="text-align: center;">
+<input type="button" value="{T:close}" onclick="executeAction('pageReload',null,null,null);"  />
+</div>
+
+<div id="otherCombatReports" style="text-align: center;">
+<h1>{T:otherFireMessages}</h1>
+{otherCombatReports}
+</div>
+
+<input type="hidden" id="salvoInterval" value="{salvoInterval}" />
+</combatScreen>

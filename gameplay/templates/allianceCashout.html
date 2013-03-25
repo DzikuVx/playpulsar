@@ -1,0 +1,16 @@
+<h1>{FormName}</h1>
+<table class="transactionList" cellspacing="2" cellpadding="0">
+	<tbody>
+		<tr>
+			<th>{T:Player}</th>
+			<td>{playerName}</td>
+		</tr>
+		<tr>
+			<th>{T:amount}</th>
+			<td><input onkeyup="javascript:return maskNumber(this.value,this,0,{maxCash})" onblur="javascript:return maskNumber(this.value,this,0,{maxCash})" class='ui-corner-all ui-state-default' type="text" size="10" id="cashoutValue" value="0" />$ / {maxCash}$</td>
+		</tr>
+	</tbody>
+</table>
+<center>
+<div class="closeButton" onclick="{action}">{T:dialogSave}</div>
+</center>

@@ -1,0 +1,19 @@
+<h3>{T:chooseName}</h3>
+<form name="fbCreate" class="form-horizontal" method="post"
+	action="login.php" style="font-size: 1.2em;">
+	<fieldset>
+
+		<div class="control-group">
+			<label class="control-label" for="name">{T:name}</label>
+			<div class="controls">
+				<input type="text" size="32" class="ui-state-default ui-corner-all"
+					name="login" value="{fbName}"
+					onkeyup="javascript:return mask(this.value,this,32,7)"
+					onblur="javascript:return mask(this.value,this,32,7)" />
+				<p class="help-block">{T:(shown in the game)}</p>
+			</div>
+		</div>
+ <input	type="hidden" name="fbCreate" value="true" />
+	</fieldset>
+</form>
+<p style="font-size: 0.85em; text-decoration: italic;">{T:fbAgree}</p>

@@ -1,0 +1,61 @@
+<combatScreen>
+<div>
+<table border="0" style="width: 100%;" cellspacing="8">
+<tr>
+<td class="combatCell statsCell">
+<table border="0">
+<tr>
+<td><div><label>{T:shield}: </label>{ShieldValue}</div></td>
+<td><div><label>{T:armor}: </label>{ArmorValue}</div></td>
+</tr>
+<tr>
+<td><div><label>{T:power}: </label>{PowerValue}</div></td>
+<td><div><label>{T:emp}: </label>{EmpValue}</div></td>
+</tr>
+</table>
+</td>
+<td class="combatCell" style="text-align: right; vertical-align: middle;">
+{C:combatButtons}
+<input type="button" id="refreshButton" onclick="executeAction('refresh',null,null,null);" class="button refresh" value="{T:refresh}"  />
+<input type="button" id="maydayButton" onclick="executeAction('mayday',null,null,null);" class="button refresh" value="{T:callMayday}"  style="display: none;" />
+<input type="button" id="fireButton" value="{T:fireWeapons}" onclick="executeAction('fireWeapons',null,null,null);" class="button attack" style="display: none;" />
+<input type="button" id="disengageButton" value="{T:disengage}" onclick="executeAction('disengage',null,null,null);" class="button disengage" style="display: none;" />
+{/C:combatButtons}
+{C:closeButton}
+<input type="button" id="refreshButton" onclick="executeAction('refresh',null,null,null);" class="button refresh" value="{T:close}"  />
+{/C:closeButton}
+</td>
+</tr>
+</table>
+</div>
+
+<div>
+<table border="0" style="width: 100%;"  cellspacing="8">
+<tr>
+<td class="combatCell" rowspan="2" style="width: 240px;">
+<h1>{T:yourWeapons}</h1>
+{YourWeaponsList}
+</td>
+<td class="combatCell">
+<h1>{T:fireMessages}</h1>
+{yourCombatReports}
+</td>
+<td class="combatCell" style="width: 410px;">
+<h1>{T:opponents}</h1>
+{EnemiesList}
+</td>
+</tr>
+<tr>
+<td class="combatCell">
+<h1>{T:otherFireMessages}</h1>
+{otherCombatReports}
+</td>
+<td class="combatCell" style="width: 410px;">
+<h1>{T:otherShips}</h1>
+{OtherShipsList}
+</td>
+</tr>
+</table>
+</div>
+<input type="hidden" id="salvoInterval" value="{salvoInterval}" />
+</combatScreen>

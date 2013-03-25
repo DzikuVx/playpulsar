@@ -1,0 +1,11 @@
+@CHARSET "UTF-8";
+
+#modalOverlay {
+	background-color: #646464;
+	cursor: wait;
+}
+
+body {
+	padding-top: 60px;
+}
+

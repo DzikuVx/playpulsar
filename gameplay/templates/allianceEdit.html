@@ -1,0 +1,35 @@
+<h1>{FormName}</h1>
+<table class="transactionList" cellspacing="2" cellpadding="0">
+	<tbody>
+		<tr>
+			<th>{T:allianceSymbol}</th>
+			<td><input type="text" size="32" id="AllianceSymbol"
+				value="{AllianceSymbolValue}"
+				onkeyup="mask(this.value, this, 16,'plText');"
+				onblur="mask(this.value, this, 16,'plText');" /></td>
+		</tr>
+		<tr>
+			<th>{T:allianceName}</th>
+			<td><input type="text" size="32" id="AllianceName"
+				value="{AllianceNameValue}"
+				onkeyup="mask(this.value, this, 64,'plText');"
+				onblur="mask(this.value, this, 64,'plText');" /></td>
+		</tr>
+		<tr>
+			<th>{T:allianceDescription}</th>
+			<td><textarea cols="32" rows="4" id="AllianceDescription"
+				onkeyup="mask(this.value, this, 1024,'plText');"
+				onblur="mask(this.value, this, 1024,'plText');">{AllianceDescriptionValue}</textarea></td>
+		</tr>
+		<tr>
+			<th>{T:allianceMotto}</th>
+			<td><input type="text" size="32" id="AllianceMotto"
+				value="{AllianceMottoValue}"
+				onkeyup="mask(this.value, this, 255,'plText');"
+				onblur="mask(this.value, this, 255,'plText');" /></td>
+		</tr>
+	</tbody>
+</table>
+<center>
+<div class="closeButton" onclick="{action}">{T:dialogSave}</div>
+</center>

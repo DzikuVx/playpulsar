@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pl" xml:lang="pl">
+<head>
+<title>Pulsar Control Panel</title>
+<meta name="robots" content="index, follow" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="css/index.css" />
+<link rel="stylesheet" type="text/css"
+	href="../common/bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="../common/bootstrap/css/bootstrap-responsive.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="../common/css/smoothness/jquery-ui-1.8.5.custom.css" />
+<script type="text/javascript"
+	src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script type="text/javascript">
+	jQuery().ready(function() {
+
+	});
+</script>
+</head>
+<body>
+
+	<div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="btn btn-navbar" data-toggle="collapse"
+					data-target=".nav-collapse"> <span class="icon-bar"></span><span
+					class="icon-bar"></span> <span class="icon-bar"></span>
+				</a> <a class="brand" href="#">Pulsar Online Control Panel</a>
+				<!--/.nav-collapse -->
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row span12" style="text-align: center;">{listeners}
+		</div>
+		<div class="row">
+			<div class="span6 offset3" style="margin-top: 100px;">
+			<div class="well">
+				<form class="form-horizontal" method="post">
+					<fieldset>
+						<div class="control-group">
+							<label class="control-label" for="authorName">Login</label>
+							<div class="controls">
+								<input type="text" size="10" name="loginName" placeholder="John Doe" />
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label" for="loginPassword">Password</label>
+							<div class="controls">
+								<input type="password" name="loginPassword"
+									placeholder="********" />
+							</div>
+						</div>
+						<div style="text-align: center;">
+							<input type="hidden" name="doLogin" value="true" />
+							<button type="submit" class="btn btn-primary">Sign-in</button>
+						</div>
+					</fieldset>
+				</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="../common/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<h1>{T:newAccount}</h1>
+<form method="post" id="registerForm" class="form-horizontal" onsubmit="return false;">
+	<fieldset>
+		<div class="control-group">
+			<label class="control-label" for="login">{T:Login}</label>
+			<div class="controls">
+				<input type="text" name="login" id="login" class="input-medium"
+					onkeyup="javascript:return mask(this.value,this,30,7)"
+					onblur="javascript:return mask(this.value,this,30,7)" />
+				<p class="help-block">
+				{T:(case sensitive, not shown in the game)}</p>
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label" for="name">{T:name}</label>
+			<div class="controls">
+				<input type="text" name="name" id="name" class="input-large"
+					onkeyup="javascript:return mask(this.value,this,64,7)"
+					onblur="javascript:return mask(this.value,this,64,7)" />
+				<p class="help-block">{T:(shown in the game)}</p>
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label" for="email">{T:email}</label>
+			<div class="controls">
+				<input type="text" name="email" id="email" class="input-xlarge"
+					onkeyup="javascript:return mask(this.value,this,128,7)"
+					onblur="javascript:return mask(this.value,this,128,7)" />
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label" for="passwordA">{T:password}</label>
+			<div class="controls">
+				<input type="password" class="input-medium" name="passwordA" id="passwordA"
+					onkeyup="javascript:return mask(this.value,this,32,7)"
+					onblur="javascript:return mask(this.value,this,32,7)" />
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label" for="passwordB">{T:passwordRepeat}</label>
+			<div class="controls">
+				<input type="password" class="input-medium" name="passwordB" id="passwordB"
+					onkeyup="javascript:return mask(this.value,this,32,7)"
+					onblur="javascript:return mask(this.value,this,32,7)" />
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label" for="country">{T:country}</label>
+			<div class="controls">
+				<input type="text" name="country" id="country" class="input-medium"
+				onkeyup="javascript:return mask(this.value,this,64,7)"
+				onblur="javascript:return mask(this.value,this,64,7)" />
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label" for="language">{T:language}</label>
+			<div class="controls">
+				<select name='language' id="language"><option
+						value='pl'>Polski</option>
+					<option selected='selected' value='en'>English</option></select>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label" for="agreeement">{T:agreementAccept}</label>
+			<div class="controls">
+				<input type="checkbox" value="1" name="agreeement" id="agreeement" />
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label" for="spam">{T:spamAllow}</label>
+			<div class="controls">
+				<input type="checkbox" value="1" name="spam" id="spam" />
+			</div>
+		</div>
+
+		<input type="hidden" name="class" value="user" /> <input
+			type="hidden" name="method" value="registerExecute" /> <input
+			type="hidden" name="id" value="null" />
+			<div style="text-align: center;">
+				<button class='btn btn-primary' onclick="checkRegisterForm();"
+				title='{T:continue}'>{T:continue}</button>
+				<a href="http://playpulsar.com"><button class='btn' title='{T:Cancel}'>{T:Cancel}</button></a>
+			</div>
+	</fieldset>
+</form>

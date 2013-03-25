@@ -1,0 +1,22 @@
+<h1>{FormName}</h1>
+<table class="transactionList" cellspacing="2" cellpadding="0">
+	<tbody>
+		<tr>
+			<th>{T:allianceName}</th>
+			<td>{AllianceName}</td>
+		</tr>
+		<tr>
+			<th>{T:playername}</th>
+			<td>{PlayerName}</td>
+		</tr>
+		<tr>
+			<th>{T:text}</th>
+			<td><textarea cols="48" rows="4" id="text"
+				onkeyup="mask(this.value, this, 1024,'plText');"
+				onblur="mask(this.value, this, 1024,'plText');"></textarea></td>
+		</tr>
+	</tbody>
+</table>
+<center>
+<div class="closeButton" onclick="{action}">{T:dialogSave}</div>
+</center>

@@ -1,0 +1,877 @@
+body {
+	/*
+	background-color: black;
+	background: url(../gfx/main_bg.jpg) top center no-repeat fixed;
+	font-family: Verdana, Arial, Tahoma, Helvetica, sans-serif;
+	color: #000000;
+	font-size: 9pt;
+	*/
+}
+
+hr {
+	margin: 5px 0 5px 0;
+	padding: 0;
+	border-bottom: 1px dashed #777;
+	border-top: 0px;
+	border-left: 0px;
+	border-right: 0px;
+	line-height: 0px;
+	height: 1px;
+	display: block;
+}
+
+a:link {
+	color: #999;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #999;
+	text-decoration: none;
+}
+
+a:visited {
+	color: #999;
+	text-decoration: none;
+}
+
+a:active {
+	color: #999;
+	text-decoration: none;
+}
+
+div.plot {
+	font-size: 8pt;
+	color: #00f000;
+}
+
+select.plot,input.plot {
+	font-size: 8pt;
+	padding: 0;
+	text-align: left;
+	border: none;
+	background-color: #999;
+	margin: 2px;
+	color: #111;
+}
+
+input.plot {
+	width: 2em;
+}
+
+img.link {
+	border: none;
+	padding: 2px;
+	margin: 2px;
+	cursor: pointer;
+}
+
+.imgZero {
+	padding: 0;
+	margin: 0;
+	border: none;
+}
+
+.imgMove {
+	padding: 0;
+	margin: 0;
+	border: none;
+	cursor: pointer;
+}
+
+img.linkSmall {
+	padding: 0;
+	margin: 0;
+	border: none;
+	cursor: pointer;
+	margin-left: 5px;
+}
+
+.panelOut {
+	width: 195px;
+}
+
+.panelOut h1,.shortPanelLabel {
+	text-align: center;
+	font-weight: bold;
+	margin: 0;
+	margin-bottom: 2px;
+	color: #aaa;
+	padding: 0;
+	font-size: 9pt;
+}
+
+.panel {
+	border: none;
+	margin: 4px;
+	padding: 2px;
+	margin-bottom: 6px;
+	text-align: left;
+	font-size: 9pt;
+	border-radius: 8px;
+	background: url(../gfx/menu_bg.png) top repeat;
+	color: #999;
+	padding: 3px 5px;
+	box-shadow: 3px 3px 4px #323232;
+}
+
+#newsAgencyPanel div {
+	font-size: 7pt;
+}
+
+#combatScreen input.button {
+	font-size: 12pt;
+	cursor: pointer;
+	border: solid;
+	border-width: 1px;
+	border-left-color: #e0e0e0;
+	border-top-color: #e0e0e0;
+	border-right-color: #808080;
+	border-bottom-color: #808080;
+	margin: 0;
+	padding: 4px;
+	margin-left: 6px;
+	margin-right: 6px;
+	font-weight: bold;
+	text-align: center;
+}
+
+#combatScreen input.refresh {
+	background-color: #00008f;
+	color: #ffffff;
+}
+
+#combatScreen input.refresh:hover {
+	background-color: #00006f;
+}
+
+#combatScreen input.attack {
+	background-color: #8F0000;
+	color: #ffffff;
+}
+
+#combatScreen input.attack:hover {
+	background-color: #6F0000;
+}
+
+#combatScreen input.disengage {
+	background-color: #008F00;
+	color: #ffffff;
+}
+
+#combatScreen input.disengage:hover {
+	background-color: #006F00;
+}
+
+td.combatCell {
+	text-align: left;
+	padding: 0.5em;
+	vertical-align: top;
+	border: none;
+	margin: 2px;
+	padding: 2px;
+	margin-bottom: 8px;
+	text-align: left;
+	font-size: 9pt;
+	border-radius: 8px;
+	background: url(../gfx/menu_bg.png) top repeat;
+	color: #999;
+	padding: 3px 5px;
+	box-shadow: 3px 3px 4px #323232;
+}
+
+#combatScreen h1,td.combatCell h1 {
+	font-size: 14pt;
+	margin: 6px;
+	margin-top: 1px;
+	color: #4FC7FF;
+}
+
+td.combatCell table {
+	width: 100%;
+}
+
+td.combatCell div.shipPanel {
+	width: 400px;
+}
+
+td.combatCell th {
+	color: #4FC7FF;
+	text-align: center;
+}
+
+td.combatCell td {
+	text-align: center;
+}
+
+td.statsCell {
+	width: 50%;
+	vertical-align: middle;
+}
+
+td.statsCell div {
+	font-size: 1em;
+}
+
+td.statsCell label {
+	font-size: 12pt;
+	font-weight: bold;
+}
+
+td.statsCell span {
+	font-size: 18pt;
+	font-weight: bold;
+}
+
+#combatScreen {
+	margin: 2px;
+	padding: 2px;
+	margin-bottom: 8px;
+	text-align: center;
+	position: fixed;
+	display: none;
+	overflow: auto;
+	width: 98%;
+	height: 98%;
+}
+
+.panelMap {
+	margin: 2px;
+	padding: 2px;
+	margin-bottom: 8px;
+	text-align: center;
+	font-size: 9pt;
+	position: fixed;
+	display: none;
+	overflow: auto;
+}
+
+.sectorResourceHeader,.panelMiddle h1 {
+	font-size: 11pt;
+	padding: 0;
+	margin: 0;
+	margin-bottom: 3px;
+	margin-top: 5px;
+	font-weight: bold;
+	color: #c0c000;
+}
+
+table.sectorResourceTable {
+	width: 500px;
+	border: none;
+}
+
+table.sectorResourceTable td {
+	font-size: 8pt;
+	border: none;
+	border-color: #c0c000;
+	margin: 0;
+	padding: 2px;
+	border-width: 0;
+	border-bottom-width: 1px;
+}
+
+td.opers {
+	width: 60px;
+}
+
+td.amount {
+	width: 4em;
+}
+
+.panelHidden {
+	border: none;
+	margin: 4px;
+	margin-left: 0;
+	margin-right: 0;
+	padding: 0;
+	text-align: center;
+	background: none;
+}
+
+.panelMiddle {
+	text-align: center;
+	/* margin-left: 8px;
+	margin-right: 8px; */
+}
+
+.panelSectorInfo {
+	text-align: left;
+	height: 100%;
+}
+
+#univPanel,#remoteSectorInfo {
+	margin: 2px;
+	padding: 6px;
+	margin-bottom: 8px;
+	text-align: left;
+	display: none;
+	position: absolute;
+	background-color: #09063f;
+	background: url(../gfx/main_bg.jpg) top repeat;
+	box-shadow: 0 0 8px gray;
+}
+
+#univPanel h1 {
+	font-size: 1.4em;
+	margin-bottom: 0.5em;
+	margin-top: 0.5em;
+	font-weight: bold;
+	color: #c0c000;
+	text-align: center;
+}
+
+#univPanel td {
+	font-size: 1em;
+	padding: 2px;
+	text-align: left;
+}
+
+#univPanel th {
+	font-size: 1em;
+	font-weight: bold;
+}
+
+.sectorImageCell {
+	width: 105px;
+	vertical-align: top;
+}
+
+.sectorInfoCell {
+	vertical-align: top;
+	text-align: left;
+}
+
+.galaxyName {
+	font-size: 10pt;
+	font-weight: bold;
+	color: #c0c000;
+}
+
+.systemName {
+	font-size: 9pt;
+	font-weight: bold;
+	color: #c0c000;
+}
+
+.portName {
+	font-size: 12pt;
+	font-weight: bold;
+	color: #c0c000;
+}
+
+.systemPosition {
+	font-size: 8pt;
+	font-weight: bold;
+	color: #c0c000;
+}
+
+.sectorName {
+	font-size: 9pt;
+}
+
+.sectorOther {
+	font-size: 8pt;
+}
+
+.portOther {
+	font-size: 9pt;
+}
+
+.sectorImage {
+	border: none;
+}
+
+.sectorTableCell {
+	padding-bottom: 2px;
+	width: 50%;
+	vertical-align: top;
+	height: 120px;
+}
+
+.mainTableCell {
+	vertical-align: top;
+	text-align: center;
+}
+
+.hiddenDiv {
+	display: none;
+}
+
+#weaponsPanel div {
+	padding-left: 3px;
+	padding-bottom: 2px;
+}
+
+.shortPanelList {
+	padding-left: 3px;
+	padding-bottom: 2px;
+	cursor: pointer;
+}
+
+.shortPanelListGreen {
+	padding-left: 3px;
+	padding-bottom: 2px;
+	cursor: pointer;
+	color: #00f000;
+}
+
+.shortPanelListYellow {
+	padding-left: 3px;
+	padding-bottom: 2px;
+	cursor: pointer;
+	color: #f0f000;
+}
+
+.shortPanelListRed {
+	padding-left: 3px;
+	padding-bottom: 2px;
+	cursor: pointer;
+	color: #f00000;
+}
+
+table.moveCell td {
+	text-align: center;
+	vertical-align: middle;
+	width: 36px;
+	height: 36px;
+	font-size: 8pt;
+}
+
+.infoAnnouncement {
+	color: #00f000;
+	text-align: center;
+	font-size: 11pt;
+}
+
+.warningAnnouncement {
+	color: #f0f000;
+	text-align: center;
+	font-size: 11pt;
+}
+
+.errorAnnouncement {
+	color: #f00000;
+	text-align: center;
+	font-size: 13pt;
+	font-weight: bold;
+}
+
+.actionButton,.examineButton,.attackButton,.portMenuButton,.portMenuButtonCurrent,.closeButton
+	{
+	font-size: 9pt;
+	font-weight: bold;
+	font-family: Arial;
+	cursor: pointer;
+	margin: 10px;
+	margin-left: 4px;
+	margin-right: 4px;
+	padding: 2px;
+	padding-left: 10px;
+	padding-right: 10px;
+	color: #ffffff;
+	background-color: #777;
+	border: solid;
+	border-width: 1px;
+	border-color: #000000;
+	border-radius: 5px;
+	box-shadow: 2px 2px 2px #333;
+}
+
+.actionButton:hover,.examineButton:hover,.portMenuButton:hover,.portMenuButtonCurrent:hover,.closeButton:hover
+	{
+	color: #333;
+	background-color: #ccc;
+}
+
+.attackButton {
+	padding-left: 5px;
+	padding-right: 5px;
+	font-size: 8pt;
+	margin: 5px;
+	margin-left: 2px;
+	margin-right: 2px;
+	background-color: #8f0000;
+}
+
+.attackButton:hover {
+	background-color: #af0000;
+}
+
+.examineButton {
+	font-size: 8pt;
+	padding: 2px;
+	margin: 5px;
+	margin-left: 2px;
+	margin-right: 2px;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.closeButton {
+	margin: 0;
+	padding: 2px;
+	margin-left: 2px;
+	margin-right: 2px;
+	width: 120px;
+}
+
+.closeButton:hover {
+	
+}
+
+div.shipPanel {
+	font-size: 8pt;
+	border: none;
+	margin: 2px;
+	padding: 2px;
+	margin-bottom: 8px;
+	text-align: center;
+	background-color: #09063f;
+	vertical-align: middle;
+	color: #ffffff;
+	width: 500px;
+	height: 32px;
+	background: url(../gfx/ship_bg.jpg) top repeat;
+	border-radius: 6px;
+	box-shadow: 3px 3px 3px 222;
+}
+
+table.shipPanel {
+	font-size: 8pt;
+	border: none;
+	border-width: 0;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	color: #ffffff;
+	width: 495px;
+	height: 28px;
+}
+
+table.shipPanel td span {
+	font-size: 8pt;
+	color: #f0f0f0;
+}
+
+table.shipPanel td {
+	font-size: 8pt;
+	border: none;
+	border-width: 0;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	color: #ffffff;
+}
+
+img.avatar {
+	border: solid;
+	border-width: 1px;
+	border-color: #f0f0f0;
+	padding: 0;
+	margin: 0;
+}
+
+div.avatar {
+	float: left;
+	margin: 4px;
+	margin-right: 8px;
+}
+
+div.infoTable {
+	width: 50%;
+	border: solid;
+	border-width: 1px;
+	border-right-color: #e0e0e0;
+	border-bottom-color: #e0e0e0;
+	border-left-color: #808080;
+	border-top-color: #808080;
+	background-color: #000064;
+	padding: 4px;
+	text-align: left;
+	margin: 2px;
+	margin-bottom: 8px;
+	font-size: 9pt;
+	color: #f0f0f0;
+	background-image: url('../gfx/gradient3.gif');
+	background-repeat: repeat-x;
+	border-radius: 6px;
+}
+
+.infoLine div {
+	padding: 2px;
+	margin-left: 4px;
+	color: #ffffff;
+	margin-bottom: 2px;
+}
+
+table.miniMap,table.systemMap {
+	border: solid;
+	border-color: #006000;
+	border-width: 1px;
+	border-right-width: 0;
+	border-bottom-width: 0;
+}
+
+table.miniMap tbody tr td {
+	border: solid;
+	border-color: #006000;
+	border-width: 0;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	font-size: 6pt;
+	font-weight: bold;
+	/*text-align: center;*/
+	vertical-align: middle;
+	width: 20px;
+	height: 20px;
+}
+
+table.systemMap tbody tr td {
+	border: solid;
+	border-color: #006000;
+	border-width: 0;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	font-size: 6pt;
+	font-weight: bold;
+	/*text-align: center;*/
+	vertical-align: middle;
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+}
+
+table.miniMap tbody tr td span,table.systemMap tbody tr td span {
+	margin-left: 7px;
+}
+
+h2 {
+	font-size: 10pt;
+	margin-bottom: 3px;
+	margin-top: 5px;
+	font-weight: bold;
+	color: #c0c000;
+}
+
+td.portPanel#portMenu {
+	border: solid;
+	border-width: 1px;
+	border-color: #00a000;
+	border-right-color: #004800;
+	border-bottom-color: #004800;
+	width: 160px;
+	padding: 0;
+	margin: 0;
+	margin-right: 4px;
+	vertical-align: top;
+}
+
+h1 {
+	font-size: 11pt;
+	margin-bottom: 5px;
+	margin-top: 5px;
+	font-weight: bold;
+	color: #c0c000;
+	text-align: center;
+}
+
+td.portPanel#portContent {
+	border: solid;
+	border-width: 1px;
+	border-color: #00a000;
+	border-right-color: #004800;
+	border-bottom-color: #004800;
+	padding: 0;
+	margin: 0;
+	margin-left: 4px;
+	vertical-align: top;
+}
+
+table.portPanel {
+	width: 100%;
+	border: none;
+}
+
+.portMenuButton {
+	display: inline;
+}
+
+.tsmall {
+	font-size: 7pt;
+}
+
+.portMenuButtonCurrent {
+	background-color: green;
+	display: inline;
+}
+
+table.transactionList {
+	border: none;
+	width: 100%;
+}
+
+table.transactionList td img.link {
+	margin-bottom: -5px;
+}
+
+table.transactionList td input,table.transactionList td textarea,.transactionList textarea {
+	border: 1px solid #444444;
+	background: #222222 url(images/ui-bg_highlight-soft_35_222222_1x100.png) repeat-x;
+	font-weight: normal;
+	color: #eeeeee;
+	font-size: 9pt;
+	padding: 0;
+}
+
+table.transactionList td,table.transactionList tbody tr td {
+	font-size: 10pt;
+	padding: 2px;
+	text-align: left;
+	background: url(../gfx/ship_bg.jpg) top repeat;
+	height: 26px;
+}
+
+table.transactionList th {
+	font-size: 10pt;
+	padding: 3px;
+	padding-left: 6px;
+	text-align: left;
+	font-weight: bold;
+	padding-left: 3px;
+	background: url(../gfx/ship_bg.jpg) top repeat;
+}
+
+table.transactionList tr {
+	
+}
+
+tr.transactionListYellow {
+	color: #f0f000 !important;
+}
+
+tr.transactionListRed {
+	color: #f00000 !important;
+}
+
+tr.transactionListWhite {
+	color: #f0f0f0 !important;
+}
+
+tr.transactionListGreen {
+	color: #00f000 !important;
+}
+
+input.smallButton {
+	font-size: 7pt;
+	margin: 0;
+	margin-left: 2px;
+	padding: 2px;
+	padding-left: 4px;
+	padding-right: 4px;
+	text-align: right;
+	color: #ffffff;
+	background-color: #777;
+	border: solid;
+	border-color: #000000;
+	border-width: 1px;
+	cursor: pointer;
+	text-align: center;
+	border-radius: 5px;
+	box-shadow: 2px 2px 2px #333;
+}
+
+input.smallButton:hover {
+	color: #333;
+	background-color: #ccc;
+}
+
+div.confirmBox {
+	width: 350px;
+	margin: 2px;
+	padding: 6px;
+	margin-bottom: 8px;
+	text-align: left;
+	position: absolute;
+	background-color: #09063f;
+	background: url(../gfx/main_bg.jpg) top repeat;
+	box-shadow: 0 0 8px gray;
+}
+
+div.confirmBox h1 {
+	font-size: 1.3em;
+}
+
+div.confirmBox h2 {
+	font-size: 1em;
+}
+
+#globalChatPanelTxt {
+	height: 160px;
+	overflow-y: auto;
+	margin-bottom: 4px;
+}
+
+#globalChatPanelTxt div {
+	font-size: 7pt;
+}
+
+table.linked tbody tr td {
+	cursor: pointer;
+}
+
+.center {
+	text-align: center;
+}
+
+.italic {
+	font-style: italic;
+}
+
+.justify {
+	text-align: justify;
+}
+
+.ui-widget-overlay {
+	opacity: 0.2;
+}
+
+.ui-shadow-all {
+	box-shadow: 0 0 8px gray;
+}
+
+.greenButton {
+	background-color: green;
+}
+
+.redButton {
+	background-color: #af0000;
+}
+
+.hRuler {
+	height: 16px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #006000;
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+
+.hRuler div {
+	margin: 0;
+	padding: 0;
+	border: none;
+	background-color: #007000;
+}
+
+#activeScanner {
+	margin: 2px;
+	padding: 6px;
+	margin-bottom: 8px;
+	text-align: left;
+	display: none;
+	position: absolute;
+	background-color: #09063f;
+	background: url(../gfx/main_bg.jpg) top repeat;
+	box-shadow: 0 0 8px gray;
+}

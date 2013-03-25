@@ -1,0 +1,70 @@
+body {
+	font-family: Tahoma;
+	font-size: 8pt;
+	background-color: #0f090e;
+	padding-top: 1px;
+	margin-top: 1px;
+	color: #f0f0f0;
+	background-image: url('../gfx/background2.jpg');
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+table.miniMap {
+	border: solid;
+	border-color: #006000;
+	border-width: 1px;
+	border-right-width: 0px;
+	border-bottom-width: 0px;
+}
+
+td.miniMap {
+	border: solid;
+	border-color: #006000;
+	border-width: 0px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	font-size: 7pt;
+	font-weight: bold;
+	text-align: center;
+	vertical-align: middle;
+	width: 18px;
+	height: 18px;
+	padding: 0px;
+}
+
+input.button {
+	font-family: Verdana;
+	font-size: 9pt;
+	margin: 0px;
+	padding: 2px;
+	width: 80px;
+	text-align: center;
+	font-weight: bold;
+	color: #00f000;
+	border: solid;
+	border-color: #489300;
+	border-width: 1px;
+	background-image: url('../gfx/gradient2.gif');
+	background-repeat: repeat-x;
+	cursor: pointer;
+	margin: 4px;
+}
+
+select.creatorSelect {
+	font-family: Verdana;
+	font-size: 9pt;
+	padding: 0px;
+	text-align: left;
+	border: solid;
+	border-color: #489300;
+	border-width: 1px;
+	background-color: #080538;
+	color: #00f000;
+	margin: 4px;
+}
+
+option.creatorSelect {
+	padding: 2px;
+}
