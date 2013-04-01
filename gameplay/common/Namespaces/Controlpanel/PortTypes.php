@@ -34,9 +34,8 @@ class PortTypes extends GameplayItem{
 		Database::getInstance()->execute($tQuery);
 		Cache::getInstance()->clearModule('portProperties');
 
-		$retVal .= \General\Controls::sUiDialog( "Confirmation", "Data has been <strong>set</strong>", "document.location='{$_SESSION['returnLink']}'");
-
-		return $retVal;
+		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
+		
 	}
 
 	public function deleteExe($user, $params) {

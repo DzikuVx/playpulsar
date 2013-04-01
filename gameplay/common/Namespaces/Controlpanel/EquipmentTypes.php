@@ -44,9 +44,7 @@ class EquipmentTypes extends GameplayItem{
 		\Database\Controller::getInstance()->execute($tQuery);
 		\Cache\Controller::getInstance()->clear('equipment',$params['id']);
 
-		$retVal .= Controls::sUiDialog( "Confirmation", "Data has been <strong>set</strong>", "document.location='{$_SESSION['returnLink']}'");
-
-		return $retVal;
+		Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
 	}
 
 	static public function sRandomize() {

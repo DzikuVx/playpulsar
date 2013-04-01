@@ -6,7 +6,7 @@ class PlayerWeapon extends \weapon{
 
 	private function sRenderSelect($currentID = null, $name='value') {
 
-		$retVal = "<select name='{$name}' size='1' class='ui-state-default ui-corner-all'>";
+		$retVal = "<select name='{$name}' size='1' class='span4'>";
 
 		$tQuery = "SELECT * FROM weapontypes WHERE PortWeapon='no' ORDER BY NameEN";
 		$tQuery = \Database\Controller::getInstance()->execute($tQuery);
@@ -31,7 +31,7 @@ class PlayerWeapon extends \weapon{
 	final public function delete($user, $params) {
 		global $config;
 
-		return \General\Controls::sUiDialog( "Confirm", "Do you want to <strong>delete</strong> this weapon?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=deleteExe&id={$params['id']}'", "window.history.back();", 'Yes','No' );
+		return \General\Controls::dialog( "Confirm", "Do you want to <strong>delete</strong> this weapon?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=deleteExe&id={$params['id']}'", "window.history.back();", 'Yes','No' );
 
 	}
 
@@ -44,10 +44,10 @@ class PlayerWeapon extends \weapon{
 		if (!empty($_SESSION['returnUser'])) {
 			\Cache\Controller::forceClear($_SESSION['returnUser'], 'shipWeapons');
 			\Cache\Controller::forceClear($_SESSION['returnUser'], 'shipProperties');
-
 			\shipProperties::sQuickRecompute($_SESSION['returnUser']);
 		}
-		return \General\Controls::sUiDialog( "Confirmation", "Weapon has been <strong>deleted</strong>", "document.location='{$_SESSION['returnLink']}'");
+		
+		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Weapon has been <strong>deleted</strong>", 'success');
 	}
 
 	final public function add($user, $params) {
@@ -65,7 +65,7 @@ class PlayerWeapon extends \weapon{
 		$text .= '<input type="hidden" name="id" value="'.$_SESSION['returnUser'].'">';
 		$text .= '</form>';
 
-		$retVal = \General\Controls::sUiDialog( "Give player new weapon", $text, "player.addWeapon()", "window.history.back();", 'OK','Cancel', 'height: 100px;' );
+		$retVal = \General\Controls::dialog( "Give player new weapon", $text, "player.addWeapon()", "window.history.back();", 'OK','Cancel', 'height: 100px;' );
 
 		$retVal .= '<script type="text/javascript">';
 		$retVal .= '$("#dialog-message").css("height",120)';
@@ -96,8 +96,8 @@ class PlayerWeapon extends \weapon{
 
 		$shipPropertiesObject->synchronize($shipProperties, true, true);
 
-		return \General\Controls::sUiDialog( "Confirmation", "Weapon has been <strong>added</strong>", "document.location='{$_SESSION['returnLink']}'");
-
+		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
+		
 	}
 
 }

@@ -24,12 +24,9 @@ class UserStats extends \userStats {
 		$tQuery = \Controlpanel\BaseItem::sMakeUpdateQuery($this->tableName, $this->tableID, $this->tableUseFields, $params);
 
 		\Database\Controller::getInstance()->execute($tQuery);
-
 		\Cache\Controller::getInstance()->clear('userStats', $params['id']);
 
-		$retVal .= \General\Controls::sUiDialog( "Confirmation", "Data has been <strong>set</strong>", "document.location='{$_SESSION['returnLink']}'");
-
-		return $retVal;
+		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
 	}
 
 }

@@ -78,8 +78,9 @@ class NpcName extends BaseItem {
 
 		}
 
-		$retVal = Controls::sUiDialog('Success', 'Item created','document.location="?class='.get_class($this).'&method=browse";');
-
+		global $config;
+		$retVal = Controls::reloadWithMessage($config['backend']['fileName'].'?class='.get_class($this).'&method=browse', 'Item created');
+		
 		return $retVal;
 	}
 
@@ -143,9 +144,6 @@ class NpcName extends BaseItem {
 		}
 
 		global $config;
-		
-		$retVal = Controls::sUiDialog('Success', 'Item modified',"document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=browse';");
-
-		return $retVal;
+		Controls::reloadWithMessage($config['backend']['fileName'].'?class='.get_class($this).'&method=browse', 'Item modified');
 	}
 }

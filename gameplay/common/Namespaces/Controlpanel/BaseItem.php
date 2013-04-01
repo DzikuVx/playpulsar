@@ -172,11 +172,10 @@ abstract class BaseItem {
 	 */
 	public function delete($user, $params) {
 
-	 global $config;
+	 	global $config;
 
-	 //@todo ustawić prawa dostępu w CP
-
-	 return Controls::sUiDialog( "Confirm", "Do you want to delete selected element?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=deleteExe&id={$params['id']}'", "window.history.back();", 'Yes','No' );
+	 	//@todo ustawić prawa dostępu w CP
+	 	return Controls::dialog( "Confirm", "Do you want to delete selected element?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=deleteExe&id={$params['id']}'", "window.history.back();", 'Yes','No' );
 	}
 
 	/**
@@ -196,7 +195,7 @@ abstract class BaseItem {
 
 		global $config;
 
-		return Controls::sUiDialog( "Confirmation", "Selected element has been deleted", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=browse&clearSearch=true'" );
+		Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=browse&clearSearch=true", "Selected element has been deleted");
 	}
 
 	static public function sMakeUpdateQuery($tableName, $tableID, $tableUseFields, $params) {

@@ -37,8 +37,8 @@ class ShipTypes extends GameplayItem{
 		\Database\Controller::getInstance()->execute($tQuery);
 		\Cache\Controller::getInstance()->clear('ship',$params['id']);
 	
-		$retVal .= \General\Controls::sUiDialog( "Confirmation", "Data has been <strong>set</strong>", "document.location='{$_SESSION['returnLink']}'");
-	
+		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
+		
 		return $retVal;
 	}
 	

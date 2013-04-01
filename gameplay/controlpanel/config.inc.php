@@ -9,7 +9,7 @@ psDebug::$senderConfig ['url'] = 'localhost';
 psDebug::$senderConfig ['path'] = '/pulsar_public/gameplay/errorCatcher.php';
 psDebug::$senderConfig ['sender'] = 'Pulsar Control Panel';
 
-$config['backend']['fileName'] = 'index.php';
+$config['backend']['fileName'] = '/controlpanel/';
 
 /**
  * Okres ważności wpisów w tabelach [h]

@@ -142,10 +142,22 @@ class Controls {
 		*
 		* @param string $address
 		*/
-	static public function sPageReload($address) {
+	static public function sPageReload($address, $bSkipUri = false) {
 		$host = $_SERVER ['HTTP_HOST'];
-		$uri = rtrim ( dirname ( $_SERVER ['PHP_SELF'] ), '/\\' );
+
+		if (!$bSkipUri) {
+			$uri = rtrim ( dirname ( $_SERVER ['PHP_SELF'] ), '/\\' );
+		}else {
+			$uri = '';
+			
+			if (mb_substr($address, 0, 1 ) == '/') {
+				$address = mb_substr($address, 1);
+			}
+			
+		}
+		
 		$extra = $address;
+		
 		header ( "Location: http://$host$uri/$extra" );
 	}
 
@@ -469,58 +481,47 @@ class Controls {
 		return $retVal;
 	}
 
-	/**
-		*
-		* Funckcja generuje dialog z max. 2 przyciskami zgodny z jQuery UI
-		* @param string $title
-		* @param string $text
-		* @param string $onOK
-		* @param string $onCancel
-		* @param string $okText
-		* @param string $cancelText
-		* @since 2010-08-11
-		*/
-	static public function sUiDialog($title, $text,$onOK=null, $onCancel=null, $okText = 'OK', $cancelText = 'Cancel') {
-
-		$retVal = '';
-
-		$retVal .= '<div id="dialog-message" title="'.$title.'" ><p>'.$text.'</p></div>';
-
-		$retVal .= '<script type="text/javascript">';
-		$retVal .= '$("#dialog-message").dialog({
-		modal: true';
-
-		if (!empty($onOK) || !empty($onCancel)) {
-
-			if ($onOK == 'close') {
-				$okFunction = '$(this).dialog("close");';
-			}else {
-				$okFunction = str_replace('\\', '\\\\', $onOK);
-			}
-			if ($onCancel == 'close') {
-				$calcelFunction = '$(this).dialog("close");';
-			}else {
-				$calcelFunction = str_replace('\\', '\\\\', $onCancel);
-			}
-
-			$retVal .= ',buttons: {';
-			$retVal .= $okText.': function() {
-			'.$okFunction.'
-		}';
-			if (!empty($onCancel)) {
-				$retVal .= ','.$cancelText.': function() {
-				'.$calcelFunction.'
-			}';
-			}
-			$retVal .= '}';
-		}
-
-		$retVal .= '});';
-		$retVal .= '</script>';
-
-		return $retVal;
+	static public function reloadWithMessage($url = '', $sMessage = 'Success', $sType = 'success') {
+		\Listener\Message::getInstance()->push($sType, $sMessage);
+		
+		self::sPageReload($url, true);
 	}
 
+	/**
+	 * Twitter Bootstrap compatible dialog with 2 buttons
+	 * @param string $title
+	 * @param string $text
+	 * @param string $onOK
+	 * @param string $onCancel
+	 * @param string $okText
+	 * @param string $cancelText
+	 * @return string
+	 */
+	static public function dialog($title, $text,$onOK=null, $onCancel=null, $okText = 'OK', $cancelText = 'Cancel') {
+	
+		$template = new \General\Templater('templates/modal.html');
+		
+		$template->add('label', $title);
+		$template->add('text', $text);
+		$template->add('noText', $cancelText);
+		$template->add('yesText', $okText);
+		
+		if (!empty($onOK)) {
+			$template->add('onYes','onclick="'.str_replace('\\', '\\\\', $onOK).'"');
+		}else {
+			$template->add('onYes','');
+		}
+		
+		if (!empty($onCancel)) {
+			$template->add('onNo','onclick="'.str_replace('\\', '\\\\', $onCancel).'"');
+		}else {
+			$template->add('onNo','');
+		}
+		
+		return (string) $template;
+		
+	}
+	
 	/**
 		* Funkcja renderująca przycisk z funkcją obsługi JS
 		* @param $name - nazwa przycisku

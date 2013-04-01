@@ -13,6 +13,7 @@ class Controller {
 		$retVal = '';
 		$listeners = '';
 		
+		//FIXME refactor
 		$listeners .= \user::sLogoutListener ( $_REQUEST );
 		$listeners .= \user::sLoginListener ( $_REQUEST );
 		
@@ -30,6 +31,8 @@ class Controller {
 		
 			$indexTemplate = new \General\Templater ( 'templates/mainPage.html' );
 		
+			\Listener\Message::getInstance()->register($_REQUEST, $indexTemplate);
+			
 			$mainText = '';
 		
 			if (class_exists ( $_REQUEST ['class'] )) {
@@ -69,6 +72,10 @@ class Controller {
 		
 			$indexTemplate->add ( 'leftMenu', Menu::get() );
 		
+			\Listener\LowLevelMessage::getInstance()->register($_REQUEST, $indexTemplate);
+			
+			$indexTemplate->add('listeners','');
+			
 			$retVal .= $indexTemplate;
 		
 		}

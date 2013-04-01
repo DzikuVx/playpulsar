@@ -27,8 +27,7 @@ class UserProperties extends \userProperties{
 		\Database\Controller::getInstance()->execute($tQuery);
 		$this->clearCache();
 
-		$retVal .= \General\Controls::sUiDialog( "Confirmation", "Data has been <strong>set</strong>", "document.location='{$_SESSION['returnLink']}'");
-
-		return $retVal;
+		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
+		
 	}
 }

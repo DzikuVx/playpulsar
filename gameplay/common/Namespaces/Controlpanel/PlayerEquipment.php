@@ -12,7 +12,7 @@ class PlayerEquipment extends \equipment{
 	 */
 	private function sRenderSelect($currentID = null, $name='value') {
 
-		$retVal = "<select name='{$name}' size='1' class='ui-state-default ui-corner-all'>";
+		$retVal = "<select name='{$name}' size='1' class='span4'>";
 
 		$tQuery = "SELECT * FROM equipmenttypes ORDER BY NameEN";
 		$tQuery = \Database\Controller::getInstance()->execute($tQuery);
@@ -49,7 +49,7 @@ class PlayerEquipment extends \equipment{
 		$text .= '<input type="hidden" name="id" value="'.$_SESSION['returnUser'].'">';
 		$text .= '</form>';
 
-		$retVal = \General\Controls::sUiDialog( "Give player new equipment", $text, "player.addEquipment()", "window.history.back();", 'OK','Cancel', 'height: 100px;' );
+		$retVal = \General\Controls::dialog( "Give player new equipment", $text, "player.addEquipment()", "window.history.back();", 'OK','Cancel', 'height: 100px;' );
 
 		$retVal .= '<script type="text/javascript">';
 		$retVal .= '$("#dialog-message").css("height",120)';
@@ -80,14 +80,14 @@ class PlayerEquipment extends \equipment{
 
 		$shipPropertiesObject->synchronize($shipProperties, true, true);
 
-		return \General\Controls::sUiDialog( "Confirmation", "Equipment has been <strong>added</strong>", "document.location='{$_SESSION['returnLink']}'");
+		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Equipment has been <strong>added</strong>", 'success');
 
 	}
 
 	final public function delete($user, $params) {
 		global $config;
 
-		return \General\Controls::sUiDialog( "Confirm", "Do you want to <strong>delete</strong> this equipment?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=deleteExe&id={$params['id']}'", "window.history.back();", 'Yes','No' );
+		return \General\Controls::dialog( "Confirm", "Do you want to <strong>delete</strong> this equipment?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=deleteExe&id={$params['id']}'", "window.history.back();", 'Yes','No' );
 
 	}
 
@@ -103,7 +103,8 @@ class PlayerEquipment extends \equipment{
 
 			\shipProperties::sQuickRecompute($_SESSION['returnUser']);
 		}
-		return \General\Controls::sUiDialog( "Confirmation", "Equipment has been <strong>deleted</strong>", "document.location='{$_SESSION['returnLink']}'");
+		
+		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Equipment has been <strong>deleted</strong>", 'success');
 	}
 
 }

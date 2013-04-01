@@ -44,13 +44,13 @@ class Player extends BaseItem {
 		global $config;
 
 		$text = '<form method="post" name="myForm" style="margin: 0; padding: 0;">';
-		$text .= '<textarea class="ui-corner-all ui-state-default" name="msgText" cols="34" rows="5"></textarea>';
+		$text .= '<textarea class="span5" name="msgText" rows="5"></textarea>';
 		$text .= '<input type="hidden" name="class" value="\Controlpanel\Player">';
 		$text .= '<input type="hidden" name="method" value="msgSendExe">';
 		$text .= '<input type="hidden" name="id" value="'.$params['id'].'">';
 		$text .= '</form>';
 
-		$retVal = Controls::sUiDialog( "Send new message", $text, "player.msgSend()", "window.history.back();", 'OK','Cancel', 'height: 100px;' );
+		$retVal = Controls::dialog( "Send new message", $text, "player.msgSend()", "window.history.back();", 'OK','Cancel');
 
 		$retVal .= '<script type="text/javascript">';
 		$retVal .= '$("#dialog-message").css("height",120)';
@@ -71,7 +71,9 @@ class Player extends BaseItem {
 
 		Database::getInstance()->quoteAll($params);
 		Database::getInstance()->execute("INSERT INTO messages(Receiver, Text, CreateTime) VALUES('{$params['id']}', '{$params['msgText']}', '".time()."') ");
-		return Controls::sUiDialog( "Confirmation", "Message has been <strong>sent</strong>", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}'");
+		
+		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
+		
 	}
 
 	/**
@@ -85,7 +87,7 @@ class Player extends BaseItem {
 
 		global $config;
 
-		return Controls::sUiDialog( "Confirm", "Do you want to <strong>lock</strong> this account?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=lockExe&id={$params['id']}'", "window.history.back();", 'Yes','No' );
+		return Controls::dialog( "Confirm", "Do you want to <strong>lock</strong> this account?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=lockExe&id={$params['id']}'", "window.history.back();", 'Yes','No' );
 	}
 
 	/**
@@ -102,7 +104,8 @@ class Player extends BaseItem {
 		Database::getInstance()->quoteAll($params);
 		Database::getInstance()->execute("UPDATE users SET UserLocked='yes' WHERE UserID='{$params['id']}'" );
 		Cache::forceClear($params['id'], 'userProperties');
-		return Controls::sUiDialog( "Confirmation", "Account has been <strong>locked</strong>", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}'");
+		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
+		
 	}
 
 	/**
@@ -119,7 +122,7 @@ class Player extends BaseItem {
 		Database::getInstance()->quoteAll($params);
 		Database::getInstance()->execute("UPDATE users SET UserLocked='no' WHERE UserID='{$params['id']}'" );
 		Cache::forceClear($params['id'], 'userProperties');
-		return Controls::sUiDialog( "Confirmation", "Account has been <strong>unlocked</strong>", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}'");
+		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
 	}
 
 	/**
@@ -133,7 +136,7 @@ class Player extends BaseItem {
 
 		global $config;
 
-		return Controls::sUiDialog( "Confirm", "Do you want to <strong>unlock</strong> this account?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=unlockExe&id={$params['id']}'", "window.history.back();", 'Yes','No' );
+		return Controls::dialog( "Confirm", "Do you want to <strong>unlock</strong> this account?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=unlockExe&id={$params['id']}'", "window.history.back();", 'Yes','No' );
 	}
 
 	/**
@@ -147,7 +150,7 @@ class Player extends BaseItem {
 
 		global $config;
 
-		return Controls::sUiDialog( "Confirm", "Do you want to <strong>activate</strong> this account?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=activateExe&id={$params['id']}'", "window.history.back();", 'Yes','No' );
+		return Controls::dialog( "Confirm", "Do you want to <strong>activate</strong> this account?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=activateExe&id={$params['id']}'", "window.history.back();", 'Yes','No' );
 	}
 
 	/**
@@ -164,7 +167,7 @@ class Player extends BaseItem {
 		Database::getInstance()->quoteAll($params);
 		Database::getInstance()->execute("UPDATE users SET UserActivated='yes' WHERE UserID='{$params['id']}'" );
 		Cache::forceClear($params['id'], 'userProperties');
-		return Controls::sUiDialog( "Confirmation", "Account has been <strong>activated</strong>", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}'");
+		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
 	}
 
 	/**
@@ -177,7 +180,7 @@ class Player extends BaseItem {
 
 		global $config;
 
-		return Controls::sUiDialog( "Confirm", "Do you want to <strong>remove all rookie turns</strong>?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=removeRookieExe&id={$params['id']}'", "window.history.back();", 'Yes','No' );
+		return Controls::dialog( "Confirm", "Do you want to <strong>remove all rookie turns</strong>?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=removeRookieExe&id={$params['id']}'", "window.history.back();", 'Yes','No' );
 	}
 
 	/**
@@ -192,7 +195,8 @@ class Player extends BaseItem {
 		Database::getInstance()->quoteAll($params);
 		Database::getInstance()->execute("UPDATE userships SET RookieTurns='0' WHERE UserID='{$params['id']}'" );
 		Cache::getInstance()->clear('shipProperties',$params['id']);
-		return Controls::sUiDialog( "Confirmation", "All rookie turns <strong>have been removed</strong>", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}'");
+		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
+		
 	}
 
 	final public function giveRookieDialog($user, $params) {
@@ -200,13 +204,13 @@ class Player extends BaseItem {
 		global $config;
 
 		$text = '<form method="post" name="myForm" style="margin: 0; padding: 0;">';
-		$text .= '<input masked="int10" class="ui-corner-all ui-state-default" value="0" name="value" size="10" />';
+		$text .= '<input masked="int10" class="span1" value="0" name="value"/>';
 		$text .= '<input type="hidden" name="class" value="\Controlpanel\Player">';
 		$text .= '<input type="hidden" name="method" value="giveRookieExe">';
 		$text .= '<input type="hidden" name="id" value="'.$params['id'].'">';
 		$text .= '</form>';
 
-		$retVal = Controls::sUiDialog( "Give rookie turns", $text, "player.giveRookie()", "window.history.back();", 'OK','Cancel', 'height: 100px;' );
+		$retVal = Controls::dialog( "Give rookie turns", $text, "player.giveRookie()", "window.history.back();", 'OK','Cancel', 'height: 100px;' );
 
 		$retVal .= '<script type="text/javascript">';
 		$retVal .= '$("#dialog-message").css("height",60)';
@@ -222,7 +226,8 @@ class Player extends BaseItem {
 		Database::getInstance()->execute("UPDATE userships SET RookieTurns=RookieTurns+'{$params['value']}' WHERE UserID='{$params['id']}'" );
 		Cache::getInstance()->clear('shipProperties',$params['id']);
 
-		return Controls::sUiDialog( "Confirmation", "Rookie turns <strong>have been set</strong>", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}'");
+		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
+		
 	}
 
 	final public function giveTraxiumDialog($user, $params) {
@@ -230,13 +235,13 @@ class Player extends BaseItem {
 		global $config;
 
 		$text = '<form method="post" name="myForm" style="margin: 0; padding: 0;">';
-		$text .= '<input masked="int10" class="ui-corner-all ui-state-default" value="0" name="value" size="10" />';
+		$text .= '<input masked="int10" class="span1" value="0" name="value"/>';
 		$text .= '<input type="hidden" name="class" value="\Controlpanel\Player">';
 		$text .= '<input type="hidden" name="method" value="giveTraxiumExe">';
 		$text .= '<input type="hidden" name="id" value="'.$params['id'].'">';
 		$text .= '</form>';
 
-		$retVal = Controls::sUiDialog( "Give Traxium", $text, "player.giveRookie()", "window.history.back();", 'OK','Cancel', 'height: 100px;' );
+		$retVal = Controls::dialog( "Give Traxium", $text, "player.giveRookie()", "window.history.back();", 'OK','Cancel', 'height: 100px;' );
 
 		$retVal .= '<script type="text/javascript">';
 		$retVal .= '$("#dialog-message").css("height",60)';
@@ -252,7 +257,8 @@ class Player extends BaseItem {
 		Database::getInstance()->execute("UPDATE userstats SET Fame=Fame+'{$params['value']}' WHERE UserID='{$params['id']}'" );
 		Cache::getInstance()->clear('userStats',$params['id']);
 
-		return Controls::sUiDialog( "Confirmation", "Traxium <strong>have been given</strong>", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}'");
+		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
+		
 	}
 
 	final public function giveAntimatterDialog($user, $params) {
@@ -260,13 +266,13 @@ class Player extends BaseItem {
 		global $config;
 
 		$text = '<form method="post" name="myForm" style="margin: 0; padding: 0;">';
-		$text .= '<input masked="int10" class="ui-corner-all ui-state-default" value="0" name="value" size="10" />';
+		$text .= '<input masked="int10" class="span1" value="0" name="value" />';
 		$text .= '<input type="hidden" name="class" value="\Controlpanel\Player">';
 		$text .= '<input type="hidden" name="method" value="giveAntimatterExe">';
 		$text .= '<input type="hidden" name="id" value="'.$params['id'].'">';
 		$text .= '</form>';
 
-		$retVal = Controls::sUiDialog( "Give antimatter", $text, "player.giveRookie()", "window.history.back();", 'OK','Cancel', 'height: 100px;' );
+		$retVal = Controls::dialog( "Give antimatter", $text, "player.giveRookie()", "window.history.back();", 'OK','Cancel', 'height: 100px;' );
 
 		$retVal .= '<script type="text/javascript">';
 		$retVal .= '$("#dialog-message").css("height",60)';
@@ -283,7 +289,8 @@ class Player extends BaseItem {
 		Database::getInstance()->execute("UPDATE userships SET Turns=Turns+'{$params['value']}' WHERE UserID='{$params['id']}'" );
 		Cache::getInstance()->clear('shipProperties',$params['id']);
 
-		return Controls::sUiDialog( "Confirmation", "Antimatter <strong>have been given</strong>", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}'");
+		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
+		
 	}
 
 	public function detail($user, $params) {
@@ -367,7 +374,7 @@ class Player extends BaseItem {
 				$template->add('lockButton',Controls::bootstrapButton ( "Player Lock", "document.location='index.php?class=\Controlpanel\Player&method=lockDialog&id={$params['id']}'",'btn-danger','icon-lock'));
 			}
 
-			$template->add('msgSendButton',Controls::bootstrapButton ( "Send an in-game message", "document.location='index.php?class=\Controlpanel\Player&method=msgSend&id={$params['id']}'",'btn-danger', 'icon-envelope' ));
+			$template->add('msgSendButton',Controls::bootstrapButton ( "Send an in-game message", "document.location='index.php?class=\Controlpanel\Player&method=msgSend&id={$params['id']}'",'', 'icon-envelope' ));
 
 			if ($userProperties->UserActivated == 'no') {
 				$template->add('activateButton',Controls::bootstrapButton ( "Activate Account", "document.location='index.php?class=\Controlpanel\Player&method=activateDialog&id={$params['id']}'",'btn-danger' ));
@@ -380,13 +387,13 @@ class Player extends BaseItem {
 			 * @since 2011-03-23
 			 */
 			if ($shipProperties->RookieTurns == 0) {
-				$template->add('rookieTurns',Controls::bootstrapButton ( "Give rookie turns", "document.location='index.php?class=\Controlpanel\Player&method=giveRookieDialog&id={$params['id']}'",'btn-danger','icon-plus'));
+				$template->add('rookieTurns',Controls::bootstrapButton ( "Give rookie turns", "document.location='index.php?class=\Controlpanel\Player&method=giveRookieDialog&id={$params['id']}'",'','icon-plus'));
 			}else {
-				$template->add('rookieTurns',Controls::bootstrapButton ( "Remove rookie turns", "document.location='index.php?class=\Controlpanel\Player&method=removeRookieDialog&id={$params['id']}'",'btn-danger',' icon-remove' ));
+				$template->add('rookieTurns',Controls::bootstrapButton ( "Remove rookie turns", "document.location='index.php?class=\Controlpanel\Player&method=removeRookieDialog&id={$params['id']}'",'',' icon-remove' ));
 			}
 
-			$template->add('giveAm',Controls::bootstrapButton ( "Give antimatter", "document.location='index.php?class=\Controlpanel\Player&method=giveAntimatterDialog&id={$params['id']}'",'btn-danger','icon-plus' ));
-			$template->add('giveTraxium',Controls::bootstrapButton ( "Give Traxium", "document.location='index.php?class=\Controlpanel\Player&method=giveTraxiumDialog&id={$params['id']}'",'btn-danger','icon-plus' ));
+			$template->add('giveAm',Controls::bootstrapButton ( "Give antimatter", "document.location='index.php?class=\Controlpanel\Player&method=giveAntimatterDialog&id={$params['id']}'",'','icon-plus' ));
+			$template->add('giveTraxium',Controls::bootstrapButton ( "Give Traxium", "document.location='index.php?class=\Controlpanel\Player&method=giveTraxiumDialog&id={$params['id']}'",'','icon-plus' ));
 
 		}
 

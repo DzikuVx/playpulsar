@@ -38,3 +38,5 @@
 //@todo email i uprawnienia FB przy tworzeniu konta
 //@todo dodatkowe zabezpieczenie przy wywoływaniu mapy na rzeczywiste dane z bazy, a nie tylko na selecta
 //@todo lepszy mechanizm agresywnych NPCów
+
+jquery-ui

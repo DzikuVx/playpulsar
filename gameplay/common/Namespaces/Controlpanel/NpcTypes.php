@@ -31,7 +31,7 @@ class NpcTypes extends GameplayItem{
 		\Database\Controller::getInstance()->execute($tQuery);
 		\Cache\Controller::getInstance()->clear('npc',$params['id']);
 
-		$retVal .= \General\Controls::sUiDialog( "Confirmation", "Data has been <strong>set</strong>", "document.location='{$_SESSION['returnLink']}'");
+		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
 
 		return $retVal;
 	}
@@ -86,7 +86,7 @@ class NpcTypes extends GameplayItem{
 
 		global $config;
 
-		return \General\Controls::sUiDialog( "Confirm", "Do you want to <strong>create all NPC</strong>?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=createAllExe'", "window.history.back();", 'Yes','No' );
+		return \General\Controls::dialog( "Confirm", "Do you want to <strong>create all NPC</strong>?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=createAllExe'", "window.history.back();", 'Yes','No' );
 	}
 
 	final public function createAllExe($user, $params) {
@@ -95,14 +95,14 @@ class NpcTypes extends GameplayItem{
 
 		self::sCreate();
 
-		return \General\Controls::sUiDialog( "Confirmation", "All NPC has been <strong>created</strong>", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=browse'");
+		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=browse", "Operation completed");
 	}
 
 	final public function dropAll($user, $params) {
 
 		global $config;
 
-		return \General\Controls::sUiDialog( "Confirm", "Do you want to <strong>drop all NPC</strong>?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=dropAllExe'", "window.history.back();", 'Yes','No' );
+		return \General\Controls::dialog( "Confirm", "Do you want to <strong>drop all NPC</strong>?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=dropAllExe'", "window.history.back();", 'Yes','No' );
 	}
 
 	final public function dropAllExe($user, $params) {
@@ -111,14 +111,14 @@ class NpcTypes extends GameplayItem{
 
 		self::sDropAll();
 
-		return \General\Controls::sUiDialog( "Confirmation", "All NPC has been <strong>dropped</strong>", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=browse'");
+		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=browse", "Operation completed");
 	}
 
 	final public function drop($user, $params) {
 
 		global $config;
 
-		return \General\Controls::sUiDialog( "Confirm", "Do you want to <strong>drop selected NPC</strong>?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=dropExe&id={$params['id']}'", "window.history.back();", 'Yes','No' );
+		return \General\Controls::dialog( "Confirm", "Do you want to <strong>drop selected NPC</strong>?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=dropExe&id={$params['id']}'", "window.history.back();", 'Yes','No' );
 	}
 
 	final public function dropExe($user, $params) {
@@ -127,14 +127,14 @@ class NpcTypes extends GameplayItem{
 
 		self::sDropType($params['id']);
 
-		return \General\Controls::sUiDialog( "Confirmation", "Selected NPC has been <strong>dropped</strong>", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}'");
+		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
 	}
 
 	final public function create($user, $params) {
 
 		global $config;
 
-		return \General\Controls::sUiDialog( "Confirm", "Do you want to <strong>create selected NPC</strong>?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=createExe&id={$params['id']}'", "window.history.back();", 'Yes','No' );
+		return \General\Controls::dialog( "Confirm", "Do you want to <strong>create selected NPC</strong>?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=createExe&id={$params['id']}'", "window.history.back();", 'Yes','No' );
 	}
 
 	final public function createExe($user, $params) {
@@ -143,7 +143,7 @@ class NpcTypes extends GameplayItem{
 
 		self::sCreate($params['id']);
 
-		return \General\Controls::sUiDialog( "Confirmation", "Selected NPC has been <strong>created</strong>", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}'");
+		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
 	}
 
 	/**
@@ -397,6 +397,10 @@ class NpcTypes extends GameplayItem{
 						$tResult = mysqli_stmt_execute($sPreparedEquipment);
 
 						if (empty($tResult)) {
+							
+							var_dump($sPreparedEquipment, $npcID, $value);
+							die();
+							
 							throw new \Database\Exception ( mysqli_error (\Database\Controller::getInstance()->getHandle()), mysqli_errno (\Database\Controller::getInstance()->getHandle()) );
 						}
 

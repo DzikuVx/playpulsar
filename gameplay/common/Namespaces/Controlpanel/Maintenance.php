@@ -33,7 +33,7 @@ class Maintenance extends BaseItem {
 
 		global $config;
 
-		return Controls::sUiDialog( "Confirm", "Do you want to <strong>reset all player accounts</strong>?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=resetAllExe'", "window.history.back();", 'Yes','No' );
+		return Controls::dialog( "Confirm", "Do you want to <strong>reset all player accounts</strong>?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=resetAllExe'", "window.history.back();", 'Yes','No' );
 	}
 
 
@@ -47,7 +47,7 @@ class Maintenance extends BaseItem {
 
 		self::sResetAllAccounts();
 
-		return Controls::sUiDialog( "Confirmation", "All player accounts <strong>has been reseted</strong>", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=detail'");
+		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail", "Operation completed");
 	}
 
 	final public function flushAll($user, $params) {
@@ -58,7 +58,7 @@ class Maintenance extends BaseItem {
 
 		global $config;
 
-		return Controls::sUiDialog( "Confirm", "Do you want to <strong>flush shared cache</strong>?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=flushAllExe'", "window.history.back();", 'Yes','No' );
+		return Controls::dialog( "Confirm", "Do you want to <strong>flush shared cache</strong>?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=flushAllExe'", "window.history.back();", 'Yes','No' );
 	}
 
 	final public function flushAllExe($user, $params) {
@@ -71,7 +71,7 @@ class Maintenance extends BaseItem {
 
 		Cache::getInstance()->clearAll();
 
-		return Controls::sUiDialog( "Confirmation", "Cache <strong>has been flushed</strong>", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=detail'");
+		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail", "Operation completed");
 	}
 
 	final public function giveTraxium($user, $params) {
@@ -83,12 +83,12 @@ class Maintenance extends BaseItem {
 		global $config;
 
 		$text = '<form method="post" name="myForm" style="margin: 0; padding: 0;">';
-		$text .= '<input masked="int10" class="ui-corner-all ui-state-default" value="0" name="value" size="10" />';
+		$text .= '<input masked="int10" class="span1" value="0" name="value"/>';
 		$text .= '<input type="hidden" name="class" value="'.get_class($this).'">';
 		$text .= '<input type="hidden" name="method" value="giveTraxiumExe">';
 		$text .= '</form>';
 
-		$retVal = Controls::sUiDialog( "Give Traxium", $text, "player.giveTraxium()", "window.history.back();", 'OK','Cancel', 'height: 100px;' );
+		$retVal = Controls::dialog( "Give Traxium", $text, "player.giveTraxium()", "window.history.back();", 'OK','Cancel', 'height: 100px;' );
 
 		$retVal .= '<script type="text/javascript">';
 		$retVal .= '$("#dialog-message").css("height",60)';
@@ -112,7 +112,7 @@ class Maintenance extends BaseItem {
 		Database::getInstance()->execute("UPDATE userstats SET Fame=Fame+'{$params['value']}'");
 		Cache::getInstance()->clearAll();
 
-		return Controls::sUiDialog( "Confirmation", "<strong>Operation completed</strong>", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=detail'");
+		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail", "<strong>Operation completed</strong>");
 	}
 
 	final public function giveAntimatter($user, $params) {
@@ -124,12 +124,12 @@ class Maintenance extends BaseItem {
 		global $config;
 
 		$text = '<form method="post" name="myForm" style="margin: 0; padding: 0;">';
-		$text .= '<input masked="int10" class="ui-corner-all ui-state-default" value="0" name="value" size="10" />';
+		$text .= '<input masked="int10" class="span2" value="0" name="value" />';
 		$text .= '<input type="hidden" name="class" value="'.get_class($this).'">';
 		$text .= '<input type="hidden" name="method" value="giveAntimatterExe">';
 		$text .= '</form>';
 
-		$retVal = Controls::sUiDialog( "Give Antimatter", $text, "player.giveTraxium()", "window.history.back();", 'OK','Cancel', 'height: 100px;' );
+		$retVal = Controls::dialog( "Give Antimatter", $text, "player.giveTraxium()", "window.history.back();", 'OK','Cancel', 'height: 100px;' );
 
 		$retVal .= '<script type="text/javascript">';
 		$retVal .= '$("#dialog-message").css("height",60)';
@@ -152,9 +152,9 @@ class Maintenance extends BaseItem {
 
 		$values = array('info'=>'Info','warning'=>'Warning','error'=>'Error');
 
-		$text .= Controls::renderSelect('type', $tData['type'], $values,array('class'=>'ui-corner-all ui-state-default'));
+		$text .= Controls::renderSelect('type', $tData['type'], $values,array('class'=>'span2'));
 
-		$text .= '<p><textarea name="text" class="ui-corner-all ui-state-default" cols="50" rows="3">';
+		$text .= '<p><textarea name="text" class="span4">';
 		$text .= $tData['text'];
 		$text .= '</textarea></p>';
 
@@ -162,7 +162,7 @@ class Maintenance extends BaseItem {
 		$text .= '<input type="hidden" name="method" value="gameplayMessageExe">';
 		$text .= '</form>';
 
-		$retVal = Controls::sUiDialog( "In-game message", $text, "player.gameplayMessage()", "window.history.back();", 'OK','Cancel', 'height: 100px;' );
+		$retVal = Controls::dialog( "In-game message", $text, "player.gameplayMessage()", "window.history.back();", 'OK','Cancel', 'height: 100px;' );
 
 		$retVal .= '<script type="text/javascript">';
 		$retVal .= '$("#dialog-message").css("height",140);';
@@ -182,7 +182,7 @@ class Maintenance extends BaseItem {
 
 		\gameplayMessage::write($_REQUEST['type'], $_REQUEST['text']);
 
-		return Controls::sUiDialog( "Confirmation", "<strong>Operation completed</strong>", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=detail'");
+		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail", "Operation completed");
 	}
 
 	final public function giveAntimatterExe($user, $params) {
@@ -199,8 +199,7 @@ class Maintenance extends BaseItem {
 
 		Database::getInstance()->execute("UPDATE userships SET Turns=Turns+'{$params['value']}'");
 		Cache::getInstance()->clearAll();
-
-		return Controls::sUiDialog( "Confirmation", "<strong>Operation completed</strong>", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=detail'");
+		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail", "Operation completed");
 	}
 
 	public function detail($user, $params) {
@@ -214,10 +213,10 @@ class Maintenance extends BaseItem {
 		$retVal = $this->renderTitle ( "Global administration" );
 
 		$retVal .= Controls::bootstrapButton('Reset all accounts', "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=resetAll'", 'btn-danger','icon-fire' );
-		$retVal .= Controls::bootstrapButton('Flush all shared cache', "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=flushAll'", 'btn-warning','icon-trash' );
-		$retVal .= Controls::bootstrapButton('Give Traxium', "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=giveTraxium'", 'btn-warning','icon-plus' );
-		$retVal .= Controls::bootstrapButton('Give Antimatter', "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=giveAntimatter'", 'btn-warning','icon-plus' );
-		$retVal .= Controls::bootstrapButton('Set in-game message', "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=gameplayMessage'", 'btn-warning','icon-envelope' );
+		$retVal .= Controls::bootstrapButton('Flush all shared cache', "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=flushAll'", '','icon-trash' );
+		$retVal .= Controls::bootstrapButton('Give Traxium', "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=giveTraxium'", '','icon-plus' );
+		$retVal .= Controls::bootstrapButton('Give Antimatter', "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=giveAntimatter'", '','icon-plus' );
+		$retVal .= Controls::bootstrapButton('Set in-game message', "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=gameplayMessage'", '','icon-envelope' );
 
 		if (! empty ( $params ['execute'] )) {
 

@@ -657,7 +657,7 @@ abstract class cpBaseRegistry{
 			$detailString = $this->generateDetailString ( $tResult );
 
 			if (!empty($detailString)) {
-				$retVal .= \General\Controls::bootstrapIconButton ( "Details", $detailString, 'btn-info',"icon-list" );
+				$retVal .= \General\Controls::bootstrapIconButton ( "Details", $detailString, null,"icon-list" );
 			}
 
 			if ($this->rightsSet ['allowEdit'] && (user::sGetRole() == $this->rightsSet ['editRight'] || user::sGetRole() == 'admin' )) {
