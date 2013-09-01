@@ -45,7 +45,7 @@ else {
 	$dbConfig ['host'] = "";
 	$dbConfig ['login'] = "";
 	$dbConfig ['password'] = "";
-	$dbConfig ['database'] = "playpulsars";
+	$dbConfig ['database'] = "playpulsar";
 	$dbConfig ['persistent'] = false;
 	$dbConfig ['enconding'] = "UTF-8";
 

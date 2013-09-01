@@ -1,0 +1,7 @@
+STRICT NOTICE: Non-static method product::sGetAmountInPort() should not be called statically
+File: /home/pawel/Projects/playpulsar/gameplay/engine/cargo.php
+Line: 553
+Backtrace:
+cargo.php at line #553	psDebug::errorHandler(2048, "Non-static method product::sGetAmountInPort() should not be called statically", "/home/pawel/Projects/playpulsar/gameplay/engine/cargo.php", 553, array[74])
+cargo.php at line #553	product::sGetAmountInPort(
+engine.php at line #702	include("/home/pawel/Projects/playpulsar/gameplay/engine/cargo.php")
