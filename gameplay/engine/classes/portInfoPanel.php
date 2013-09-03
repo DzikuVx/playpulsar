@@ -46,13 +46,13 @@ class portInfoPanel extends basePanel {
 			$this->retVal .= "<div style=\"text-align: center; margin-top: 30px;\">";
 			//Info o stanie Portu
 			if ($shipPosition->Docked == "no") {
-				$this->retVal .= "<span class=\"actionButton\" onclick=\"executeAction('shipDock',null,null,null,null);\">" . TranslateController::getDefault()->get ( 'dock' ) . "</span>";
+				$this->retVal .= "<span class=\"actionButton\" onclick=\"Playpulsar.gameplay.execute('shipDock',null,null,null,null);\">" . TranslateController::getDefault()->get ( 'dock' ) . "</span>";
 			} elseif ($shipPosition->Docked == "yes") {
-				$this->retVal .= "<span class=\"actionButton\" onclick=\"executeAction('shipUnDock',null,null,null,null);\">" . TranslateController::getDefault()->get ( 'undock' ) . "</span>";
+				$this->retVal .= "<span class=\"actionButton\" onclick=\"Playpulsar.gameplay.execute('shipUnDock',null,null,null,null);\">" . TranslateController::getDefault()->get ( 'undock' ) . "</span>";
 			}
 			//Sprawdzenie, czy można atakować port
 			if (!empty($config['raiding']['enabled']) && $shipProperties->RookieTurns == 0 && $portProperties->State != "raided" && $shipPosition->Docked == "no") {
-				$this->retVal .= "<span class=\"actionButton\" onclick=\"executeAction('portRaid',null,null,null,null);\">" . TranslateController::getDefault()->get ( 'raid' ) . "</span>";
+				$this->retVal .= "<span class=\"actionButton\" onclick=\"Playpulsar.gameplay.execute('portRaid',null,null,null,null);\">" . TranslateController::getDefault()->get ( 'raid' ) . "</span>";
 			}
 			$this->retVal .= "</div>";
 			$this->retVal .= "</td>";
@@ -84,7 +84,7 @@ class portInfoPanel extends basePanel {
 			$this->retVal .= "<div style=\"text-align: center; margin-top: 30px;\">";
 			
 			if ($shipPosition->Docked == "no") {
-				$this->retVal .= "<span class=\"actionButton\" onClick=\"executeAction('shipNodeJump',null,null,null,null);\">[" . TranslateController::getDefault()->get ( 'jump' ) . "]</span>";
+				$this->retVal .= "<span class=\"actionButton\" onClick=\"Playpulsar.gameplay.execute('shipNodeJump',null,null,null,null);\">[" . TranslateController::getDefault()->get ( 'jump' ) . "]</span>";
 			}
 			
 			$this->retVal .= "</div>";

@@ -37,11 +37,11 @@ class messageRegistry extends simpleRegistry {
 			}
 
 			$retVal .= "<tr style=\"cursor: pointer; " . $tStyle . "\">";
-			$retVal .= "<td onclick=\"executeAction('showMessageText',null,null,'{$tResult->MessageID}');\">" . \General\Formater::formatDateTime ( $tResult->CreateTime ) . '</td>';
-			$retVal .= "<td onclick=\"executeAction('showMessageText',null,null,'{$tResult->MessageID}');\">" . $tResult->Name . '</td>';
+			$retVal .= "<td onclick=\"Playpulsar.gameplay.execute('showMessageText',null,null,'{$tResult->MessageID}');\">" . \General\Formater::formatDateTime ( $tResult->CreateTime ) . '</td>';
+			$retVal .= "<td onclick=\"Playpulsar.gameplay.execute('showMessageText',null,null,'{$tResult->MessageID}');\">" . $tResult->Name . '</td>';
 
 			$tString = '';
-			$tString .= \General\Controls::renderImgButton ( 'delete', "executeAction('deleteMessage',null,null,'{$tResult->MessageID}');", 'Delete' );
+			$tString .= \General\Controls::renderImgButton ( 'delete', "Playpulsar.gameplay.execute('deleteMessage',null,null,'{$tResult->MessageID}');", 'Delete' );
 
 			if (empty ( $tString )) {
 				$tString = '&nbsp;';

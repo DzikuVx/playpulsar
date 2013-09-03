@@ -87,11 +87,11 @@ announcementPanel = new announcementPanelClass();
 function bankClass() {
 
 	this.deposit = function() {
-		executeAction('bankDeposit', null, $('#bankDepositValue').val());
+		Playpulsar.gameplay.execute('bankDeposit', null, $('#bankDepositValue').val());
 	};
 
 	this.withdraw = function() {
-		executeAction('bankWithdraw', null, $('#bankWithdrawValue').val());
+		Playpulsar.gameplay.execute('bankWithdraw', null, $('#bankWithdrawValue').val());
 	};
 
 }
@@ -136,12 +136,12 @@ function userClass() {
 		sXml += '<userLanguage>' + $('#userLanguage').val() + '</userLanguage>';
 		sXml += '<spamCheckbox>' + $('#spamCheckbox').attr('checked')
 				+ '</spamCheckbox>';
-		executeAction('accountSettingsExe', null, sXml, null, null);
+		Playpulsar.gameplay.execute('accountSettingsExe', null, sXml, null, null);
 
 	};
 
 	this.newAbusement = function(userID) {
-		executeAction('reportAbusementExe', null, $('#postText').val(), userID,
+		Playpulsar.gameplay.execute('reportAbusementExe', null, $('#postText').val(), userID,
 				null);
 	};
 
@@ -157,7 +157,7 @@ function allianceClass() {
 	this.applySave = function(allianceID) {
 		var sXml = '';
 		sXml += '<text>' + $('#text').val() + '</text>';
-		executeAction('allianceApplyExe', null, sXml, allianceID, null);
+		Playpulsar.gameplay.execute('allianceApplyExe', null, sXml, allianceID, null);
 	};
 
 	/**
@@ -175,7 +175,7 @@ function allianceClass() {
 		sXml += '<allianceMotto>' + $('#AllianceMotto').val()
 				+ '</allianceMotto>';
 
-		executeAction('allianceEditExe', null, sXml, null, null);
+		Playpulsar.gameplay.execute('allianceEditExe', null, sXml, null, null);
 	};
 
 	/**
@@ -187,7 +187,7 @@ function allianceClass() {
 
 		sXml += '<postText>' + $('#postText').val() + '</postText>';
 
-		executeAction('alliancPostMessageExe', null, sXml, null, null);
+		Playpulsar.gameplay.execute('alliancPostMessageExe', null, sXml, null, null);
 	};
 
 	/**
@@ -205,7 +205,7 @@ function allianceClass() {
 		sXml += '<allianceMotto>' + $('#AllianceMotto').val()
 				+ '</allianceMotto>';
 
-		executeAction('allianceNewExe', null, sXml, null, null);
+		Playpulsar.gameplay.execute('allianceNewExe', null, sXml, null, null);
 	};
 
 	/**
@@ -230,15 +230,15 @@ function allianceClass() {
 		sXml += '<relationsValue>' + $('#relationsValue').attr('checked')
 				+ '</relationsValue>';
 
-		executeAction('setAllianceRightExecute', null, sXml, id, null);
+		Playpulsar.gameplay.execute('setAllianceRightExecute', null, sXml, id, null);
 	};
 
 	this.deposit = function() {
-		executeAction('allianceDeposit', null, $('#allianceDepositValue').val());
+		Playpulsar.gameplay.execute('allianceDeposit', null, $('#allianceDepositValue').val());
 	};
 
 	this.cashout = function(id) {
-		executeAction('allianceCashoutExe', null, $('#cashoutValue').val(), id);
+		Playpulsar.gameplay.execute('allianceCashoutExe', null, $('#cashoutValue').val(), id);
 	};
 
 }
@@ -356,122 +356,117 @@ function executeAction(action, subaction, value, id, auth) {
 	sendXML = sendXML + "<auth>" + $('#authCode').html() + "</auth>";
 
 	progressBar.start();
+	
+	$.post(
+		'engine/engine.php',
+		sendXML,
+		function(data) {
+			tString = parseXmlValue(data, 'logout');
+			if (tString == 'true') {
+				document.location = 'index.php';
+				return true;
+			}
 
-	$
-			.post(
-					'engine/engine.php',
-					sendXML,
-					function(data) {
-						/*
-						 * Wylogowanie
-						 */
-						tString = parseXmlValue(data, 'logout');
-						if (tString == 'true') {
-							document.location = 'index.php';
-							return true;
-						}
+			miniMapPanel.populate(data);
+			sectorPanel.populate(data);
+			portInfoPanel.populate(data);
+			movePanel.populate(data);
+			shortShipStatsPanel.populate(data);
+			shortUserStatsPanel.populate(data);
+			sectorShipsPanel.populate(data);
+			sectorResourcePanel.populate(data);
+			navigationPanel.populate(data);
+			shipStatsPanel.populate(data);
+			iconPanel.populate(data);
+			announcementPanel.populate(data);
+			activeScanner.populate(data);
 
-						miniMapPanel.populate(data);
-						sectorPanel.populate(data);
-						portInfoPanel.populate(data);
-						movePanel.populate(data);
-						shortShipStatsPanel.populate(data);
-						shortUserStatsPanel.populate(data);
-						sectorShipsPanel.populate(data);
-						sectorResourcePanel.populate(data);
-						navigationPanel.populate(data);
-						shipStatsPanel.populate(data);
-						iconPanel.populate(data);
-						announcementPanel.populate(data);
-						activeScanner.populate(data);
+			panel.populate(data, 'newsAgencyPanel');
 
-						panel.populate(data, 'newsAgencyPanel');
+			/*
+			 * tString = parseXmlValue(data, 'announcementPanel');
+			 * if (tString != '&nbsp;') {
+			 * $('#announcementPanel').show(); } else {
+			 * $('#announcementPanel').hide(); }
+			 * 
+			 * if (tString != "") {
+			 * $('#announcementPanel').html(tString); }
+			 */
+			tString = parseXmlValue(data, 'authCode');
+			if (tString != "") {
+				$('#authCode').html(tString);
+			}
 
-						/*
-						 * tString = parseXmlValue(data, 'announcementPanel');
-						 * if (tString != '&nbsp;') {
-						 * $('#announcementPanel').show(); } else {
-						 * $('#announcementPanel').hide(); }
-						 * 
-						 * if (tString != "") {
-						 * $('#announcementPanel').html(tString); }
-						 */
+			tString = parseXmlValue(data, 'debugPanel');
+			if (tString != "") {
+				$('#debugPanel').html(tString);
+			}
 
-						tString = parseXmlValue(data, 'authCode');
-						if (tString != "") {
-							$('#authCode').html(tString);
-						}
+			tString = parseXmlValue(data, 'psDebug');
+			if (tString != "") {
+				$('#debugPanel').html(tString);
+			}
 
-						tString = parseXmlValue(data, 'debugPanel');
-						if (tString != "") {
-							$('#debugPanel').html(tString);
-						}
+			tString = parseXmlValue(data, 'portPanel');
+			if (tString != "") {
+				$('#portPanel').html(tString);
+				if (tString == "&nbsp;") {
+					$('#portPanel').hide();
+				} else {
+					$('#portPanel').show();
+				}
+			}
 
-						tString = parseXmlValue(data, 'psDebug');
-						if (tString != "") {
-							$('#debugPanel').html(tString);
-						}
+			tString = parseXmlValue(data, 'actionPanel');
+			if (tString != "") {
+				$('#actionPanel').html(tString);
+				if (tString == "&nbsp;") {
+					$('#actionPanel').hide();
+				} else {
+					$('#actionPanel').show();
+				}
+			}
 
-						tString = parseXmlValue(data, 'portPanel');
-						if (tString != "") {
-							$('#portPanel').html(tString);
-							if (tString == "&nbsp;") {
-								$('#portPanel').hide();
-							} else {
-								$('#portPanel').show();
-							}
-						}
+			if (trim($('#actionPanel').html()) == ''
+					&& trim($('#portPanel').html()) == '') {
+				$('#mainPanel').hide();
+			} else {
+				$('#mainPanel').show();
+			}
 
-						tString = parseXmlValue(data, 'actionPanel');
-						if (tString != "") {
-							$('#actionPanel').html(tString);
-							if (tString == "&nbsp;") {
-								$('#actionPanel').hide();
-							} else {
-								$('#actionPanel').show();
-							}
-						}
+			if (trim($('#sectorShipsPanel').html()) == ''
+					&& trim($('#sectorResourcePanel').html()) == '') {
+				$('#primaryPanel').hide();
+			} else {
+				$('#primaryPanel').show();
+			}
 
-						if (trim($('#actionPanel').html()) == ''
-								&& trim($('#portPanel').html()) == '') {
-							$('#mainPanel').hide();
-						} else {
-							$('#mainPanel').show();
-						}
+			tString = parseXmlValue(data, 'combatScreen');
+			if (tString != '') {
 
-						if (trim($('#sectorShipsPanel').html()) == ''
-								&& trim($('#sectorResourcePanel').html()) == '') {
-							$('#primaryPanel').hide();
-						} else {
-							$('#primaryPanel').show();
-						}
+				wasInCombat = true;
 
-						tString = parseXmlValue(data, 'combatScreen');
-						if (tString != '') {
+				$('#combatScreen').html(tString);
+				$("#mainGameplay").hide();
+				$('#combatScreen').show();
 
-							wasInCombat = true;
+				clearTimeout(fireWeaponsTimeout);
+				fireWeaponsTimeout = setTimeout(
+						"$('#fireButton').show(); $('#disengageButton').show(); $('#maydayButton').show();",
+						$('#salvoInterval').val() * 1000);
 
-							$('#combatScreen').html(tString);
-							$("#mainGameplay").hide();
-							$('#combatScreen').show();
+			} else {
+				if (wasInCombat) {
+					wasInCombat = false;
+					$("#mainGameplay").show();
+					$("#combatScreen").hide();
+				}
+			}
 
-							clearTimeout(fireWeaponsTimeout);
-							fireWeaponsTimeout = setTimeout(
-									"$('#fireButton').show(); $('#disengageButton').show(); $('#maydayButton').show();",
-									$('#salvoInterval').val() * 1000);
+			$('.knob').knob();
 
-						} else {
-							if (wasInCombat) {
-								wasInCombat = false;
-								$("#mainGameplay").show();
-								$("#combatScreen").hide();
-							}
-						}
-
-						$('.knob').knob();
-
-						progressBar.stop();
-					});
+			progressBar.stop();
+		});
 
 }
 
@@ -489,3 +484,68 @@ function trim(str) {
 		return '';
 	}
 }
+
+var Playpulsar = Playpulsar || {};
+
+Playpulsar.gameplay = (function () {
+	
+	var self = {};
+	
+	self.execute = function(action, subaction, value, id) {
+		
+		/*
+		 * Prepare additional data
+		 */
+		if (action == 'productBuy') {
+			value = $('#buy_' + id).val();
+			if (value == '')
+				value = 0;
+		}
+
+		if (action == 'productSell') {
+			value = $('#sell_' + id).val();
+			if (value == '')
+				value = 0;
+		}
+
+		if (action == 'itemSell') {
+			value = $('#item_sell_' + id).val();
+			if (value == '')
+				value = 0;
+		}
+
+		if (action == 'plotSet') {
+			value = $('#plotSystem').val() + "/" + $('#plotX').val() + "/"
+					+ $('#plotY').val();
+		}
+		
+		var requestData = {};
+		
+		requestData.userID 		= $('#userID').html();
+		requestData.action 		= action;
+		requestData.subaction 	= subaction;
+		requestData.value 		= value;
+		requestData.id 			= id;
+		requestData.auth 		= $('#authCode').html();
+		
+		$.ajax({
+			  dataType: "json",
+			  method: 'post',
+			  url: 'engine/engine.php',
+			  data: requestData,
+			  success: self.processSuccess,
+			  error: self.processFailure
+			});
+		
+	}
+	
+	self.processSuccess = function (data) {
+		console.log('Success', data);
+	}
+	
+	self.processFailure = function (data) {
+		console.log('Failure', data);
+	}
+	
+	return self;
+})();

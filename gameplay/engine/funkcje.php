@@ -50,7 +50,7 @@ function shipExamine($id, $userID) {
 	\Gameplay\Panel\SectorShips::getInstance()->hide ();
 
 	$actionPanel = "";
-	$actionPanel .= \General\Controls::bootstrapIconButton('{T:close}',"executeAction('shipRefresh',null,null,null,null)",'pull-right close','icon-remove');
+	$actionPanel .= \General\Controls::bootstrapIconButton('{T:close}',"Playpulsar.gameplay.execute('shipRefresh',null,null,null,null)",'pull-right close','icon-remove');
 	$actionPanel .= "<div>";
 	$actionPanel .= "<table class='table table-striped'>";
 	$actionPanel .= "<tr><th>{T:playername}</th><td>" . $otheruserParameters->Name . "</td>";
@@ -69,20 +69,20 @@ function shipExamine($id, $userID) {
 
 	if ($otheruserParameters->Type == 'player' && $id != $userID) {
 
-		$actionPanel .= \General\Controls::bootstrapButton('{T:sendMessage}',"executeAction('sendMessage',null,null,'{$id}');",null,'icon-white icon-envelope');
+		$actionPanel .= \General\Controls::bootstrapButton('{T:sendMessage}',"Playpulsar.gameplay.execute('sendMessage',null,null,'{$id}');",null,'icon-white icon-envelope');
 
 		if (!buddyList::sCheckEntry($userID, $id)) {
-			$actionPanel .= \General\Controls::bootstrapButton('{T:Send buddy request}',"executeAction('addToFiends',null,null,'{$id}',null);",null,'icon-white icon-heart');
+			$actionPanel .= \General\Controls::bootstrapButton('{T:Send buddy request}',"Playpulsar.gameplay.execute('addToFiends',null,null,'{$id}',null);",null,'icon-white icon-heart');
 		}
 
-		$actionPanel .= \General\Controls::bootstrapButton('{T:Report abusement}',"executeAction('reportAbusement',null,null,'{$id}',null);",null,'icon-white icon-flag');
+		$actionPanel .= \General\Controls::bootstrapButton('{T:Report abusement}',"Playpulsar.gameplay.execute('reportAbusement',null,null,'{$id}',null);",null,'icon-white icon-flag');
 
 	}
 	elseif ($id == $userID) {
-		$actionPanel .= \General\Controls::bootstrapButton('{T:Account settings}',"executeAction('accountSettings',null,null,null,null);",null,'icon-white icon-edit');
+		$actionPanel .= \General\Controls::bootstrapButton('{T:Account settings}',"Playpulsar.gameplay.execute('accountSettings',null,null,null,null);",null,'icon-white icon-edit');
 
 		if ($othershipParameters->RookieTurns > 0) {
-			$actionPanel .= \General\Controls::bootstrapButton('{T:Drop rookie turns}',"executeAction('dropRookie',null,null,null,null);",null,'icon-white icon-remove');
+			$actionPanel .= \General\Controls::bootstrapButton('{T:Drop rookie turns}',"Playpulsar.gameplay.execute('dropRookie',null,null,null,null);",null,'icon-white icon-remove');
 		}
 
 		//@todo Reset konta

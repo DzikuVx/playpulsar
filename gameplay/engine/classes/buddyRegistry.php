@@ -36,8 +36,8 @@ class buddyRegistry extends simpleRegistry{
 				$retVal .= '<tr>';
 				$retVal .= '<td>' . $tResult->Name . '</td>';
 
-				$tString = \General\Controls::renderImgButton ( 'info', "executeAction('shipExamine','',null,'{$tResult->UserID}');", TranslateController::getDefault()->get ( 'examine' ) );
-				$tString .= \General\Controls::renderImgButton ( 'delete', "executeAction('buddyDeclineCurrent','',null,'{$tResult->UserID}');", TranslateController::getDefault()->get ( 'decline' ) );
+				$tString = \General\Controls::renderImgButton ( 'info', "Playpulsar.gameplay.execute('shipExamine','',null,'{$tResult->UserID}');", TranslateController::getDefault()->get ( 'examine' ) );
+				$tString .= \General\Controls::renderImgButton ( 'delete', "Playpulsar.gameplay.execute('buddyDeclineCurrent','',null,'{$tResult->UserID}');", TranslateController::getDefault()->get ( 'decline' ) );
 
 				$retVal .= '<td>' . $tString . '</td>';
 				$retVal .= '</tr>';

@@ -10,14 +10,14 @@ class allianceMembersRegistry extends simpleRegistry {
 
 	protected function renderActionButtons($tR, $tRights, $userID) {
 
-		$tString = \General\Controls::renderImgButton ( 'info',"executeAction('shipExamine','',null,{$tR->UserID});",TranslateController::getDefault()->get ( 'examine' ) );
+		$tString = \General\Controls::renderImgButton ( 'info',"Playpulsar.gameplay.execute('shipExamine','',null,{$tR->UserID});",TranslateController::getDefault()->get ( 'examine' ) );
 
 		if (!empty($tRights['kick']) && $tR->UserID != $userID) {
-			$tString .= \General\Controls::renderImgButton ( 'remove', "executeAction('allianceKick',null,null,{$tR->UserID});", TranslateController::getDefault()->get ( 'kick' ) );
+			$tString .= \General\Controls::renderImgButton ( 'remove', "Playpulsar.gameplay.execute('allianceKick',null,null,{$tR->UserID});", TranslateController::getDefault()->get ( 'kick' ) );
 		}
 
 		if (!empty($tRights['cash'])) {
-			$tString .= \General\Controls::renderImgButton ( 'dollar', "executeAction('allianceCashout',null,null,{$tR->UserID});", TranslateController::getDefault()->get ( 'cashType_out' ) );
+			$tString .= \General\Controls::renderImgButton ( 'dollar', "Playpulsar.gameplay.execute('allianceCashout',null,null,{$tR->UserID});", TranslateController::getDefault()->get ( 'cashType_out' ) );
 		}
 
 		return $tString;

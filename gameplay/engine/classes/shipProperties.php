@@ -39,22 +39,22 @@ class shipProperties extends baseItem {
 
 		if ($shipPosition->Docked == 'yes') {
 			if ($shipProperties->Shield < $shipProperties->ShieldMax && $userStats->Cash > ($config ['repairCost'] ['shield'] * ($shipProperties->ShieldMax < $shipProperties->Shield))) {
-				$template->add ( 'ShieldRepairButton', \General\Controls::renderImgButton ( 'repair', "executeAction('stationRepair','Shield','{$return}',null,null);", TranslateController::getDefault()->get ( 'RepairFor' ) . ($config ['repairCost'] ['shield'] * ($shipProperties->ShieldMax - $shipProperties->Shield)) . '$' ) );
+				$template->add ( 'ShieldRepairButton', \General\Controls::renderImgButton ( 'repair', "Playpulsar.gameplay.execute('stationRepair','Shield','{$return}',null,null);", TranslateController::getDefault()->get ( 'RepairFor' ) . ($config ['repairCost'] ['shield'] * ($shipProperties->ShieldMax - $shipProperties->Shield)) . '$' ) );
 			} else {
 				$template->add ( 'ShieldRepairButton', '&nbsp;' );
 			}
 			if ($shipProperties->Armor < $shipProperties->ArmorMax && $userStats->Cash > ($config ['repairCost'] ['armor'] * ($shipProperties->ArmorMax < $shipProperties->Armor))) {
-				$template->add ( 'ArmorRepairButton', \General\Controls::renderImgButton ( 'repair', "executeAction('stationRepair','Armor','{$return}',null,null);", TranslateController::getDefault()->get ( 'RepairFor' ) . ($config ['repairCost'] ['armor'] * ($shipProperties->ArmorMax - $shipProperties->Armor)) . '$' ) );
+				$template->add ( 'ArmorRepairButton', \General\Controls::renderImgButton ( 'repair', "Playpulsar.gameplay.execute('stationRepair','Armor','{$return}',null,null);", TranslateController::getDefault()->get ( 'RepairFor' ) . ($config ['repairCost'] ['armor'] * ($shipProperties->ArmorMax - $shipProperties->Armor)) . '$' ) );
 			} else {
 				$template->add ( 'ArmorRepairButton', '&nbsp;' );
 			}
 			if ($shipProperties->Power < $shipProperties->PowerMax && $userStats->Cash > ($config ['repairCost'] ['power'] * ($shipProperties->PowerMax < $shipProperties->Power))) {
-				$template->add ( 'PowerRepairButton', \General\Controls::renderImgButton ( 'repair', "executeAction('stationRepair','Power','{$return}',null,null);", TranslateController::getDefault()->get ( 'RepairFor' ) . ($config ['repairCost'] ['power'] * ($shipProperties->PowerMax - $shipProperties->Power)) . '$' ) );
+				$template->add ( 'PowerRepairButton', \General\Controls::renderImgButton ( 'repair', "Playpulsar.gameplay.execute('stationRepair','Power','{$return}',null,null);", TranslateController::getDefault()->get ( 'RepairFor' ) . ($config ['repairCost'] ['power'] * ($shipProperties->PowerMax - $shipProperties->Power)) . '$' ) );
 			} else {
 				$template->add ( 'PowerRepairButton', '&nbsp;' );
 			}
 			if ($shipProperties->Emp > 0 && $userStats->Cash > ($config ['repairCost'] ['emp'] * ($shipProperties->EmpMax < $shipProperties->Emp))) {
-				$template->add ( 'EmpRepairButton', \General\Controls::renderImgButton ( 'repair', "executeAction('stationRepair','Emp','{$return}',null,null);", TranslateController::getDefault()->get ( 'RepairFor' ) . ($config ['repairCost'] ['emp'] * $shipProperties->Emp) . '$' ) );
+				$template->add ( 'EmpRepairButton', \General\Controls::renderImgButton ( 'repair', "Playpulsar.gameplay.execute('stationRepair','Emp','{$return}',null,null);", TranslateController::getDefault()->get ( 'RepairFor' ) . ($config ['repairCost'] ['emp'] * $shipProperties->Emp) . '$' ) );
 			} else {
 				$template->add ( 'EmpRepairButton', '&nbsp;' );
 			}

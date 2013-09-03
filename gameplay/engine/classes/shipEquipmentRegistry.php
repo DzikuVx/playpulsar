@@ -90,7 +90,7 @@ class shipEquipmentRegistry extends simpleRegistry {
 
 				if ($shipPosition->Docked == 'yes' && $portProperties->Type == 'station') {
 
-					$tString .= \General\Controls::renderImgButton ( 'sell', "executeAction('sellEquipment','',null,{$tR1->ShipEquipmentID},null);", TranslateController::getDefault()->get ( 'sell' ) );
+					$tString .= \General\Controls::renderImgButton ( 'sell', "Playpulsar.gameplay.execute('sellEquipment','',null,{$tR1->ShipEquipmentID},null);", TranslateController::getDefault()->get ( 'sell' ) );
 				}
 
 			} else {
@@ -103,11 +103,11 @@ class shipEquipmentRegistry extends simpleRegistry {
 					$tRepairPrice = equipment::sGetRepairPrice ( $tR1->EquipmentID );
 
 					if ($userStats->Cash > $tRepairPrice) {
-						$tString .= \General\Controls::renderImgButton ( 'repair', "executeAction('stationRepairEquipment','',null,{$tR1->ShipEquipmentID},null);", TranslateController::getDefault()->get ( 'RepairFor' ) . $tRepairPrice . '$' );
+						$tString .= \General\Controls::renderImgButton ( 'repair', "Playpulsar.gameplay.execute('stationRepairEquipment','',null,{$tR1->ShipEquipmentID},null);", TranslateController::getDefault()->get ( 'RepairFor' ) . $tRepairPrice . '$' );
 					}
 
 					if ($portProperties->Type == 'station') {
-						$tString .= \General\Controls::renderImgButton ( 'sell', "executeAction('sellEquipment','',null,{$tR1->ShipEquipmentID},null);", TranslateController::getDefault()->get ( 'sell' ) );
+						$tString .= \General\Controls::renderImgButton ( 'sell', "Playpulsar.gameplay.execute('sellEquipment','',null,{$tR1->ShipEquipmentID},null);", TranslateController::getDefault()->get ( 'sell' ) );
 					}
 				}
 

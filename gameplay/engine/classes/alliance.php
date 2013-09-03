@@ -124,7 +124,7 @@ class alliance extends baseItem {
 		$tName = userProperties::quickLoad($kickedID)->Name;
 		$tString = str_replace('{name}',$tName, $tString);
 
-		$actionPanel = \General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"executeAction('allianceKickExecute',null,null,'{$kickedID}')","executeAction('allianceDetail',null,null,'{$userAlliance->AllianceID}')");
+		$actionPanel = \General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"Playpulsar.gameplay.execute('allianceKickExecute',null,null,'{$kickedID}')","Playpulsar.gameplay.execute('allianceDetail',null,null,'{$userAlliance->AllianceID}')");
 
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
@@ -205,7 +205,7 @@ class alliance extends baseItem {
 			throw new securityException();
 		}
 
-		$actionPanel = \General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), TranslateController::getDefault()->get('wantLeaveAlliance'),"executeAction('allianceLeaveExecute',null,null,null)","executeAction('allianceDetail',null,null,'{$userAlliance->AllianceID}')");
+		$actionPanel = \General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), TranslateController::getDefault()->get('wantLeaveAlliance'),"Playpulsar.gameplay.execute('allianceLeaveExecute',null,null,null)","Playpulsar.gameplay.execute('allianceDetail',null,null,'{$userAlliance->AllianceID}')");
 
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
@@ -510,12 +510,12 @@ class alliance extends baseItem {
 			$template->add('alliancePosts',$registry->get ($allianceID));
 			unset($registry);
 
-			$tOperations .=	 \General\Controls::renderButton ( TranslateController::getDefault()->get ( 'dialogLeaveAlliance' ), "executeAction('allianceLeave',null,null,null,null);", "width: 140px; margin: 2px;" );
+			$tOperations .=	 \General\Controls::renderButton ( TranslateController::getDefault()->get ( 'dialogLeaveAlliance' ), "Playpulsar.gameplay.execute('allianceLeave',null,null,null,null);", "width: 140px; margin: 2px;" );
 			/*
 			 * Edycja danych sojuszu
 			 */
 			if (allianceRights::sCheck($userID, $allianceID, 'edit')) {
-				$tOperations .=	 \General\Controls::renderButton ( TranslateController::getDefault()->get ( 'dialogEdit' ), "executeAction('allianceEditData',null,null,null,null);", "width: 140px; margin: 2px;" );
+				$tOperations .=	 \General\Controls::renderButton ( TranslateController::getDefault()->get ( 'dialogEdit' ), "Playpulsar.gameplay.execute('allianceEditData',null,null,null,null);", "width: 140px; margin: 2px;" );
 			}
 
 			/**
@@ -523,11 +523,11 @@ class alliance extends baseItem {
 			 * @since 2010-07-27
 			 */
 			if (allianceRights::sCheck($userID, $allianceID, 'accept')) {
-				$tOperations .=	 \General\Controls::renderButton ( TranslateController::getDefault()->get ( 'allianceAppliances' ).' ['.allianceRequest::sGetCount($allianceID).']', "executeAction('allianceAppliances',null,null,null,null);", "width: 140px; margin: 2px;" );
+				$tOperations .=	 \General\Controls::renderButton ( TranslateController::getDefault()->get ( 'allianceAppliances' ).' ['.allianceRequest::sGetCount($allianceID).']', "Playpulsar.gameplay.execute('allianceAppliances',null,null,null,null);", "width: 140px; margin: 2px;" );
 			}
 
 			if (allianceRights::sCheck($userID, $allianceID, 'cash')) {
-				$tOperations .=	 \General\Controls::renderButton ( TranslateController::getDefault()->get ( 'allianceFinace' ), "executeAction('allianceFinanceData',null,null,null,null);", "width: 140px; margin: 2px;" );
+				$tOperations .=	 \General\Controls::renderButton ( TranslateController::getDefault()->get ( 'allianceFinace' ), "Playpulsar.gameplay.execute('allianceFinanceData',null,null,null,null);", "width: 140px; margin: 2px;" );
 			}
 
 			/**
@@ -535,15 +535,15 @@ class alliance extends baseItem {
 			 * @since 2011-03-14
 			 */
 			if (allianceRights::sCheck($userID, $allianceID, 'post')) {
-				$tOperations .=	 \General\Controls::renderButton ( TranslateController::getDefault()->get ( 'newMessage' ), "executeAction('alliancPostMessage',null,null,null,null);", "width: 140px; margin: 2px;" );
+				$tOperations .=	 \General\Controls::renderButton ( TranslateController::getDefault()->get ( 'newMessage' ), "Playpulsar.gameplay.execute('alliancPostMessage',null,null,null,null);", "width: 140px; margin: 2px;" );
 			}
 
 			if (allianceRights::sCheck($userID, $allianceID, 'rank')) {
-				$tOperations .=	 \General\Controls::renderButton ( TranslateController::getDefault()->get ( 'allianceRank' ), "executeAction('allianceRightsRegistry',null,null,null,null);", "width: 140px; margin: 2px;" );
+				$tOperations .=	 \General\Controls::renderButton ( TranslateController::getDefault()->get ( 'allianceRank' ), "Playpulsar.gameplay.execute('allianceRightsRegistry',null,null,null,null);", "width: 140px; margin: 2px;" );
 			}
 		}
 		elseif (empty($userAlliance->AllianceID) && allianceRequest::sCheckRequest($userID, $allianceID) == false && $tData->NPCAlliance == 'no') {
-			$tOperations .=	 \General\Controls::renderButton ( TranslateController::getDefault()->get ( 'dialogJoinApply' ), "executeAction('allianceApply',null,null,'{$allianceID}',null);", "width: 140px; margin: 2px;" );
+			$tOperations .=	 \General\Controls::renderButton ( TranslateController::getDefault()->get ( 'dialogJoinApply' ), "Playpulsar.gameplay.execute('allianceApply',null,null,'{$allianceID}',null);", "width: 140px; margin: 2px;" );
 
 			$template->add('alliancePosts','');
 

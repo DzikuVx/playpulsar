@@ -535,11 +535,11 @@ try {
 			break;
 
 		case 'deleteMessage' :
-			announcementPanel::getInstance()->populate(\General\Controls::sRenderDialog ( TranslateController::getDefault()->get ( 'confirm' ), TranslateController::getDefault()->get ( 'wantDeleteMessage' ), "executeAction('wantDeleteMessageExecute','',null,'$id')", 'executeAction()' ));
+			announcementPanel::getInstance()->populate(\General\Controls::sRenderDialog ( TranslateController::getDefault()->get ( 'confirm' ), TranslateController::getDefault()->get ( 'wantDeleteMessage' ), "Playpulsar.gameplay.execute('wantDeleteMessageExecute','',null,'$id')", 'Playpulsar.gameplay.execute()' ));
 			break;
 
 		case 'dropRookie' :
-			announcementPanel::getInstance()->populate(\General\Controls::sRenderDialog ( TranslateController::getDefault()->get ( 'confirm' ), TranslateController::getDefault()->get ( 'Do you want to drop rookie turns?' ), "executeAction('dropRookieExe','',null,null)", 'executeAction()' ));
+			announcementPanel::getInstance()->populate(\General\Controls::sRenderDialog ( TranslateController::getDefault()->get ( 'confirm' ), TranslateController::getDefault()->get ( 'Do you want to drop rookie turns?' ), "Playpulsar.gameplay.execute('dropRookieExe','',null,null)", 'Playpulsar.gameplay.execute()' ));
 			break;
 
 		case 'dropRookieExe':
@@ -604,7 +604,7 @@ try {
 			break;
 
 		case 'buyShip' :
-			announcementPanel::getInstance()->populate(\General\Controls::sRenderDialog ( TranslateController::getDefault()->get ( 'confirm' ), TranslateController::getDefault()->get ( 'wantBuyShip' ), "executeAction('buyShipExecute','',null,'$id')", 'executeAction()' ));
+			announcementPanel::getInstance()->populate(\General\Controls::sRenderDialog ( TranslateController::getDefault()->get ( 'confirm' ), TranslateController::getDefault()->get ( 'wantBuyShip' ), "Playpulsar.gameplay.execute('buyShipExecute','',null,'$id')", 'Playpulsar.gameplay.execute()' ));
 			break;
 
 		case 'buyShipExecute' :

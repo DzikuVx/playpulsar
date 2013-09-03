@@ -40,7 +40,7 @@ class alliancePost extends baseItem {
 			throw new securityException();
 		}
 
-		$actionPanel = \General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), TranslateController::getDefault()->get('wantDeleteAlliancePost'),"executeAction('alliancePostDeleteExe',null,null,{$id})","executeAction('allianceDetail',null,null,'{$userAlliance->AllianceID}')");
+		$actionPanel = \General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), TranslateController::getDefault()->get('wantDeleteAlliancePost'),"Playpulsar.gameplay.execute('alliancePostDeleteExe',null,null,{$id})","Playpulsar.gameplay.execute('allianceDetail',null,null,'{$userAlliance->AllianceID}')");
 
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();

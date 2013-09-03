@@ -52,35 +52,35 @@ class portProperties extends baseItem {
 				} else {
 					$fix = "";
 				}
-				$portPanel .= \General\Controls::bootstrapButton('{T:hangar}',"executeAction('portHangar',null,null,null,null);", $fix);
+				$portPanel .= \General\Controls::bootstrapButton('{T:hangar}',"Playpulsar.gameplay.execute('portHangar',null,null,null,null);", $fix);
 				
 				if ($action == "portMarketplace") {
 					$fix = "btn-inverse";
 				} else {
 					$fix = "";
 				}
-				$portPanel .= \General\Controls::bootstrapButton('{T:marketplace}',"executeAction('portMarketplace',null,null,null,null);", $fix);
+				$portPanel .= \General\Controls::bootstrapButton('{T:marketplace}',"Playpulsar.gameplay.execute('portMarketplace',null,null,null,null);", $fix);
 				
 				if ($action == "portShipyard") {
 					$fix = "btn-inverse";
 				} else {
 					$fix = "";
 				}
-				$portPanel .= \General\Controls::bootstrapButton('{T:shipyard}' ,"executeAction('portShipyard',null,null,null,null);", $fix);
+				$portPanel .= \General\Controls::bootstrapButton('{T:shipyard}' ,"Playpulsar.gameplay.execute('portShipyard',null,null,null,null);", $fix);
 
 				if ($action == "portBank") {
 					$fix = "btn-inverse";
 				} else {
 					$fix = "";
 				}
-				$portPanel .= \General\Controls::bootstrapButton('{T:Bank}',"executeAction('portBank',null,null,null,null);", $fix);
+				$portPanel .= \General\Controls::bootstrapButton('{T:Bank}',"Playpulsar.gameplay.execute('portBank',null,null,null,null);", $fix);
 
 				if ($action == "portStorehouse") {
 					$fix = "btn-inverse";
 				} else {
 					$fix = "";
 				}
-				$portPanel .= \General\Controls::bootstrapButton('{T:storehouse}',"executeAction('portStorehouse',null,null,null,null);", $fix);
+				$portPanel .= \General\Controls::bootstrapButton('{T:storehouse}',"Playpulsar.gameplay.execute('portStorehouse',null,null,null,null);", $fix);
 				break;
 					
 			case "port" :
@@ -89,14 +89,14 @@ class portProperties extends baseItem {
 				} else {
 					$fix = "";
 				}
-				$portPanel .= \General\Controls::bootstrapButton('{T:hangar}',"executeAction('portHangar',null,null,null,null);", $fix);
+				$portPanel .= \General\Controls::bootstrapButton('{T:hangar}',"Playpulsar.gameplay.execute('portHangar',null,null,null,null);", $fix);
 
 				if ($action == "portMarketplace") {
 					$fix = "btn-inverse";
 				} else {
 					$fix = "";
 				}
-				$portPanel .= \General\Controls::bootstrapButton('{T:marketplace}',"executeAction('portMarketplace',null,null,null,null);", $fix);
+				$portPanel .= \General\Controls::bootstrapButton('{T:marketplace}',"Playpulsar.gameplay.execute('portMarketplace',null,null,null,null);", $fix);
 
 				if ($action == "portStorehouse") {
 					$fix = "btn-inverse";
@@ -104,7 +104,7 @@ class portProperties extends baseItem {
 					$fix = "";
 				}
 
-				$portPanel .= \General\Controls::bootstrapButton('{T:storehouse}',"executeAction('portStorehouse',null,null,null,null);", $fix);
+				$portPanel .= \General\Controls::bootstrapButton('{T:storehouse}',"Playpulsar.gameplay.execute('portStorehouse',null,null,null,null);", $fix);
 				break;
 		}
 

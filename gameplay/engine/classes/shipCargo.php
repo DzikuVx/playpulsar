@@ -47,13 +47,13 @@ class shipCargo {
 			$actionString = '';
 			if ($shipPosition->Docked == 'no') {
 				if ($shipProperties->Turns >= $itemJettisonCost) {
-					$actionString .= \General\Controls::renderImgButton ( 'jettison', "executeAction('jettison','product','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonOne' ) );
-					$actionString .= \General\Controls::renderImgButton ( 'jettisonAll', "executeAction('jettison','product','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonAll' ) );
+					$actionString .= \General\Controls::renderImgButton ( 'jettison', "Playpulsar.gameplay.execute('jettison','product','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonOne' ) );
+					$actionString .= \General\Controls::renderImgButton ( 'jettisonAll', "Playpulsar.gameplay.execute('jettison','product','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonAll' ) );
 				}
 			} else {
 				if ($totalStorageRoom - $usedStorageRoom > 0) {
-					$actionString .= \General\Controls::renderImgButton ( 'right', "executeAction('toStorehouse','product','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toStorehouseOne' ) );
-					$actionString .= \General\Controls::renderImgButton ( 'rightFar', "executeAction('toStorehouse','product','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toStorehouseAll' ) );
+					$actionString .= \General\Controls::renderImgButton ( 'right', "Playpulsar.gameplay.execute('toStorehouse','product','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toStorehouseOne' ) );
+					$actionString .= \General\Controls::renderImgButton ( 'rightFar', "Playpulsar.gameplay.execute('toStorehouse','product','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toStorehouseAll' ) );
 				}
 			}
 
@@ -71,13 +71,13 @@ class shipCargo {
 
 			if ($shipPosition->Docked == 'no') {
 				if ($shipProperties->Turns >= $itemJettisonCost) {
-					$actionString .= \General\Controls::renderImgButton ( 'jettison', "executeAction('jettison','item','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonOne' ) );
-					$actionString .= \General\Controls::renderImgButton ( 'jettisonAll', "executeAction('jettison','item','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonAll' ) );
+					$actionString .= \General\Controls::renderImgButton ( 'jettison', "Playpulsar.gameplay.execute('jettison','item','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonOne' ) );
+					$actionString .= \General\Controls::renderImgButton ( 'jettisonAll', "Playpulsar.gameplay.execute('jettison','item','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonAll' ) );
 				}
 			} else {
 				if ($totalStorageRoom - $usedStorageRoom > 0) {
-					$actionString .= \General\Controls::renderImgButton ( 'right', "executeAction('toStorehouse','item','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toStorehouseOne' ) );
-					$actionString .= \General\Controls::renderImgButton ( 'rightFar', "executeAction('toStorehouse','item','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toStorehouseAll' ) );
+					$actionString .= \General\Controls::renderImgButton ( 'right', "Playpulsar.gameplay.execute('toStorehouse','item','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toStorehouseOne' ) );
+					$actionString .= \General\Controls::renderImgButton ( 'rightFar', "Playpulsar.gameplay.execute('toStorehouse','item','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toStorehouseAll' ) );
 				}
 			}
 			if ($actionString == '') {
@@ -94,19 +94,19 @@ class shipCargo {
 
 			if ($shipPosition->Docked == 'no') {
 				if ($shipProperties->Turns >= $itemJettisonCost) {
-					$actionString .= \General\Controls::renderImgButton ( 'jettison', "executeAction('jettison','weapon','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonOne' ) );
-					$actionString .= \General\Controls::renderImgButton ( 'jettisonAll', "executeAction('jettison','weapon','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonAll' ) );
+					$actionString .= \General\Controls::renderImgButton ( 'jettison', "Playpulsar.gameplay.execute('jettison','weapon','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonOne' ) );
+					$actionString .= \General\Controls::renderImgButton ( 'jettisonAll', "Playpulsar.gameplay.execute('jettison','weapon','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonAll' ) );
 				}
 			} else {
 				if ($shipProperties->CurrentWeapons < $shipProperties->MaxWeapons && $shipProperties->WeaponSize >= $tR1->Size) {
-					$actionString .= \General\Controls::renderImgButton ( 'gather', "executeAction('equipFromCargo','weapon',null,'{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'equip' ) );
+					$actionString .= \General\Controls::renderImgButton ( 'gather', "Playpulsar.gameplay.execute('equipFromCargo','weapon',null,'{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'equip' ) );
 				}
 				if ($totalStorageRoom - $usedStorageRoom > 0) {
-					$actionString .= \General\Controls::renderImgButton ( 'right', "executeAction('toStorehouse','weapon','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toStorehouseOne' ) );
-					$actionString .= \General\Controls::renderImgButton ( 'rightFar', "executeAction('toStorehouse','weapon','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toStorehouseAll' ) );
+					$actionString .= \General\Controls::renderImgButton ( 'right', "Playpulsar.gameplay.execute('toStorehouse','weapon','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toStorehouseOne' ) );
+					$actionString .= \General\Controls::renderImgButton ( 'rightFar', "Playpulsar.gameplay.execute('toStorehouse','weapon','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toStorehouseAll' ) );
 				}
 				if ($portProperties->Type == 'station') {
-					$actionString .= \General\Controls::renderImgButton ( 'sell', "executeAction('sellWeaponFromCargo','',null,{$tR1->ID},null);", TranslateController::getDefault()->get ( 'sell' ).' 1' );
+					$actionString .= \General\Controls::renderImgButton ( 'sell', "Playpulsar.gameplay.execute('sellWeaponFromCargo','',null,{$tR1->ID},null);", TranslateController::getDefault()->get ( 'sell' ).' 1' );
 				}
 			}
 			if (empty ( $actionString )) {
@@ -123,19 +123,19 @@ class shipCargo {
 
 			if ($shipPosition->Docked == 'no') {
 				if ($shipProperties->Turns >= $itemJettisonCost) {
-					$actionString .= \General\Controls::renderImgButton ( 'jettison', "executeAction('jettison','equipment','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonOne' ) );
-					$actionString .= \General\Controls::renderImgButton ( 'jettisonAll', "executeAction('jettison','equipment','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonAll' ) );
+					$actionString .= \General\Controls::renderImgButton ( 'jettison', "Playpulsar.gameplay.execute('jettison','equipment','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonOne' ) );
+					$actionString .= \General\Controls::renderImgButton ( 'jettisonAll', "Playpulsar.gameplay.execute('jettison','equipment','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'jettisonAll' ) );
 				}
 			} else {
 				if ($shipProperties->CurrentEquipment < $shipProperties->MaxEquipment) {
-					$actionString .= \General\Controls::renderImgButton ( 'gather', "executeAction('equipFromCargo','equipment',null,'{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'equip' ) );
+					$actionString .= \General\Controls::renderImgButton ( 'gather', "Playpulsar.gameplay.execute('equipFromCargo','equipment',null,'{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'equip' ) );
 				}
 				if ($totalStorageRoom - $usedStorageRoom > 0) {
-					$actionString .= \General\Controls::renderImgButton ( 'right', "executeAction('toStorehouse','equipment','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toStorehouseOne' ) );
-					$actionString .= \General\Controls::renderImgButton ( 'rightFar', "executeAction('toStorehouse','equipment','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toStorehouseAll' ) );
+					$actionString .= \General\Controls::renderImgButton ( 'right', "Playpulsar.gameplay.execute('toStorehouse','equipment','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toStorehouseOne' ) );
+					$actionString .= \General\Controls::renderImgButton ( 'rightFar', "Playpulsar.gameplay.execute('toStorehouse','equipment','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toStorehouseAll' ) );
 				}
 				if ($portProperties->Type == 'station') {
-					$actionString .= \General\Controls::renderImgButton ( 'sell', "executeAction('sellEquipmentFromCargo','',null,{$tR1->ID},null);", TranslateController::getDefault()->get ( 'sell' ).' 1' );
+					$actionString .= \General\Controls::renderImgButton ( 'sell', "Playpulsar.gameplay.execute('sellEquipmentFromCargo','',null,{$tR1->ID},null);", TranslateController::getDefault()->get ( 'sell' ).' 1' );
 				}
 			}
 

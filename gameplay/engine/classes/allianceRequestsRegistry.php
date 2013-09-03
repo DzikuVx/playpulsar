@@ -56,16 +56,16 @@ class allianceRequestsRegistry extends simpleRegistry {
 			$retVal .= '<td>' . $tR1->Level . '</td>';
 			$retVal .= '<td>' . $tR1->Text . '</td>';
 
-			$tString = \General\Controls::renderImgButton ( 'info', "executeAction('shipExamine','',null,'{$tR1->UserID}');", TranslateController::getDefault()->get ( 'examine' ) );
-			$tString .= \General\Controls::renderImgButton ('add' , "executeAction('allianceAccept','',null,'{$tR1->UserID}');", TranslateController::getDefault()->get ( 'accept' ) );
-			$tString .= \General\Controls::renderImgButton ( 'delete', "executeAction('allianceDecline','',null,'{$tR1->UserID}');", TranslateController::getDefault()->get ( 'decline' ) );
+			$tString = \General\Controls::renderImgButton ( 'info', "Playpulsar.gameplay.execute('shipExamine','',null,'{$tR1->UserID}');", TranslateController::getDefault()->get ( 'examine' ) );
+			$tString .= \General\Controls::renderImgButton ('add' , "Playpulsar.gameplay.execute('allianceAccept','',null,'{$tR1->UserID}');", TranslateController::getDefault()->get ( 'accept' ) );
+			$tString .= \General\Controls::renderImgButton ( 'delete', "Playpulsar.gameplay.execute('allianceDecline','',null,'{$tR1->UserID}');", TranslateController::getDefault()->get ( 'decline' ) );
 
 			$retVal .= '<td>' . $tString . '</td>';
 
 			$retVal .= '</tr>';
 		}
 		$retVal .= "</table>";
-		$retVal .= "<div style=\"text-align: center;\">" . \General\Controls::bootstrapButton( '{T:close}', "executeAction('allianceDetail',null,null,'{$allianceID}');") . "</div>";
+		$retVal .= "<div style=\"text-align: center;\">" . \General\Controls::bootstrapButton( '{T:close}', "Playpulsar.gameplay.execute('allianceDetail',null,null,'{$allianceID}');") . "</div>";
 		return $retVal;
 	}
 

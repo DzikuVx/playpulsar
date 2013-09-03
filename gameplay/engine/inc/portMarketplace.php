@@ -42,7 +42,7 @@ while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 	$portPanel .= "<td>" . number_format ( $tR1->Amount, 0 ) . "</td>";
 	$portPanel .= "<td>" . number_format ( $productPrice, 0 ) . "</td>";
 	$portPanel .= "<td><input class='input-mini noSpacing' onkeyup='maskNumber(this.value,this,0,{$buyAmount})' onblur=\"javascript:return maskNumber(this.value,this,0,$buyAmount)\" type='text' id=\"buy_" . $tR1->ID . "\" value='{$buyAmount}' />";
-	$portPanel .= \General\Controls::renderImgButton('buy', "executeAction('productBuy',null,null,'{$tR1->ID}',null);", TranslateController::getDefault()->get('buy'));
+	$portPanel .= \General\Controls::renderImgButton('buy', "Playpulsar.gameplay.execute('productBuy',null,null,'{$tR1->ID}',null);", TranslateController::getDefault()->get('buy'));
 	$portPanel .= "</td>";
 	$portPanel .= "</tr>";
 
@@ -75,7 +75,7 @@ while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 		$portPanel .= "&nbsp;";
 	} else {
 		$portPanel .= "<input class='input-mini noSpacing' onkeyup='maskNumber(this.value,this,0,{$tR1->ShipAmount})' onblur=\"javascript:return maskNumber(this.value,this,0,{$tR1->ShipAmount})\" type=\"text\" size=\"3\" id=\"sell_" . $tR1->ID . "\" value=\"" . $tR1->ShipAmount . "\" />";
-		$portPanel .= \General\Controls::renderImgButton('sell', "executeAction('productSell',null,null,'{$tR1->ID}',null);", TranslateController::getDefault()->get('sell'));
+		$portPanel .= \General\Controls::renderImgButton('sell', "Playpulsar.gameplay.execute('productSell',null,null,'{$tR1->ID}',null);", TranslateController::getDefault()->get('sell'));
 	}
 	$portPanel .= "</td>";
 	$portPanel .= "</tr>";
@@ -112,7 +112,7 @@ if ($portProperties->Items != '') {
 			$portPanel .= "&nbsp;";
 		} else {
 			$portPanel .= "<input class='input-mini noSpacing' onkeyup=\"maskNumber(this.value,this,0,{$tR1->ShipAmount})\" onblur=\"maskNumber(this.value,this,0,{$tR1->ShipAmount})\" type=\"text\" id=\"item_sell_" . $tR1->ItemID . "\" value=\"" . $tR1->ShipAmount . "\" />";
-			$portPanel .= \General\Controls::renderImgButton('yes', "executeAction('itemSell',null,null,'{$tR1->ItemID}',null);", TranslateController::getDefault()->get('buy'));
+			$portPanel .= \General\Controls::renderImgButton('yes', "Playpulsar.gameplay.execute('itemSell',null,null,'{$tR1->ItemID}',null);", TranslateController::getDefault()->get('buy'));
 		}
 		$portPanel .= "</td>";
 		$portPanel .= "</tr>";
@@ -143,7 +143,7 @@ while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 	$portPanel .= "<td>";
 
 	if ($userStats->Cash >=  $config ['port'] ['mapPrice']) {
-		$portPanel .= \General\Controls::renderImgButton('buy', "executeAction('mapBuy',null,null,'{$tR1->SystemID}',null);", 'OK');
+		$portPanel .= \General\Controls::renderImgButton('buy', "Playpulsar.gameplay.execute('mapBuy',null,null,'{$tR1->SystemID}',null);", 'OK');
 	}else {
 		$portPanel .= '&nbsp;';
 	}

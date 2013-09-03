@@ -527,7 +527,7 @@ class combat {
 			$retVal .= "</td>";
 			$retVal .= "<td class=\"shipPanel\" style=\"width: 60px;\">";
 			if ($tR1->RookieTurns < 1 && $this->player->shipProperties->RookieTurns < 1  && ($tR1->AllianceID != $this->playerAlliance || empty($this->playerAlliance))) {
-				$retVal .= "<div class=\"attackButton\" onclick=\"executeAction('shipAttack',null,null,{$tR1->UserID},null);\">" . $this->t->get ( 'attack' ) . "</div>";
+				$retVal .= "<div class=\"attackButton\" onclick=\"Playpulsar.gameplay.execute('shipAttack',null,null,{$tR1->UserID},null);\">" . $this->t->get ( 'attack' ) . "</div>";
 			}
 			$retVal .= "</td>";
 			$retVal .= "</tr></table>";

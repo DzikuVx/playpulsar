@@ -54,13 +54,13 @@ class navigationPanel extends basePanel {
 
 		$this->retVal .= "<div class='column50'>";
 		$this->retVal .= "<div class='btn-group'>";
-		$this->retVal .= "<button class='btn btn-success btn-mini' onclick=\"executeAction('plotSet',null,null,null,null);\" title='".TranslateController::getDefault()->get ( 'Set autopilot destination sector' )."'><i class='icon-white icon-check'></i></button>";
+		$this->retVal .= "<button class='btn btn-success btn-mini' onclick=\"Playpulsar.gameplay.execute('plotSet',null,null,null,null);\" title='".TranslateController::getDefault()->get ( 'Set autopilot destination sector' )."'><i class='icon-white icon-check'></i></button>";
 
 		if ($shipRouting->System != null) {
-			$this->retVal .= " <button class='btn btn-danger btn-mini' onclick=\"executeAction('plotReset',null,null,null,null);\" title='".TranslateController::getDefault()->get ( 'Clear destination sector' )."'><i class='icon-white icon-trash'></i></button>";
+			$this->retVal .= " <button class='btn btn-danger btn-mini' onclick=\"Playpulsar.gameplay.execute('plotReset',null,null,null,null);\" title='".TranslateController::getDefault()->get ( 'Clear destination sector' )."'><i class='icon-white icon-trash'></i></button>";
 
 			if ($shipPosition->Docked == 'no') {
-				$this->retVal .= " <button class='btn btn-info btn-mini' onclick=\"executeAction('nextWaypoint',null,null,null,null);\" title='".TranslateController::getDefault()->get ( 'Next waypoint' )."'><i class='icon-white icon-step-forward'></i></button>";
+				$this->retVal .= " <button class='btn btn-info btn-mini' onclick=\"Playpulsar.gameplay.execute('nextWaypoint',null,null,null,null);\" title='".TranslateController::getDefault()->get ( 'Next waypoint' )."'><i class='icon-white icon-step-forward'></i></button>";
 			}
 
 		}
@@ -82,10 +82,10 @@ class navigationPanel extends basePanel {
 		$this->retVal .= '<span class="caret"></span>';
 		$this->retVal .= '</a>';
 		$this->retVal .= '<ul class="dropdown-menu">';
-		$this->retVal .= "<li><a href='#' onclick=\"executeAction('showMyMaps',null, null, null);\"><i class='icon-th-list icon-white'></i> " . TranslateController::getDefault()->get ( 'My system maps' ) . '</a></li>';
+		$this->retVal .= "<li><a href='#' onclick=\"Playpulsar.gameplay.execute('showMyMaps',null, null, null);\"><i class='icon-th-list icon-white'></i> " . TranslateController::getDefault()->get ( 'My system maps' ) . '</a></li>';
 		$this->retVal .= "<li><a href='gfx/maps/galaxymap.jpg' target='_blank'><i class='icon-list-alt icon-white'></i> " . TranslateController::getDefault()->get ( 'Galaxy map' ) . '</a></li>';
-		$this->retVal .= "<li><a href='#' onclick=\"executeAction('showFavSectors',null, null, null);\"><i class='icon-plus icon-white'></i> " . TranslateController::getDefault()->get ( 'favSectors' ) . '</a></li>';
-		$this->retVal .= "<li><a href='#' onclick=\"executeAction('addToFavSectors',null, null, null);\"><i class='icon-heart icon-white'></i> " . TranslateController::getDefault()->get ( 'addCurrentFavSectors' ) . '</a></li>';
+		$this->retVal .= "<li><a href='#' onclick=\"Playpulsar.gameplay.execute('showFavSectors',null, null, null);\"><i class='icon-plus icon-white'></i> " . TranslateController::getDefault()->get ( 'favSectors' ) . '</a></li>';
+		$this->retVal .= "<li><a href='#' onclick=\"Playpulsar.gameplay.execute('addToFavSectors',null, null, null);\"><i class='icon-heart icon-white'></i> " . TranslateController::getDefault()->get ( 'addCurrentFavSectors' ) . '</a></li>';
 
 		$this->retVal .= "</ul></div>";
 

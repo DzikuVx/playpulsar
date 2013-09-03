@@ -16,13 +16,13 @@
 </td>
 <td class="combatCell" style="text-align: right; vertical-align: middle;">
 {C:combatButtons}
-<input type="button" id="refreshButton" onclick="executeAction('refresh',null,null,null);" class="button refresh" value="{T:refresh}"  />
-<input type="button" id="maydayButton" onclick="executeAction('mayday',null,null,null);" class="button refresh" value="{T:callMayday}"  style="display: none;" />
-<input type="button" id="fireButton" value="{T:fireWeapons}" onclick="executeAction('fireWeapons',null,null,null);" class="button attack" style="display: none;" />
-<input type="button" id="disengageButton" value="{T:disengage}" onclick="executeAction('disengage',null,null,null);" class="button disengage" style="display: none;" />
+<input type="button" id="refreshButton" onclick="Playpulsar.gameplay.execute('refresh',null,null,null);" class="button refresh" value="{T:refresh}"  />
+<input type="button" id="maydayButton" onclick="Playpulsar.gameplay.execute('mayday',null,null,null);" class="button refresh" value="{T:callMayday}"  style="display: none;" />
+<input type="button" id="fireButton" value="{T:fireWeapons}" onclick="Playpulsar.gameplay.execute('fireWeapons',null,null,null);" class="button attack" style="display: none;" />
+<input type="button" id="disengageButton" value="{T:disengage}" onclick="Playpulsar.gameplay.execute('disengage',null,null,null);" class="button disengage" style="display: none;" />
 {/C:combatButtons}
 {C:closeButton}
-<input type="button" id="refreshButton" onclick="executeAction('refresh',null,null,null);" class="button refresh" value="{T:close}"  />
+<input type="button" id="refreshButton" onclick="Playpulsar.gameplay.execute('refresh',null,null,null);" class="button refresh" value="{T:close}"  />
 {/C:closeButton}
 </td>
 </tr>

@@ -122,7 +122,7 @@ class message extends baseItem {
 		if (!empty($tMessage->Author)) {
 			$actionPanel .= "<tr>";
 			$actionPanel .= "<th style='width: 10em;'>" . TranslateController::getDefault()->get ( 'author' ) . "</th>";
-			$actionPanel .= "<td style='cursor: pointer;' onclick=\"executeAction('shipExamine',null,null,'{$tMessage->Author}');\">" . $tMessage->SenderName . "</th>";
+			$actionPanel .= "<td style='cursor: pointer;' onclick=\"Playpulsar.gameplay.execute('shipExamine',null,null,'{$tMessage->Author}');\">" . $tMessage->SenderName . "</th>";
 			$actionPanel .= "</tr>";
 		}
 		$actionPanel .= "<tr>";
@@ -135,14 +135,14 @@ class message extends baseItem {
 
 		$actionPanel .= "</table>";
 
-		$actionPanel .= \General\Controls::bootstrapButton ( '{T:close}', "executeAction('showMessages',null,null,null);");
+		$actionPanel .= \General\Controls::bootstrapButton ( '{T:close}', "Playpulsar.gameplay.execute('showMessages',null,null,null);");
 		/**
 		 * @since 2010-07-31
 		 */
 		if (!empty($tMessage->Author)) {
-			$actionPanel .= \General\Controls::bootstrapButton ( '{T:reply}', "executeAction('sendMessage',null,null,'{$tMessage->Author}');",'btn-success');
+			$actionPanel .= \General\Controls::bootstrapButton ( '{T:reply}', "Playpulsar.gameplay.execute('sendMessage',null,null,'{$tMessage->Author}');",'btn-success');
 		}
-		$actionPanel .= \General\Controls::bootstrapButton ( '{T:delete}', "executeAction('deleteMessage',null,null,'{$tMessage->MessageID}');",'btn-danger');
+		$actionPanel .= \General\Controls::bootstrapButton ( '{T:delete}', "Playpulsar.gameplay.execute('deleteMessage',null,null,'{$tMessage->MessageID}');",'btn-danger');
 
 		$tQuery = "UPDATE messages SET Received='yes' WHERE MessageID='{$messageID}'";
 		\Database\Controller::getInstance()->execute ( $tQuery );
@@ -244,7 +244,7 @@ class message extends baseItem {
 		$actionPanel .= "</tr>";
 
 		$actionPanel .= '</table>';
-		$actionPanel .= "<center><div class=\"closeButton\" onClick=\"executeAction('sendMessageExecute',null,$('#msgText').val(),'{$receiver}');\">" . TranslateController::getDefault()->get ( 'send' ) . "</div></center>";
+		$actionPanel .= "<center><div class=\"closeButton\" onClick=\"Playpulsar.gameplay.execute('sendMessageExecute',null,$('#msgText').val(),'{$receiver}');\">" . TranslateController::getDefault()->get ( 'send' ) . "</div></center>";
 	}
 
 	/**

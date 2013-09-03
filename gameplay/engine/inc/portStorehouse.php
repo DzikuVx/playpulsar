@@ -37,8 +37,8 @@ if ($totalStorageRoom == 0) {
 		$actionString = '';
 		if ($bFreeCargoAvaible && $shipPosition->Docked == 'yes') {
 
-			$actionString .= \General\Controls::renderImgButton ( 'left', "executeAction('toCargohold','product','1','{$tR1->ID}',null);", '{T:toCargoholdOne}');
-			$actionString .= \General\Controls::renderImgButton ( 'leftFar', "executeAction('toCargohold','product','all','{$tR1->ID}',null);", '{T:toCargoholdAll}');
+			$actionString .= \General\Controls::renderImgButton ( 'left', "Playpulsar.gameplay.execute('toCargohold','product','1','{$tR1->ID}',null);", '{T:toCargoholdOne}');
+			$actionString .= \General\Controls::renderImgButton ( 'leftFar', "Playpulsar.gameplay.execute('toCargohold','product','all','{$tR1->ID}',null);", '{T:toCargoholdAll}');
 
 		} else {
 			$actionString = "&nbsp;";
@@ -53,8 +53,8 @@ if ($totalStorageRoom == 0) {
 		$actionString = '';
 		if ($bFreeCargoAvaible && $shipPosition->Docked == 'yes') {
 
-			$actionString .= \General\Controls::renderImgButton ( 'left', "executeAction('toCargohold','item','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toCargoholdOne' ) );
-			$actionString .= \General\Controls::renderImgButton ( 'leftFar', "executeAction('toCargohold','item','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toCargoholdAll' ) );
+			$actionString .= \General\Controls::renderImgButton ( 'left', "Playpulsar.gameplay.execute('toCargohold','item','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toCargoholdOne' ) );
+			$actionString .= \General\Controls::renderImgButton ( 'leftFar', "Playpulsar.gameplay.execute('toCargohold','item','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toCargoholdAll' ) );
 		} else {
 			$actionString = "&nbsp;";
 		}
@@ -71,8 +71,8 @@ if ($totalStorageRoom == 0) {
 		$actionString .= \General\Controls::renderImgButton ( 'info', "getXmlRpc('univPanel','weapon::renderDetail','{$userProperties->Language}','{$tR1->WeaponID}')", 'Info' );
 		
 		if ($bFreeCargoAvaible && $shipPosition->Docked == 'yes') {
-			$actionString .= \General\Controls::renderImgButton ( 'left', "executeAction('toCargohold','weapon','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toCargoholdOne' ) );
-			$actionString .= \General\Controls::renderImgButton ( 'leftFar', "executeAction('toCargohold','weapon','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toCargoholdAll' ) );
+			$actionString .= \General\Controls::renderImgButton ( 'left', "Playpulsar.gameplay.execute('toCargohold','weapon','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toCargoholdOne' ) );
+			$actionString .= \General\Controls::renderImgButton ( 'leftFar', "Playpulsar.gameplay.execute('toCargohold','weapon','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toCargoholdAll' ) );
 		} else {
 			$actionString = "&nbsp;";
 		}
@@ -88,8 +88,8 @@ if ($totalStorageRoom == 0) {
 		$actionString .= \General\Controls::renderImgButton ( 'info', "getXmlRpc('univPanel','equipment::renderDetail','{$userProperties->Language}','{$tR1->EquipmentID}')", 'Info' );
 		
 		if ($bFreeCargoAvaible && $shipPosition->Docked == 'yes') {
-			$actionString .= \General\Controls::renderImgButton ( 'left', "executeAction('toCargohold','equipment','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toCargoholdOne' ) );
-			$actionString .= \General\Controls::renderImgButton ( 'leftFar', "executeAction('toCargohold','equipment','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toCargoholdAll' ) );
+			$actionString .= \General\Controls::renderImgButton ( 'left', "Playpulsar.gameplay.execute('toCargohold','equipment','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toCargoholdOne' ) );
+			$actionString .= \General\Controls::renderImgButton ( 'leftFar', "Playpulsar.gameplay.execute('toCargohold','equipment','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toCargoholdAll' ) );
 				
 		} else {
 			$actionString = "&nbsp;";
@@ -106,5 +106,5 @@ $portPanel .= "<h2>{T:storageSpaceParameters}</h2>";
 $portPanel .= "<div class='infoLine'><b>{T:totalSpace}: </b> " . $totalStorageRoom . "</div>";
 $portPanel .= "<div class='infoLine'><b>{T:freeSpace}: </b> " . ($totalStorageRoom - $usedStorageRoom) . "</div>";
 $portPanel .= "<div class='infoLine'><b>{T:buy}: </b>";
-$portPanel .= \General\Controls::bootstrapButton($config ['port'] ['storageSpace'] . " " . '{T:buyFor}' . " " . Formater::formatValue($config ['port'] ['storageSpacePrice']), "executeAction('buyStorageRoom',null,null,null,null);");
+$portPanel .= \General\Controls::bootstrapButton($config ['port'] ['storageSpace'] . " " . '{T:buyFor}' . " " . Formater::formatValue($config ['port'] ['storageSpacePrice']), "Playpulsar.gameplay.execute('buyStorageRoom',null,null,null,null);");
 $portPanel .= "</div>";

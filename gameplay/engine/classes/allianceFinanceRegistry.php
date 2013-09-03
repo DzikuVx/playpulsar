@@ -70,7 +70,7 @@ class allianceFinanceRegistry extends simpleRegistry {
 			$retVal .= '</tr>';
 		}
 		$retVal .= "</table>";
-		$retVal .= "<div style='text-align: center;'>" . \General\Controls::bootstrapButton( '{T:close}', "executeAction('allianceDetail',null,null,'{$allianceID}');") . "</div>";
+		$retVal .= "<div style='text-align: center;'>" . \General\Controls::bootstrapButton( '{T:close}', "Playpulsar.gameplay.execute('allianceDetail',null,null,'{$allianceID}');") . "</div>";
 		return $retVal;
 	}
 

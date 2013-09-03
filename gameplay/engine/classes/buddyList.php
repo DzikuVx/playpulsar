@@ -71,7 +71,7 @@ class buddyList extends baseItem {
 		$tName = userProperties::quickLoad($id)->Name;
 		$tString = str_replace('{name}',$tName, $tString);
 
-		$actionPanel = \General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"executeAction('buddyAcceptExecute',null,null,'{$id}')","executeAction('showBuddy',null,null,null)");
+		$actionPanel = \General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"Playpulsar.gameplay.execute('buddyAcceptExecute',null,null,'{$id}')","Playpulsar.gameplay.execute('showBuddy',null,null,null)");
 
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
@@ -101,7 +101,7 @@ class buddyList extends baseItem {
 		$tName = userProperties::quickLoad($id)->Name;
 		$tString = str_replace('{name}',$tName, $tString);
 
-		$actionPanel = \General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"executeAction('buddyDecline',null,null,'{$id}')","executeAction('showBuddy',null,null,null)");
+		$actionPanel = \General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"Playpulsar.gameplay.execute('buddyDecline',null,null,'{$id}')","Playpulsar.gameplay.execute('showBuddy',null,null,null)");
 
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();

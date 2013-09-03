@@ -134,11 +134,11 @@ class SectorShips extends Base {
 			$this->retVal .= "</div>";
 
 			$this->retVal .= "<div style='clear: both; padding-top: 0.5em;'>";
-			$this->retVal .= Controls::bootstrapIconButton('{T:examine}',"executeAction('shipExamine','',null,{$tR1->UserID});",'btn-info','icon-search');
+			$this->retVal .= Controls::bootstrapIconButton('{T:examine}',"Playpulsar.gameplay.execute('shipExamine','',null,{$tR1->UserID});",'btn-info','icon-search');
 
 			if ($shipPosition->Docked == "no" && $tR1->RookieTurns < 1 && $shipProperties->RookieTurns < 1 && ($tR1->AllianceID != $userAlliance->AllianceID || empty($userAlliance->AllianceID))) {
 
-				$this->retVal .= Controls::bootstrapIconButton('{T:attack}',"executeAction('shipAttack',null,null,{$tR1->UserID},null);",'btn-danger','icon-fire');
+				$this->retVal .= Controls::bootstrapIconButton('{T:attack}',"Playpulsar.gameplay.execute('shipAttack',null,null,{$tR1->UserID},null);",'btn-danger','icon-fire');
 
 				/*
 				 * trigger aggressive NPC behavior

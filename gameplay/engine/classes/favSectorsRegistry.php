@@ -34,7 +34,7 @@ class favSectorsRegistry extends simpleRegistry {
 			$retVal .= '<td >' . $tResult->System . '/' . $tResult->X . '/' . $tResult->Y . '</td>';
 
 			$tString = '';
-			$tString .= \General\Controls::renderImgButton ( 'delete', "executeAction('deleteFavSector','',null,'{$tResult->System}/{$tResult->X}/{$tResult->Y}');", TranslateController::getDefault()->get('delete') );
+			$tString .= \General\Controls::renderImgButton ( 'delete', "Playpulsar.gameplay.execute('deleteFavSector','',null,'{$tResult->System}/{$tResult->X}/{$tResult->Y}');", TranslateController::getDefault()->get('delete') );
 			$tString .= \General\Controls::renderImgButton ( 'rightFar', "systemMap.plot('{$tResult->System}','{$tResult->X}','{$tResult->Y}');", TranslateController::getDefault()->get ( 'setNavPoint' ));
 
 			if (empty ( $tString )) {

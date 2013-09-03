@@ -81,19 +81,19 @@ class shipWeaponsRegistry extends simpleRegistry {
 			/*
 			 * Zmiana kolejności
 			 */
-			$tString .= \General\Controls::renderImgButton ( 'up', "executeAction('weaponMoveUp',null,null,{$tR1->ShipWeaponID},null);", TranslateController::getDefault()->get ( 'Move Up' ) );
-			$tString .= \General\Controls::renderImgButton ( 'down', "executeAction('weaponMoveDown',null,null,{$tR1->ShipWeaponID},null);", TranslateController::getDefault()->get ( 'Move Down' ) );
+			$tString .= \General\Controls::renderImgButton ( 'up', "Playpulsar.gameplay.execute('weaponMoveUp',null,null,{$tR1->ShipWeaponID},null);", TranslateController::getDefault()->get ( 'Move Up' ) );
+			$tString .= \General\Controls::renderImgButton ( 'down', "Playpulsar.gameplay.execute('weaponMoveDown',null,null,{$tR1->ShipWeaponID},null);", TranslateController::getDefault()->get ( 'Move Down' ) );
 
 			if ($tR1->Damaged == '0') {
 
 				if ($tR1->Enabled == 0) {
-					$tString .= \General\Controls::renderImgButton ( 'on', "executeAction('switchWeaponState','slow',null,{$tR1->ShipWeaponID},null);", TranslateController::getDefault()->get ( 'On') );
+					$tString .= \General\Controls::renderImgButton ( 'on', "Playpulsar.gameplay.execute('switchWeaponState','slow',null,{$tR1->ShipWeaponID},null);", TranslateController::getDefault()->get ( 'On') );
 				} else {
-					$tString .= \General\Controls::renderImgButton ( 'off', "executeAction('switchWeaponState','slow',null,{$tR1->ShipWeaponID},null);",TranslateController::getDefault()->get (  'Off') );
+					$tString .= \General\Controls::renderImgButton ( 'off', "Playpulsar.gameplay.execute('switchWeaponState','slow',null,{$tR1->ShipWeaponID},null);",TranslateController::getDefault()->get (  'Off') );
 				}
 
 				if ($shipPosition->Docked == 'yes' && $portProperties->Type == 'station') {
-					$tString .= \General\Controls::renderImgButton ( 'sell', "executeAction('sellWeapon','',null,{$tR1->ShipWeaponID},null);", TranslateController::getDefault()->get ( 'sell' ) );
+					$tString .= \General\Controls::renderImgButton ( 'sell', "Playpulsar.gameplay.execute('sellWeapon','',null,{$tR1->ShipWeaponID},null);", TranslateController::getDefault()->get ( 'sell' ) );
 				}
 
 			} else {
@@ -105,11 +105,11 @@ class shipWeaponsRegistry extends simpleRegistry {
 
 					$tRepairPrice = weapon::sGetRepairPrice ( $tR1->WeaponID );
 					if ($userStats->Cash > $tRepairPrice) {
-						$tString .= \General\Controls::renderImgButton ( 'repair', "executeAction('weaponRepair','',null,{$tR1->ShipWeaponID},null);", TranslateController::getDefault()->get ( 'Repair for' ) . $tRepairPrice . '$' );
+						$tString .= \General\Controls::renderImgButton ( 'repair', "Playpulsar.gameplay.execute('weaponRepair','',null,{$tR1->ShipWeaponID},null);", TranslateController::getDefault()->get ( 'Repair for' ) . $tRepairPrice . '$' );
 					}
 
 					if ($portProperties->Type == 'station') {
-						$tString .= \General\Controls::renderImgButton ( 'sell', "executeAction('sellWeapon','',null,{$tR1->ShipWeaponID},null);", TranslateController::getDefault()->get ( 'sell' ) );
+						$tString .= \General\Controls::renderImgButton ( 'sell', "Playpulsar.gameplay.execute('sellWeapon','',null,{$tR1->ShipWeaponID},null);", TranslateController::getDefault()->get ( 'sell' ) );
 					}
 				}
 
@@ -117,7 +117,7 @@ class shipWeaponsRegistry extends simpleRegistry {
 
 			$tReloadPrice = weapon::sGetReloadPrice ( $tR1->WeaponID, $tR1->Ammo );
 			if ($shipPosition->Docked == 'yes' && $portProperties->Type == 'station' && $tR1->MaxAmmo > 0 && $tR1->Ammo != $tR1->MaxAmmo && $userStats->Cash > $tReloadPrice) {
-				$tString .= \General\Controls::renderImgButton ( 'reload', "executeAction('weaponReload',null,null,{$tR1->ShipWeaponID},null);", TranslateController::getDefault()->get ( 'Reload for' ) . ' ' . $tReloadPrice . '$' );
+				$tString .= \General\Controls::renderImgButton ( 'reload', "Playpulsar.gameplay.execute('weaponReload',null,null,{$tR1->ShipWeaponID},null);", TranslateController::getDefault()->get ( 'Reload for' ) . ' ' . $tReloadPrice . '$' );
 			}
 			
 			if (empty ( $tString )) {

@@ -21,7 +21,7 @@ class allianceRegistry extends simpleRegistry {
 		 */
 		$tOperations = '';
 		if (empty($userAlliance->AllianceID)) {
-			$tOperations .=	 \General\Controls::renderButton ( TranslateController::getDefault()->get ( 'allianceCraete' ), "executeAction('allianceCreate',null,null,null,null);", "width: 140px; margin: 2px;" );
+			$tOperations .=	 \General\Controls::renderButton ( TranslateController::getDefault()->get ( 'allianceCraete' ), "Playpulsar.gameplay.execute('allianceCreate',null,null,null,null);", "width: 140px; margin: 2px;" );
 		}
 
 		if (!empty($tOperations)) {
@@ -84,7 +84,7 @@ class allianceRegistry extends simpleRegistry {
 
 				$tIndex ++;
 
-				$retVal .= '<tr onclick="executeAction(\'allianceDetail\',null,null,\''.$tResult->AllianceID.'\')">';
+				$retVal .= '<tr onclick="Playpulsar.gameplay.execute(\'allianceDetail\',null,null,\''.$tResult->AllianceID.'\')">';
 				$retVal .= '<td>' . $tIndex . '</td>';
 				$retVal .= '<td>' . $tResult->Symbol . '</td>';
 				$retVal .= '<td>' . $tResult->Name . '</td>';

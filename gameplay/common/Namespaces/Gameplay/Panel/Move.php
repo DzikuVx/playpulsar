@@ -47,19 +47,19 @@ class Move extends Base {
 			$this->retVal .= "<tr>";
 
 			if (!empty($portProperties->PortID)) {
-				$this->retVal .= "<td><button class='btn' onclick=\"executeAction('shipDock',null,null,null,null);\" title='".Translate::getDefault()->get ( 'dock' )."'><i class='icon-white icon-resize-small'></i></button></td>";
+				$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('shipDock',null,null,null,null);\" title='".Translate::getDefault()->get ( 'dock' )."'><i class='icon-white icon-resize-small'></i></button></td>";
 			}else {
 				$this->retVal .= "<td>&nbsp;</td>";
 			}
 
 			if ($shipPosition->Y > 1) {
-				$this->retVal .= "<td><button class='btn' onclick=\"executeAction('shipMove','up',null,null,null);\" ><i class='icon-chevron-up'></i></button></td>";
+				$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('shipMove','up',null,null,null);\" ><i class='icon-chevron-up'></i></button></td>";
 			} else {
 				$this->retVal .= "<td>&nbsp;</td>";
 			}
 
 			if ($shipRouting->System != null) {
-				$this->retVal .= "<td><button class='btn' onclick=\"executeAction('nextWaypoint',null,null,null,null);\" title='{T:Next waypoint}' ><i class='icon-white icon-step-forward'></i></button></td>";
+				$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('nextWaypoint',null,null,null,null);\" title='{T:Next waypoint}' ><i class='icon-white icon-step-forward'></i></button></td>";
 			}else {
 				$this->retVal .= "<td>&nbsp;</td>";
 			}
@@ -68,13 +68,13 @@ class Move extends Base {
 
 			$this->retVal .= "<tr>";
 			if ($shipPosition->X > 1) {
-				$this->retVal .= "<td><button class='btn' onclick=\"executeAction('shipMove','left',null,null,null);\" ><i class='icon-chevron-left'></i></button></td>";
+				$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('shipMove','left',null,null,null);\" ><i class='icon-chevron-left'></i></button></td>";
 			} else {
 				$this->retVal .= "<td>&nbsp;</td>";
 			}
-			$this->retVal .= "<td><button class='btn' onclick=\"executeAction('shipRefresh','left',null,null,null);\" ><i class='icon-refresh icon-white'></i></button></td>";
+			$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('shipRefresh','left',null,null,null);\" ><i class='icon-refresh icon-white'></i></button></td>";
 			if ($shipPosition->X < $systemProperties->Width) {
-				$this->retVal .= "<td><button class='btn' onclick=\"executeAction('shipMove','right',null,null,null);\" ><i class='icon-chevron-right'></i></button></td>";
+				$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('shipMove','right',null,null,null);\" ><i class='icon-chevron-right'></i></button></td>";
 			} else {
 				$this->retVal .= "<td>&nbsp;</td>";
 			}
@@ -83,18 +83,18 @@ class Move extends Base {
 			$this->retVal .= "<tr>";
 
 			if (!empty($shipProperties->CanActiveScan)) {
-				$this->retVal .= "<td><button class='btn btn-info' onclick=\"executeAction('engageActiveScanner','down',null,null,null);\" title='{T:engageActiveScanner}' ><i class='icon-search icon-white'></i></button></td>";
+				$this->retVal .= "<td><button class='btn btn-info' onclick=\"Playpulsar.gameplay.execute('engageActiveScanner','down',null,null,null);\" title='{T:engageActiveScanner}' ><i class='icon-search icon-white'></i></button></td>";
 			}else {
 				$this->retVal .= "<td>&nbsp;</td>";
 			}
 
 			if ($shipPosition->Y < $systemProperties->Height) {
-				$this->retVal .= "<td><button class='btn' onclick=\"executeAction('shipMove','down',null,null,null);\" ><i class='icon-chevron-down'></i></button></td>";
+				$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('shipMove','down',null,null,null);\" ><i class='icon-chevron-down'></i></button></td>";
 			} else {
 				$this->retVal .= "<td>&nbsp;</td>";
 			}
 			if (!empty($shipRouting->System) && !empty($shipProperties->CanWarpJump)) {
-				$this->retVal .= "<td><button class='btn btn-warning' onclick=\"executeAction('engageFtl','down',null,null,null);\" title='{T:Engage FTL Jump Drive}' ><i class='icon-screenshot icon-white'></i></button></td>";
+				$this->retVal .= "<td><button class='btn btn-warning' onclick=\"Playpulsar.gameplay.execute('engageFtl','down',null,null,null);\" title='{T:Engage FTL Jump Drive}' ><i class='icon-screenshot icon-white'></i></button></td>";
 			}else {
 				$this->retVal .= "<td>&nbsp;</td>";
 			}
@@ -102,13 +102,13 @@ class Move extends Base {
 		} else {
 			//Komórka bezruchu :)
 			$this->retVal .= "<tr>";
-				$this->retVal .= "<td><button class='btn' onclick=\"executeAction('shipUnDock',null,null,null,null);\" title='".Translate::getDefault()->get ( 'undock' )."'><i class='icon-white icon-resize-full'></i></button></td>";
+				$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('shipUnDock',null,null,null,null);\" title='".Translate::getDefault()->get ( 'undock' )."'><i class='icon-white icon-resize-full'></i></button></td>";
 			$this->retVal .= "<td>&nbsp;</td>";
 			$this->retVal .= "<td>&nbsp;</td>";
 			$this->retVal .= "</tr>";
 			$this->retVal .= "<tr>";
 			$this->retVal .= "<td>&nbsp;</td>";
-			$this->retVal .= "<td><button class='btn' onclick=\"executeAction('shipRefresh','left',null,null,null);\" ><i class='icon-refresh icon-white'></i></button></td>";
+			$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('shipRefresh','left',null,null,null);\" ><i class='icon-refresh icon-white'></i></button></td>";
 			$this->retVal .= "<td>&nbsp;</td>";
 			$this->retVal .= "</tr>";
 			$this->retVal .= "<tr>";

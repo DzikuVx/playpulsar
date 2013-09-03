@@ -59,7 +59,7 @@ if ($portProperties->Type == 'station') {
 			$portPanel .= \General\Controls::renderImgButton ( 'info', "getXmlRpc('univPanel','weapon::renderDetail','{$userProperties->Language}','{$tR1->WeaponID}')", 'Info' );
 
 			if ($userStats->Fame >= $tR1->Fame && $userStats->Cash >= $tR1->Price && $shipProperties->CurrentWeapons < $shipProperties->MaxWeapons && $shipProperties->WeaponSize >= $tR1->Size) {
-				$portPanel .= \General\Controls::renderImgButton ( 'buy', "executeAction('buyWeapon','',null,{$tR1->WeaponID},null);", TranslateController::getDefault()->get ( 'buy' ) );
+				$portPanel .= \General\Controls::renderImgButton ( 'buy', "Playpulsar.gameplay.execute('buyWeapon','',null,{$tR1->WeaponID},null);", TranslateController::getDefault()->get ( 'buy' ) );
 			}
 			$portPanel .= "</td>";
 			$portPanel .= "</tr>";
@@ -112,7 +112,7 @@ if ($portProperties->Type == 'station') {
 			}
 
 			if ($goUniqueBuy && $userStats->Fame >= $tR1->Fame && $userStats->Cash >= $tR1->Price && ($shipProperties->MaxEquipment - $shipProperties->CurrentEquipment) >= $tR1->Size) {
-				$portPanel .= \General\Controls::renderImgButton ( 'buy', "executeAction('buyEquipment','',null,{$tR1->EquipmentID},null);", TranslateController::getDefault()->get ( 'buy' ) );
+				$portPanel .= \General\Controls::renderImgButton ( 'buy', "Playpulsar.gameplay.execute('buyEquipment','',null,{$tR1->EquipmentID},null);", TranslateController::getDefault()->get ( 'buy' ) );
 			}
 			$portPanel .= "</td>";
 			$portPanel .= "</tr>";

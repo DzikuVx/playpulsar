@@ -62,7 +62,7 @@ class SectorResources extends Base {
 				$toGather = $canGather;
 			if ($canGather > 0 && $toGather > 0) {
 				$turnsRequired = ceil ( $toGather / $shipProperties->Gather );
-				$tContent .= \General\Controls::bootstrapIconButton( "{T:gather} ({$turnsRequired}am)", "executeAction('gather','product',null,'{$tR1->CargoID}',null);", 'btn-mini pull-right', 'icon-download icon-white' );
+				$tContent .= \General\Controls::bootstrapIconButton( "{T:gather} ({$turnsRequired}am)", "Playpulsar.gameplay.execute('gather','product',null,'{$tR1->CargoID}',null);", 'btn-mini pull-right', 'icon-download icon-white' );
 			}
 			$tContent .= '<label class="green">'.$tR1->{$nameField}.' ('.$tR1->Amount.')</label>';
 
@@ -77,7 +77,7 @@ class SectorResources extends Base {
 
 			$tContent .= "<div class='well resource'>";
 			if ($shipProperties->Cargo < $shipProperties->CargoMax && $shipProperties->Turns >= $itemPickCost) {
-				$tContent .= \General\Controls::bootstrapIconButton( "{T:pick1} ({$itemPickCost}am)", "executeAction('gather','weapon',null,'{$tR1->CargoID}',null);", 'btn-mini pull-right', 'icon-download icon-white' );
+				$tContent .= \General\Controls::bootstrapIconButton( "{T:pick1} ({$itemPickCost}am)", "Playpulsar.gameplay.execute('gather','weapon',null,'{$tR1->CargoID}',null);", 'btn-mini pull-right', 'icon-download icon-white' );
 			}
 			$tContent .= '<label class="red">'.$tR1->{$nameField}.' ('.$tR1->Amount.')</label>';
 			$tContent .= "</div>";
@@ -92,7 +92,7 @@ class SectorResources extends Base {
 		
 			$tContent .= "<div class='well resource'>";
 			if ($shipProperties->Cargo < $shipProperties->CargoMax && $shipProperties->Turns >= $itemPickCost) {
-				$tContent .= \General\Controls::bootstrapIconButton( "{T:pick1} ({$itemPickCost}am)", "executeAction('gather','equipment',null,'{$tR1->CargoID}',null);", 'btn-mini pull-right', 'icon-download icon-white' );
+				$tContent .= \General\Controls::bootstrapIconButton( "{T:pick1} ({$itemPickCost}am)", "Playpulsar.gameplay.execute('gather','equipment',null,'{$tR1->CargoID}',null);", 'btn-mini pull-right', 'icon-download icon-white' );
 			}
 			$tContent .= '<label>'.$tR1->{$nameField}.' ('.$tR1->Amount.')</label>';
 			$tContent .= "</div>";
@@ -107,7 +107,7 @@ class SectorResources extends Base {
 			
 			$tContent .= "<div class='well resource'>";
 			if ($shipProperties->Cargo < $shipProperties->CargoMax && $shipProperties->Turns >= $itemPickCost) {
-				$tContent .= \General\Controls::bootstrapIconButton( "{T:pick1} ({$itemPickCost}am)", "executeAction('gather','item',null,'{$tR1->CargoID}',null);", 'btn-mini pull-right', 'icon-download icon-white' );
+				$tContent .= \General\Controls::bootstrapIconButton( "{T:pick1} ({$itemPickCost}am)", "Playpulsar.gameplay.execute('gather','item',null,'{$tR1->CargoID}',null);", 'btn-mini pull-right', 'icon-download icon-white' );
 			}
 			$tContent .= '<label class="yellow">'.$tR1->{$nameField}.' ('.$tR1->Amount.')</label>';
 			$tContent .= "</div>";

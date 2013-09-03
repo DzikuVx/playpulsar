@@ -66,35 +66,35 @@ class topPlayersRegistry extends simpleRegistry {
 		} else {
 			$tStyle = '';
 		}
-		$retVal .= \General\Controls::renderButton ( TranslateController::getDefault()->get ( 'byExperience' ), "executeAction('topPlayersShow','Experience', null, null);", $tStyle );
+		$retVal .= \General\Controls::renderButton ( TranslateController::getDefault()->get ( 'byExperience' ), "Playpulsar.gameplay.execute('topPlayersShow','Experience', null, null);", $tStyle );
 
 		if ($sortOrder == 'Kills') {
 			$tStyle = 'font-weight: bold;';
 		} else {
 			$tStyle = '';
 		}
-		$retVal .= \General\Controls::renderButton ( TranslateController::getDefault()->get ( 'byKills' ), "executeAction('topPlayersShow','Kills', null, null);", $tStyle );
+		$retVal .= \General\Controls::renderButton ( TranslateController::getDefault()->get ( 'byKills' ), "Playpulsar.gameplay.execute('topPlayersShow','Kills', null, null);", $tStyle );
 		
 		if ($sortOrder == 'Deaths') {
 			$tStyle = 'font-weight: bold;';
 		} else {
 			$tStyle = '';
 		}
-		$retVal .= \General\Controls::renderButton ( TranslateController::getDefault()->get ( 'deaths' ), "executeAction('topPlayersShow','Deaths', null, null);", $tStyle );
+		$retVal .= \General\Controls::renderButton ( TranslateController::getDefault()->get ( 'deaths' ), "Playpulsar.gameplay.execute('topPlayersShow','Deaths', null, null);", $tStyle );
 
 		/*if ($sortOrder == 'Pirates') {
 			$tStyle = 'font-weight: bold;';
 		} else {
 			$tStyle = '';
 		}
-		$retVal .= \General\Controls::renderButton ( TranslateController::getDefault()->get ( 'byPirates' ), "executeAction('topPlayersShow','Pirates', null, null);", $tStyle );
+		$retVal .= \General\Controls::renderButton ( TranslateController::getDefault()->get ( 'byPirates' ), "Playpulsar.gameplay.execute('topPlayersShow','Pirates', null, null);", $tStyle );
 
 		if ($sortOrder == 'Raids') {
 			$tStyle = 'font-weight: bold;';
 		} else {
 			$tStyle = '';
 		}
-		$retVal .= \General\Controls::renderButton ( TranslateController::getDefault()->get ( 'byRaids' ), "executeAction('topPlayersShow','Raids', null, null);", $tStyle );
+		$retVal .= \General\Controls::renderButton ( TranslateController::getDefault()->get ( 'byRaids' ), "Playpulsar.gameplay.execute('topPlayersShow','Raids', null, null);", $tStyle );
 */
 		$retVal .= '</div>';
 
@@ -137,7 +137,7 @@ class topPlayersRegistry extends simpleRegistry {
 //			$retVal .= '<td>' . $tR1->Pirates . '</td>';
 //			$retVal .= '<td>' . $tR1->Raids . '</td>';
 
-			$tString = \General\Controls::renderImgButton('info', "executeAction('shipExamine','',null,{$tR1->UserID});", TranslateController::getDefault()->get ( 'examine' ));
+			$tString = \General\Controls::renderImgButton('info', "Playpulsar.gameplay.execute('shipExamine','',null,{$tR1->UserID});", TranslateController::getDefault()->get ( 'examine' ));
 
 			$retVal .= '<td>' . $tString . '</td>';
 

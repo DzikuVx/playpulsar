@@ -16,7 +16,7 @@ class weaponsPanel extends basePanel {
 	public function render() {
 		global $colorTable, $shipWeapons;
 		$this->rendered = true;
-		$this->retVal .= "<h1 onclick=\"executeAction('weaponsManagement',null,null,null,null);\" style='cursor: pointer;'>";
+		$this->retVal .= "<h1 onclick=\"Playpulsar.gameplay.execute('weaponsManagement',null,null,null,null);\" style='cursor: pointer;'>";
 		$this->retVal .= TranslateController::getDefault()->get ( 'weapons' );
 		$this->retVal .= "</h1>";
 		

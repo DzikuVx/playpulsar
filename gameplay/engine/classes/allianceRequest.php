@@ -56,7 +56,7 @@ class allianceRequest extends baseItem {
 			message::sInsert(null, $tMember, $tString);
 		}
 
-		$actionPanel = \General\Controls::displayConfirmDialog(TranslateController::getDefault()->get('confirm'), TranslateController::getDefault()->get('allianceApplianceSaved'),'executeAction(\'allianceDetail\',null,null,\''.$allianceID.'\')');
+		$actionPanel = \General\Controls::displayConfirmDialog(TranslateController::getDefault()->get('confirm'), TranslateController::getDefault()->get('allianceApplianceSaved'),'Playpulsar.gameplay.execute(\'allianceDetail\',null,null,\''.$allianceID.'\')');
 
 		\Cache\Controller::getInstance()->clear('allianceRequest::sGetCount', $allianceID);
 
@@ -287,7 +287,7 @@ class allianceRequest extends baseItem {
 		$tName = userProperties::quickLoad($apprenticeID)->Name;
 		$tString = str_replace('{name}',$tName, $tString);
 
-		$actionPanel = \General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"executeAction('allianceAcceptExecute',null,null,'{$apprenticeID}')","executeAction('allianceAppliances',null,null,null)");
+		$actionPanel = \General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"Playpulsar.gameplay.execute('allianceAcceptExecute',null,null,'{$apprenticeID}')","Playpulsar.gameplay.execute('allianceAppliances',null,null,null)");
 
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
@@ -407,7 +407,7 @@ class allianceRequest extends baseItem {
 		$tName = userProperties::quickLoad($apprenticeID)->Name;
 		$tString = str_replace('{name}',$tName, $tString);
 
-		$actionPanel = \General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"executeAction('allianceDeclineExecute',null,null,'{$apprenticeID}')","executeAction('allianceAppliances',null,null,null)");
+		$actionPanel = \General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"Playpulsar.gameplay.execute('allianceDeclineExecute',null,null,'{$apprenticeID}')","Playpulsar.gameplay.execute('allianceAppliances',null,null,null)");
 
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();

@@ -17,15 +17,15 @@ class iconPanel extends basePanel {
 		$this->retVal = '';
 
 		if ( message::sGetUnreadCount ( $this->userID ) > 0) {
-			$this->retVal .= \General\Controls::renderImgButton('message', "executeAction('showMessages',null, null, null);", TranslateController::getDefault()->get('messages'));
+			$this->retVal .= \General\Controls::renderImgButton('message', "Playpulsar.gameplay.execute('showMessages',null, null, null);", TranslateController::getDefault()->get('messages'));
 		}
 
 		if ( shipEquipment::sGetDamagedCount( $this->userID ) > 0) {
-			$this->retVal .= \General\Controls::renderImgButton('warningA', "executeAction('equiapmentManagement',null, null, null);", TranslateController::getDefault()->get('Damaged equipment'));
+			$this->retVal .= \General\Controls::renderImgButton('warningA', "Playpulsar.gameplay.execute('equiapmentManagement',null, null, null);", TranslateController::getDefault()->get('Damaged equipment'));
 		}
 
 		if ( shipWeapons::sGetDamagedCount( $this->userID ) > 0) {
-			$this->retVal .= \General\Controls::renderImgButton('warningB', "executeAction('weaponsManagement',null, null, null);", TranslateController::getDefault()->get('Damaged weapons'));
+			$this->retVal .= \General\Controls::renderImgButton('warningB', "Playpulsar.gameplay.execute('weaponsManagement',null, null, null);", TranslateController::getDefault()->get('Damaged weapons'));
 		}
 
 	}

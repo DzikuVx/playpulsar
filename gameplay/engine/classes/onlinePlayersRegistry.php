@@ -51,7 +51,7 @@ class onlinePlayersRegistry extends simpleRegistry {
 			$retVal .= '<td>' . $tR1->AllianceName . '</td>';
 			$retVal .= '<td>' . $tR1->Level . '</td>';
 
-			$tString = \General\Controls::renderImgButton('info', "executeAction('shipExamine','',null,{$tR1->UserID});", TranslateController::getDefault()->get ( 'examine' ));
+			$tString = \General\Controls::renderImgButton('info', "Playpulsar.gameplay.execute('shipExamine','',null,{$tR1->UserID});", TranslateController::getDefault()->get ( 'examine' ));
 
 			$retVal .= '<td>' . $tString . '</td>';
 

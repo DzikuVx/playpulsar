@@ -135,11 +135,11 @@ class sectorShipsPanel extends basePanel {
 			$this->retVal .= "</div>";
 			$this->retVal .= "</td>";
 			$this->retVal .= "<td style='width: 35px;'>";
-			$this->retVal .= \General\Controls::renderImgButton ( 'examine',"executeAction('shipExamine','',null,{$tR1->UserID});",TranslateController::getDefault()->get ( 'examine' ), 'imgMove' );
+			$this->retVal .= \General\Controls::renderImgButton ( 'examine',"Playpulsar.gameplay.execute('shipExamine','',null,{$tR1->UserID});",TranslateController::getDefault()->get ( 'examine' ), 'imgMove' );
 			$this->retVal .= "</td>";
 			$this->retVal .= "<td style='width: 35px;'>";
 			if ($shipPosition->Docked == "no" && $tR1->RookieTurns < 1 && $shipProperties->RookieTurns < 1 && ($tR1->AllianceID != $userAlliance->AllianceID || empty($userAlliance->AllianceID))) {
-			$this->retVal .= \General\Controls::renderImgButton ( 'attack',"executeAction('shipAttack',null,null,{$tR1->UserID},null);",TranslateController::getDefault()->get ( 'attack' ), 'imgMove' );
+			$this->retVal .= \General\Controls::renderImgButton ( 'attack',"Playpulsar.gameplay.execute('shipAttack',null,null,{$tR1->UserID},null);",TranslateController::getDefault()->get ( 'attack' ), 'imgMove' );
 					
 				/*
 				 * A tutaj jest triggerowane zachowanie typu AGGRESIVE

@@ -102,9 +102,9 @@ class ShortStats extends Base {
 
 		/* Buttons row */
 		$this->retVal .= "<div style='margin-top: 1em;' class='btn-group'>";
-		$this->retVal .= "<button class='btn btn-small' onclick=\"executeAction('equiapmentManagement',null,null,null,null);\" title=\"".Translate::getDefault()->get('ship')."\"><i class='icon-share-alt'></i>".Translate::getDefault()->get('ship')."</button>";
-		$this->retVal .= "<button class='btn btn-small' onclick=\"executeAction('weaponsManagement',null,null,null,null);\" title=\"".Translate::getDefault()->get('weapons')."\"><i class='icon-share-alt'></i>".Translate::getDefault()->get('weapons')."</button>";
-		$this->retVal .= "<button class='btn btn-small' onclick=\"executeAction('cargoManagement',null,null,null,null);\" title=\"".Translate::getDefault()->get('cargo')."\"><i class='icon-share-alt'></i>".Translate::getDefault()->get('cargo')."</button>";
+		$this->retVal .= "<button class='btn btn-small' onclick=\"Playpulsar.gameplay.execute('equiapmentManagement',null,null,null,null);\" title=\"".Translate::getDefault()->get('ship')."\"><i class='icon-share-alt'></i>".Translate::getDefault()->get('ship')."</button>";
+		$this->retVal .= "<button class='btn btn-small' onclick=\"Playpulsar.gameplay.execute('weaponsManagement',null,null,null,null);\" title=\"".Translate::getDefault()->get('weapons')."\"><i class='icon-share-alt'></i>".Translate::getDefault()->get('weapons')."</button>";
+		$this->retVal .= "<button class='btn btn-small' onclick=\"Playpulsar.gameplay.execute('cargoManagement',null,null,null,null);\" title=\"".Translate::getDefault()->get('cargo')."\"><i class='icon-share-alt'></i>".Translate::getDefault()->get('cargo')."</button>";
 		$this->retVal .= "</div>";
 		
 		/* Antimatter row */

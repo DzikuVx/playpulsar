@@ -67,7 +67,7 @@ class sectorResourcePanel extends basePanel {
 			$toGather = $canGather;
 			if ($canGather > 0 && $toGather > 0) {
 				$turnsRequired = ceil ( $toGather / $shipProperties->Gather );
-				$tContent .= \General\Controls::renderImgButton ( 'gather', "executeAction('gather','product',null,'{$tR1->CargoID}',null);", TranslateController::getDefault()->get ( 'gather' ) . " (" . $turnsRequired ."am)" );
+				$tContent .= \General\Controls::renderImgButton ( 'gather', "Playpulsar.gameplay.execute('gather','product',null,'{$tR1->CargoID}',null);", TranslateController::getDefault()->get ( 'gather' ) . " (" . $turnsRequired ."am)" );
 			}
 			$tContent .= "</td>";
 			$tContent .= "</tr>";
@@ -95,7 +95,7 @@ class sectorResourcePanel extends basePanel {
 			$tContent .= "<td class='amount'>" . $tR1->Amount . "</td>";
 			$tContent .= "<td class='opers'>";
 			if ($shipProperties->Cargo < $shipProperties->CargoMax && $shipProperties->Turns >= $itemPickCost) {
-				$tContent .= \General\Controls::renderImgButton ( 'gather', "executeAction('gather','weapon',null,'{$tR1->CargoID}',null);", TranslateController::getDefault()->get ( 'pick1' ) . " (" . $itemPickCost ."am)" );
+				$tContent .= \General\Controls::renderImgButton ( 'gather', "Playpulsar.gameplay.execute('gather','weapon',null,'{$tR1->CargoID}',null);", TranslateController::getDefault()->get ( 'pick1' ) . " (" . $itemPickCost ."am)" );
 			}
 			$tContent .= "</td>";
 			$tContent .= "</tr>";
@@ -120,7 +120,7 @@ class sectorResourcePanel extends basePanel {
 			$tContent .= "<td class='amount'>" . $tR1->Amount . "</td>";
 			$tContent .= "<td class='opers'>";
 			if ($shipProperties->Cargo < $shipProperties->CargoMax && $shipProperties->Turns >= $itemPickCost) {
-				$tContent .= \General\Controls::renderImgButton ( 'gather', "executeAction('gather','equipment',null,'{$tR1->CargoID}',null);", TranslateController::getDefault()->get ( 'pick1' ) . " (" . $itemPickCost ."am)" );
+				$tContent .= \General\Controls::renderImgButton ( 'gather', "Playpulsar.gameplay.execute('gather','equipment',null,'{$tR1->CargoID}',null);", TranslateController::getDefault()->get ( 'pick1' ) . " (" . $itemPickCost ."am)" );
 			}
 			$tContent .= "</td>";
 			$tContent .= "</tr>";
@@ -146,7 +146,7 @@ class sectorResourcePanel extends basePanel {
 			$tContent .= "<td class='amount'>" . $tR1->Amount . "</td>";
 			$tContent .= "<td class=\"opers\">";
 			if ($shipProperties->Cargo < $shipProperties->CargoMax && $shipProperties->Turns >= $itemPickCost) {
-				$tContent .= \General\Controls::renderImgButton ( 'gather', "executeAction('gather','item',null,'{$tR1->CargoID}',null);", TranslateController::getDefault()->get ( 'pick1' ) . " (" . $itemPickCost ."am)" );
+				$tContent .= \General\Controls::renderImgButton ( 'gather', "Playpulsar.gameplay.execute('gather','item',null,'{$tR1->CargoID}',null);", TranslateController::getDefault()->get ( 'pick1' ) . " (" . $itemPickCost ."am)" );
 			}
 			$tContent .= "</td>";
 			$tContent .= "</tr>";

@@ -27,7 +27,7 @@
 			mouseX = e.pageX;
 			mouseY = e.pageY;
 		});
-		executeAction('pageReload');
+		Playpulsar.gameplay.execute('pageReload');
 		globalChat.get();
 	})
 </script>
@@ -51,23 +51,23 @@
 				<div class="nav-collapse pull-right">
 					<ul class="nav">
 						<li><a href="#"
-							onclick="executeAction('examineMe',null,null,null,null)">{T:My
+							onclick="Playpulsar.gameplay.execute('examineMe',null,null,null,null)">{T:My
 								profile}</a></li>
 						<li class="dropdown"><a class="dropdown-toggle"
 							data-toggle="dropdown" href="#">{T:Links}<b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<li><a href="#"
-									onclick="executeAction('showOnlinePlayers',null, null, null);">{T:onlinePlayers}</a></li>
+									onclick="Playpulsar.gameplay.execute('showOnlinePlayers',null, null, null);">{T:onlinePlayers}</a></li>
 								<li><a href="#"
-									onclick="executeAction('showMessages',null, null, null);">{T:messages}</a></li>
+									onclick="Playpulsar.gameplay.execute('showMessages',null, null, null);">{T:messages}</a></li>
 								<li><a href="#"
-									onclick="executeAction('topPlayersShow','Experience', null, null);">{T:topPlayers}</a></li>
+									onclick="Playpulsar.gameplay.execute('topPlayersShow','Experience', null, null);">{T:topPlayers}</a></li>
 								<li><a href="#"
-									onclick="executeAction('allianceDetail',null, null, '{$userAlliance->AllianceID}');">{T:myAlliance}</a></li>
+									onclick="Playpulsar.gameplay.execute('allianceDetail',null, null, '{$userAlliance->AllianceID}');">{T:myAlliance}</a></li>
 								<li><a href="#"
-									onclick="executeAction('showAlliances',null, null, null);">{T:alliances}</a></li>
+									onclick="Playpulsar.gameplay.execute('showAlliances',null, null, null);">{T:alliances}</a></li>
 								<li><a href="#"
-									onclick="executeAction('showBuddy',null, null, null);">{T:Buddy
+									onclick="Playpulsar.gameplay.execute('showBuddy',null, null, null);">{T:Buddy
 										List}</a></li>
 								<li class="divider"></li>
 								<li><a href="{T:helpFiles}" target='_blank'>{T:Help}</a></li>
@@ -96,7 +96,7 @@
 					<!-- 
 				
 				<div id="newsAgencyPanel" style="cursor: pointer;"
-					onclick="executeAction('newsAgency',null,null,null,null);">&nbsp;</div>
+					onclick="Playpulsar.gameplay.execute('newsAgency',null,null,null,null);">&nbsp;</div>
 				<div id="globalChatPanel">
 					<h1>{T:Chat}</h1>
 					<input type="text" onkeypress="globalChat.submitListener(event);"
@@ -160,10 +160,10 @@
 					<div class="panel panelOut" id="weaponsPanel">&nbsp;</div>
 					<div class="panel panelOut" id="cargoPanel"
 						style="cursor: pointer;"
-						onclick="executeAction('cargoManagement',null,null,null,null);">&nbsp;</div>
+						onclick="Playpulsar.gameplay.execute('cargoManagement',null,null,null,null);">&nbsp;</div>
 					<div class="panel panelOut" id="shipStatsPanel"
 						style="cursor: pointer;"
-						onclick="executeAction('equiapmentManagement',null,null,null,null);">&nbsp;</div>
+						onclick="Playpulsar.gameplay.execute('equiapmentManagement',null,null,null,null);">&nbsp;</div>
 				</td>
 				<td class="mainTableCell">
 					<div class="panel panelMiddle" id="announcementPanel">&nbsp;</div>
@@ -193,11 +193,11 @@
 					<div class="panel panelOut" id="iconPanel">&nbsp;</div>
 					<div class="panel panelOut" id="shortUserStatsPanel"
 						style="cursor: pointer;"
-						onclick="executeAction('examineMe',null,null,null,null);">&nbsp;</div>
+						onclick="Playpulsar.gameplay.execute('examineMe',null,null,null,null);">&nbsp;</div>
 					<div class="panel panelOut" id="linksPanel">&nbsp;</div>
 					<div class="panel panelOut" id="newsAgencyPanel"
 						style="cursor: pointer;"
-						onclick="executeAction('newsAgency',null,null,null,null);">&nbsp;</div>
+						onclick="Playpulsar.gameplay.execute('newsAgency',null,null,null,null);">&nbsp;</div>
 					<div class="panel panelOut" id="globalChatPanel">
 						<h1>{T:Chat}</h1>
 						<input type="text" onkeypress="globalChat.submitListener(event);"

@@ -193,7 +193,7 @@ class allianceRights extends baseItem {
 		$registry = new allianceRightsRegistry( $userID );
 		$registry->setDisableCache(true);		
 		$actionPanel .= $registry->get ($userAlliance->AllianceID);
-		$actionPanel .= "<div style=\"text-align: center;\">" . \General\Controls::bootstrapButton ( '{T:close}', "executeAction('allianceDetail',null,null,'{$userAlliance->AllianceID}');" ) . "</div>";
+		$actionPanel .= "<div style=\"text-align: center;\">" . \General\Controls::bootstrapButton ( '{T:close}', "Playpulsar.gameplay.execute('allianceDetail',null,null,'{$userAlliance->AllianceID}');" ) . "</div>";
 		unset($registry);
 
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();

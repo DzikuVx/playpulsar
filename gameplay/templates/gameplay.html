@@ -29,23 +29,23 @@
 				<div class="nav-collapse pull-right">
 					<ul class="nav">
 						<li><a href="#"
-							onclick="executeAction('examineMe',null,null,null,null)">{T:My
+							onclick="Playpulsar.gameplay.execute('examineMe',null,null,null,null)">{T:My
 								profile}</a></li>
 						<li class="dropdown"><a class="dropdown-toggle"
 							data-toggle="dropdown" href="#">{T:Links}<b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<li><a href="#"
-									onclick="executeAction('showOnlinePlayers',null, null, null);">{T:onlinePlayers}</a></li>
+									onclick="Playpulsar.gameplay.execute('showOnlinePlayers',null, null, null);">{T:onlinePlayers}</a></li>
 								<li><a href="#"
-									onclick="executeAction('showMessages',null, null, null);">{T:messages}</a></li>
+									onclick="Playpulsar.gameplay.execute('showMessages',null, null, null);">{T:messages}</a></li>
 								<li><a href="#"
-									onclick="executeAction('topPlayersShow','Experience', null, null);">{T:topPlayers}</a></li>
+									onclick="Playpulsar.gameplay.execute('topPlayersShow','Experience', null, null);">{T:topPlayers}</a></li>
 								<li><a href="#"
-									onclick="executeAction('myAllianceDetail');">{T:myAlliance}</a></li>
+									onclick="Playpulsar.gameplay.execute('myAllianceDetail');">{T:myAlliance}</a></li>
 								<li><a href="#"
-									onclick="executeAction('showAlliances',null, null, null);">{T:alliances}</a></li>
+									onclick="Playpulsar.gameplay.execute('showAlliances',null, null, null);">{T:alliances}</a></li>
 								<li><a href="#"
-									onclick="executeAction('showBuddy',null, null, null);">{T:Buddy
+									onclick="Playpulsar.gameplay.execute('showBuddy',null, null, null);">{T:Buddy
 										List}</a></li>
 								<li class="divider"></li>
 								<li><a href="{T:helpFiles}" target='_blank'>{T:Help}</a></li>
@@ -184,7 +184,7 @@
 				mouseX = e.pageX;
 				mouseY = e.pageY;
 			});
-			executeAction('pageReload');
+			Playpulsar.gameplay.execute('pageReload');
 			globalChat.get();
 		})
 	</script>

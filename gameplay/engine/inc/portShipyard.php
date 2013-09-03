@@ -50,7 +50,7 @@ if (!empty($portProperties->Ships)) {
 		$portPanel .= \General\Controls::renderImgButton ( 'info', "getXmlRpc('univPanel','ship::renderDetail','{$userProperties->Language}','{$tR1->ShipID}')", 'Info' );
 
 		if ($userStats->Fame >= $tR1->Fame && $userStats->Cash + $currentShipValue >= $tR1->Price) {
-			$portPanel .= \General\Controls::renderImgButton ( 'buy', "executeAction('buyShip','',null,{$tR1->ShipID},null);", TranslateController::getDefault()->get ( 'buy' ) );
+			$portPanel .= \General\Controls::renderImgButton ( 'buy', "Playpulsar.gameplay.execute('buyShip','',null,{$tR1->ShipID},null);", TranslateController::getDefault()->get ( 'buy' ) );
 		}
 		$portPanel .= "</td>";
 		$portPanel .= "</tr>";

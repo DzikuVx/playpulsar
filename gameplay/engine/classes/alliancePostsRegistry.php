@@ -41,7 +41,7 @@ class alliancePostsRegistry extends simpleRegistry {
 				$retVal .= '<div class="panel ui-shadow-all">';
 					
 				if ($tRights['post']) {
-					$retVal .= '<div style="float: right;">'.\General\Controls::renderImgButton('delete', "executeAction('alliancePostDelete','',null,{$tR1->PostID});", TranslateController::getDefault()->get('delete')).'</div>';
+					$retVal .= '<div style="float: right;">'.\General\Controls::renderImgButton('delete', "Playpulsar.gameplay.execute('alliancePostDelete','',null,{$tR1->PostID});", TranslateController::getDefault()->get('delete')).'</div>';
 				}
 				$retVal .= '<p><strong>' . $tR1->Name . '</strong> <span style="font-size: 0.8em;">'.\General\Formater::formatDateTime($tR1->Date).'</span></p>';
 				$retVal .= '<p>' . $tR1->Text . '</p>';

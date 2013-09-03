@@ -47,7 +47,7 @@ function systemMapClass() {
 		$('#plotX').val(X);
 		$('#plotY').val(Y);
 
-		executeAction('plotSet', null, null, null, null);
+		Playpulsar.gameplay.execute('plotSet', null, null, null, null);
 
 		this.hide();
 		panel.hide('remoteSectorInfo');
