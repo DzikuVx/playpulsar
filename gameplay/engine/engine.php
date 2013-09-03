@@ -10,13 +10,13 @@ $actionPanel = '';
 $portPanel = "";
 $debug = "";
 
-$xml = $HTTP_RAW_POST_DATA;
-
 $retXml = "";
 
 try {
 
-	$userID = xml::sGetValue ( $xml, "<userID>", "</userID>" );
+	\Gameplay\Controller::getInstance()->registerParameters($_REQUEST);
+	
+	$userID = \Gameplay\Controller::getInstance()->getParameter('userID');
 
 	/*
 	 * Sprawdz, czy user podał właściwe dane logowania
@@ -42,12 +42,10 @@ try {
 	/*
 	 * Koniec czyszczenia cache
 	*/
-	$action = xml::sGetValue ( $xml, "<action>", "</action>" );
-	$subaction = xml::sGetValue ( $xml, "<subaction>", "</subaction>" );
-	$id = xml::sGetValue ( $xml, "<id>", "</id>" );
-	$value = xml::sGetValue ( $xml, "<value>", "</value>" );
-	$lastTurnsResetTime = xml::sGetValue ( $xml, "<turnReset>", "</turnReset>" );
-	$lastShipRepairTime = xml::sGetValue ( $xml, "<shipRepair>", "</shipRepair>" );
+	$action = \Gameplay\Controller::getInstance()->getParameter('action');
+	$subaction = \Gameplay\Controller::getInstance()->getParameter('subaction');
+	$id = \Gameplay\Controller::getInstance()->getParameter('id');
+	$value = \Gameplay\Controller::getInstance()->getParameter('value');
 
 	if (!empty($config ['debug'] ['gameplayDebugOutput'])) {
 		writeDebug ( $action );
@@ -136,7 +134,7 @@ try {
 	/*
 	 * jeśli przyszedł rozkaz rozpoczęcia walki
 	*/
-	if ($action == 'shipAttack') {
+	if (\Gameplay\Controller::getInstance()->getParameter('action') == 'shipAttack') {
 		combat::sSetCombatLock ( $userID, $id );
 
 		/**
@@ -170,9 +168,8 @@ try {
 
 	$userFastTimes = new userFastTimes($userID);
 
-
 	//Sprawdz authorize code
-	if (($action != "pageReload") and (xml::sGetValue ( $xml, "<auth>", "</auth>" ) != $userFastTimes->AuthCode)) {
+	if (\Gameplay\Controller::getInstance()->getParameter('action') != "pageReload" && \Gameplay\Controller::getInstance()->getParameter('auth') != $userFastTimes->AuthCode) {
 		$action = null;
 	}
 

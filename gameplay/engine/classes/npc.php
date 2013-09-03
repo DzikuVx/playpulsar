@@ -5,6 +5,8 @@
  * @version $Rev: 456 $
  * @package Engine
  */
+use Cache\CacheKey;
+
 class npc extends baseItem {
 
 	protected $tableName = "npctypes";
@@ -264,7 +266,6 @@ class npc extends baseItem {
 
 			//@todo: naprawa equipmentu dla NPC po resecie
 
-
 		}
 
 		$npcShipPropertiesObject->synchronize ( $npcShipProperties, true, true);
@@ -517,7 +518,7 @@ class npc extends baseItem {
 				/*
 				 * Wyczyść cache jego pozycji
 				 */
-				\Cache\Controller::getInstance()->clear('shipPosition',$tR1->NpcID);
+				\Cache\Controller::getInstance()->clear(new CacheKey('shipPosition', $tR1->NpcID));
 
 			}
 

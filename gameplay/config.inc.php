@@ -276,8 +276,8 @@ psDebug::$senderConfig ['sender'] = 'Pulsar';
 psDebug::create ();
 
 if (empty ( $deploymentMode )) {
-	psDebug::$senderConfig ['url'] = 'localhost';
-	psDebug::$senderConfig ['path'] = '/pulsar_public/gameplay/errorCatcher.php';
+	psDebug::$senderConfig ['url'] = 'playpulsar.localhost';
+	psDebug::$senderConfig ['path'] = '/errorCatcher.php';
 }else {
 	psDebug::$senderConfig ['url'] = 'localhost';
 	psDebug::$senderConfig ['path'] = '/errorCatcher.php';

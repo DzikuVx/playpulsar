@@ -539,7 +539,7 @@ Playpulsar.gameplay = (function () {
 		
 	}
 	
-	self.processSuccess = function (data) {
+	self.processSuccess = function (data, textStatus, jqXHR) {
 		console.log('Success', data);
 	}
 	
