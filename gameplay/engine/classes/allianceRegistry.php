@@ -48,10 +48,9 @@ class allianceRegistry extends simpleRegistry {
 	 */
 	public function get() {
 
-		$module = 'alliance::getRegistry';
-		$property = null;
-
-		if (! \Cache\Controller::getInstance()->check ( $module, $property )) {
+		$oCacheKey = new \Cache\CacheKey('alliance::getRegistry', null);
+		
+		if (! \Cache\Controller::getInstance()->check ( $oCacheKey )) {
 
 			$retVal = '';
 			//@todo: nawigacja po stronach
@@ -95,11 +94,10 @@ class allianceRegistry extends simpleRegistry {
 
 			$retVal .= '</table>';
 			$retVal .= '</div>';
-			\Cache\Controller::getInstance()->set ( $module, $property, $retVal, 3600 );
+			\Cache\Controller::getInstance()->set ( $oCacheKey, $retVal, 3600 );
 		} else {
-			$retVal = \Cache\Controller::getInstance()->get ( $module, $property );
+			$retVal = \Cache\Controller::getInstance()->get ( $oCacheKey );
 		}
 		return $retVal;
 	}
-
 }

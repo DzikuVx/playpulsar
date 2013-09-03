@@ -523,10 +523,9 @@ class Maintenance extends BaseItem {
 
 		$retVal = 0;
 
-		$module = 'maintenance';
-		$property = 'sGetTablesCount';
-
-		if (! Cache::getInstance()->check ( $module, $property )) {
+		$oCacheKey = new \Cache\CacheKey('maintenance', 'sGetTablesCount');
+		
+		if (! Cache::getInstance()->check ( $oCacheKey )) {
 
 			$tQuery = "SHOW TABLE STATUS";
 			$tQuery = Database::getInstance()->execute ( $tQuery );
@@ -535,9 +534,9 @@ class Maintenance extends BaseItem {
 					$retVal ++;
 				}
 			}
-			Cache::getInstance()->set ( $module, $property, $retVal, 3600 );
+			Cache::getInstance()->set ( $oCacheKey, $retVal, 3600 );
 		} else {
-			$retVal = Cache::getInstance()->get ( $module, $property );
+			$retVal = Cache::getInstance()->get ( $oCacheKey );
 		}
 
 		return $retVal;
@@ -552,10 +551,9 @@ class Maintenance extends BaseItem {
 
 		$retVal = 0;
 
-		$module = 'maintenance';
-		$property = 'sGetOverheadTablesCount';
-
-		if (! Cache::getInstance()->check ( $module, $property )) {
+		$oCacheKey = new \Cache\CacheKey('maintenance', 'sGetOverheadTablesCount');
+		
+		if (! Cache::getInstance()->check ( $oCacheKey )) {
 
 			$tQuery = "SHOW TABLE STATUS";
 			$tQuery = Database::getInstance()->execute ( $tQuery );
@@ -564,9 +562,9 @@ class Maintenance extends BaseItem {
 					$retVal ++;
 				}
 			}
-			Cache::getInstance()->set ( $module, $property, $retVal, 300 );
+			Cache::getInstance()->set ( $oCacheKey, $retVal, 300 );
 		} else {
-			$retVal = Cache::getInstance()->get ( $module, $property );
+			$retVal = Cache::getInstance()->get ( $oCacheKey );
 		}
 
 		return $retVal;

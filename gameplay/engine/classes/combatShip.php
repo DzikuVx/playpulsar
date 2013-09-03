@@ -133,8 +133,10 @@ class combatShip {
 	 *
 	 */
 	public function __destruct() {
-
-		$tLastKill = \Cache\Controller::getInstance()->get('userKilled', $this->userID);
+		
+		$oKilledKey = new \Cache\CacheKey('userKilled', $this->userID);
+		
+		$tLastKill = \Cache\Controller::getInstance()->get($oKilledKey, $this->userID);
 		if (empty($tLastKill)) {
 			$tLastKill = 0;
 		}
@@ -155,7 +157,7 @@ class combatShip {
 
 			global $config;
 			
-			\Cache\Controller::getInstance()->set('userKilled', $this->userID, time(), 10);
+			\Cache\Controller::getInstance()->set($oKilledKey, time(), 10);
 
 			$this->shipProperties->RookieTurns = $config ['combat'] ['killRookieTurns'];
 
@@ -275,8 +277,8 @@ class combatShip {
 		$value = array();
 		$value['name'] = $action;
 		$value['time'] = time();
-
-		\Cache\Controller::getInstance()->set('combatLastAction', $this->userID, $value, 60);
+		
+		\Cache\Controller::getInstance()->set(new \Cache\CacheKey('combatLastAction', $this->userID), $value, 60);
 	}
 
 	public function getLastAction() {

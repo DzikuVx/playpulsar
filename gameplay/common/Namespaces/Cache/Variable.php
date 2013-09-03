@@ -13,6 +13,9 @@ class Variable{
 
 	private static $instance;
 
+	public function clearAll() {
+	}
+	
 	/**
 	 * Konstruktor statyczny
 	 */

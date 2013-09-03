@@ -48,22 +48,21 @@ class mapSector {
 
 		if ($mapType == 'miniMap') {
 
-			$module = 'mapSectorMarker';
-			$property = $this->system.'|'.$this->X.'|'.$this->Y;
-
+			$oCacheKey = new \Cache\CacheKey('mapSectorMarker', $this->system.'|'.$this->X.'|'.$this->Y);
+			
 			if (additional::checkRand($this->showPercentage,100)) {
 				$retVal .= '<img src="gfx/shipMarker.png" style="position: absolute; margin-top: -1px;" />';
-				\Cache\Controller::getInstance()->set($module, $property, 1);
+				\Cache\Controller::getInstance()->set($oCacheKey, 1);
 			}
 			else {
 
 				/*
 				 * Marker że był kontakt
 				 */
-				$tMarker = \Cache\Controller::getInstance()->get($module, $property);
+				$tMarker = \Cache\Controller::getInstance()->get($oCacheKey);
 				if ($tMarker === 1) {
 					$retVal .= '<img src="gfx/shipMarker.png" style="position: absolute; margin-top: -1px; opacity: 0.5;"/>';
-					\Cache\Controller::getInstance()->set($module, $property, 0);
+					\Cache\Controller::getInstance()->set($oCacheKey, 0);
 				}
 
 			}

@@ -13,10 +13,9 @@ class alliancePostsRegistry extends simpleRegistry {
 
 		$tRights['post'] = allianceRights::sCheck($userID, $userAlliance->AllianceID, 'post');
 
-		$module = 'alliancePostsRegistry::get';
-		$property = md5($allianceID.'|'.serialize($tRights['post']));
-
-		if (!\Cache\Controller::getInstance()->check($module, $property)) {
+		$oCacheKey = new \Cache\CacheKey('alliancePostsRegistry::get', md5($allianceID.'|'.serialize($tRights['post'])));
+		
+		if (!\Cache\Controller::getInstance()->check($oCacheKey)) {
 
 			$retVal = '';
 
@@ -49,10 +48,10 @@ class alliancePostsRegistry extends simpleRegistry {
 				$retVal .= '</div>';
 			}
 
-			\Cache\Controller::getInstance()->set($module, $property, $retVal, 7200);
+			\Cache\Controller::getInstance()->set($oCacheKey, $retVal, 7200);
 
 		}else {
-			$retVal = \Cache\Controller::getInstance()->get($module, $property);
+			$retVal = \Cache\Controller::getInstance()->get($oCacheKey);
 		}
 
 		return $retVal;

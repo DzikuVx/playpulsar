@@ -31,10 +31,9 @@ class newsAgencyRegistry extends simpleRegistry {
 
 		global $userProperties;
 
-		$module = 'newsAgency::get';
-		$property = $shipPosition->System . '|' . $userProperties->Language;
-
-		if (! \Cache\Controller::getInstance()->check ( $module, $property )) {
+		$oCacheKey = new \Cache\CacheKey('newsAgency::get', $shipPosition->System . '|' . $userProperties->Language);
+		
+		if (! \Cache\Controller::getInstance()->check ( $oCacheKey )) {
 
 			$retVal = '';
 			//@todo: nawigacja po stronach
@@ -66,9 +65,9 @@ class newsAgencyRegistry extends simpleRegistry {
 			$retVal .= '</tbody>';
 			$retVal .= '</table>';
 			$retVal .= '</div>';
-			\Cache\Controller::getInstance()->set ( $module, $property, $retVal, 3600 );
+			\Cache\Controller::getInstance()->set ( $oCacheKey, $retVal, 3600 );
 		} else {
-			$retVal = \Cache\Controller::getInstance()->get ( $module, $property );
+			$retVal = \Cache\Controller::getInstance()->get ( $oCacheKey );
 		}
 		return $retVal;
 	}

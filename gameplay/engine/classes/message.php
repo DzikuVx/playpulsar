@@ -21,19 +21,18 @@ class message extends baseItem {
 	 */
 	static public function sGetUnreadCount($userID) {
 
-		$module = 'message::sGetUnreadCount';
-		$property = $userID;
-
-		if (!\Cache\Controller::getInstance()->check($module, $property)) {
+		$oCacheKey = new \Cache\CacheKey('message::sGetUnreadCount', $userID);
+		
+		if (!\Cache\Controller::getInstance()->check($oCacheKey)) {
 
 			$tQuery = "SELECT COUNT(*) AS ILE FROM messages WHERE Receiver='{$userID}' AND Received='no'";
 			$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
 			$retVal = \Database\Controller::getInstance()->fetch ( $tQuery )->ILE;
 
-			\Cache\Controller::getInstance()->set($module, $property, $retVal);
+			\Cache\Controller::getInstance()->set($oCacheKey, $retVal);
 
 		}else {
-			$retVal = \Cache\Controller::getInstance()->get($module, $property);
+			$retVal = \Cache\Controller::getInstance()->get($oCacheKey);
 		}
 
 		return $retVal;
@@ -195,12 +194,15 @@ class message extends baseItem {
 			$tQuery = "INSERT INTO messages(Author, Receiver, Text, CreateTime) VALUES({$author},'{$receiver}','{$text}','" . time () . "')";
 			\Database\Controller::getInstance()->execute ( $tQuery );
 
-			$tVal = \Cache\Controller::getInstance()->get('message::sGetUnreadCount',$receiver);
+			$oCacheKey = new \Cache\CacheKey('message::sGetUnreadCount', $receiver);
+			
+			$tVal = \Cache\Controller::getInstance()->get($oCacheKey);
 			if (empty($tVal)) {
 				$tVal = 0;
 			}
 			$tVal++;
-			\Cache\Controller::getInstance()->set('message::sGetUnreadCount',$receiver, $tVal);
+			
+			\Cache\Controller::getInstance()->set($oCacheKey, $tVal);
 
 		}catch(Exception $e) {
 			$retVal = false;

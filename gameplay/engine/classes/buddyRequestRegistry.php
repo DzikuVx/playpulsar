@@ -5,10 +5,9 @@ class buddyRequestRegistry extends simpleRegistry{
 
 		global $userID;
 
-		$module = 'buddyRequestRegistry::get';
-		$property = $this->userID;
-
-		if (! \Cache\Controller::getInstance()->check ( $module, $property )) {
+		$oCacheKey = new \Cache\CacheKey('buddyRequestRegistry::get', $this->userID);
+		
+		if (! \Cache\Controller::getInstance()->check ( $oCacheKey )) {
 
 			$retVal = '';
 			//@todo: nawigacja po stronach
@@ -53,9 +52,9 @@ class buddyRequestRegistry extends simpleRegistry{
 				$retVal = '';
 			}
 				
-			\Cache\Controller::getInstance()->set ( $module, $property, $retVal, 3600 );
+			\Cache\Controller::getInstance()->set ( $oCacheKey, $retVal, 3600 );
 		} else {
-			$retVal = \Cache\Controller::getInstance()->get ( $module, $property );
+			$retVal = \Cache\Controller::getInstance()->get ( $oCacheKey );
 		}
 		return $retVal;
 	}

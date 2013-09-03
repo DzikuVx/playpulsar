@@ -20,17 +20,19 @@ class Translate implements ArrayAccess {
 
 		$this->language = $language;
 
-		if (!self::$useCache || ! \Cache\Controller::getInstance()->check ( 'translationList', $this->language )) {
+		$key = new \Cache\CacheKey('translationList', $this->language);
+		
+		if (!self::$useCache || ! \Cache\Controller::getInstance()->check ($key)) {
 			require dirname ( __FILE__ ).'/../../engine/'.$file;
 			
 			$this->table = $translationTable [$this->language];
 			unset ( $translationTable );
 
 			if (self::$useCache) {
-				\Cache\Controller::getInstance()->set ( 'translationList', $this->language, $this->table, 86400 );
+				\Cache\Controller::getInstance()->set ( $key, $this->table, 86400 );
 			}
 		} else {
-			$this->table = \Cache\Controller::getInstance()->get ( 'translationList', $this->language );
+			$this->table = \Cache\Controller::getInstance()->get ($key);
 		}
 
 	}

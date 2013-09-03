@@ -5,10 +5,9 @@ class buddyRegistry extends simpleRegistry{
 
 		global $userID;
 
-		$module = 'buddyRegistry::get';
-		$property = $this->userID;
-
-		if (! \Cache\Controller::getInstance()->check ( $module, $property )) {
+		$oCacheKey = new \Cache\CacheKey('buddyRegistry::get', $this->userID);
+		
+		if (! \Cache\Controller::getInstance()->check ( $oCacheKey )) {
 
 			$retVal = '';
 			$retVal .= "<h1>" . TranslateController::getDefault()->get ( 'Buddy List' ) . "</h1>";
@@ -47,9 +46,9 @@ class buddyRegistry extends simpleRegistry{
 			$retVal .= '</table>';
 			$retVal .= '</div>';
 				
-			\Cache\Controller::getInstance()->set ( $module, $property, $retVal, 3600 );
+			\Cache\Controller::getInstance()->set ( $oCacheKey, $retVal, 3600 );
 		} else {
-			$retVal = \Cache\Controller::getInstance()->get ( $module, $property );
+			$retVal = \Cache\Controller::getInstance()->get ( $oCacheKey );
 		}
 		return $retVal;
 	}

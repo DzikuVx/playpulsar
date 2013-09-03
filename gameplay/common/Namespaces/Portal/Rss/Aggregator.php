@@ -55,14 +55,13 @@ class Aggregator {
 		}else {
 			try {
 
-				$module = 'psRssAgregator::open';
-				$property = md5($this->rssURI);
-
-				if (!\Cache\Controller::getInstance()->check($module, $property)) {
+				$oCacheKey = new \Cache\CacheKey('psRssAgregator::open', md5($this->rssURI));
+				
+				if (!\Cache\Controller::getInstance()->check($oCacheKey)) {
 					$this->loadContent();
-					\Cache\Controller::getInstance()->set($module, $property, $this->uriContent, $this->cacheValidThreshold);
+					\Cache\Controller::getInstance()->set($oCacheKey, $this->uriContent, $this->cacheValidThreshold);
 				}else {
-					$this->uriContent = \Cache\Controller::getInstance()->get($module, $property);
+					$this->uriContent = \Cache\Controller::getInstance()->get($oCacheKey);
 				}
 
 			}catch (Exception $e) {

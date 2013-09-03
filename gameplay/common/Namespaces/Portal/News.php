@@ -30,11 +30,10 @@ class News extends BaseItem {
 		if ($ID == null)
 			return false;
 
-		$module = 'portalNews::get';
-		$property = $ID;
-
-		if (Cache::getInstance()->check($module, $property)) {
-			$this->dataObject = unserialize(Cache::getInstance()->get($module, $property));
+		$oCacheKey = new \Cache\CacheKey('portalNews::get', $ID);
+		
+		if (Cache::getInstance()->check($oCacheKey)) {
+			$this->dataObject = unserialize(Cache::getInstance()->get($oCacheKey));
 		}else {
 			$query = "
 			SELECT
@@ -52,7 +51,7 @@ class News extends BaseItem {
 			$result = Database::getPortalInstance()->execute ( $query );
 			$this->dataObject = Database::getPortalInstance()->fetch ( $result );
 
-			Cache::getInstance()->set($module, $property, serialize($this->dataObject), 86400);
+			Cache::getInstance()->set($oCacheKey, serialize($this->dataObject), 86400);
 
 		}
 

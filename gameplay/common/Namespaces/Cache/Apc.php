@@ -4,18 +4,18 @@ namespace Cache;
 
 /**
  * Wrapper realizujący cache współdzielony za pomocą APC
- * @author Paweł Spychalski 2011
+ * @author Paweł Spychalski 2013
+ * @version 2.0.1 Alfa
  */
-class Apc {
+class Apc implements \Interfaces\Singleton  {
 
 	/**
 	 * Prefix nazw klucza
 	 * @var string
 	 */
-	static private $sCachePrefix = 'Pulsar';
+	static private $sCachePrefix = 'apc';
 
 	/**
-	 * Enter description here ...
 	 * @var int
 	 */
 	static private $gcTimeThreshold = 30;
@@ -34,12 +34,6 @@ class Apc {
 	 * @var \Cache\Apc
 	 */
 	private static $instance;
-
-	/**
-	 * Wewnętrzny cache klasy
-	 * @var array
-	 */
-	private $internalCache = Array();
 
 	/**
 	 * Konstruktor statyczny
@@ -88,14 +82,13 @@ class Apc {
 
 	/**
 	 * Sprawdzenie, czy w cache znajduje się wpis
-	 * @param string $module
-	 * @param string $property
+	 * @param CacheKey $key
 	 * @return boolean
 	 */
-	public function check($module, $property) {
+	public function check(CacheKey $key) {
 
-		$tValue = $this->get($module, $property);
-
+		$tValue = $this->get($key);
+			
 		if ($tValue === false) {
 			return false;
 		}else {
@@ -105,20 +98,12 @@ class Apc {
 
 	/**
 	 * Pobranie wartości z cache
-	 * @param string $module
-	 * @param string $property
+	 * @param CacheKey $key
 	 * @return mixed
 	 */
-	public function get($module, $property) {
+	public function get(CacheKey $key) {
 
-		$key = $this->getKey($module, $property);
-
-		if (isset($this->internalCache[$key])) {
-			$retVal = $this->internalCache[$key];
-		}else {
-			$retVal = apc_fetch($key);
-			$this->internalCache[$key] = $retVal;
-		}
+		$retVal = apc_fetch($this->getKey($key));
 
 		return $retVal;
 	}
@@ -126,20 +111,21 @@ class Apc {
 	/**
 	 * Wyczyszczenie konkretnego wpisu w cache
 	 *
-	 * @param string $module
-	 * @param string $property
+	 * @param CacheKey $key
 	 */
-	public function clear($module, $property = null) {
-		apc_delete($this->getKey($module, $property));
+	public function clear(CacheKey $key) {
+		apc_delete($this->getKey($key));
 	}
 
 	/**
 	 * Wyczyszczenie konkretnego modułu cache
 	 *
-	 * @param string $module
+	 * @param CacheKey $key
 	 */
-	public function clearModule($module = null) {
+	public function clearModule(CacheKey $key) {
 
+		$module = $key->getModule();
+		
 		$iterator = new \APCIterator('user');
 		while ($iterator->current()) {
 
@@ -156,18 +142,17 @@ class Apc {
 	/**
 	 * Wstawienei do cache
 	 *
-	 * @param string $module
-	 * @param string $property
+	 * @param CacheKey $key
 	 * @param mixed $value
 	 * @param int $sessionLength
 	 */
-	public function set($module, $property, $value, $sessionLength = null) {
+	public function set(CacheKey $key, $value, $sessionLength = null) {
 
 		if ($sessionLength == null) {
 			$sessionLength = $this->timeThreshold;
 		}
 
-		apc_store ( $this->getKey($module, $property) , $value , $sessionLength);
+		apc_store ( $this->getKey($key) , $value , $sessionLength);
 	}
 
 	private function getGcRunTime() {
@@ -225,6 +210,15 @@ class Apc {
 	}
 
 	/**
+	 * 
+	 * Flush opcode cache
+	 * @since 2012-08-01
+	 */
+	public function flushOpcode() {
+		apc_clear_cache('opcode');
+	}
+	
+	/**
 	 * Oczyszczenie całego cache
 	 */
 	public function clearAll() {
@@ -233,11 +227,10 @@ class Apc {
 
 	/**
 	* Zestawienie klucza
-	* @param string $module
-	* @param string $property
+	* @param CacheKey $key
 	* @return string
 	*/
-	private function getKey($module, $property) {
-		return self::$sCachePrefix.'__'.$module.'||'.$property;
+	private function getKey(CacheKey $key) {
+		return self::$sCachePrefix.'__'.$key->getModule().'||'.$key->getProperty();
 	}
 }

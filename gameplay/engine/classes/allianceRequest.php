@@ -189,10 +189,9 @@ class allianceRequest extends baseItem {
 
 		try {
 
-			$module = 'allianceRequest::sGetCount';
-			$property = $allianceID;
-
-			if (!\Cache\Controller::getInstance()->check($module, $property)) {
+			$oCacheKey = new \Cache\CacheKey('allianceRequest::sGetCount', $allianceID);
+			
+			if (!\Cache\Controller::getInstance()->check($oCacheKey)) {
 					
 				if (\Database\Controller::getInstance()->getHandle() === false) {
 					throw new \Database\Exception('Connection lost');
@@ -202,10 +201,10 @@ class allianceRequest extends baseItem {
 				$tQuery = \Database\Controller::getInstance()->execute($tQuery);
 				$retVal = \Database\Controller::getInstance()->fetch($tQuery)->ILE;
 					
-				\Cache\Controller::getInstance()->set($module, $property, $retVal);
+				\Cache\Controller::getInstance()->set($oCacheKey, $retVal);
 					
 			}else {
-				$retVal = \Cache\Controller::getInstance()->get($module, $property);
+				$retVal = \Cache\Controller::getInstance()->get($oCacheKey);
 			}
 
 		}catch (Exception $e) {

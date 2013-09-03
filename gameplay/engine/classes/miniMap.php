@@ -132,11 +132,14 @@ class miniMap extends basePanel {
 
 		global $t;
 
-		$module = $this->getCacheModule();
-		$property = $this->getCacheProperty();
+		//FIXME change to class's global cache key
+// 		$module = $this->getCacheModule();
+// 		$property = $this->getCacheProperty();
 
-		if (\Cache\Controller::getInstance()->check($module, $property)) {
-			$this->sector = unserialize(\Cache\Controller::getInstance()->get($module, $property));
+		$oCacheKey = new \Cache\CacheKey($this->getCacheModule(), $this->getCacheProperty());
+		
+		if (\Cache\Controller::getInstance()->check($oCacheKey)) {
+			$this->sector = unserialize(\Cache\Controller::getInstance()->get($oCacheKey));
 		}else {
 
 			/**
@@ -245,7 +248,7 @@ class miniMap extends basePanel {
 			/*
 			 * Zapisz do cache
 			*/
-			\Cache\Controller::getInstance()->set($module, $property, serialize($this->sector), 86400);
+			\Cache\Controller::getInstance()->set($oCacheKey, serialize($this->sector), 86400);
 
 		}
 	}

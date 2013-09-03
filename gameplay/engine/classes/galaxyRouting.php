@@ -65,10 +65,9 @@ class galaxyRouting extends systemRouting {
 	 */
 	private function getNodes() {
 
-		$module = 'galaxyRouting::getNodes';
-		$property = '';
-
-		if (!\Cache\Controller::getInstance()->check($module, $property)) {
+		$oCacheKey = new \Cache\CacheKey('galaxyRouting::getNodes', '');
+		
+		if (!\Cache\Controller::getInstance()->check($oCacheKey)) {
 
 			$this->tNodes = array ();
 
@@ -89,10 +88,10 @@ class galaxyRouting extends systemRouting {
 				$this->tNodes [$resultRow->DstSystem] [$resultRow->SrcSystem] = true;
 			}
 
-			\Cache\Controller::getInstance()->set($module, $property, serialize($this->tNodes), $this->cacheTime);
+			\Cache\Controller::getInstance()->set($oCacheKey, serialize($this->tNodes), $this->cacheTime);
 
 		}else {
-			$this->tNodes = unserialize(\Cache\Controller::getInstance()->get($module, $property));
+			$this->tNodes = unserialize(\Cache\Controller::getInstance()->get($oCacheKey));
 		}
 
 		return true;
@@ -104,10 +103,9 @@ class galaxyRouting extends systemRouting {
 	 */
 	private function getSystems() {
 
-		$module = 'galaxyRouting::getSystems';
-		$property = '';
-
-		if (!\Cache\Controller::getInstance()->check($module, $property)) {
+		$oCacheKey = new \Cache\CacheKey('galaxyRouting::getSystems', '');
+		
+		if (!\Cache\Controller::getInstance()->check($oCacheKey)) {
 
 			$this->tRoute = array ();
 
@@ -122,10 +120,10 @@ class galaxyRouting extends systemRouting {
 				$this->tRoute [$resultRow->SystemID] = new routingSystem ( );
 			}
 
-			\Cache\Controller::getInstance()->set($module, $property, serialize($this->tRoute), $this->cacheTime);
+			\Cache\Controller::getInstance()->set($oCacheKey, serialize($this->tRoute), $this->cacheTime);
 
 		}else {
-			$this->tRoute = unserialize(\Cache\Controller::getInstance()->get($module, $property));
+			$this->tRoute = unserialize(\Cache\Controller::getInstance()->get($oCacheKey));
 		}
 
 		return true;

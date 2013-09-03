@@ -45,9 +45,7 @@ class sectorCargo {
 	}
 
 	private function clearCache($type = 'product') {
-		$module = 'sectorCargo::sGetList::'.$type;
-		$property = '|'.$this->getCacheID();
-		$this->cache->clear($module, $property);
+		$this->cache->clear(new \Cache\CacheKey('sectorCargo::sGetList::'.$type, '|'.$this->getCacheID()));
 	}
 
 	public function getAmount($type, $productID) {
@@ -76,11 +74,10 @@ class sectorCargo {
 	 */
 	public function getList($type = 'product') {
 
-		$module = 'sectorCargo::sGetList::'.$type;
-		$property = '|'.$this->getCacheID();
-
-		if ($this->cache->check($module, $property)) {
-			$retVal = unserialize($this->cache->get($module, $property));
+		$oCacheKey = new \Cache\CacheKey('sectorCargo::sGetList::'.$type, '|'.$this->getCacheID());
+		
+		if ($this->cache->check($oCacheKey)) {
+			$retVal = unserialize($this->cache->get($oCacheKey));
 		}else {
 
 			$retVal = array();
@@ -150,7 +147,7 @@ class sectorCargo {
 					break;
 
 			}
-			$this->cache->set($module, $property, serialize($retVal), $this->cacheValid);
+			$this->cache->set($oCacheKey, serialize($retVal), $this->cacheValid);
 		}
 		return $retVal;
 	}

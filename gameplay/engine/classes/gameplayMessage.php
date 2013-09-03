@@ -7,12 +7,12 @@ class gameplayMessage {
 
 	static private function set(array $data) {
 
-		\Cache\Controller::getInstance()->set('globalMessage','all', $data, 86400);
+		\Cache\Controller::getInstance()->set(new \Cache\CacheKey('globalMessage', 'all'), $data, 86400);
 		return true;
 	}
 
 	static private function get() {
-		return \Cache\Controller::getInstance()->get('globalMessage','all');
+		return \Cache\Controller::getInstance()->get(new \Cache\CacheKey('globalMessage', 'all'));
 	}
 
 	public static function write($type, $text) {

@@ -105,10 +105,11 @@ try {
 		/*
 		 * Sprawdź, czy na tego kolesia jest założona blokada
 		*/
+		$oCacheKey = new \Cache\CacheKey('npcCombatLocked', $tResult->UserID);
+		
+		if (\Cache\Controller::getInstance()->check($oCacheKey) === false) {
 
-		if (\Cache\Controller::getInstance()->check('npcCombatLocked', $tResult->UserID) === false) {
-
-			\Cache\Controller::getInstance()->set('npcCombatLocked', $tResult->UserID, 1, 2);
+			\Cache\Controller::getInstance()->set($oCacheKey, 1, 2);
 
 			$Combat = new combat ( $tResult->UserID, 'en' );
 			switch ($tResult->Behavior) {
@@ -128,7 +129,7 @@ try {
 				'doSummon' => false
 			)	);
 			unset ( $Combat );
-			\Cache\Controller::getInstance()->clear('npcCombatLocked', $tResult->UserID);
+			\Cache\Controller::getInstance()->clear($oCacheKey);
 		}
 	}
 
@@ -975,7 +976,7 @@ try {
 	 * Czyszczenie cache przy pełnym odświeżeniu strony
 	 */
 	if ($action == "pageReload") {
-		\Cache\Controller::getInstance()->clear('user::sGetOnlineCount','');
+		\Cache\Controller::getInstance()->clear(new \Cache\CacheKey('user::sGetOnlineCount', ''));
 	}
 
 	/*

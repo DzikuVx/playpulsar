@@ -60,28 +60,14 @@ abstract class baseItem {
 
 		global $config;
 
-		$cache = \Cache\Session::getInstance();
-
-		if ((empty($config['useMemcached']) && empty($config['useApc'])) || $this->useMemcached == false) {
-
-			if ($cache->check ( get_class ( $this ), $ID )) {
-				$this->ID = $ID;
-				$this->dataObject = $this->toObject ( $cache->get ( get_class ( $this ), $ID ) );
-				return true;
-			} else {
-				return false;
-			}
-
-		}else {
-
-			if (\Cache\Controller::getInstance()->check ( get_class ( $this ), $ID )) {
-				$this->ID = $ID;
-				$this->dataObject = $this->toObject ( \Cache\Controller::getInstance()->get ( get_class ( $this ), $ID ) );
-				return true;
-			} else {
-				return false;
-			}
-
+		$oCacheKey = new \Cache\CacheKey($this, $ID);
+		
+		if (\Cache\Controller::getInstance()->check ( $oCacheKey )) {
+			$this->ID = $ID;
+			$this->dataObject = $this->toObject ( \Cache\Controller::getInstance()->get ( $oCacheKey ) );
+			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -93,18 +79,9 @@ abstract class baseItem {
 	 */
 	function toCache($useSession = false) {
 
-		global $config;
-
-		$cache = \Cache\Session::getInstance();
-
-		if ((empty($config['useMemcached']) && empty($config['useApc'])) || $this->useMemcached == false) {
-
-			$cache->set ( get_class ( $this ), $this->ID, $this->toArray (), $useSession, $this->defaultCacheExpire );
-
-		}else {
-			\Cache\Controller::getInstance()->set ( get_class ( $this ), $this->ID, $this->toArray (), $this->defaultCacheExpire );
-		}
-
+		$oCacheKey = new \Cache\CacheKey($this, $this->ID);
+		\Cache\Controller::getInstance()->set ( $oCacheKey, $this->toArray (), $this->defaultCacheExpire );
+		
 		return true;
 	}
 
@@ -119,9 +96,10 @@ abstract class baseItem {
 	 */
 	final protected function toArray() {
 
-		if ($this->dataObject == null)
-		return false;
-
+		if ($this->dataObject == null) {
+			return false;
+		}
+			
 		$retVal = null;
 
 		foreach ( $this->dataObject as $key => $value ) {

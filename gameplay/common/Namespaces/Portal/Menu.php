@@ -80,10 +80,9 @@ class Menu {
 
 	public static function render($params) {
 
-		$module = 'menuNavigator::sRender';
-		$property = $params['language'];
-
-		if (!Cache::getInstance()->check($module, $property)) {
+		$oCacheKey = new \Cache\CacheKey('menuNavigator::sRender', $params['language']);
+		
+		if (!Cache::getInstance()->check($oCacheKey)) {
 
 			$retVal = '';
 
@@ -94,9 +93,9 @@ class Menu {
 			usort($tList, "\Portal\Menu::sSortMe");
 
 			$retVal = self::sRenderList($tList, $params);
-			Cache::getInstance()->set($module, $property, $retVal, 86400);
+			Cache::getInstance()->set($oCacheKey, $retVal, 86400);
 		}else {
-			$retVal = Cache::getInstance()->get($module, $property);
+			$retVal = Cache::getInstance()->get($oCacheKey);
 		}
 
 		return $retVal;

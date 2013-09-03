@@ -136,14 +136,13 @@ class WeaponTypes extends GameplayItem{
 
 		$retVal = array();
 
-		$module = 'cpWeaponTypes::sGetStationList';
-		$property = $id;
-
-		if ($cacheAble && \Cache\Controller::getInstance()->check($module, $property)) {
-			$retVal = \Cache\Controller::getInstance()->get($module, $property);
+		$oCacheKey = new \Cache\CacheKey('cpWeaponTypes::sGetStationList', $id);
+		
+		if ($cacheAble && \Cache\Controller::getInstance()->check($oCacheKey)) {
+			$retVal = \Cache\Controller::getInstance()->get($oCacheKey);
 		}else {
 			$retVal = self::sStationListData($id);
-			\Cache\Controller::getInstance()->set($module, $property, $retVal);
+			\Cache\Controller::getInstance()->set($oCacheKey, $retVal);
 		}
 
 		return $retVal;
@@ -153,14 +152,13 @@ class WeaponTypes extends GameplayItem{
 
 		$retVal = array();
 
-		$module = 'cpWeaponTypes::sGetNpcList';
-		$property = $id;
+		$oCacheKey = new \Cache\CacheKey('cpWeaponTypes::sGetNpcList', $id);
 
-		if ($cacheAble && \Cache\Controller::getInstance()->check($module, $property)) {
-			$retVal = \Cache\Controller::getInstance()->get($module, $property);
+		if ($cacheAble && \Cache\Controller::getInstance()->check($oCacheKey)) {
+			$retVal = \Cache\Controller::getInstance()->get($oCacheKey);
 		}else {
 			$retVal = self::sNpcListData($id);
-			\Cache\Controller::getInstance()->set($module, $property, $retVal);
+			\Cache\Controller::getInstance()->set($oCacheKey, $retVal);
 		}
 
 		return $retVal;

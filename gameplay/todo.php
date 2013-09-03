@@ -39,4 +39,4 @@
 //@todo dodatkowe zabezpieczenie przy wywoływaniu mapy na rzeczywiste dane z bazy, a nie tylko na selecta
 //@todo lepszy mechanizm agresywnych NPCów
 
-jquery-ui
+//FIXME NOTICE: Undefined index: File: /home/pawel/Projects/playpulsar/gameplay/common/classes/translation.phpLine: 25 on XMLRPC

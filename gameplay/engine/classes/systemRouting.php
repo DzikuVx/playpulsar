@@ -128,7 +128,9 @@ class systemRouting {
 			return false;
 		}
 
-		\Cache\Controller::getInstance()->set($this->getCacheModule(), $this->getCacheProperty(), serialize ( $this->routeTable ), $this->cacheTime);
+		$oCacheKey = new \Cache\CacheKey($this->getCacheModule(), $this->getCacheProperty());
+		
+		\Cache\Controller::getInstance()->set($oCacheKey, serialize ( $this->routeTable ), $this->cacheTime);
 
 		return true;
 	}
@@ -141,8 +143,10 @@ class systemRouting {
 
 		$this->routeTable = null;
 
-		if (\Cache\Controller::getInstance()->check($this->getCacheModule(), $this->getCacheProperty())) {
-			$this->routeTable = unserialize (\Cache\Controller::getInstance()->get($this->getCacheModule(), $this->getCacheProperty()));
+		$oCacheKey = new \Cache\CacheKey($this->getCacheModule(), $this->getCacheProperty()); 
+		
+		if (\Cache\Controller::getInstance()->check($oCacheKey)) {
+			$this->routeTable = unserialize (\Cache\Controller::getInstance()->get($oCacheKey));
 		}
 	}
 
@@ -201,10 +205,9 @@ class systemRouting {
 	 */
 	private function getSectors($systemID) {
 
-		$module = 'systemRouting::getSectors';
-		$property = $systemID;
-
-		if (!\Cache\Controller::getInstance()->check($module, $property)) {
+		$oCacheKey = new \Cache\CacheKey('systemRouting::getSectors', $systemID);
+		
+		if (!\Cache\Controller::getInstance()->check($oCacheKey)) {
 			$this->tRoute = null;
 
 			/*
@@ -233,10 +236,10 @@ class systemRouting {
 				$this->tRoute [$tR1->X] [$tR1->Y]->cost = $tR1->MoveCost;
 			}
 
-			\Cache\Controller::getInstance()->set($module, $property, serialize($this->tRoute), $this->cacheTime);
+			\Cache\Controller::getInstance()->set($oCacheKey, serialize($this->tRoute), $this->cacheTime);
 
 		}else {
-			$this->tRoute = unserialize(\Cache\Controller::getInstance()->get($module, $property));
+			$this->tRoute = unserialize(\Cache\Controller::getInstance()->get($oCacheKey));
 		}
 
 	}

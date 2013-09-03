@@ -56,10 +56,9 @@ class NewsRegistry extends \baseRegistry{
 		$retVal = "";
 		global $config;
 
-		$module = 'newsRegistry';
-		$property = $this->language;
-
-		if (!Cache::getInstance()->check($module, $property)) {
+		$oCachekey = new \Cache\CacheKey('newsRegistry', $this->language);
+		
+		if (!Cache::getInstance()->check($oCachekey)) {
 
 			$this->getData ();
 			$news = new \Portal\News ( );
@@ -67,10 +66,10 @@ class NewsRegistry extends \baseRegistry{
 				$retVal .= $news->render ( $resultRow );
 			}
 
-			Cache::getInstance()->set($module, $property, $retVal);
+			Cache::getInstance()->set($oCachekey, $retVal);
 
 		}else {
-			$retVal = Cache::getInstance()->get($module, $property);
+			$retVal = Cache::getInstance()->get($oCachekey);
 		}
 		return $retVal;
 	}

@@ -38,10 +38,9 @@ class allianceMembersRegistry extends simpleRegistry {
 		$tRights['kick'] = allianceRights::sCheck($userID, $allianceID, 'kick');
 		$tRights['cash'] = allianceRights::sCheck($userID, $allianceID, 'cash');
 
-		$module = 'allianceMembersRegistry::get::'.$allianceID;
-		$property = md5($allianceID.'|'.serialize($tRights));
-
-		if(!empty($this->disableCache) || !\Cache\Controller::getInstance()->check($module, $property)) {
+		$oCacheKey = new \Cache\CacheKey('allianceMembersRegistry::get::'.$allianceID, md5($allianceID.'|'.serialize($tRights)));
+		
+		if(!empty($this->disableCache) || !\Cache\Controller::getInstance()->check($oCacheKey)) {
 
 			$retVal .= "<h1>" . TranslateController::getDefault()->get ( 'allianceMembers' ) . "</h1>";
 
@@ -75,10 +74,10 @@ class allianceMembersRegistry extends simpleRegistry {
 			$retVal .= "</table>";
 
 			if (empty($this->disableCache)) {
-				\Cache\Controller::getInstance()->set($module, $property, $retVal, 7200);
+				\Cache\Controller::getInstance()->set($oCacheKey, $retVal, 7200);
 			}
 		}else {
-			$retVal = \Cache\Controller::getInstance()->get($module, $property);
+			$retVal = \Cache\Controller::getInstance()->get($oCacheKey);
 		}
 		return $retVal;
 	}

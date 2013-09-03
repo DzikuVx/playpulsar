@@ -9,7 +9,13 @@ $storageCargo = new storageCargo ( $userID, $portProperties->PortID, $userProper
 //Sprawdz, czy gracz ma wykupione miejsce w magazynie
 $totalStorageRoom = storageCargo::sGetTotalUserSpace ( $userID, $portProperties->PortID );
 $usedStorageRoom = $storageCargo->getUsage ();
- 
+
+if ($shipProperties->CargoMax == $shipProperties->Cargo) {
+	$bFreeCargoAvaible = false;
+}else {
+	$bFreeCargoAvaible = true;
+}
+
 if ($totalStorageRoom == 0) {
 	//Brak wykupionego miejsca w magazynie
 	$portPanel .= "<h2 style='color: #f00000;'>{T:noStorageSpace}</h2>";
@@ -29,7 +35,7 @@ if ($totalStorageRoom == 0) {
 	$tQuery = $storageCargo->getProducts ();
 	while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 		$actionString = '';
-		if ($shipPosition->Docked == 'yes') {
+		if ($bFreeCargoAvaible && $shipPosition->Docked == 'yes') {
 
 			$actionString .= \General\Controls::renderImgButton ( 'left', "executeAction('toCargohold','product','1','{$tR1->ID}',null);", '{T:toCargoholdOne}');
 			$actionString .= \General\Controls::renderImgButton ( 'leftFar', "executeAction('toCargohold','product','all','{$tR1->ID}',null);", '{T:toCargoholdAll}');
@@ -45,7 +51,7 @@ if ($totalStorageRoom == 0) {
 	$tQuery = $storageCargo->getItems ();
 	while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 		$actionString = '';
-		if ($shipPosition->Docked == 'yes') {
+		if ($bFreeCargoAvaible && $shipPosition->Docked == 'yes') {
 
 			$actionString .= \General\Controls::renderImgButton ( 'left', "executeAction('toCargohold','item','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toCargoholdOne' ) );
 			$actionString .= \General\Controls::renderImgButton ( 'leftFar', "executeAction('toCargohold','item','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toCargoholdAll' ) );
@@ -64,7 +70,7 @@ if ($totalStorageRoom == 0) {
 		
 		$actionString .= \General\Controls::renderImgButton ( 'info', "getXmlRpc('univPanel','weapon::renderDetail','{$userProperties->Language}','{$tR1->WeaponID}')", 'Info' );
 		
-		if ($shipPosition->Docked == 'yes') {
+		if ($bFreeCargoAvaible && $shipPosition->Docked == 'yes') {
 			$actionString .= \General\Controls::renderImgButton ( 'left', "executeAction('toCargohold','weapon','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toCargoholdOne' ) );
 			$actionString .= \General\Controls::renderImgButton ( 'leftFar', "executeAction('toCargohold','weapon','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toCargoholdAll' ) );
 		} else {
@@ -81,7 +87,7 @@ if ($totalStorageRoom == 0) {
 		
 		$actionString .= \General\Controls::renderImgButton ( 'info', "getXmlRpc('univPanel','equipment::renderDetail','{$userProperties->Language}','{$tR1->EquipmentID}')", 'Info' );
 		
-		if ($shipPosition->Docked == 'yes') {
+		if ($bFreeCargoAvaible && $shipPosition->Docked == 'yes') {
 			$actionString .= \General\Controls::renderImgButton ( 'left', "executeAction('toCargohold','equipment','1','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toCargoholdOne' ) );
 			$actionString .= \General\Controls::renderImgButton ( 'leftFar', "executeAction('toCargohold','equipment','all','{$tR1->ID}',null);", TranslateController::getDefault()->get ( 'toCargoholdAll' ) );
 				

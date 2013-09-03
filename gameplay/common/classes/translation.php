@@ -18,18 +18,18 @@ class translation {
 	 */
 	function __construct($language, $file = 'engine/translations.php') {
 
-		$this->language = $language;
-
-		if (!translation::$useCache || ! \Cache\Controller::getInstance()->check ( 'translationList', $this->language )) {
+		$oCacheKey = new \Cache\CacheKey('translationList', $this->language);
+		
+		if (!translation::$useCache || ! \Cache\Controller::getInstance()->check ($oCacheKey)) {
 			require $file;
 			$this->table = $translationTable [$this->language];
 			unset ( $translationTable );
 
 			if (translation::$useCache) {
-				\Cache\Controller::getInstance()->set ( 'translationList', $this->language, $this->table, 86400 );
+				\Cache\Controller::getInstance()->set ( $oCacheKey, $this->table, 86400 );
 			}
 		} else {
-			$this->table = \Cache\Controller::getInstance()->get ( 'translationList', $this->language );
+			$this->table = \Cache\Controller::getInstance()->get ( $oCacheKey );
 		}
 
 	}

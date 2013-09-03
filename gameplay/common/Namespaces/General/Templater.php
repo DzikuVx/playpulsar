@@ -62,10 +62,9 @@ class Templater {
 	 */
 	protected function load() {
 
-		$module = 'Templater::load';
-		$property = md5(realpath('').'|'.$this->fileName);
-
-		if (!self::$useCache || !Cache::getInstance()->check($module, $property)) {
+		$oCachekey = new \Cache\CacheKey('Templater::load', md5(realpath('').'|'.$this->fileName));
+		
+		if (!self::$useCache || !Cache::getInstance()->check($oCachekey)) {
 
 			try {
 				if (file_exists ( $this->fileName )) {
@@ -79,7 +78,7 @@ class Templater {
 					flock ( $tFile, LOCK_UN );
 					fclose ( $tFile );
 
-					Cache::getInstance()->set($module, $property, $this->template, 86400);
+					Cache::getInstance()->set($oCachekey, $this->template, 86400);
 
 				} else {
 					throw new Exception ( 'Brak pliku' );
@@ -88,7 +87,7 @@ class Templater {
 				throw new Exception ( 'Błąd otwarcia szablonu' );
 			}
 		}else {
-			$this->template = Cache::getInstance()->get($module, $property);
+			$this->template = Cache::getInstance()->get($oCachekey);
 		}
 	}
 

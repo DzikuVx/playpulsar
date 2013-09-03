@@ -90,14 +90,13 @@ class ShipTypes extends GameplayItem{
 
 		$retVal = array();
 
-		$module = 'cpShipTypes::sGetStationList';
-		$property = $id;
-
-		if ($cacheAble && \Cache\Controller::getInstance()->check($module, $property)) {
-			$retVal = \Cache\Controller::getInstance()->get($module, $property);
+		$oCacheKey = new \Cache\CacheKey('cpShipTypes::sGetStationList', $id);
+		
+		if ($cacheAble && \Cache\Controller::getInstance()->check($oCacheKey)) {
+			$retVal = \Cache\Controller::getInstance()->get($oCacheKey);
 		}else {
 			$retVal = self::sStationListData($id);
-			\Cache\Controller::getInstance()->set($module, $property, $retVal);
+			\Cache\Controller::getInstance()->set($oCacheKey, $retVal);
 		}
 
 		return $retVal;

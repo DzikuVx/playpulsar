@@ -83,8 +83,11 @@ abstract class extendedItem {
 			throw new Exception('Cache ID empty, load failed');
 		}
 		//@FIXME cache identifier have to come from table name not class name
-		if ($this->cache->check ( get_class ( $this ), $this->cacheID )) {
-			$this->loadData( $this->cache->get ( get_class ( $this ), $this->cacheID ), true );
+		
+		$oCacheKey = new \Cache\CacheKey($this, $this->cacheID);
+		
+		if ($this->cache->check ( $oCacheKey )) {
+			$this->loadData( $this->cache->get ( $oCacheKey ), true );
 			return true;
 		} else {
 			return false;
@@ -103,13 +106,19 @@ abstract class extendedItem {
 			throw new Exception('Cache ID empty, save failed');
 		}
 
-		$this->cache->set ( get_class ( $this ), $this->cacheID, $this->serializeData(), $this->cacheExpire );
+		//@FIXME make $oCacheKey a global class identifier
+		$oCacheKey = new \Cache\CacheKey($this, $this->cacheID);
+		
+		$this->cache->set ( $oCacheKey, $this->serializeData(), $this->cacheExpire );
 
 		return true;
 	}
 
 	public function clearCache() {
-		$this->cache->clear(get_class ( $this ), $this->ID);
+		//@FIXME make $oCacheKey a global class identifier
+		$oCacheKey = new \Cache\CacheKey($this, $this->cacheID);
+		
+		$this->cache->clear($oCacheKey);
 	}
 
 	protected function loadData($data, $serialize) {

@@ -41,10 +41,9 @@ class newsAgencyPanel extends basePanel {
 	public function render($shipPosition) {
 		global $userProperties;
 
-		$module = 'newsAgency::render';
-		$property = $shipPosition->System . '|' . $userProperties->Language;
-
-		if (! \Cache\Controller::getInstance()->check ( $module, $property )) {
+		$oCacheKey = new \Cache\CacheKey('newsAgency::render', $shipPosition->System . '|' . $userProperties->Language);
+		
+		if (! \Cache\Controller::getInstance()->check ( $oCacheKey )) {
 
 			$tQuery = " SELECT newsagency . *
         FROM 
@@ -78,9 +77,9 @@ class newsAgencyPanel extends basePanel {
 
 			}
 			$this->retVal .= $tValue;
-			\Cache\Controller::getInstance()->set ( $module, $property, $tValue, 3600 );
+			\Cache\Controller::getInstance()->set ( $oCacheKey, $tValue, 3600 );
 		} else {
-			$tValue = \Cache\Controller::getInstance()->get ( $module, $property );
+			$tValue = \Cache\Controller::getInstance()->get ( $oCacheKey );
 			if (empty ( $tValue )) {
 				$tFound = false;
 			} else {

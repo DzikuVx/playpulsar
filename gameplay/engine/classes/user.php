@@ -183,19 +183,18 @@ class user {
 
 		try {
 
-			$module = 'user::sGetOnlineCount';
-			$property = '';
-
-			if (!\Cache\Controller::getInstance()->check($module, $property)) {
+			$oCacheKey = new \Cache\CacheKey('user::sGetOnlineCount', '');
+			
+			if (!\Cache\Controller::getInstance()->check($oCacheKey)) {
 					
 				$tQuery = "SELECT COUNT(users.UserID) AS ILE FROM usertimes JOIN users USING(UserID) JOIN userstats USING(UserID) WHERE users.Type='player' AND usertimes.LastAction>'" . (time () - $config ['user'] ['onlineThreshold']) . "'";
 				$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
 				$retVal = \Database\Controller::getInstance()->fetch($tQuery)->ILE;
 					
-				\Cache\Controller::getInstance()->set($module, $property, $retVal, 120);
+				\Cache\Controller::getInstance()->set($oCacheKey, $retVal, 120);
 					
 			}else {
-				$retVal = \Cache\Controller::getInstance()->get($module, $property);
+				$retVal = \Cache\Controller::getInstance()->get($oCacheKey);
 			}
 
 		}catch (Exception $e) {
@@ -626,10 +625,9 @@ class user {
 
 		try {
 
-			$module = 'user::sGetFbPictureUrl';
-			$property = $facebookID;
-
-			if (!\Cache\Controller::getInstance()->check($module, $property)) {
+			$oCacheKey = new \Cache\CacheKey('user::sGetFbPictureUrl', $facebookID);
+			
+			if (!\Cache\Controller::getInstance()->check($oCacheKey)) {
 					
 				$fb=new Facebook(array(
   'appId'  => $config['facebook']['appId'],
@@ -644,10 +642,10 @@ class user {
 
 				$retVal = $data['picture'];
 
-				\Cache\Controller::getInstance()->set($module, $property, $retVal, 86400);
+				\Cache\Controller::getInstance()->set($oCacheKey, $retVal, 86400);
 
 			}else {
-				$retVal = \Cache\Controller::getInstance()->get($module, $property);
+				$retVal = \Cache\Controller::getInstance()->get($oCacheKey);
 			}
 		}catch (Exception $e) {
 			psDebug::cThrow(null, $e, array('display'=>false));
