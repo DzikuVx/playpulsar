@@ -18,7 +18,7 @@ class Error extends BaseItem {
 
 		$host = $_SERVER ['HTTP_HOST'];
 		$uri = rtrim ( dirname ( $_SERVER ['PHP_SELF'] ), '/\\' );
-		$extra = '?class=cpError&method=browse';
+		$extra = '?class=\Controlpanel\Error&method=browse';
 		header ( "Location: http://$host$uri/$extra" );
 
 	}
