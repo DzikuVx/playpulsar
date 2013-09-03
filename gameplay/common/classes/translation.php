@@ -18,8 +18,9 @@ class translation {
 	 */
 	function __construct($language, $file = 'engine/translations.php') {
 
-		$oCacheKey = new \Cache\CacheKey('translationList', $this->language);
+		$this->language = $language;
 		
+		$oCacheKey = new \Cache\CacheKey('translationList', $this->language);
 		if (!translation::$useCache || ! \Cache\Controller::getInstance()->check ($oCacheKey)) {
 			require $file;
 			$this->table = $translationTable [$this->language];
