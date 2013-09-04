@@ -762,7 +762,6 @@ try {
 		}
 
 		if ($shipProperties->Turns < $sectorProperties->MoveCost) {
-			$error = true;
 			throw new warningException ( TranslateController::getDefault()->get ( 'notEnoughTurns' ) );
 		}
 
@@ -774,12 +773,16 @@ try {
 		if (! $error) {
 			$shipPosition->Docked = 'no';
 			$shipProperties->Turns -= $sectorProperties->MoveCost;
-			if ($shipProperties->Turns < 0)
-			$shipProperties->Turns = 0;
+			
+			if ($shipProperties->Turns < 0) {
+				$shipProperties->Turns = 0;
+			}
+			
 			if ($shipProperties->RookieTurns > 0) {
 				$shipProperties->RookieTurns -= $sectorProperties->MoveCost;
-				if ($shipProperties->RookieTurns < 0)
-				$shipProperties->RookieTurns = 0;
+				if ($shipProperties->RookieTurns < 0) {
+					$shipProperties->RookieTurns = 0;
+				}
 			}
 
 			userStats::incExperience ( $userStats, $config ['general'] ['expForMove'] );
@@ -1010,11 +1013,14 @@ try {
 
 	$out .= "<authCode>" . $userFastTimes->AuthCode . "</authCode>";
 
-	if ($actionPanel != "")
-	$out .= "<actionPanel>" . $actionPanel . "</actionPanel> ";
-	if ($portPanel != "")
-	$out .= "<portPanel>" . $portPanel . "</portPanel> ";
-
+	if ($actionPanel != "") {
+		$out .= "<actionPanel>" . $actionPanel . "</actionPanel> ";
+	}
+	
+	if ($portPanel != "") {
+		$out .= "<portPanel>" . $portPanel . "</portPanel> ";
+	}
+	
 	$timek2 = microtime ();
 	$arr_time = explode ( " ", $timek1 );
 	$timek1 = $arr_time [1] + $arr_time [0];

@@ -8,16 +8,31 @@ abstract class Base {
 	protected $panelTag = "empty";
 	protected $userID;
 	protected $retVal = "";
-	protected $dataObject = null;
-	protected $renderCloser = false;
 	protected $rendered = false;
 	protected $onEmpty = "none"; //Jak ma się zachować panel gdy jego zawartość jest pusta: none / hide / clear
 	protected $language = 'pl';
 	protected $forceAction = null;
 
+	protected function encodeOutput() {
+// 		return base64_encode($this->retVal);
+		return $this->retVal;
+	}
+	
 	public function getTransport() {
 		
-		return new PanelTransport('Ala', 'ma kota');
+		if (empty($this->forceAction)) {
+
+			if ($this->retVal != "") {
+				$sTransportAction = 'show';
+			} else {
+				$sTransportAction = $this->onEmpty;
+			}
+			
+		} else {
+			$sTransportAction = $this->forceAction;
+		}
+		
+		return new PanelTransport($sTransportAction, $this->encodeOutput(), $this->rendered);
 		
 	}
 	
@@ -50,14 +65,6 @@ abstract class Base {
 		$this->panelTag = $panelTag;
 	}
 
-	/**
-	 * @param boolean $renderCloser
-	 */
-	final public function setRenderCloser($renderCloser) {
-
-		$this->renderCloser = $renderCloser;
-	}
-
 	protected function __construct($language = 'pl', $localUserID = null) {
 
 		if (empty ( $localUserID )) {
@@ -68,28 +75,6 @@ abstract class Base {
 		}
 
 		$this->language = $language;
-	}
-
-	protected function renderCloser() {
-
-		$retVal = "<div style=\"float: right;\"><img src=\"gfx/del2.gif\" class=\"link\" onclick=\"panel.hide('" . $this->panelTag . "');\" /></div>";
-		return $retVal;
-	}
-
-	/**
-	 * Dokonuje enkapsulacji wartości zwracanej przez klasę przez tag XML
-	 *
-	 * @param string $str
-	 * @return string
-	 */
-	protected function encapsulate($action, $str = "") {
-
-		$retVal = "<" . $this->panelTag . ">";
-		$retVal .= "<action>" . $action . "</action>";
-		if ($str != "")
-			$retVal .= "<content>" . $str . "</content>";
-		$retVal .= "</" . $this->panelTag . ">";
-		return $retVal;
 	}
 
 	public function clearForceAction() {
@@ -139,64 +124,6 @@ abstract class Base {
 
 		$this->forceAction = "clear";
 		return true;
-	}
-
-	/**
-	 * Domyślna stopka wewnątrz panelu
-	 *
-	 * @return unknown
-	 */
-	public function renderFooter() {
-
-		return "</table></div>";
-	}
-
-	/**
-	 * Zwraca panel
-	 *
-	 * @return string
-	 */
-	public function out() {
-
-		if ($this->forceAction == null) {
-
-			if ($this->retVal != "") {
-				return $this->encapsulate ( "show", $this->retVal );
-			} else {
-				switch ($this->onEmpty) {
-					case "clear" :
-						return $this->encapsulate ( "clear" );
-						break;
-
-					case "hideIfRendered" :
-						if ($this->rendered) {
-							return $this->encapsulate ( "hide" );
-						} else {
-							return "";
-						}
-						break;
-
-					case "clearIfRendered" :
-						if ($this->rendered) {
-							return $this->encapsulate ( "clear" );
-						} else {
-							return "";
-						}
-						break;
-
-					case "hide" :
-						return $this->encapsulate ( "hide" );
-						break;
-
-					default :
-					case "none" :
-						return "";
-						break;
-				}
-			}
-		} else {
-			return $this->encapsulate ( $this->forceAction, "" );
-		}
 	}
 
 }
