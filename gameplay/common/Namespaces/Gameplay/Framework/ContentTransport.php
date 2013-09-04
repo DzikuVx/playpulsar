@@ -30,10 +30,8 @@ class ContentTransport implements \Interfaces\Singleton {
 	}
 	
 	public function register($oPanel) {
-		//Check if parent is from proper class
-		
+		//TODO Check if parent is from proper class
 		$this->aPanels[$oPanel->getPanelTag()] = $oPanel->getTransport();
-		
 	}
 	
 	public function get() {
