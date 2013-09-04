@@ -36,6 +36,8 @@ class PlayerStats extends Base {
 	 */
 	public function render($userStats, $shipProperties) {
 		
+		$this->rendered = true;
+		
 		$this->retVal = '';
 
 		$this->retVal .= "<div class='row'>";

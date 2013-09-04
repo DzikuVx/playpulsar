@@ -541,6 +541,20 @@ Playpulsar.gameplay = (function () {
 	
 	self.processSuccess = function (data, textStatus, jqXHR) {
 		console.log('Success', data);
+		
+		var panelName,
+			panelData;
+		
+		for (panelName in data) {
+			if (data.hasOwnProperty(panelName)) {
+				
+				panelData = data[panelName];
+				
+				console.log(panelName, panelData);
+				
+			}
+		}
+		
 	}
 	
 	self.processFailure = function (data) {
