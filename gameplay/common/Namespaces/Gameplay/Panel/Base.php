@@ -2,13 +2,6 @@
 
 namespace Gameplay\Panel;
 
-/**
- * Klasa bazowa paneli gry
- *
- * @version $Rev: 455 $
- * @package Engine
- *
- */
 abstract class Base {
 	protected $panelTag = "empty";
 	protected $userID;
@@ -20,6 +13,10 @@ abstract class Base {
 	protected $language = 'pl';
 	protected $forceAction = null;
 
+	final public function getPanelTag() {
+		return $this->panelTag;
+	}
+	
 	/**
 	 * @return string
 	 */
@@ -30,6 +27,7 @@ abstract class Base {
 
 	/**
 	 * @param string $onEmpty
+	 * //TODO Method unused
 	 */
 	final public function setOnEmpty($onEmpty) {
 

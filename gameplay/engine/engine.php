@@ -1,5 +1,8 @@
 <?php
 
+use Gameplay\Framework\Controller as GameplayController;
+use Gameplay\Framework\ContentTransport;
+
 require_once '../common.php';
 
 $timek1 = microtime ();
@@ -12,11 +15,19 @@ $debug = "";
 
 $retXml = "";
 
+// $test = new \Gameplay\Framework\PanelTransport('Aka',"makota");
+// echo json_encode($test);
+// die();
+
 try {
 
-	\Gameplay\Controller::getInstance()->registerParameters($_REQUEST);
+	$oContentTransport 	= ContentTransport::getInstance();
+	$oController 		= GameplayController::getInstance();
+
 	
-	$userID = \Gameplay\Controller::getInstance()->getParameter('userID');
+	$oController->registerParameters($_REQUEST);
+	
+	$userID = $oController->getParameter('userID');
 
 	/*
 	 * Sprawdz, czy user podał właściwe dane logowania
@@ -42,10 +53,10 @@ try {
 	/*
 	 * Koniec czyszczenia cache
 	*/
-	$action = \Gameplay\Controller::getInstance()->getParameter('action');
-	$subaction = \Gameplay\Controller::getInstance()->getParameter('subaction');
-	$id = \Gameplay\Controller::getInstance()->getParameter('id');
-	$value = \Gameplay\Controller::getInstance()->getParameter('value');
+	$action 	= $oController->getParameter('action');
+	$subaction 	= $oController->getParameter('subaction');
+	$id 		= $oController->getParameter('id');
+	$value 		= $oController->getParameter('value');
 
 	if (!empty($config ['debug'] ['gameplayDebugOutput'])) {
 		writeDebug ( $action );
@@ -54,8 +65,8 @@ try {
 	/**
 	 * Inicjalizacja tabeli users
 	 */
-	$userPropertiesObject = new userProperties ( );
-	$userProperties = $userPropertiesObject->load ( $userID, true, true );
+	$userPropertiesObject 	= new userProperties ( );
+	$userProperties 		= $userPropertiesObject->load ( $userID, true, true );
 
 	/**
 	 * Inicjalizacja klasy translacji
@@ -134,7 +145,7 @@ try {
 	/*
 	 * jeśli przyszedł rozkaz rozpoczęcia walki
 	*/
-	if (\Gameplay\Controller::getInstance()->getParameter('action') == 'shipAttack') {
+	if ($oController->getParameter('action') == 'shipAttack') {
 		combat::sSetCombatLock ( $userID, $id );
 
 		/**
@@ -169,7 +180,7 @@ try {
 	$userFastTimes = new userFastTimes($userID);
 
 	//Sprawdz authorize code
-	if (\Gameplay\Controller::getInstance()->getParameter('action') != "pageReload" && \Gameplay\Controller::getInstance()->getParameter('auth') != $userFastTimes->AuthCode) {
+	if ($oController->getParameter('action') != "pageReload" && $oController->getParameter('auth') != $userFastTimes->AuthCode) {
 		$action = null;
 	}
 
@@ -177,19 +188,19 @@ try {
 	 * Inicjalizacja parametrów sektora
 	 */
 	$sectorPropertiesObject = new sectorProperties ( );
-	$sectorProperties = $sectorPropertiesObject->load ( $shipPosition, true, true );
+	$sectorProperties 		= $sectorPropertiesObject->load ( $shipPosition, true, true );
 
 	/**
 	 * Inicjalizacja parametrów portu
 	 */
-	$portPropertiesObject = new portProperties ( );
-	$portProperties = $portPropertiesObject->load ( $shipPosition, true, true );
+	$portPropertiesObject 	= new portProperties ( );
+	$portProperties 		= $portPropertiesObject->load ( $shipPosition, true, true );
 
 	/*
 	 * Inicjalizacja JumpNode
 	*/
 	$jumpNodeObject = new jumpNode ( );
-	$jumpNode = $jumpNodeObject->load ( $shipPosition, true, true );
+	$jumpNode 		= $jumpNodeObject->load ( $shipPosition, true, true );
 
 	/**
 	 * Inicjalizaja parametrów systemu
@@ -199,18 +210,18 @@ try {
 	/**
 	 * Inicjalizacja właściwości statku użytkownika
 	 */
-	$shipPropertiesObject = new shipProperties ( );
-	$shipProperties = $shipPropertiesObject->load ( $userID, true, true );
+	$shipPropertiesObject 	= new shipProperties ( );
+	$shipProperties 		= $shipPropertiesObject->load ( $userID, true, true );
 
-	$shipRoutingObject = new shipRouting ( );
-	$shipRouting = $shipRoutingObject->load ( $userID, true, true );
+	$shipRoutingObject 	= new shipRouting ( );
+	$shipRouting 		= $shipRoutingObject->load ( $userID, true, true );
 
 	/**
 	 * Obiekt userAlliance
 	 * @var userAlliance
 	 */
 	$userAllianceObject = new userAlliance ( );
-	$userAlliance = $userAllianceObject->load ( $userID, false, false);
+	$userAlliance 		= $userAllianceObject->load ( $userID, false, false);
 
 	/**
 	 * Mini Mapa
@@ -225,11 +236,10 @@ try {
 	\Gameplay\Panel\SectorShips::initiateInstance($userProperties->Language);
 	\Gameplay\Panel\SectorResources::initiateInstance($userProperties->Language);
 	
-	$activeScanner = new activeScanner ( $userProperties->Language, $userID );
-
-	$shipCargo = new shipCargo ( $userID, $userProperties->Language );
-	$shipWeapons = new shipWeapons ( $userID, $userProperties->Language );
-	$shipEquipment = new shipEquipment ( $userID, $userProperties->Language );
+	$activeScanner 	= new activeScanner ( $userProperties->Language, $userID );
+	$shipCargo 		= new shipCargo ( $userID, $userProperties->Language );
+	$shipWeapons 	= new shipWeapons ( $userID, $userProperties->Language );
+	$shipEquipment 	= new shipEquipment ( $userID, $userProperties->Language );
 
 	/*
 	 * Autonaprawa statku

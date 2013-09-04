@@ -2,10 +2,6 @@
 
 /**
  * Klasa bazowa paneli gry
- *
- * @version $Rev: 455 $
- * @package Engine
- *
  */
 abstract class basePanel {
 	protected $panelTag = "empty";
@@ -150,7 +146,7 @@ abstract class basePanel {
 	 */
 	public function out() {
 
-		if ($this->forceAction == null) {
+		if (empty($this->forceAction)) {
 
 			if ($this->retVal != "") {
 				return $this->encapsulate ( "show", $this->retVal );

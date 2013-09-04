@@ -1,18 +1,18 @@
 <?php
 
-namespace Gameplay;
+namespace Gameplay\Framework;
 
 class Controller implements \Interfaces\Singleton {
 	
 	private $aRequest;
 	
 	/**
-	 * @var \Gameplay\Controller
+	 * @var \Gameplay\Framework\Controller
 	 */
 	private static $instance;
 	
 	/**
-	 * @return \Gameplay\Controller
+	 * @return \Gameplay\Framework\Controller
 	 */
 	public static function getInstance(){
 		if (empty(self::$instance)) {
