@@ -1053,25 +1053,33 @@ try {
 	$shipRoutingObject->synchronize ( $shipRouting, true, true );
 	$userAllianceObject->synchronize($userAlliance, true, true);
 
+	/*
 	if ($debug == "" || empty($config ['debug'] ['gameplayDebugOutput'])) {
 		$debug = "&nbsp;";
 	}
 	$out .= "<debugPanel>" . $debug . "</debugPanel>";
 	$out .= $miniMap->out ();
-	$out .= \Gameplay\Panel\Sector::getInstance()->out ();
-	$out .= \Gameplay\Panel\Port::getInstance()->out ();
-	$out .= \Gameplay\Panel\Move::getInstance()->out ();
-	$out .= \Gameplay\Panel\ShortStats::getInstance()->out ();
-	$out .= \Gameplay\Panel\PlayerStats::getInstance()->out ();
-	$out .= \Gameplay\Panel\SectorShips::getInstance()->out ();
-	$out .= \Gameplay\Panel\SectorResources::getInstance()->out ();
 	$out .= navigationPanel::getInstance()->out ();
 	$out .= iconPanel::getInstance()->out ();
 	$out .= newsAgencyPanel::getInstance()->out ();
 	$out .= announcementPanel::getInstance()->out ();
 	$out .= $activeScanner->out ();
-
-	echo "<xml>" . \TranslateController::translate($out) . "</xml>";
+	*/
+	
+	$oContentTransport->register(\Gameplay\Panel\Move::getInstance());
+	$oContentTransport->register(\Gameplay\Panel\Port::getInstance());
+	$oContentTransport->register(\Gameplay\Panel\SectorResources::getInstance());
+	$oContentTransport->register(\Gameplay\Panel\SectorShips::getInstance());
+	$oContentTransport->register(\Gameplay\Panel\PlayerStats::getInstance());
+	$oContentTransport->register(\Gameplay\Panel\Sector::getInstance());
+	$oContentTransport->register(\Gameplay\Panel\ShortStats::getInstance());
+	
+	/*
+	 * Echo prepared JSON for panel transport
+	 */
+	echo $oContentTransport->get();
+	
+// 	echo "<xml>" . \TranslateController::translate($out) . "</xml>";
 } catch ( combatException $e ) {
 
 	$retVal = '';

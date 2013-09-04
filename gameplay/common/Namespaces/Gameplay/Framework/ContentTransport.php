@@ -36,4 +36,7 @@ class ContentTransport implements \Interfaces\Singleton {
 		
 	}
 	
+	public function get() {
+		return json_encode($this->aPanels);
+	}
 }

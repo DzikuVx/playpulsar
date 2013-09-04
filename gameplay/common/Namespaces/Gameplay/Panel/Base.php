@@ -2,6 +2,8 @@
 
 namespace Gameplay\Panel;
 
+use Gameplay\Framework\PanelTransport;
+
 abstract class Base {
 	protected $panelTag = "empty";
 	protected $userID;
@@ -13,6 +15,12 @@ abstract class Base {
 	protected $language = 'pl';
 	protected $forceAction = null;
 
+	public function getTransport() {
+		
+		return new PanelTransport('Ala', 'ma kota');
+		
+	}
+	
 	final public function getPanelTag() {
 		return $this->panelTag;
 	}
