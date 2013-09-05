@@ -5,7 +5,7 @@ namespace Gameplay\Panel;
 use \TranslateController as Translate;
 
 class Port extends Base {
-	protected $panelTag = "portInfoPanel";
+	protected $panelTag = "Port";
 	protected $onEmpty = "clearIfRendered"; //Jak ma się zachować panel gdy jego zawartość jest pusta: none / hide / clear
 
 	static private $instance = null;

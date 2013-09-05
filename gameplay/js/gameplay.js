@@ -1,7 +1,3 @@
-// Zmienna przechowująca ostatni czas resetu tur
-var lastTurnsResetTime = -1;
-var lastShipRepairTime = -1;
-
 var mouseX = 0;
 var mouseY = 0;
 
@@ -383,15 +379,6 @@ function executeAction(action, subaction, value, id, auth) {
 
 			panel.populate(data, 'newsAgencyPanel');
 
-			/*
-			 * tString = parseXmlValue(data, 'announcementPanel');
-			 * if (tString != '&nbsp;') {
-			 * $('#announcementPanel').show(); } else {
-			 * $('#announcementPanel').hide(); }
-			 * 
-			 * if (tString != "") {
-			 * $('#announcementPanel').html(tString); }
-			 */
 			tString = parseXmlValue(data, 'authCode');
 			if (tString != "") {
 				$('#authCode').html(tString);
@@ -486,6 +473,82 @@ function trim(str) {
 }
 
 var Playpulsar = Playpulsar || {};
+var Panel = Panel || {};
+
+Panel.Factory = (function () {
+	
+	var self = {};
+	
+	self.createPanel = function(className) {
+		var myClass = window.Panel[className],
+			myObj = new myClass();
+		return myObj;
+	};
+	
+	return self;
+})();
+
+Panel.Base = function () {
+	this.domSelector = '';
+	this.$panel = null;
+	
+	this.hide = function() {
+		this.getDomObject().hide();
+	};
+
+	this.show = function() {
+		this.getDomObject().show();
+	};
+
+	this.clear = function() {
+		this.getDomObject().html('');
+	};
+
+	this.clearAndHide = function() {
+		this.getDomObject().hide();
+		this.getDomObject().html('');
+	};
+
+	this.populate = function(obj) {
+
+		if (obj.content != "") {
+			this.getDomObject().html(obj.content);
+		}
+
+		switch (obj.action) {
+			case "show":
+				this.show();
+				break;
+	
+			case "hide":
+				this.hide();
+				break;
+	
+			case "clear":
+				this.clear();
+				break;
+	
+			case "clearAndHide":
+				this.clearAndHide();
+				break;
+		}
+
+		return true;
+	};
+
+	this.getDomObject = function () {
+		if (!this.$panel) {
+			this.$panel = $(this.domSelector);
+		}
+		return this.$panel;
+	}
+	
+};
+
+Panel.Move = function () {
+	this.domSelector = '#movePanel';
+};
+Panel.Move.prototype = new Panel.Base();
 
 Playpulsar.gameplay = (function () {
 	
@@ -543,7 +606,8 @@ Playpulsar.gameplay = (function () {
 		console.log('Success', data);
 		
 		var panelName,
-			panelData;
+			panelData,
+			panelObject;
 		
 		for (panelName in data) {
 			if (data.hasOwnProperty(panelName)) {
@@ -551,6 +615,10 @@ Playpulsar.gameplay = (function () {
 				panelData = data[panelName];
 				
 				console.log(panelName, panelData);
+				
+				panelObject = Panel.Factory.createPanel(panelName);
+				
+				panelObject.populate(panelData);
 				
 			}
 		}

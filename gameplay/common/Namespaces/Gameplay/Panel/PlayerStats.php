@@ -27,7 +27,7 @@ class PlayerStats extends Base {
 		self::$instance = new self($language, $localUserID);
 	}
 
-	protected $panelTag = "shortUserStatsPanel";
+	protected $panelTag = "PlayerStats";
 
 	/**
 	 *

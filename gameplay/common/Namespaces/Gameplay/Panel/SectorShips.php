@@ -8,7 +8,7 @@ use \General\Controls as Controls;
 
 class SectorShips extends Base {
 	protected $onEmpty = "clearIfRendered";
-	protected $panelTag = "sectorShipsPanel";
+	protected $panelTag = "SectorShips";
 
 	private static $instance = null;
 

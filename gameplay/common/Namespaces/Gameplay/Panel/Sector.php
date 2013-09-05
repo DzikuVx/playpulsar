@@ -5,7 +5,7 @@ namespace Gameplay\Panel;
 use \TranslateController as Translate;
 
 class Sector extends Base {
-	protected $panelTag = "sectorPanel";
+	protected $panelTag = "Sector";
 
 	static private $instance = null;
 	

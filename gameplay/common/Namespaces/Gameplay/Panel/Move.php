@@ -5,7 +5,7 @@ namespace Gameplay\Panel;
 use \TranslateController as Translate;
 
 class Move extends Base {
-	protected $panelTag = "movePanel";
+	protected $panelTag = "Move";
 
 	static private $instance = null;
 

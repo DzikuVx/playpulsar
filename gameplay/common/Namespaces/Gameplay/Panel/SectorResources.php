@@ -24,7 +24,7 @@ class SectorResources extends Base {
 	}
 
 	protected $onEmpty = "clearIfRendered";
-	protected $panelTag = "sectorResourcePanel";
+	protected $panelTag = "SectorResources";
 
 	function render($shipPosition, $shipProperties, $sectorProperties) {
 

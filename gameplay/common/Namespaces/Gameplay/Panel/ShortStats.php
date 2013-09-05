@@ -27,7 +27,7 @@ class ShortStats extends Base {
 		self::$instance = new self($language, $localUserID);
 	}
 
-	protected $panelTag = "shortShipStatsPanel";
+	protected $panelTag = "ShortStats";
 
 	/**
 	 * 
