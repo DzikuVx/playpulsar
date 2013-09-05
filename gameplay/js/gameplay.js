@@ -241,6 +241,12 @@ function allianceClass() {
 
 alliance = new allianceClass();
 
+/**
+ * @deprecated
+ * @param xml
+ * @param tag
+ * @returns {String}
+ */
 function parseXmlValue(xml, tag) {
 	var out = "";
 	var startMark;

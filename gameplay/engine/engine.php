@@ -13,12 +13,6 @@ $actionPanel = '';
 $portPanel = "";
 $debug = "";
 
-$retXml = "";
-
-// $test = new \Gameplay\Framework\PanelTransport('Aka',"makota");
-// echo json_encode($test);
-// die();
-
 try {
 
 	$oContentTransport 	= ContentTransport::getInstance();
