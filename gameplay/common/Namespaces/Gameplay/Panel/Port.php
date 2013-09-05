@@ -2,9 +2,10 @@
 
 namespace Gameplay\Panel;
 
+use Interfaces\Singleton;
 use \TranslateController as Translate;
 
-class Port extends Base {
+class Port extends Renderable implements Singleton {
 	protected $panelTag = "Port";
 	protected $onEmpty = "clearIfRendered"; //Jak ma się zachować panel gdy jego zawartość jest pusta: none / hide / clear
 

@@ -2,7 +2,7 @@
 
 namespace Gameplay\Panel;
 
-abstract class BaseTable extends Base {
+abstract class BaseTable extends Renderable {
 	
 	/**
 	 * @return string

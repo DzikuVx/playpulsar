@@ -5,8 +5,8 @@ psDebug::$sendTrace = true;
 psDebug::$errorHoldsExecution = true;
 psDebug::$standardErrorText = 'Unexpected error!';
 psDebug::$additionalErrorText = '';
-psDebug::$senderConfig ['url'] = 'localhost';
-psDebug::$senderConfig ['path'] = '/pulsar_public/gameplay/errorCatcher.php';
+psDebug::$senderConfig ['url'] = 'playpulsar.localhost';
+psDebug::$senderConfig ['path'] = '/errorCatcher.php';
 psDebug::$senderConfig ['sender'] = 'Pulsar Control Panel';
 
 $config['backend']['fileName'] = '/controlpanel/';

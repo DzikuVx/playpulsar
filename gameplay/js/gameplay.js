@@ -527,7 +527,7 @@ Panel.Base = function () {
 			case "clear":
 				this.clear();
 				break;
-	
+				
 			case "clearAndHide":
 				this.clearAndHide();
 				break;
@@ -584,6 +584,8 @@ Playpulsar.gameplay = (function () {
 	
 	var self = {};
 	
+	self.AuthCode = 0;
+	
 	self.execute = function(action, subaction, value, id) {
 		
 		/*
@@ -619,7 +621,7 @@ Playpulsar.gameplay = (function () {
 		requestData.subaction 	= subaction;
 		requestData.value 		= value;
 		requestData.id 			= id;
-		requestData.auth 		= $('#authCode').html();
+		requestData.auth 		= self.AuthCode;
 		
 		$.ajax({
 			  dataType: "json",
@@ -639,17 +641,37 @@ Playpulsar.gameplay = (function () {
 			panelData,
 			panelObject;
 		
-		for (panelName in data) {
-			if (data.hasOwnProperty(panelName)) {
-				
-				panelData = data[panelName];
-				
-				console.log(panelName, panelData);
-				
-				panelObject = Panel.Factory.createPanel(panelName);
-				panelObject.populate(panelData);
-				
+		/*
+		 * Process variables
+		 */
+		if (data.variables) {
+			console.log('Process variables ', data.variables);
+			
+			if (data.variables.AuthCode) {
+				Playpulsar.gameplay.AuthCode = data.variables.AuthCode;
 			}
+			
+		}
+		
+		/*
+		 * Process panels
+		 */
+		if (data.panels) {
+			console.log('Process panels ', data.panels);
+			
+			for (panelName in data.panels) {
+				if (data.panels.hasOwnProperty(panelName)) {
+					
+					panelData = data.panels[panelName];
+					
+					console.log(panelName, panelData);
+					
+					panelObject = Panel.Factory.createPanel(panelName);
+					panelObject.populate(panelData);
+					
+				}
+			}
+			
 		}
 		
 		$('.knob').knob();

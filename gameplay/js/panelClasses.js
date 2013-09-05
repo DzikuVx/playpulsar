@@ -60,47 +60,11 @@ function miniMapClass() {
 }
 miniMapClass.prototype = new basePanelClass();
 
-/*
-function sectorPanelClass() {
-	this.name = 'sectorPanel';
-}
-sectorPanelClass.prototype = new basePanelClass();
-function portInfoPanelClass() {
-	this.name = 'portInfoPanel';
-}
-portInfoPanelClass.prototype = new basePanelClass();
-
-function movePanelClass() {
-	this.name = 'movePanel';
-}
-movePanelClass.prototype = new basePanelClass();
-*/
-
 function weaponsPanelClass() {
 	this.name = 'weaponsPanel';
 }
 weaponsPanelClass.prototype = new basePanelClass();
 
-/*
-function shortShipStatsPanelClass() {
-	this.name = 'shortShipStatsPanel';
-}
-shortShipStatsPanelClass.prototype = new basePanelClass();
-
-function shortUserStatsPanelClass() {
-	this.name = 'shortUserStatsPanel';
-}
-shortUserStatsPanelClass.prototype = new basePanelClass();
-
-function sectorShipsPanelClass() {
-	this.name = 'sectorShipsPanel';
-}
-sectorShipsPanelClass.prototype = new basePanelClass();
-function sectorResourcePanelClass() {
-	this.name = 'sectorResourcePanel';
-}
-sectorResourcePanelClass.prototype = new basePanelClass();
-*/
 function navigationPanelClass() {
 	this.name = 'navigationPanel';
 }

@@ -10,6 +10,11 @@ class ContentTransport implements \Interfaces\Singleton {
 	private $aPanels;
 	
 	/**
+	* @var array
+	*/
+	private $aVariables;
+	
+	/**
 	 * @var ContentTransport
 	 */
 	private static $instance;
@@ -29,12 +34,22 @@ class ContentTransport implements \Interfaces\Singleton {
 	
 	}
 	
-	public function register($oPanel) {
+	public function addPanel($oPanel) {
 		//TODO Check if parent is from proper class
 		$this->aPanels[$oPanel->getPanelTag()] = $oPanel->getTransport();
 	}
 	
 	public function get() {
-		return json_encode($this->aPanels);
+		
+		$out = new \stdClass();
+		$out->panels 	= $this->aPanels;
+		$out->variables = $this->aVariables;
+		
+		return json_encode($out);
 	}
+	
+	public function addVariable($name, $value) {
+		$this->aVariables[$name] = $value;			
+	}
+
 }

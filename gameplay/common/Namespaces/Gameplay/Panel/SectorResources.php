@@ -2,9 +2,11 @@
 
 namespace Gameplay\Panel;
 
+use Interfaces\Singleton;
+
 use TranslateController as Translate;
 
-class SectorResources extends Base {
+class SectorResources extends Renderable implements Singleton {
 
 	private static $instance = null;
 

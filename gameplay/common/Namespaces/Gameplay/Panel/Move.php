@@ -2,9 +2,11 @@
 
 namespace Gameplay\Panel;
 
+use Interfaces\Singleton;
+
 use \TranslateController as Translate;
 
-class Move extends Base {
+class Move extends Renderable implements Singleton {
 	protected $panelTag = "Move";
 
 	static private $instance = null;
@@ -47,7 +49,7 @@ class Move extends Base {
 			$this->retVal .= "<tr>";
 
 			if (!empty($portProperties->PortID)) {
-				$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('shipDock',null,null,null,null);\" title='".Translate::getDefault()->get ( 'dock' )."'><i class='icon-white icon-resize-small'></i></button></td>";
+				$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('shipDock');\" title='".Translate::getDefault()->get ( 'dock' )."'><i class='icon-white icon-resize-small'></i></button></td>";
 			}else {
 				$this->retVal .= "<td>&nbsp;</td>";
 			}
@@ -72,7 +74,7 @@ class Move extends Base {
 			} else {
 				$this->retVal .= "<td>&nbsp;</td>";
 			}
-			$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('shipRefresh','left',null,null,null);\" ><i class='icon-refresh icon-white'></i></button></td>";
+			$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('shipRefresh');\" ><i class='icon-refresh icon-white'></i></button></td>";
 			if ($shipPosition->X < $systemProperties->Width) {
 				$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('shipMove','right',null,null,null);\" ><i class='icon-chevron-right'></i></button></td>";
 			} else {
@@ -102,13 +104,13 @@ class Move extends Base {
 		} else {
 			//Komórka bezruchu :)
 			$this->retVal .= "<tr>";
-				$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('shipUnDock',null,null,null,null);\" title='".Translate::getDefault()->get ( 'undock' )."'><i class='icon-white icon-resize-full'></i></button></td>";
+				$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('shipUnDock');\" title='".Translate::getDefault()->get ( 'undock' )."'><i class='icon-white icon-resize-full'></i></button></td>";
 			$this->retVal .= "<td>&nbsp;</td>";
 			$this->retVal .= "<td>&nbsp;</td>";
 			$this->retVal .= "</tr>";
 			$this->retVal .= "<tr>";
 			$this->retVal .= "<td>&nbsp;</td>";
-			$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('shipRefresh','left',null,null,null);\" ><i class='icon-refresh icon-white'></i></button></td>";
+			$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('shipRefresh');\" ><i class='icon-refresh icon-white'></i></button></td>";
 			$this->retVal .= "<td>&nbsp;</td>";
 			$this->retVal .= "</tr>";
 			$this->retVal .= "<tr>";

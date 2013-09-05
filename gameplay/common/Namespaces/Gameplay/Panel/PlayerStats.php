@@ -2,9 +2,11 @@
 
 namespace Gameplay\Panel;
 
+use Interfaces\Singleton;
+
 use \TranslateController as Translate;
 
-class PlayerStats extends Base {
+class PlayerStats extends Renderable implements Singleton {
 
 	static private $instance = null;
 

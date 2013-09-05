@@ -2,11 +2,13 @@
 
 namespace Gameplay\Panel;
 
+use Interfaces\Singleton;
+
 use \TranslateController as Translate;
 use \Database\Controller as Database;
 use \General\Controls as Controls;
 
-class SectorShips extends Base {
+class SectorShips extends Renderable implements Singleton {
 	protected $onEmpty = "clearIfRendered";
 	protected $panelTag = "SectorShips";
 

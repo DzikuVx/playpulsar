@@ -24,9 +24,9 @@ try {
 	$oContentTransport 	= ContentTransport::getInstance();
 	$oController 		= GameplayController::getInstance();
 
-	
+
 	$oController->registerParameters($_REQUEST);
-	
+
 	$userID = $oController->getParameter('userID');
 
 	/*
@@ -73,7 +73,7 @@ try {
 	 */
 	TranslateController::setDefaultLanguage($userProperties->Language);
 	$t = TranslateController::getDefault();
-	
+
 	if (empty($config ['general'] ['enableGameplay']) && empty($_SESSION['cpLoggedUserID'])) {
 		echo '<xml><actionPanel>'.\General\Controls::displayConfirmDialog(TranslateController::getDefault()->get('Announcement'), TranslateController::getDefault()->get('Gameplay disabled')).'</actionPanel></xml>';
 		exit();
@@ -115,7 +115,7 @@ try {
 		 * Sprawdź, czy na tego kolesia jest założona blokada
 		*/
 		$oCacheKey = new \Cache\CacheKey('npcCombatLocked', $tResult->UserID);
-		
+
 		if (\Cache\Controller::getInstance()->check($oCacheKey) === false) {
 
 			\Cache\Controller::getInstance()->set($oCacheKey, 1, 2);
@@ -227,15 +227,20 @@ try {
 	 * Mini Mapa
 	 */
 	$miniMap = new miniMap ( $userID, $shipPosition->System, $shipPosition, true);
-	
-	\Gameplay\Panel\Move::initiateInstance( $userProperties->Language ); 
-	\Gameplay\Panel\ShortStats::initiateInstance( $userProperties->Language ); 
+
+	/*
+	 * Initiate all panels
+	 */
+	\Gameplay\Panel\Move::initiateInstance( $userProperties->Language );
+	\Gameplay\Panel\ShortStats::initiateInstance( $userProperties->Language );
 	\Gameplay\Panel\PlayerStats::initiateInstance($userProperties->Language);
 	\Gameplay\Panel\Sector::initiateInstance($userProperties->Language);
 	\Gameplay\Panel\Port::initiateInstance($userProperties->Language);
 	\Gameplay\Panel\SectorShips::initiateInstance($userProperties->Language);
 	\Gameplay\Panel\SectorResources::initiateInstance($userProperties->Language);
-	
+	\Gameplay\Panel\Action::initiateInstance($userProperties->Language);
+	\Gameplay\Panel\PortAction::initiateInstance($userProperties->Language);
+
 	$activeScanner 	= new activeScanner ( $userProperties->Language, $userID );
 	$shipCargo 		= new shipCargo ( $userID, $userProperties->Language );
 	$shipWeapons 	= new shipWeapons ( $userID, $userProperties->Language );
@@ -284,7 +289,7 @@ try {
 		case 'engageFtl':
 			ftlDrive::sEngage();
 			break;
-				
+
 		case 'engageActiveScanner':
 			activeScanner::sEngage();
 			break;
@@ -376,7 +381,7 @@ try {
 		case 'myAllianceDetail':
 			alliance::sRender($userAlliance->AllianceID);
 			break;
-			
+
 		case 'allianceDetail':
 			alliance::sRender($id);
 			break;
@@ -773,11 +778,11 @@ try {
 		if (! $error) {
 			$shipPosition->Docked = 'no';
 			$shipProperties->Turns -= $sectorProperties->MoveCost;
-			
+
 			if ($shipProperties->Turns < 0) {
 				$shipProperties->Turns = 0;
 			}
-			
+
 			if ($shipProperties->RookieTurns > 0) {
 				$shipProperties->RookieTurns -= $sectorProperties->MoveCost;
 				if ($shipProperties->RookieTurns < 0) {
@@ -1011,16 +1016,11 @@ try {
 
 	userTimes::genAuthCode ( $userTimes, $userFastTimes );
 
-	$out .= "<authCode>" . $userFastTimes->AuthCode . "</authCode>";
+	$oContentTransport->addVariable('AuthCode', $userFastTimes->AuthCode);
 
-	if ($actionPanel != "") {
-		$out .= "<actionPanel>" . $actionPanel . "</actionPanel> ";
-	}
-	
-	if ($portPanel != "") {
-		$out .= "<portPanel>" . $portPanel . "</portPanel> ";
-	}
-	
+	\Gameplay\Panel\Action::getInstance()->add($actionPanel);
+	\Gameplay\Panel\PortAction::getInstance()->add($portPanel);
+
 	$timek2 = microtime ();
 	$arr_time = explode ( " ", $timek1 );
 	$timek1 = $arr_time [1] + $arr_time [0];
@@ -1071,20 +1071,22 @@ try {
 	$out .= announcementPanel::getInstance()->out ();
 	$out .= $activeScanner->out ();
 	*/
-	
-	$oContentTransport->register(\Gameplay\Panel\Move::getInstance());
-	$oContentTransport->register(\Gameplay\Panel\Port::getInstance());
-	$oContentTransport->register(\Gameplay\Panel\SectorResources::getInstance());
-	$oContentTransport->register(\Gameplay\Panel\SectorShips::getInstance());
-	$oContentTransport->register(\Gameplay\Panel\PlayerStats::getInstance());
-	$oContentTransport->register(\Gameplay\Panel\Sector::getInstance());
-	$oContentTransport->register(\Gameplay\Panel\ShortStats::getInstance());
-	
+
+	$oContentTransport->addPanel(\Gameplay\Panel\Move::getInstance());
+	$oContentTransport->addPanel(\Gameplay\Panel\Port::getInstance());
+	$oContentTransport->addPanel(\Gameplay\Panel\SectorResources::getInstance());
+	$oContentTransport->addPanel(\Gameplay\Panel\SectorShips::getInstance());
+	$oContentTransport->addPanel(\Gameplay\Panel\PlayerStats::getInstance());
+	$oContentTransport->addPanel(\Gameplay\Panel\Sector::getInstance());
+	$oContentTransport->addPanel(\Gameplay\Panel\ShortStats::getInstance());
+	$oContentTransport->addPanel(\Gameplay\Panel\Action::getInstance());
+	$oContentTransport->addPanel(\Gameplay\Panel\PortActiongit::getInstance());
+
 	/*
 	 * Echo prepared JSON for panel transport
 	 */
 	echo $oContentTransport->get();
-	
+
 // 	echo "<xml>" . \TranslateController::translate($out) . "</xml>";
 } catch ( combatException $e ) {
 
