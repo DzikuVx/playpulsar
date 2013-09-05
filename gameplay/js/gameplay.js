@@ -63,7 +63,7 @@ function basicPanelClass() {
 	};
 
 }
-
+/*
 panel = new basicPanelClass();
 
 miniMapPanel = new miniMapClass();
@@ -79,7 +79,7 @@ shipStatsPanel = new shipStatsPanelClass();
 iconPanel = new iconPanelClass();
 activeScanner = new activeScannerClass();
 announcementPanel = new announcementPanelClass();
-
+*/
 function bankClass() {
 
 	this.deposit = function() {
@@ -550,6 +550,36 @@ Panel.Move = function () {
 };
 Panel.Move.prototype = new Panel.Base();
 
+Panel.Port = function () {
+	this.domSelector = '#portInfoPanel';
+};
+Panel.Port.prototype = new Panel.Base();
+
+Panel.SectorResources = function () {
+	this.domSelector = '#sectorResourcePanel';
+};
+Panel.SectorResources.prototype = new Panel.Base();
+
+Panel.SectorShips = function () {
+	this.domSelector = '#sectorShipsPanel';
+};
+Panel.SectorShips.prototype = new Panel.Base();
+
+Panel.PlayerStats = function () {
+	this.domSelector = '#shortUserStatsPanel';
+};
+Panel.PlayerStats.prototype = new Panel.Base();
+
+Panel.Sector = function () {
+	this.domSelector = '#sectorPanel';
+};
+Panel.Sector.prototype = new Panel.Base();
+
+Panel.ShortStats = function () {
+	this.domSelector = '#shortShipStatsPanel';
+};
+Panel.ShortStats.prototype = new Panel.Base();
+
 Playpulsar.gameplay = (function () {
 	
 	var self = {};
@@ -603,7 +633,7 @@ Playpulsar.gameplay = (function () {
 	}
 	
 	self.processSuccess = function (data, textStatus, jqXHR) {
-		console.log('Success', data);
+//		console.log('Success', data);
 		
 		var panelName,
 			panelData,
@@ -617,11 +647,12 @@ Playpulsar.gameplay = (function () {
 				console.log(panelName, panelData);
 				
 				panelObject = Panel.Factory.createPanel(panelName);
-				
 				panelObject.populate(panelData);
 				
 			}
 		}
+		
+		$('.knob').knob();
 		
 	}
 	

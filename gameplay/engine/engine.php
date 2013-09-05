@@ -181,7 +181,7 @@ try {
 
 	//Sprawdz authorize code
 	if ($oController->getParameter('action') != "pageReload" && $oController->getParameter('auth') != $userFastTimes->AuthCode) {
-		$action = null;
+		throw new securityException('Authorization Code Error');
 	}
 
 	/**
