@@ -1074,7 +1074,7 @@ try {
 	$oContentTransport->addPanel(\Gameplay\Panel\Sector::getInstance());
 	$oContentTransport->addPanel(\Gameplay\Panel\ShortStats::getInstance());
 	$oContentTransport->addPanel(\Gameplay\Panel\Action::getInstance());
-	$oContentTransport->addPanel(\Gameplay\Panel\PortActiongit::getInstance());
+	$oContentTransport->addPanel(\Gameplay\Panel\PortAction::getInstance());
 
 	/*
 	 * Echo prepared JSON for panel transport
