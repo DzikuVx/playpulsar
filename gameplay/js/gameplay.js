@@ -1,6 +1,9 @@
 var mouseX = 0;
 var mouseY = 0;
 
+/**
+ * @type int
+ */
 var fireWeaponsTimeout;
 
 globalChat = new chatClass();
@@ -372,11 +375,8 @@ function executeAction(action, subaction, value, id, auth) {
 			miniMapPanel.populate(data);
 			sectorPanel.populate(data);
 			portInfoPanel.populate(data);
-			movePanel.populate(data);
 			shortShipStatsPanel.populate(data);
 			shortUserStatsPanel.populate(data);
-			sectorShipsPanel.populate(data);
-			sectorResourcePanel.populate(data);
 			navigationPanel.populate(data);
 			shipStatsPanel.populate(data);
 			iconPanel.populate(data);
@@ -398,33 +398,6 @@ function executeAction(action, subaction, value, id, auth) {
 			tString = parseXmlValue(data, 'psDebug');
 			if (tString != "") {
 				$('#debugPanel').html(tString);
-			}
-
-			tString = parseXmlValue(data, 'portPanel');
-			if (tString != "") {
-				$('#portPanel').html(tString);
-				if (tString == "&nbsp;") {
-					$('#portPanel').hide();
-				} else {
-					$('#portPanel').show();
-				}
-			}
-
-			tString = parseXmlValue(data, 'actionPanel');
-			if (tString != "") {
-				$('#actionPanel').html(tString);
-				if (tString == "&nbsp;") {
-					$('#actionPanel').hide();
-				} else {
-					$('#actionPanel').show();
-				}
-			}
-
-			if (trim($('#actionPanel').html()) == ''
-					&& trim($('#portPanel').html()) == '') {
-				$('#mainPanel').hide();
-			} else {
-				$('#mainPanel').show();
 			}
 
 			if (trim($('#sectorShipsPanel').html()) == ''
@@ -483,12 +456,20 @@ var Panel = Panel || {};
 
 Panel.Factory = (function () {
 	
-	var self = {};
+	var self = {},
+		panels = [];
 	
 	self.createPanel = function(className) {
-		var myClass = window.Panel[className],
-			myObj = new myClass();
-		return myObj;
+		
+		var myClass;
+		
+		if (!panels[className]) {
+			myClass 			= window.Panel[className];
+			panels[className] 	= new myClass();
+		}
+
+		return panels[className];
+		
 	};
 	
 	return self;
@@ -498,12 +479,16 @@ Panel.Base = function () {
 	this.domSelector = '';
 	this.$panel = null;
 	
+	this.visible;
+	
 	this.hide = function() {
 		this.getDomObject().hide();
+		this.visible = false;
 	};
 
 	this.show = function() {
 		this.getDomObject().show();
+		this.visible = true;
 	};
 
 	this.clear = function() {
@@ -551,6 +536,16 @@ Panel.Base = function () {
 	
 };
 
+Panel.Main = function () {
+	this.domSelector = '#mainPanel';
+};
+Panel.Main.prototype = new Panel.Base();
+
+Panel.Primary = function () {
+	this.domSelector = '#primaryPanel';
+};
+Panel.Primary.prototype = new Panel.Base();
+
 Panel.Move = function () {
 	this.domSelector = '#movePanel';
 };
@@ -585,6 +580,33 @@ Panel.ShortStats = function () {
 	this.domSelector = '#shortShipStatsPanel';
 };
 Panel.ShortStats.prototype = new Panel.Base();
+
+/*
+ * Simple panels definition
+ */
+Panel.Action = function () {
+	this.domSelector = '#actionPanel';
+	
+	this.populate = function(obj) {
+
+		this.getDomObject().html(obj.content);
+
+		if (obj.content == '' || obj.content == '&nbsp;') {
+			this.hide();
+		} else {
+			this.show();
+		}
+		
+		return true;
+	};
+	
+};
+Panel.Action.prototype = new Panel.Base();
+
+Panel.PortAction = function () {
+	this.domSelector = '#portPanel';
+};
+Panel.PortAction.prototype = new Panel.Action();
 
 Playpulsar.gameplay = (function () {
 	
@@ -641,7 +663,6 @@ Playpulsar.gameplay = (function () {
 	}
 	
 	self.processSuccess = function (data, textStatus, jqXHR) {
-//		console.log('Success', data);
 		
 		var panelName,
 			panelData,
@@ -676,6 +697,21 @@ Playpulsar.gameplay = (function () {
 					panelObject.populate(panelData);
 					
 				}
+			}
+			
+			/*
+			 * Process postpanel conditions
+			 */
+			if (!Panel.Factory.createPanel('PortAction').visible && !Panel.Factory.createPanel('Action').visible) {
+				Panel.Factory.createPanel('Main').hide();
+			} else {
+				Panel.Factory.createPanel('Main').show();
+			}
+
+			if (!Panel.Factory.createPanel('SectorResources').visible && !Panel.Factory.createPanel('SectorShips').visible) {
+				Panel.Factory.createPanel('Primary').hide();
+			} else {
+				Panel.Factory.createPanel('Primary').show();
 			}
 			
 		}

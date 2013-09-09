@@ -9,7 +9,7 @@ use \Database\Controller as Database;
 use \General\Controls as Controls;
 
 class SectorShips extends Renderable implements Singleton {
-	protected $onEmpty = "clearIfRendered";
+	protected $onEmpty = "clearAndHide";
 	protected $panelTag = "SectorShips";
 
 	private static $instance = null;
@@ -84,7 +84,7 @@ class SectorShips extends Renderable implements Singleton {
 			 * To jest dodatkowy warunek: gracze z tego samego sojuszu zawsze się widzą
 			*/
 			if (empty($userAlliance->AllianceID) || $userAlliance->AllianceID != $tR1->AllianceName) {
-					
+
 				/**
 				 * sprawdz widzialność
 				 */
@@ -103,11 +103,11 @@ class SectorShips extends Renderable implements Singleton {
 			if ($tR1->UserType == 'npc') {
 				$tDisplay = true;
 			}else {
-					
+
 				if (empty($tR1->LastAction)) {
 					$tR1->LastAction = 0;
 				}
-					
+
 				if (time() - $tR1->LastAction < $config ['user'] ['onlineThreshold']) {
 					$tDisplay = true;
 				}
@@ -123,7 +123,7 @@ class SectorShips extends Renderable implements Singleton {
 				$this->retVal .= "<img style='margin-right: 4px; margin-top: 2px;' src='{$config['general']['cdn']}gfx/hasrookie.png' title='".Translate::getDefault()->get('Rookie protected')."' />";
 			}
 			$this->retVal .= "</div>";
-				
+
 			$this->retVal .= "<div class='strong em12'>{$tR1->PlayerName}</div>";
 			$this->retVal .= "<div class='strong'>{$tR1->AllianceName}</div>";
 			$this->retVal .= "<div style='clear: both;'>";
@@ -150,7 +150,7 @@ class SectorShips extends Renderable implements Singleton {
 					\npc::sAggresiveController($userID, $tR1->UserID, $userStats->Level, $tR1->Level, $sectorProperties->Visibility);
 
 				}
-					
+
 			}
 			$this->retVal .= "</div>";
 

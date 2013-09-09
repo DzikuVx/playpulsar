@@ -8,6 +8,9 @@ use TranslateController as Translate;
 
 class SectorResources extends Renderable implements Singleton {
 
+	protected $onEmpty = "clearAndHide";
+	protected $panelTag = "SectorResources";
+
 	private static $instance = null;
 
 	static public function getInstance() {
@@ -24,9 +27,6 @@ class SectorResources extends Renderable implements Singleton {
 	static public function initiateInstance($language = 'pl', $localUserID = null) {
 		self::$instance = new self($language, $localUserID);
 	}
-
-	protected $onEmpty = "clearIfRendered";
-	protected $panelTag = "SectorResources";
 
 	function render($shipPosition, $shipProperties, $sectorProperties) {
 
@@ -85,28 +85,28 @@ class SectorResources extends Renderable implements Singleton {
 			$tContent .= "</div>";
 
 		}
-		
+
 		$tEquipments = $sectorCargo->getList('equipment');
 		foreach ($tEquipments as $tR1) {
 			if ($tR1->Amount < 1) {
 				continue;
 			}
-		
+
 			$tContent .= "<div class='well resource'>";
 			if ($shipProperties->Cargo < $shipProperties->CargoMax && $shipProperties->Turns >= $itemPickCost) {
 				$tContent .= \General\Controls::bootstrapIconButton( "{T:pick1} ({$itemPickCost}am)", "Playpulsar.gameplay.execute('gather','equipment',null,'{$tR1->CargoID}',null);", 'btn-mini pull-right', 'icon-download icon-white' );
 			}
 			$tContent .= '<label>'.$tR1->{$nameField}.' ('.$tR1->Amount.')</label>';
 			$tContent .= "</div>";
-		
+
 		}
-		
+
 		$tItems = $sectorCargo->getList('item');
 		foreach ($tItems as $tR1) {
 			if ($tR1->Amount < 1) {
 				continue;
 			}
-			
+
 			$tContent .= "<div class='well resource'>";
 			if ($shipProperties->Cargo < $shipProperties->CargoMax && $shipProperties->Turns >= $itemPickCost) {
 				$tContent .= \General\Controls::bootstrapIconButton( "{T:pick1} ({$itemPickCost}am)", "Playpulsar.gameplay.execute('gather','item',null,'{$tR1->CargoID}',null);", 'btn-mini pull-right', 'icon-download icon-white' );
@@ -114,7 +114,7 @@ class SectorResources extends Renderable implements Singleton {
 			$tContent .= '<label class="yellow">'.$tR1->{$nameField}.' ('.$tR1->Amount.')</label>';
 			$tContent .= "</div>";
 		}
-		
+
 		if ($tContent != '') {
 			$this->retVal .= "<h2 style='clear: both;'>{T:Resources}</h2>";
 			$this->retVal .= "<div>";

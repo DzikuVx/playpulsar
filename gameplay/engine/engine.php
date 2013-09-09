@@ -1030,8 +1030,8 @@ try {
 		psScriptDebug::sSaveExecution($action, $subaction, $czas_gen);
 	}
 
-	unset($shipWeapons);
-	unset($shipEquipment);
+// 	unset($shipWeapons);
+// 	unset($shipEquipment);
 
 	/*
 	 * Wiadomość do wszystkich
