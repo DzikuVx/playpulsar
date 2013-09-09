@@ -1,62 +1,59 @@
 <?php
-/**
- * Klasa mapy pomocniczej
- *
- * @version $Rev: 460 $
- * @package Engine
- */
-class miniMap extends basePanel {
+
+namespace Gameplay\Panel;
+
+use Interfaces\Singleton;
+
+class MiniMap extends BaseTable implements Singleton {
 	protected $sector;
 	protected $system;
 
-	/**
-	 * @var shipPosition
-	 */
 	protected $shipPosition;
 
 	protected $X;
 	protected $Y;
-	protected $panelTag = "miniMap";
+	protected $panelTag = "MiniMap";
 	protected $getShips = false;
 	protected $getStacks = false;
 	protected $sectorClass = "miniMap";
 	protected $useBorder = false;
 	protected $onClick = null;
 
-	/**
-	 * Konstruktor, wywołuje metodę load
-	 *
-	 * @param int/stdClass $system
-	 * @param stdClass $shipPosition
-	 * @return boolean
-	 */
-	function __construct($userID, $system, $shipPosition = null, $getShips = false, $getStacks = false) {
-		$this->load ( $userID, $system, $shipPosition, $getShips, $getStacks );
-		return true;
-	}
+	static private $instance = null;
 
 	/**
-	 * Domyślny nagłówek wewnątrz panelu
-	 *
-	 * @return string
+	 * @throws \Exception
+	 * @return \Gameplay\Panel\ShortStats
 	 */
+	static public function getInstance() {
+
+		if (empty(self::$instance)) {
+			throw new \Exception('Panel not initialized');
+		}
+		else {
+			return self::$instance;
+		}
+
+	}
+
+	static public function initiateInstance($userID, $system, $shipPosition = null, $getShips = false, $getStacks = false) {
+		self::$instance = new self($userID, $system, $shipPosition, $getShips, $getStacks);
+	}
+
+	protected function __construct($userID, $system, $shipPosition = null, $getShips = false, $getStacks = false) {
+		$this->load ( $userID, $system, $shipPosition, $getShips, $getStacks );
+	}
+
 	protected function renderHeader() {
 
 		$retVal = "<table class='{$this->sectorClass}'>";
 		return $retVal;
 	}
 
-	/**
-	 * Załadowanie niezbędnych danych
-	 *
-	 * @param int/stdClass $system
-	 * @param stdClass $shipPosition
-	 * @return boolean
-	 */
 	function load($userID, $system, $shipPosition = null, $getShips = false, $getStacks = false) {
 		$this->shipPosition = $shipPosition;
 		if (is_numeric ( $system )) {
-			$this->system = systemProperties::quickLoad ( $system );
+			$this->system = \systemProperties::quickLoad ( $system );
 		} else {
 			$this->system = $system;
 		}
@@ -68,11 +65,12 @@ class miniMap extends basePanel {
 
 	public function render() {
 		$this->rendered = true;
+
 		if ($this->shipPosition == null) {
 			return false;
 		}
 
-		$this->retVal = "";
+		$this->retVal = '';
 
 		$this->retVal .= $this->renderHeader ();
 
@@ -85,10 +83,10 @@ class miniMap extends basePanel {
 		$this->getLimits ();
 		$this->getSectors ();
 		if ($this->getShips) {
-			$this->getShips ();
+			$this->getShips();
 		}
 		if ($this->getStacks) {
-			$this->getStacks ();
+			$this->getStacks();
 		}
 
 		$this->retVal .= $this->renderSetors ();
@@ -137,7 +135,7 @@ class miniMap extends basePanel {
 // 		$property = $this->getCacheProperty();
 
 		$oCacheKey = new \Cache\CacheKey($this->getCacheModule(), $this->getCacheProperty());
-		
+
 		if (\Cache\Controller::getInstance()->check($oCacheKey)) {
 			$this->sector = unserialize(\Cache\Controller::getInstance()->get($oCacheKey));
 		}else {
@@ -147,7 +145,7 @@ class miniMap extends basePanel {
 			 */
 			for($indexX = $this->X ['start']; $indexX <= $this->X ['stop']; $indexX ++) {
 				for($indexY = $this->Y ['start']; $indexY <= $this->Y ['stop']; $indexY ++) {
-					$this->sector [$indexX] [$indexY] = new mapSector ( );
+					$this->sector [$indexX] [$indexY] = new \Gameplay\Helpers\MapSector();
 					$this->sector [$indexX] [$indexY]->system = $this->system->SystemID;
 					$this->sector [$indexX] [$indexY]->X = $indexX;
 					$this->sector [$indexX] [$indexY]->Y = $indexY;
@@ -178,7 +176,7 @@ class miniMap extends basePanel {
 			while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 				$this->sector [$tR1->X] [$tR1->Y]->bgColor = $tR1->Color;
 				$this->sector [$tR1->X] [$tR1->Y]->visibility = $tR1->Visibility;
-				$this->sector [$tR1->X] [$tR1->Y]->Name = TranslateController::getDefault()->get ($tR1->Name);
+				$this->sector [$tR1->X] [$tR1->Y]->Name = \TranslateController::getDefault()->get ($tR1->Name);
 
 				if (!empty($tR1->Image)) {
 					$tArray = explode('/', $tR1->Image);
@@ -291,9 +289,9 @@ class miniMap extends basePanel {
 				us.Cloak,
 				sp.X,
 				sp.Y
-			FROM 
+			FROM
 				shippositions AS sp JOIN userships AS us USING(UserID)
-			WHERE 
+			WHERE
 				sp.System = '{$this->system->SystemID}' AND
         sp.X >= '{$this->X['start']}' AND
         sp.X <= '{$this->X['stop']}' AND

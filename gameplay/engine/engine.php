@@ -217,11 +217,6 @@ try {
 	$userAllianceObject = new userAlliance ( );
 	$userAlliance 		= $userAllianceObject->load ( $userID, false, false);
 
-	/**
-	 * Mini Mapa
-	 */
-	$miniMap = new miniMap ( $userID, $shipPosition->System, $shipPosition, true);
-
 	/*
 	 * Initiate all panels
 	 */
@@ -234,6 +229,7 @@ try {
 	\Gameplay\Panel\SectorResources::initiateInstance($userProperties->Language);
 	\Gameplay\Panel\Action::initiateInstance($userProperties->Language);
 	\Gameplay\Panel\PortAction::initiateInstance($userProperties->Language);
+	\Gameplay\Panel\MiniMap::initiateInstance($userID, $shipPosition->System, $shipPosition, true);
 
 	$activeScanner 	= new activeScanner ( $userProperties->Language, $userID );
 	$shipCargo 		= new shipCargo ( $userID, $userProperties->Language );
@@ -863,7 +859,7 @@ try {
 			\Gameplay\Panel\SectorResources::getInstance()->render ( $shipPosition, $shipProperties, $sectorProperties );
 			\Gameplay\Panel\Port::getInstance()->render ( $shipPosition, $portProperties, $shipProperties, $jumpNode );
 
-			$miniMap->load ( $userID, $shipPosition->System, $shipPosition );
+			\Gameplay\Panel\Port::getInstance()->load ( $userID, $shipPosition->System, $shipPosition );
 
 			if (shipRouting::checkArrive ( $shipPosition, $shipRouting )) {
 				navigationPanel::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
@@ -1006,7 +1002,7 @@ try {
 	\Gameplay\Panel\PlayerStats::getInstance()->render ( $userStats, $shipProperties );
 	\Gameplay\Panel\ShortStats::getInstance()->render ( $shipProperties, $shipWeapons, $shipEquipment );
 	\Gameplay\Panel\Move::getInstance()->render($systemProperties, $shipPosition, $portProperties, $shipRouting, $shipProperties);
-	$miniMap->render ();
+	\Gameplay\Panel\MiniMap::getInstance()->render();
 
 	userTimes::genAuthCode ( $userTimes, $userFastTimes );
 
@@ -1029,9 +1025,6 @@ try {
 	if (!empty($config ['debug'] ['script'])) {
 		psScriptDebug::sSaveExecution($action, $subaction, $czas_gen);
 	}
-
-// 	unset($shipWeapons);
-// 	unset($shipEquipment);
 
 	/*
 	 * Wiadomość do wszystkich
@@ -1058,7 +1051,6 @@ try {
 		$debug = "&nbsp;";
 	}
 	$out .= "<debugPanel>" . $debug . "</debugPanel>";
-	$out .= $miniMap->out ();
 	$out .= navigationPanel::getInstance()->out ();
 	$out .= iconPanel::getInstance()->out ();
 	$out .= newsAgencyPanel::getInstance()->out ();
@@ -1075,6 +1067,7 @@ try {
 	$oContentTransport->addPanel(\Gameplay\Panel\ShortStats::getInstance());
 	$oContentTransport->addPanel(\Gameplay\Panel\Action::getInstance());
 	$oContentTransport->addPanel(\Gameplay\Panel\PortAction::getInstance());
+	$oContentTransport->addPanel(\Gameplay\Panel\MiniMap::getInstance());
 
 	/*
 	 * Echo prepared JSON for panel transport

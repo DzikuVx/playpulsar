@@ -5,7 +5,7 @@
  * @version $Rev: 460 $
  * @package Engine
  */
-class systemMap extends miniMap {
+class systemMap extends \Gameplay\Panel\MiniMap {
 
 	protected $panelTag = "systemMap";
 	protected $sectorClass = "systemMap";
@@ -19,7 +19,7 @@ class systemMap extends miniMap {
 	protected function getShips() {
 
 	}
-	
+
 	/**
 	 * (non-PHPdoc)
 	 * @see miniMap::getCacheProperty()

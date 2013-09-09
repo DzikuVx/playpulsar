@@ -581,6 +581,11 @@ Panel.ShortStats = function () {
 };
 Panel.ShortStats.prototype = new Panel.Base();
 
+Panel.MiniMap = function () {
+	this.domSelector = '#miniMap';
+};
+Panel.MiniMap.prototype = new Panel.Base();
+
 /*
  * Simple panels definition
  */

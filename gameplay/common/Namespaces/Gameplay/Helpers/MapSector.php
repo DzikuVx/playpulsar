@@ -1,12 +1,8 @@
 <?php
 
-/**
- * Klasa sektorów map
- * @version $Rev: 456 $
- * @package Engine
- *
- */
-class mapSector {
+namespace Gameplay\Helpers;
+
+class MapSector {
 	public $bgColor = "000000";
 	public $icon = "&nbsp;";
 	public $iconColor = "ffffff";
@@ -46,11 +42,11 @@ class mapSector {
 
 		$retVal .= " >";
 
-		if ($mapType == 'miniMap') {
+		if ($mapType == 'Gameplay\Panel\MiniMap') {
 
 			$oCacheKey = new \Cache\CacheKey('mapSectorMarker', $this->system.'|'.$this->X.'|'.$this->Y);
-			
-			if (additional::checkRand($this->showPercentage,100)) {
+
+			if (\additional::checkRand($this->showPercentage,100)) {
 				$retVal .= '<img src="gfx/shipMarker.png" style="position: absolute; margin-top: -1px;" />';
 				\Cache\Controller::getInstance()->set($oCacheKey, 1);
 			}
@@ -68,7 +64,7 @@ class mapSector {
 			}
 		}
 		elseif ($mapType == 'activeScanner') {
-			if (additional::checkRand($this->showPercentage,100)) {
+			if (\additional::checkRand($this->showPercentage,100)) {
 				$retVal .= '<img src="gfx/shipMarker.png" style="position: absolute; margin-top: -1px;" />';
 			}
 		}
