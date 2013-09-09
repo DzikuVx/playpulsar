@@ -55,13 +55,13 @@ class Move extends Renderable implements Singleton {
 			}
 
 			if ($shipPosition->Y > 1) {
-				$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('shipMove','up',null,null,null);\" ><i class='icon-chevron-up'></i></button></td>";
+				$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('shipMove','up');\" ><i class='icon-chevron-up'></i></button></td>";
 			} else {
 				$this->retVal .= "<td>&nbsp;</td>";
 			}
 
 			if ($shipRouting->System != null) {
-				$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('nextWaypoint',null,null,null,null);\" title='{T:Next waypoint}' ><i class='icon-white icon-step-forward'></i></button></td>";
+				$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('nextWaypoint');\" title='{T:Next waypoint}' ><i class='icon-white icon-step-forward'></i></button></td>";
 			}else {
 				$this->retVal .= "<td>&nbsp;</td>";
 			}
@@ -70,7 +70,7 @@ class Move extends Renderable implements Singleton {
 
 			$this->retVal .= "<tr>";
 			if ($shipPosition->X > 1) {
-				$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('shipMove','left',null,null,null);\" ><i class='icon-chevron-left'></i></button></td>";
+				$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('shipMove','left');\" ><i class='icon-chevron-left'></i></button></td>";
 			} else {
 				$this->retVal .= "<td>&nbsp;</td>";
 			}
@@ -85,18 +85,18 @@ class Move extends Renderable implements Singleton {
 			$this->retVal .= "<tr>";
 
 			if (!empty($shipProperties->CanActiveScan)) {
-				$this->retVal .= "<td><button class='btn btn-info' onclick=\"Playpulsar.gameplay.execute('engageActiveScanner','down',null,null,null);\" title='{T:engageActiveScanner}' ><i class='icon-search icon-white'></i></button></td>";
+				$this->retVal .= "<td><button class='btn btn-info' onclick=\"Playpulsar.gameplay.execute('engageActiveScanner');\" title='{T:engageActiveScanner}' ><i class='icon-search icon-white'></i></button></td>";
 			}else {
 				$this->retVal .= "<td>&nbsp;</td>";
 			}
 
 			if ($shipPosition->Y < $systemProperties->Height) {
-				$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('shipMove','down',null,null,null);\" ><i class='icon-chevron-down'></i></button></td>";
+				$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('shipMove','down');\" ><i class='icon-chevron-down'></i></button></td>";
 			} else {
 				$this->retVal .= "<td>&nbsp;</td>";
 			}
 			if (!empty($shipRouting->System) && !empty($shipProperties->CanWarpJump)) {
-				$this->retVal .= "<td><button class='btn btn-warning' onclick=\"Playpulsar.gameplay.execute('engageFtl','down',null,null,null);\" title='{T:Engage FTL Jump Drive}' ><i class='icon-screenshot icon-white'></i></button></td>";
+				$this->retVal .= "<td><button class='btn btn-warning' onclick=\"Playpulsar.gameplay.execute('engageFtl','down');\" title='{T:Engage FTL Jump Drive}' ><i class='icon-screenshot icon-white'></i></button></td>";
 			}else {
 				$this->retVal .= "<td>&nbsp;</td>";
 			}
@@ -104,7 +104,7 @@ class Move extends Renderable implements Singleton {
 		} else {
 			//Komórka bezruchu :)
 			$this->retVal .= "<tr>";
-				$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('shipUnDock');\" title='".Translate::getDefault()->get ( 'undock' )."'><i class='icon-white icon-resize-full'></i></button></td>";
+			$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('shipUnDock');\" title='{T:undock}'><i class='icon-white icon-resize-full'></i></button></td>";
 			$this->retVal .= "<td>&nbsp;</td>";
 			$this->retVal .= "<td>&nbsp;</td>";
 			$this->retVal .= "</tr>";

@@ -1081,7 +1081,6 @@ try {
 	 */
 	echo $oContentTransport->get();
 
-// 	echo "<xml>" . \TranslateController::translate($out) . "</xml>";
 } catch ( combatException $e ) {
 
 	$retVal = '';
