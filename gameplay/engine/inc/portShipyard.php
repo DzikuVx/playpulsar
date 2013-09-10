@@ -5,25 +5,25 @@
  */
 shipProperties::sRecomputeValues($shipProperties, $userID);
 
-$portPanel .= "<h1>" . TranslateController::getDefault()->get ( 'shipyard' ) . "</h1>";
+$sRetVal = "<h1>" . TranslateController::getDefault()->get ( 'shipyard' ) . "</h1>";
 
 $currentShipValue = floor ( shipProperties::sGetValue ( $userProperties->UserID ) / 2 );
 
-$portPanel .= "<h3>" . TranslateController::getDefault()->get ( 'shipValue' ) . ": " . $currentShipValue . "$</h3>";
+$sRetVal .= "<h3>" . TranslateController::getDefault()->get ( 'shipValue' ) . ": " . $currentShipValue . "$</h3>";
 
 //Znajdz statki, jakie port sprzedaje
 $nameField = "Name" . strtoupper ( $userProperties->Language );
 
-$portPanel .= "<h2>" . TranslateController::getDefault()->get ( 'ships' ) . "</h2>";
-$portPanel .= "<table class='table table-striped table-condensed'>";
+$sRetVal .= "<h2>" . TranslateController::getDefault()->get ( 'ships' ) . "</h2>";
+$sRetVal .= "<table class='table table-striped table-condensed'>";
 
-$portPanel .= "<tr>";
-$portPanel .= "<th>" . TranslateController::getDefault()->get ( 'name' ) . "</th>";
-$portPanel .= "<th>" . TranslateController::getDefault()->get ( 'price' ) . " [$]</th>";
-$portPanel .= "<th>" . TranslateController::getDefault()->get ( 'Fame' ) . "</th>";
-$portPanel .= "<th>" . TranslateController::getDefault()->get ( 'size' ) . "</th>";
-$portPanel .= "<th style=\"width: 75px;\">&nbsp;</th>";
-$portPanel .= "</tr>";
+$sRetVal .= "<tr>";
+$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'name' ) . "</th>";
+$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'price' ) . " [$]</th>";
+$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'Fame' ) . "</th>";
+$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'size' ) . "</th>";
+$sRetVal .= "<th style=\"width: 75px;\">&nbsp;</th>";
+$sRetVal .= "</tr>";
 
 if (!empty($portProperties->Ships)) {
 
@@ -40,21 +40,23 @@ if (!empty($portProperties->Ships)) {
   ";
 	$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
 	while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
-		$portPanel .= "<tr>";
-		$portPanel .= "<td>" . $tR1->Name . "</td>";
-		$portPanel .= "<td>" . number_format ( $tR1->Price, 0 ) . "</td>";
-		$portPanel .= "<td>" . number_format ( $tR1->Fame, 0 ) . "</td>";
-		$portPanel .= "<td>" . $tR1->Size . "</td>";
-		$portPanel .= "<td>";
+		$sRetVal .= "<tr>";
+		$sRetVal .= "<td>" . $tR1->Name . "</td>";
+		$sRetVal .= "<td>" . number_format ( $tR1->Price, 0 ) . "</td>";
+		$sRetVal .= "<td>" . number_format ( $tR1->Fame, 0 ) . "</td>";
+		$sRetVal .= "<td>" . $tR1->Size . "</td>";
+		$sRetVal .= "<td>";
 
-		$portPanel .= \General\Controls::renderImgButton ( 'info', "getXmlRpc('univPanel','ship::renderDetail','{$userProperties->Language}','{$tR1->ShipID}')", 'Info' );
+		$sRetVal .= \General\Controls::renderImgButton ( 'info', "getXmlRpc('univPanel','ship::renderDetail','{$userProperties->Language}','{$tR1->ShipID}')", 'Info' );
 
 		if ($userStats->Fame >= $tR1->Fame && $userStats->Cash + $currentShipValue >= $tR1->Price) {
-			$portPanel .= \General\Controls::renderImgButton ( 'buy', "Playpulsar.gameplay.execute('buyShip','',null,{$tR1->ShipID},null);", TranslateController::getDefault()->get ( 'buy' ) );
+			$sRetVal .= \General\Controls::renderImgButton ( 'buy', "Playpulsar.gameplay.execute('buyShip','',null,{$tR1->ShipID},null);", TranslateController::getDefault()->get ( 'buy' ) );
 		}
-		$portPanel .= "</td>";
-		$portPanel .= "</tr>";
+		$sRetVal .= "</td>";
+		$sRetVal .= "</tr>";
 
 	}
 }
-$portPanel .= "</table>";
+$sRetVal .= "</table>";
+
+\Gameplay\Panel\PortAction::getInstance()->add($sRetVal);

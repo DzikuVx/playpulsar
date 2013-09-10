@@ -18,7 +18,7 @@ class allianceRights extends baseItem {
 	 */
 	static public function sPlayerSet($id, $xml) {
 
-		global $userID, $portPanel, $userAlliance, $t;
+		global $userID, $userAlliance;
 
 		if (empty($userAlliance->AllianceID)) {
 			throw new securityException();
@@ -85,7 +85,7 @@ class allianceRights extends baseItem {
 	}
 
 	static public function sRenderForm($id) {
-		global $userID, $portPanel, $userAlliance, $t;
+		global $userID, $userAlliance;
 
 		if (empty($userAlliance->AllianceID)) {
 			throw new securityException();
@@ -166,7 +166,7 @@ class allianceRights extends baseItem {
 
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 
 	}
 
@@ -177,7 +177,7 @@ class allianceRights extends baseItem {
 	 */
 	static public function sRender() {
 
-		global $userID, $portPanel, $userAlliance;
+		global $userID, $userAlliance;
 
 		if (empty($userAlliance->AllianceID)) {
 			throw new securityException();
@@ -198,7 +198,7 @@ class allianceRights extends baseItem {
 
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 
 	}
 

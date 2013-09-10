@@ -343,9 +343,9 @@ class shipWeapons {
 	 * return int
 	 */
 	public function getOperationalCount() {
-		
+
 		$retVal = 0;
-		
+
 		$tQuery = "SELECT
 			COUNT(*) AS ILE
 		FROM
@@ -358,10 +358,10 @@ class shipWeapons {
 		";
 		$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
 		$retVal = \Database\Controller::getInstance()->fetch($tQuery)->ILE;
-		
+
 		return $retVal;
 	}
-	
+
 	/**
 	 * Pobranie uzbrojenia okrętu
 	 *
@@ -388,7 +388,7 @@ class shipWeapons {
 				$addQuery = "AND shipweapons.Enabled = '1'";
 				break;
 		}
-		
+
 		$tQuery = "SELECT
         weapontypes.*,
         weapontypes.{$this->nameField} AS Name,
@@ -652,7 +652,7 @@ class shipWeapons {
 
 	static public function sSellFromCargo($weaponID) {
 
-		global $portPanel, $shipCargo, $userID, $userStats, $shipProperties, $shipPosition, $portProperties, $shipWeapons;
+		global $shipCargo, $userID, $userStats, $shipProperties, $shipPosition, $portProperties, $shipWeapons;
 
 
 		if ($shipPosition->Docked == 'no') {
@@ -666,7 +666,7 @@ class shipWeapons {
 		if ($shipCargo->getWeaponAmount($weaponID) < 1) {
 			throw new securityException ( );
 		}
-			
+
 		/**
 		 * Pobierz parametry
 		 */
@@ -688,7 +688,7 @@ class shipWeapons {
 		shipCargo::management ( $userID );
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 		announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'weaponSold' ) . $tPrice . '$' );
 	}
 

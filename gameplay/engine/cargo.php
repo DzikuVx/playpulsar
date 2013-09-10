@@ -6,7 +6,7 @@ if ($action == "equipFromCargo") {
 		$error = true;
 		throw new warningException ( TranslateController::getDefault()->get ( 'notEnoughTurns' ) . "" );
 	}
- 
+
 	$onBoard = false;
 
 	if ($subaction == "weapon") {
@@ -67,7 +67,7 @@ if ($action == "cargoManagement") {
 	shipCargo::management ( $userID );
 	\Gameplay\Panel\SectorShips::getInstance()->hide ();
 	\Gameplay\Panel\SectorResources::getInstance()->hide ();
-	$portPanel = "&nbsp;";
+	\Gameplay\Panel\PortAction::getInstance()->clear();
 }
 
 /*
@@ -173,7 +173,7 @@ if ($action == "jettison") {
 	sectorProperties::sResetResources( $shipPosition, $sectorProperties );
 	portProperties::sReset ( $portProperties );
 	shipCargo::management ( $userID );
-	$portPanel = "&nbsp;";
+	\Gameplay\Panel\PortAction::getInstance()->clear();
 }
 
 /*

@@ -13,14 +13,14 @@ class shipWeaponsRegistry extends simpleRegistry {
 	 */
 	static public function sRender() {
 
-		global $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id, $portPanel;
+		global $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id;
 
 		$registry = new shipWeaponsRegistry ( $userID );
 
 		\Gameplay\Panel\Action::getInstance()->add($registry->get ( $shipPosition, $portProperties, $action, $subaction, $value, $id ));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 
 	}
 

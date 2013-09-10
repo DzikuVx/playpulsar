@@ -9,7 +9,6 @@ $timek1 = microtime ();
 
 $out = "";
 $error = false;
-$portPanel = "";
 $debug = "";
 
 try {
@@ -236,7 +235,7 @@ try {
 	if ($shipPosition->Docked == 'yes') {
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 	} else {
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 	}
 
 	//NPC Reset
@@ -605,7 +604,7 @@ try {
 
 		case 'shipExamine' :
 			shipExamine ( $id, $userID );
-			$portPanel = "&nbsp;";
+			\Gameplay\Panel\PortAction::getInstance()->clear();
 			break;
 
 		case 'showOnlinePlayers' :
@@ -776,7 +775,7 @@ try {
 			portProperties::sReset ( $portProperties );
 
 			\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
-			$portPanel = "&nbsp;";
+			\Gameplay\Panel\PortAction::getInstance()->clear();
 			\Gameplay\Panel\Port::getInstance()->render ( $shipPosition, $portProperties, $shipProperties, $jumpNode );
 			\Gameplay\Panel\SectorResources::getInstance()->render ( $shipPosition, $shipProperties, $sectorProperties );
 			\Gameplay\Panel\SectorResources::getInstance()->clearForceAction ();
@@ -997,8 +996,6 @@ try {
 	userTimes::genAuthCode ( $userTimes, $userFastTimes );
 
 	$oContentTransport->addVariable('AuthCode', $userFastTimes->AuthCode);
-
-	\Gameplay\Panel\PortAction::getInstance()->add($portPanel);
 
 	$timek2 = microtime ();
 	$arr_time = explode ( " ", $timek1 );

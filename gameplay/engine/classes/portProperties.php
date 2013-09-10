@@ -37,12 +37,13 @@ class portProperties extends baseItem {
 	 */
 	static public function sPopulatePanel($userID, $shipPosition, $portProperties, $action, $subaction, $value, $id) {
 
-		global $portPanel, $userProperties, $shipProperties, $itemJettisonCost, $config, $userStats, $userAlliance;
+		global $userProperties, $shipProperties, $itemJettisonCost, $config, $userStats, $userAlliance;
 
-		if ($shipPosition->Docked == 'no')
-		return false;
+		if ($shipPosition->Docked == 'no') {
+			return false;
+		}
 
-		$portPanel .= '<div style="margin: 0 auto;">';
+		$sRetVal = '<div style="margin: 0 auto;">';
 
 		switch ($portProperties->Type) {
 
@@ -52,51 +53,51 @@ class portProperties extends baseItem {
 				} else {
 					$fix = "";
 				}
-				$portPanel .= \General\Controls::bootstrapButton('{T:hangar}',"Playpulsar.gameplay.execute('portHangar',null,null,null,null);", $fix);
-				
+				$sRetVal .= \General\Controls::bootstrapButton('{T:hangar}',"Playpulsar.gameplay.execute('portHangar',null,null,null,null);", $fix);
+
 				if ($action == "portMarketplace") {
 					$fix = "btn-inverse";
 				} else {
 					$fix = "";
 				}
-				$portPanel .= \General\Controls::bootstrapButton('{T:marketplace}',"Playpulsar.gameplay.execute('portMarketplace',null,null,null,null);", $fix);
-				
+				$sRetVal .= \General\Controls::bootstrapButton('{T:marketplace}',"Playpulsar.gameplay.execute('portMarketplace',null,null,null,null);", $fix);
+
 				if ($action == "portShipyard") {
 					$fix = "btn-inverse";
 				} else {
 					$fix = "";
 				}
-				$portPanel .= \General\Controls::bootstrapButton('{T:shipyard}' ,"Playpulsar.gameplay.execute('portShipyard',null,null,null,null);", $fix);
+				$sRetVal .= \General\Controls::bootstrapButton('{T:shipyard}' ,"Playpulsar.gameplay.execute('portShipyard',null,null,null,null);", $fix);
 
 				if ($action == "portBank") {
 					$fix = "btn-inverse";
 				} else {
 					$fix = "";
 				}
-				$portPanel .= \General\Controls::bootstrapButton('{T:Bank}',"Playpulsar.gameplay.execute('portBank',null,null,null,null);", $fix);
+				$sRetVal .= \General\Controls::bootstrapButton('{T:Bank}',"Playpulsar.gameplay.execute('portBank',null,null,null,null);", $fix);
 
 				if ($action == "portStorehouse") {
 					$fix = "btn-inverse";
 				} else {
 					$fix = "";
 				}
-				$portPanel .= \General\Controls::bootstrapButton('{T:storehouse}',"Playpulsar.gameplay.execute('portStorehouse',null,null,null,null);", $fix);
+				$sRetVal .= \General\Controls::bootstrapButton('{T:storehouse}',"Playpulsar.gameplay.execute('portStorehouse',null,null,null,null);", $fix);
 				break;
-					
+
 			case "port" :
 				if ($action == "portHangar") {
 					$fix = "btn-inverse";
 				} else {
 					$fix = "";
 				}
-				$portPanel .= \General\Controls::bootstrapButton('{T:hangar}',"Playpulsar.gameplay.execute('portHangar',null,null,null,null);", $fix);
+				$sRetVal .= \General\Controls::bootstrapButton('{T:hangar}',"Playpulsar.gameplay.execute('portHangar',null,null,null,null);", $fix);
 
 				if ($action == "portMarketplace") {
 					$fix = "btn-inverse";
 				} else {
 					$fix = "";
 				}
-				$portPanel .= \General\Controls::bootstrapButton('{T:marketplace}',"Playpulsar.gameplay.execute('portMarketplace',null,null,null,null);", $fix);
+				$sRetVal .= \General\Controls::bootstrapButton('{T:marketplace}',"Playpulsar.gameplay.execute('portMarketplace',null,null,null,null);", $fix);
 
 				if ($action == "portStorehouse") {
 					$fix = "btn-inverse";
@@ -104,20 +105,22 @@ class portProperties extends baseItem {
 					$fix = "";
 				}
 
-				$portPanel .= \General\Controls::bootstrapButton('{T:storehouse}',"Playpulsar.gameplay.execute('portStorehouse',null,null,null,null);", $fix);
+				$sRetVal .= \General\Controls::bootstrapButton('{T:storehouse}',"Playpulsar.gameplay.execute('portStorehouse',null,null,null,null);", $fix);
 				break;
 		}
 
 
-		$portPanel .= '</div>';
-			
-		$portPanel .= "<div id=\"portContent\">";
+		$sRetVal .= '</div>';
+
+		$sRetVal .= "<div id=\"portContent\">";
+		\Gameplay\Panel\PortAction::getInstance()->add($sRetVal);
 
 		if (file_exists ( "../engine/inc/" . $action . ".php" )) {
 			include "../engine/inc/" . $action . ".php";
 		}
-		$portPanel .= "&nbsp;";
-		$portPanel .= "</div>";
+
+		$sRetVal = "</div>";
+		\Gameplay\Panel\PortAction::getInstance()->add($sRetVal);
 
 
 		return true;
@@ -176,16 +179,16 @@ class portProperties extends baseItem {
 		*/
 		if (! is_numeric ( $ID )) {
 			$whereCondition = "
-    	  ports.System = '{$ID->System}' AND 
-        ports.X = '{$ID->X}' AND 
-        ports.Y = '{$ID->Y}' 
+    	  ports.System = '{$ID->System}' AND
+        ports.X = '{$ID->X}' AND
+        ports.Y = '{$ID->Y}'
     	";
 		} else {
 			$whereCondition = " ports.PortID = '{$ID}' ";
 		}
 
 		$tResult = \Database\Controller::getInstance()->execute ( "
-      SELECT 
+      SELECT
         ports.PortID AS PortID,
         ports.PortTypeID AS PortTypeID,
         porttypes.$nameField AS PortTypeName,
@@ -210,9 +213,9 @@ class portProperties extends baseItem {
         ports.Level AS Level,
         ports.State AS State,
         ports.System
-      FROM 
+      FROM
         ports JOIN porttypes ON porttypes.PortTypeID = ports.PortTypeID
-      WHERE 
+      WHERE
         " . $whereCondition . "
       LIMIT 1" );
 
@@ -259,7 +262,7 @@ class portProperties extends baseItem {
 		if ($portProperties->Cash < 0) {
 			$portProperties->Cash = 0;
 		}
-			
+
 		//Oblicz nowy level portu
 		if ($portProperties->Level != self::computeLevel ( $portProperties->Experience )) {
 			$portProperties->Level = self::computeLevel ( $portProperties->Experience );
@@ -442,7 +445,7 @@ class portProperties extends baseItem {
 					if ($setToMin) {
 						$tR1->Amount = 0;
 					}
-						
+
 					if ($increase) {
 						$diff = floor ( ($config ['port'] ['maxCargoAmount'] - $tR1->Amount) / $config ['port'] ['cargoChangeRatio'] ) + rand ( 0, 20 ) - 10;
 						$tR1->Amount += $diff;
@@ -472,10 +475,10 @@ class portProperties extends baseItem {
 						*/
 						mysqli_stmt_bind_param($sPreparedInsert, 'iiis', $portProperties->PortID, $tR1->ProductID, $tR1->Amount, $tR1->Mode);
 						mysqli_stmt_execute($sPreparedInsert);
-							
+
 					}
 				}
-					
+
 				//Wpisz czas resetu portu
 				$portProperties->ResetTime = $actualTime;
 

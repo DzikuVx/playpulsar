@@ -20,14 +20,14 @@ class shipProperties extends baseItem {
 	 */
 	static public function sDropRookie($shipProperties, $shipPropertiesObject) {
 
-		global $userID, $portPanel, $userStats;
+		global $userID, $userStats;
 
 		$shipProperties->RookieTurns = 0;
 
 		$shipPropertiesObject->synchronize($shipProperties, true, true);
 
 		shipExamine ( $userID, $userID );
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 		announcementPanel::getInstance()->write('info', TranslateController::getDefault()->get('opSuccess'));
 		return true;
 	}

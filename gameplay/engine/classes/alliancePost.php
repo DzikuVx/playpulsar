@@ -24,7 +24,7 @@ class alliancePost extends baseItem {
 	 */
 	static public function sDelete($id) {
 
-		global $userAlliance, $userID, $portPanel;
+		global $userAlliance, $userID;
 
 		if (empty($userAlliance->AllianceID)) {
 			throw new securityException();
@@ -43,7 +43,7 @@ class alliancePost extends baseItem {
 		\Gameplay\Panel\Action::getInstance()->add(\General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), TranslateController::getDefault()->get('wantDeleteAlliancePost'),"Playpulsar.gameplay.execute('alliancePostDeleteExe',null,null,{$id})","Playpulsar.gameplay.execute('allianceDetail',null,null,'{$userAlliance->AllianceID}')"));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 	}
 
 	/**
@@ -53,7 +53,7 @@ class alliancePost extends baseItem {
 	 */
 	static public function sDeleteExe($id) {
 
-		global $userAlliance, $userID, $portPanel;
+		global $userAlliance, $userID;
 
 		if (empty($userAlliance->AllianceID)) {
 			throw new securityException();
@@ -79,7 +79,7 @@ class alliancePost extends baseItem {
 		\Gameplay\Panel\Action::getInstance()->add(alliance::sGetDetail($userAlliance->AllianceID));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 	}
 
 	/**
@@ -88,7 +88,7 @@ class alliancePost extends baseItem {
 	 */
 	static public function sNew() {
 
-		global $portPanel, $userAlliance, $userID;
+		global $userAlliance, $userID;
 
 		if (empty($userAlliance->AllianceID)) {
 			throw new securityException();
@@ -106,7 +106,7 @@ class alliancePost extends baseItem {
 		\Gameplay\Panel\Action::getInstance()->add((string) $template);
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 	}
 
 	/**
@@ -117,7 +117,7 @@ class alliancePost extends baseItem {
 	 */
 	static public function sNewExe($values) {
 
-		global $portPanel, $userAlliance, $userID, $userAllianceObject;
+		global $userAlliance, $userID, $userAllianceObject;
 
 		if (empty($userAlliance->AllianceID)) {
 			throw new securityException();
@@ -144,7 +144,7 @@ class alliancePost extends baseItem {
 		\Gameplay\Panel\Action::getInstance()->add(alliance::sGetDetail($userAlliance->AllianceID));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 	}
 
 }

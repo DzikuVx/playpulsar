@@ -252,7 +252,7 @@ class user {
 
 	static public function sEditOwnDialog() {
 
-		global $userID, $portPanel, $userProperties;
+		global $userID, $userProperties;
 
 		$template = new \General\Templater('../templates/userDataForm.html');
 
@@ -286,7 +286,7 @@ class user {
 		\Gameplay\Panel\Action::getInstance()->add((string) $template);
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 	}
 
 	/**

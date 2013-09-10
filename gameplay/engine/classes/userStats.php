@@ -13,9 +13,9 @@ class userStats extends baseItem {
 	protected $useMemcached = true;
 
 	static public function sExamineMe() {
-		global $userID, $portPanel;
+		global $userID;
 		shipExamine ( $userID, $userID );
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 	}
 
 	/**

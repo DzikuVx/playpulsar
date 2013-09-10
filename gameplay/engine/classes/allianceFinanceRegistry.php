@@ -3,7 +3,7 @@ class allianceFinanceRegistry extends simpleRegistry {
 
 	static public function sRender() {
 
-		global $userID, $portPanel, $userAlliance;
+		global $userID, $userAlliance;
 
 		/*
 		 * Wyrenderowanie sojuszu
@@ -13,8 +13,7 @@ class allianceFinanceRegistry extends simpleRegistry {
 		\Gameplay\Panel\Action::getInstance()->add($registry->get ($userAlliance->AllianceID));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
-		$portPanel = "&nbsp;";
-
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 	}
 
 	public function get($allianceID) {

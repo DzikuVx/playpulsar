@@ -6,7 +6,7 @@ class buddyList extends baseItem {
 	protected $defaultCacheExpire = 120;
 
 	static public function sAcceptExe($id) {
-		global $userAlliance, $userID, $portPanel, $t;
+		global $userAlliance, $userID;
 
 		/*
 		 * Warunki bezpieczeństwa
@@ -49,7 +49,7 @@ class buddyList extends baseItem {
 	}
 
 	static public function sAccept($id) {
-		global $userAlliance, $userID, $portPanel, $t;
+		global $userAlliance, $userID;
 
 		/*
 		 * Warunki bezpieczeństwa
@@ -74,11 +74,11 @@ class buddyList extends baseItem {
 		\Gameplay\Panel\Action::getInstance()->add(\General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"Playpulsar.gameplay.execute('buddyAcceptExecute',null,null,'{$id}')","Playpulsar.gameplay.execute('showBuddy')"));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 	}
 
 	static public function sDeclineDialog($id) {
-		global $userAlliance, $userID, $portPanel, $t;
+		global $userAlliance, $userID;
 
 		/*
 		 * Warunki bezpieczeństwa
@@ -103,7 +103,7 @@ class buddyList extends baseItem {
 		\Gameplay\Panel\Action::getInstance()->add(\General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"Playpulsar.gameplay.execute('buddyDecline',null,null,'{$id}')","Playpulsar.gameplay.execute('showBuddy')"));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 	}
 
 	static public function sDecline($id) {
@@ -131,7 +131,7 @@ class buddyList extends baseItem {
 
 	static public function sRenderList() {
 
-		global $userID, $portPanel, $userAlliance, $t;
+		global $userID, $userAlliance;
 
 		/*
 		 * Wyrenderowanie sojuszu
@@ -144,7 +144,7 @@ class buddyList extends baseItem {
 
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 
 	}
 
@@ -225,7 +225,7 @@ class buddyList extends baseItem {
 
 		announcementPanel::getInstance()->write('info', TranslateController::getDefault()->get('Request has been sent'));
 		shipExamine ( $id, $userID );
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 	}
 
 	/**

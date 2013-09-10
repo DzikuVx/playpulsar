@@ -9,14 +9,14 @@ class newsAgencyRegistry extends simpleRegistry {
 
 	static public function sRender() {
 
-		global $userID, $shipPosition, $portPanel;
+		global $userID, $shipPosition;
 
 		$registry = new newsAgencyRegistry ( $userID );
 
 		\Gameplay\Panel\Action::getInstance()->add($registry->get($shipPosition));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 
 	}
 

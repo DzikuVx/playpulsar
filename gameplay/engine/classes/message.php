@@ -102,11 +102,11 @@ class message extends baseItem {
 	 */
 	static public function sGetDetail($messageID) {
 
-		global $userID, $portPanel;
+		global $userID;
 
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 
 		$tMessage = self::quickLoad ( $messageID );
 
@@ -221,11 +221,9 @@ class message extends baseItem {
 	 */
 	static public function sSend($author, $receiver) {
 
-		global $portPanel;
-
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 
 		$sRetVal = "<h1>{T:newMessage}</h1>";
 

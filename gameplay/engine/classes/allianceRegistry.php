@@ -14,7 +14,7 @@ class allianceRegistry extends simpleRegistry {
 	 */
 	static public function sRender() {
 
-		global $userID, $portPanel, $userAlliance;
+		global $userID, $userAlliance;
 
 		/*
 		 * Lista operacji na liście sojuszy
@@ -36,7 +36,7 @@ class allianceRegistry extends simpleRegistry {
 
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 
 	}
 

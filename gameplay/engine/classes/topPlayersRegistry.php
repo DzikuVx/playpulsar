@@ -13,14 +13,14 @@ class topPlayersRegistry extends simpleRegistry {
 	 */
 	static public function sRender($sortOrder = 'Experience') {
 
-		global $userID, $portPanel;
+		global $userID;
 
 		$registry = new topPlayersRegistry ( $userID );
 
 		\Gameplay\Panel\Action::getInstance()->add($registry->get($sortOrder));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 	}
 
 	/**

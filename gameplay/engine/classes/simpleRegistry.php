@@ -24,14 +24,14 @@ abstract class simpleRegistry {
 	 */
 	static public function sRender() {
 
-		global $userID, $portPanel;
+		global $userID;
 
 		$registry = new static ( $userID );
 
 		\Gameplay\Panel\Action::getInstance()->add($registry->get());
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 	}
 
 	/**

@@ -1,18 +1,18 @@
 <?php
-$portPanel .= "<h1>" . TranslateController::getDefault()->get ( 'marketplace' ) . "</h1>";
+$sRetVal = "<h1>" . TranslateController::getDefault()->get ( 'marketplace' ) . "</h1>";
 
 //Znajdz towary, jakie port sprzedaje
 $nameField = "Name" . strtoupper ( $userProperties->Language );
 
-$portPanel .= "<h2>" . TranslateController::getDefault()->get ( 'buy' ) . "</h2>";
-$portPanel .= "<table class='table table-striped table-condensed'>";
+$sRetVal .= "<h2>" . TranslateController::getDefault()->get ( 'buy' ) . "</h2>";
+$sRetVal .= "<table class='table table-striped table-condensed'>";
 
-$portPanel .= "<tr>";
-$portPanel .= "<th>" . TranslateController::getDefault()->get ( 'cargo' ) . "</th>";
-$portPanel .= "<th>" . TranslateController::getDefault()->get ( 'instock' ) . "</th>";
-$portPanel .= "<th>" . TranslateController::getDefault()->get ( 'price' ) . " [$]</th>";
-$portPanel .= "<th style=\"width: 10em;\">&nbsp;</th>";
-$portPanel .= "</tr>";
+$sRetVal .= "<tr>";
+$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'cargo' ) . "</th>";
+$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'instock' ) . "</th>";
+$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'price' ) . " [$]</th>";
+$sRetVal .= "<th style=\"width: 10em;\">&nbsp;</th>";
+$sRetVal .= "</tr>";
 
 $portCargo = new portCargo ( $userID, $portProperties, $userProperties->Language );
 
@@ -37,27 +37,27 @@ while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 	if ($buyAmount < 0)
 	$buyAmount = 0;
 
-	$portPanel .= "<tr>";
-	$portPanel .= "<td>" . $tR1->Name . "</td>";
-	$portPanel .= "<td>" . number_format ( $tR1->Amount, 0 ) . "</td>";
-	$portPanel .= "<td>" . number_format ( $productPrice, 0 ) . "</td>";
-	$portPanel .= "<td><input class='input-mini noSpacing' onkeyup='maskNumber(this.value,this,0,{$buyAmount})' onblur=\"javascript:return maskNumber(this.value,this,0,$buyAmount)\" type='text' id=\"buy_" . $tR1->ID . "\" value='{$buyAmount}' />";
-	$portPanel .= \General\Controls::renderImgButton('buy', "Playpulsar.gameplay.execute('productBuy',null,null,'{$tR1->ID}',null);", TranslateController::getDefault()->get('buy'));
-	$portPanel .= "</td>";
-	$portPanel .= "</tr>";
+	$sRetVal .= "<tr>";
+	$sRetVal .= "<td>" . $tR1->Name . "</td>";
+	$sRetVal .= "<td>" . number_format ( $tR1->Amount, 0 ) . "</td>";
+	$sRetVal .= "<td>" . number_format ( $productPrice, 0 ) . "</td>";
+	$sRetVal .= "<td><input class='input-mini noSpacing' onkeyup='maskNumber(this.value,this,0,{$buyAmount})' onblur=\"javascript:return maskNumber(this.value,this,0,$buyAmount)\" type='text' id=\"buy_" . $tR1->ID . "\" value='{$buyAmount}' />";
+	$sRetVal .= \General\Controls::renderImgButton('buy', "Playpulsar.gameplay.execute('productBuy',null,null,'{$tR1->ID}',null);", TranslateController::getDefault()->get('buy'));
+	$sRetVal .= "</td>";
+	$sRetVal .= "</tr>";
 
 }
-$portPanel .= "</table>";
+$sRetVal .= "</table>";
 
-$portPanel .= "<h2>" . TranslateController::getDefault()->get ( 'sell' ) . "</h2>";
-$portPanel .= "<table class='table table-striped table-condensed'>";
+$sRetVal .= "<h2>" . TranslateController::getDefault()->get ( 'sell' ) . "</h2>";
+$sRetVal .= "<table class='table table-striped table-condensed'>";
 
-$portPanel .= "<tr>";
-$portPanel .= "<th>" . TranslateController::getDefault()->get ( 'cargo' ) . "</th>";
-$portPanel .= "<th>" . TranslateController::getDefault()->get ( 'instock' ) . "</th>";
-$portPanel .= "<th>" . TranslateController::getDefault()->get ( 'price' ) . " [$]</th>";
-$portPanel .= "<th style=\"width: 10em;\">&nbsp;</th>";
-$portPanel .= "</tr>";
+$sRetVal .= "<tr>";
+$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'cargo' ) . "</th>";
+$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'instock' ) . "</th>";
+$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'price' ) . " [$]</th>";
+$sRetVal .= "<th style=\"width: 10em;\">&nbsp;</th>";
+$sRetVal .= "</tr>";
 
 $tQuery = $portCargo->getProductsBuy ();
 while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
@@ -65,20 +65,20 @@ while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 	$tR1->Amount = 0;
 	if ($tR1->ShipAmount == null)
 	$tR1->ShipAmount = 0;
-	$portPanel .= "<tr>";
-	$portPanel .= "<td>" . $tR1->Name . "</td>";
-	$portPanel .= "<td>" . number_format ( $tR1->Amount, 0 ) . "</td>";
-	$portPanel .= "<td>" . number_format ( product::computePrice ( $tR1->Amount, $tR1->PriceMin, $tR1->PriceMax ), 0 ) . "</td>";
+	$sRetVal .= "<tr>";
+	$sRetVal .= "<td>" . $tR1->Name . "</td>";
+	$sRetVal .= "<td>" . number_format ( $tR1->Amount, 0 ) . "</td>";
+	$sRetVal .= "<td>" . number_format ( product::computePrice ( $tR1->Amount, $tR1->PriceMin, $tR1->PriceMax ), 0 ) . "</td>";
 
-	$portPanel .= "<td>";
+	$sRetVal .= "<td>";
 	if ($tR1->ShipAmount == 0) {
-		$portPanel .= "&nbsp;";
+		$sRetVal .= "&nbsp;";
 	} else {
-		$portPanel .= "<input class='input-mini noSpacing' onkeyup='maskNumber(this.value,this,0,{$tR1->ShipAmount})' onblur=\"javascript:return maskNumber(this.value,this,0,{$tR1->ShipAmount})\" type=\"text\" size=\"3\" id=\"sell_" . $tR1->ID . "\" value=\"" . $tR1->ShipAmount . "\" />";
-		$portPanel .= \General\Controls::renderImgButton('sell', "Playpulsar.gameplay.execute('productSell',null,null,'{$tR1->ID}',null);", TranslateController::getDefault()->get('sell'));
+		$sRetVal .= "<input class='input-mini noSpacing' onkeyup='maskNumber(this.value,this,0,{$tR1->ShipAmount})' onblur=\"javascript:return maskNumber(this.value,this,0,{$tR1->ShipAmount})\" type=\"text\" size=\"3\" id=\"sell_" . $tR1->ID . "\" value=\"" . $tR1->ShipAmount . "\" />";
+		$sRetVal .= \General\Controls::renderImgButton('sell', "Playpulsar.gameplay.execute('productSell',null,null,'{$tR1->ID}',null);", TranslateController::getDefault()->get('sell'));
 	}
-	$portPanel .= "</td>";
-	$portPanel .= "</tr>";
+	$sRetVal .= "</td>";
+	$sRetVal .= "</tr>";
 }
 
 //Sprzedaż itemów
@@ -102,53 +102,55 @@ if ($portProperties->Items != '') {
 	while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 		if ($tR1->ShipAmount == null)
 		$tR1->ShipAmount = 0;
-		$portPanel .= "<tr class='yellow'>";
-		$portPanel .= "<td>" . $tR1->Name . "</td>";
-		$portPanel .= "<td>-</td>";
-		$portPanel .= "<td>" . number_format ( $tR1->Price ) . "</td>";
+		$sRetVal .= "<tr class='yellow'>";
+		$sRetVal .= "<td>" . $tR1->Name . "</td>";
+		$sRetVal .= "<td>-</td>";
+		$sRetVal .= "<td>" . number_format ( $tR1->Price ) . "</td>";
 
-		$portPanel .= "<td>";
+		$sRetVal .= "<td>";
 		if ($tR1->ShipAmount == 0) {
-			$portPanel .= "&nbsp;";
+			$sRetVal .= "&nbsp;";
 		} else {
-			$portPanel .= "<input class='input-mini noSpacing' onkeyup=\"maskNumber(this.value,this,0,{$tR1->ShipAmount})\" onblur=\"maskNumber(this.value,this,0,{$tR1->ShipAmount})\" type=\"text\" id=\"item_sell_" . $tR1->ItemID . "\" value=\"" . $tR1->ShipAmount . "\" />";
-			$portPanel .= \General\Controls::renderImgButton('yes', "Playpulsar.gameplay.execute('itemSell',null,null,'{$tR1->ItemID}',null);", TranslateController::getDefault()->get('buy'));
+			$sRetVal .= "<input class='input-mini noSpacing' onkeyup=\"maskNumber(this.value,this,0,{$tR1->ShipAmount})\" onblur=\"maskNumber(this.value,this,0,{$tR1->ShipAmount})\" type=\"text\" id=\"item_sell_" . $tR1->ItemID . "\" value=\"" . $tR1->ShipAmount . "\" />";
+			$sRetVal .= \General\Controls::renderImgButton('yes', "Playpulsar.gameplay.execute('itemSell',null,null,'{$tR1->ItemID}',null);", TranslateController::getDefault()->get('buy'));
 		}
-		$portPanel .= "</td>";
-		$portPanel .= "</tr>";
+		$sRetVal .= "</td>";
+		$sRetVal .= "</tr>";
 	}
 }
-$portPanel .= "</table>";
+$sRetVal .= "</table>";
 
 
-$portPanel .= "<h1>" . TranslateController::getDefault()->get ( 'Maps' ) . "</h1>";
+$sRetVal .= "<h1>" . TranslateController::getDefault()->get ( 'Maps' ) . "</h1>";
 
-$portPanel .= "<h2>" . TranslateController::getDefault()->get ( 'buy' ) . "</h2>";
-$portPanel .= "<table class='table table-striped table-condensed'>";
+$sRetVal .= "<h2>" . TranslateController::getDefault()->get ( 'buy' ) . "</h2>";
+$sRetVal .= "<table class='table table-striped table-condensed'>";
 
-$portPanel .= "<tr>";
-$portPanel .= "<th>" . TranslateController::getDefault()->get ( 'System' ) . "</th>";
-$portPanel .= "<th>" . TranslateController::getDefault()->get ( 'price' ) . " [$]</th>";
-$portPanel .= "<th style=\"width: 10em;\">&nbsp;</th>";
-$portPanel .= "</tr>";
+$sRetVal .= "<tr>";
+$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'System' ) . "</th>";
+$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'price' ) . " [$]</th>";
+$sRetVal .= "<th style=\"width: 10em;\">&nbsp;</th>";
+$sRetVal .= "</tr>";
 
 $portCargo = new portCargo ( $userID, $portProperties, $userProperties->Language );
 
 $tQuery = $portCargo->getMapsSell ();
 while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 
-	$portPanel .= "<tr>";
-	$portPanel .= "<td>" . $tR1->Name . ' ['.$tR1->Number."]</td>";
-	$portPanel .= "<td>" . number_format ( $config ['port'] ['mapPrice'], 0 ) . "</td>";
-	$portPanel .= "<td>";
+	$sRetVal .= "<tr>";
+	$sRetVal .= "<td>" . $tR1->Name . ' ['.$tR1->Number."]</td>";
+	$sRetVal .= "<td>" . number_format ( $config ['port'] ['mapPrice'], 0 ) . "</td>";
+	$sRetVal .= "<td>";
 
 	if ($userStats->Cash >=  $config ['port'] ['mapPrice']) {
-		$portPanel .= \General\Controls::renderImgButton('buy', "Playpulsar.gameplay.execute('mapBuy',null,null,'{$tR1->SystemID}',null);", 'OK');
+		$sRetVal .= \General\Controls::renderImgButton('buy', "Playpulsar.gameplay.execute('mapBuy',null,null,'{$tR1->SystemID}',null);", 'OK');
 	}else {
-		$portPanel .= '&nbsp;';
+		$sRetVal .= '&nbsp;';
 	}
-	$portPanel .= "</td>";
-	$portPanel .= "</tr>";
+	$sRetVal .= "</td>";
+	$sRetVal .= "</tr>";
 
 }
-$portPanel .= "</table>";
+$sRetVal .= "</table>";
+
+\Gameplay\Panel\PortAction::getInstance()->add($sRetVal);

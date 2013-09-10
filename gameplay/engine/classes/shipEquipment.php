@@ -35,9 +35,9 @@ class shipEquipment {
 	 * return int
 	 */
 	public function getOperationalCount() {
-	
+
 		$retVal = 0;
-	
+
 		$tQuery = "SELECT
 			COUNT(*) AS ILE
 		FROM
@@ -48,10 +48,10 @@ class shipEquipment {
 		";
 		$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
 		$retVal = \Database\Controller::getInstance()->fetch($tQuery)->ILE;
-	
+
 		return $retVal;
 	}
-	
+
 	/**
 	 * Uszkodzenie losowego wyposażenia
 	 *
@@ -185,13 +185,13 @@ class shipEquipment {
 	 * @return boolean
 	 */
 	public function removeAll($shipProperties) {
-		
+
 		$tQuery = "DELETE FROM
         shipequipment
       WHERE
         UserID='{$this->userID}'";
 		\Database\Controller::getInstance()->execute ( $tQuery );
-		
+
 		$shipProperties->CurrentEquipment = 0;
 		$this->changed = true;
 		return true;
@@ -203,7 +203,7 @@ class shipEquipment {
 	 * @return boolean
 	 */
 	public function damageAll() {
-		
+
 		$tQuery = "UPDATE
         shipequipment
       SET
@@ -211,7 +211,7 @@ class shipEquipment {
       WHERE
         UserID='{$this->userID}'";
 		\Database\Controller::getInstance()->execute ( $tQuery );
-		
+
 		$this->changed = true;
 		return true;
 	}
@@ -224,7 +224,7 @@ class shipEquipment {
 	 * @return boolean
 	 */
 	public function remove($ID, $shipProperties) {
-		
+
 		$tQuery = "DELETE FROM
         shipequipment
       WHERE
@@ -232,7 +232,7 @@ class shipEquipment {
         UserID='$this->userID}'
       ";
 		\Database\Controller::getInstance()->execute ( $tQuery );
-		
+
 		$shipProperties->CurrentEquipment -= 1;
 		$this->changed = true;
 		return true;
@@ -389,7 +389,7 @@ class shipEquipment {
 
 	static public function sSellFromCargo($weaponID) {
 
-		global $portPanel, $shipCargo, $userID, $userStats, $shipProperties, $shipPosition, $portProperties, $shipWeapons;
+		global $shipCargo, $userID, $userStats, $shipProperties, $shipPosition, $portProperties, $shipWeapons;
 
 
 		if ($shipPosition->Docked == 'no') {
@@ -403,7 +403,7 @@ class shipEquipment {
 		if ($shipCargo->getEquipmentAmount($weaponID) < 1) {
 			throw new securityException ( );
 		}
-			
+
 		/**
 		 * Pobierz parametry
 		 */
@@ -421,11 +421,11 @@ class shipEquipment {
 		}
 
 		shipProperties::updateUsedCargo ( $shipProperties );
-		
+
 		shipCargo::management ( $userID );
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 		announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'equipmentSold' ) . $tPrice . '$' );
 	}
 

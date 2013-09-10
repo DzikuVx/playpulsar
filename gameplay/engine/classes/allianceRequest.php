@@ -17,7 +17,7 @@ class allianceRequest extends baseItem {
 	 * @throws securityException
 	 */
 	static public function sNewExecute($allianceID, $xml) {
-		global $portPanel, $userAlliance, $userID, $t, $userProperties;
+		global $userAlliance, $userID, $t, $userProperties;
 
 		if (!empty($userAlliance->AllianceID)) {
 			throw new securityException();
@@ -62,7 +62,7 @@ class allianceRequest extends baseItem {
 
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 	}
 
 	/**
@@ -72,7 +72,7 @@ class allianceRequest extends baseItem {
 	 * @throws securityException
 	 */
 	static public function sNew($allianceID) {
-		global $portPanel, $userAlliance, $userID, $t, $userProperties;
+		global $userAlliance, $userID, $t, $userProperties;
 
 		if (!empty($userAlliance->AllianceID)) {
 			throw new securityException();
@@ -105,7 +105,7 @@ class allianceRequest extends baseItem {
 		\Gameplay\Panel\Action::getInstance()->add((string) $template);
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 	}
 
 	/**
@@ -223,7 +223,7 @@ class allianceRequest extends baseItem {
 	 */
 	static public function sRender() {
 
-		global $userID, $portPanel, $userAlliance, $t;
+		global $userID, $userAlliance, $t;
 
 		$tOperations = '';
 		if (empty($userAlliance->AllianceID)) {
@@ -241,7 +241,7 @@ class allianceRequest extends baseItem {
 		\Gameplay\Panel\Action::getInstance()->add($registry->get ($userAlliance->AllianceID));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 
 	}
 
@@ -253,7 +253,7 @@ class allianceRequest extends baseItem {
 	 * @since 2010-07-31
 	 */
 	static public function sAccept($apprenticeID) {
-		global $userAlliance, $userID, $portPanel, $t;
+		global $userAlliance, $userID;
 
 		/*
 		 * Warunki bezpieczeństwa
@@ -287,7 +287,7 @@ class allianceRequest extends baseItem {
 		\Gameplay\Panel\Action::getInstance()->add(\General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"Playpulsar.gameplay.execute('allianceAcceptExecute',null,null,'{$apprenticeID}')","Playpulsar.gameplay.execute('allianceAppliances')"));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 	}
 
 	/**
@@ -298,7 +298,7 @@ class allianceRequest extends baseItem {
 	 * @since 2010-07-31
 	 */
 	static public function sAcceptExecute($apprenticeID) {
-		global $userAlliance, $userID, $portPanel, $t;
+		global $userAlliance, $userID;
 
 		/*
 		 * Warunki bezpieczeństwa
@@ -372,7 +372,7 @@ class allianceRequest extends baseItem {
 	 * @since 2010-07-31
 	 */
 	static public function sDecline($apprenticeID) {
-		global $userAlliance, $userID, $portPanel, $t;
+		global $userAlliance, $userID;
 
 		/*
 		 * Warunki bezpieczeństwa
@@ -406,7 +406,7 @@ class allianceRequest extends baseItem {
 		\Gameplay\Panel\Action::getInstance()->add(\General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"Playpulsar.gameplay.execute('allianceDeclineExecute',null,null,'{$apprenticeID}')","Playpulsar.gameplay.execute('allianceAppliances')"));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 	}
 
 	/**
@@ -417,7 +417,7 @@ class allianceRequest extends baseItem {
 	 * @since 2010-07-31
 	 */
 	static public function sDeclineExecute($apprenticeID) {
-		global $userAlliance, $userID, $portPanel;
+		global $userAlliance, $userID;
 
 		/*
 		 * Warunki bezpieczeństwa

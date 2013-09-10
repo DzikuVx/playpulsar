@@ -7,7 +7,7 @@ class allianceFinance extends baseItem {
 
 	static public function sCashoutExe($id, $value) {
 
-		global $shipProperties, $portPanel, $userAlliance, $userID;
+		global $shipProperties, $userAlliance, $userID;
 
 		$value = \Database\Controller::getInstance()->quote($value);
 		$id = \Database\Controller::getInstance()->quote($id);
@@ -77,11 +77,11 @@ class allianceFinance extends baseItem {
 		\Gameplay\Panel\Action::getInstance()->add(alliance::sGetDetail($userAlliance->AllianceID));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 	}
 
 	static public function sCashoutDialog($id) {
-		global $portPanel, $userAlliance, $userID;
+		global $userAlliance, $userID;
 
 		if (empty($userAlliance->AllianceID)) {
 			throw new securityException();
@@ -110,7 +110,7 @@ class allianceFinance extends baseItem {
 
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 	}
 
 	static public function sDeposit() {

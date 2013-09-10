@@ -9,7 +9,7 @@ class shipEquipmentRegistry extends simpleRegistry {
 
 	static public function sRender() {
 
-		global $config, $userID, $shipProperties, $shipPosition, $portProperties, $action, $subaction, $value, $id, $portPanel;
+		global $config, $userID, $shipProperties, $shipPosition, $portProperties, $action, $subaction, $value, $id;
 
 		$repairTemplate = new \General\Templater ( dirname ( __FILE__ ) . '/../../templates/shipRepairTable.html' );
 		$repairTemplate->add ( $shipProperties );
@@ -34,7 +34,7 @@ class shipEquipmentRegistry extends simpleRegistry {
 
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
-		$portPanel = "&nbsp;";
+		\Gameplay\Panel\PortAction::getInstance()->clear();
 
 	}
 
