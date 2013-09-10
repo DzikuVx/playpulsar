@@ -358,7 +358,6 @@ function executeAction(action, subaction, value, id, auth) {
 	sendXML = sendXML + "<subaction>" + subaction + "</subaction>";
 	sendXML = sendXML + "<value>" + value + "</value>";
 	sendXML = sendXML + "<id>" + id + "</id>";
-	sendXML = sendXML + "<auth>" + $('#authCode').html() + "</auth>";
 
 	progressBar.start();
 	
@@ -384,11 +383,6 @@ function executeAction(action, subaction, value, id, auth) {
 			activeScanner.populate(data);
 
 			panel.populate(data, 'newsAgencyPanel');
-
-			tString = parseXmlValue(data, 'authCode');
-			if (tString != "") {
-				$('#authCode').html(tString);
-			}
 
 			tString = parseXmlValue(data, 'debugPanel');
 			if (tString != "") {
