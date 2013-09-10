@@ -490,6 +490,7 @@ Panel.Base = function () {
 	};
 
 	this.clearAndHide = function() {
+		this.visible = false;
 		this.getDomObject().hide();
 		this.getDomObject().html('');
 	};
