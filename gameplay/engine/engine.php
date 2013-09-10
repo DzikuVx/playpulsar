@@ -9,7 +9,6 @@ $timek1 = microtime ();
 
 $out = "";
 $error = false;
-$actionPanel = '';
 $portPanel = "";
 $debug = "";
 
@@ -18,18 +17,9 @@ try {
 	$oContentTransport 	= ContentTransport::getInstance();
 	$oController 		= GameplayController::getInstance();
 
-
 	$oController->registerParameters($_REQUEST);
 
-	$userID = $oController->getParameter('userID');
-
-	/*
-	 * Sprawdz, czy user podał właściwe dane logowania
-	*/
-	if (! isset ( $_SESSION ['userID'] ) || $userID != $_SESSION ['userID']) {
-		echo '<xml><logout>true</logout></xml>';
-		exit ();
-	}
+	$userID = $_SESSION ['userID'];
 
 	/**
 	 * Sprawdz, czy jest polecenie wyczyszczenia cache
@@ -1008,7 +998,6 @@ try {
 
 	$oContentTransport->addVariable('AuthCode', $userFastTimes->AuthCode);
 
-	\Gameplay\Panel\Action::getInstance()->add($actionPanel);
 	\Gameplay\Panel\PortAction::getInstance()->add($portPanel);
 
 	$timek2 = microtime ();

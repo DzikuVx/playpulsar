@@ -38,7 +38,7 @@ class abusement extends baseItem {
 
 	static public function sNew($id) {
 
-		global $actionPanel, $portPanel, $userID;
+		global $portPanel, $userID;
 
 		if (empty($id)) {
 			throw new securityException();
@@ -52,16 +52,16 @@ class abusement extends baseItem {
 		$template->add('FormName', TranslateController::getDefault()->get('Report abusement'));
 		$template->add('action', 'user.newAbusement('.$id.');');
 
-		$actionPanel = $template;
+		\Gameplay\Panel\Action::getInstance()->add((string) $template);
 
-		\Gameplay\Panel\SectorShips::getInstance()->hide ();
-		\Gameplay\Panel\SectorResources::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide();
+		\Gameplay\Panel\SectorResources::getInstance()->hide();
 		$portPanel = "&nbsp;";
 	}
 
 	static public function sNewExe($id, $text) {
 
-		global $actionPanel, $portPanel, $userID;
+		global $portPanel, $userID;
 
 		if (empty($id)) {
 			throw new securityException();

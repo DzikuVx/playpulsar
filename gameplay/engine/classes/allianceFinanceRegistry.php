@@ -3,15 +3,14 @@ class allianceFinanceRegistry extends simpleRegistry {
 
 	static public function sRender() {
 
-		global $userID, $actionPanel, $portPanel, $userAlliance;
+		global $userID, $portPanel, $userAlliance;
 
 		/*
 		 * Wyrenderowanie sojuszu
 		 */
 		$registry = new allianceFinanceRegistry ($userID);
-		$actionPanel .= $registry->get ($userAlliance->AllianceID);
-		unset($registry);
 
+		\Gameplay\Panel\Action::getInstance()->add($registry->get ($userAlliance->AllianceID));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
@@ -33,7 +32,7 @@ class allianceFinanceRegistry extends simpleRegistry {
 		$retVal = '';
 
 		$tAlliance = alliance::quickLoad($userAlliance->AllianceID);
-		
+
 		$retVal .= "<h1>" . TranslateController::getDefault()->get ( 'financeOperations' ) . "</h1>";
 		$retVal .= "<h2>Saldo: " . \General\Formater::formatInt($tAlliance->Cash) . "</h2>";
 
@@ -55,7 +54,7 @@ class allianceFinanceRegistry extends simpleRegistry {
 				 alliancefinance JOIN users ON users.UserID=alliancefinance.UserID
 				 LEFT JOIN users AS forUser ON forUser.UserID=alliancefinance.ForUserID
 			WHERE
-				alliancefinance.AllianceID='{$allianceID}' 
+				alliancefinance.AllianceID='{$allianceID}'
 			ORDER BY
 				Date DESC";
 		$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );

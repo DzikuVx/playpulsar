@@ -14,7 +14,7 @@ class allianceRegistry extends simpleRegistry {
 	 */
 	static public function sRender() {
 
-		global $userID, $actionPanel, $portPanel, $userAlliance;
+		global $userID, $portPanel, $userAlliance;
 
 		/*
 		 * Lista operacji na liście sojuszy
@@ -25,15 +25,14 @@ class allianceRegistry extends simpleRegistry {
 		}
 
 		if (!empty($tOperations)) {
-			$actionPanel .= '<div class="panel ui-shadow-all"	style="width: 150px; float: right; text-align: center;">'.$tOperations.'</div>';
+			\Gameplay\Panel\Action::getInstance()->add('<div class="panel ui-shadow-all"	style="width: 150px; float: right; text-align: center;">'.$tOperations.'</div>');
 		}
 
 		/*
 		 * Wyrenderowanie sojuszu
 		 */
-		$registry = new allianceRegistry ( $userID );
-		$actionPanel .= $registry->get ();
-		unset($registry);
+		$registry = new allianceRegistry ($userID);
+		\Gameplay\Panel\Action::getInstance()->add($registry->get());
 
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
@@ -49,7 +48,7 @@ class allianceRegistry extends simpleRegistry {
 	public function get() {
 
 		$oCacheKey = new \Cache\CacheKey('alliance::getRegistry', null);
-		
+
 		if (! \Cache\Controller::getInstance()->check ( $oCacheKey )) {
 
 			$retVal = '';

@@ -22,7 +22,7 @@ class message extends baseItem {
 	static public function sGetUnreadCount($userID) {
 
 		$oCacheKey = new \Cache\CacheKey('message::sGetUnreadCount', $userID);
-		
+
 		if (!\Cache\Controller::getInstance()->check($oCacheKey)) {
 
 			$tQuery = "SELECT COUNT(*) AS ILE FROM messages WHERE Receiver='{$userID}' AND Received='no'";
@@ -102,7 +102,7 @@ class message extends baseItem {
 	 */
 	static public function sGetDetail($messageID) {
 
-		global $userID, $portPanel, $actionPanel;
+		global $userID, $portPanel;
 
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
@@ -114,40 +114,42 @@ class message extends baseItem {
 			throw new securityException ( );
 		}
 
-		$actionPanel .= "<h1>" . TranslateController::getDefault()->get ( 'messageDetail' ) . "</h1>";
-		$actionPanel .= "<table class=\"table table-striped table-condensed\">";
+		$sRetVal = "<h1>" . TranslateController::getDefault()->get ( 'messageDetail' ) . "</h1>";
+		$sRetVal .= "<table class=\"table table-striped table-condensed\">";
 		/**
 		 * @since 2010-07-31
 		 */
 		if (!empty($tMessage->Author)) {
-			$actionPanel .= "<tr>";
-			$actionPanel .= "<th style='width: 10em;'>" . TranslateController::getDefault()->get ( 'author' ) . "</th>";
-			$actionPanel .= "<td style='cursor: pointer;' onclick=\"Playpulsar.gameplay.execute('shipExamine',null,null,'{$tMessage->Author}');\">" . $tMessage->SenderName . "</th>";
-			$actionPanel .= "</tr>";
+			$sRetVal .= "<tr>";
+			$sRetVal .= "<th style='width: 10em;'>" . TranslateController::getDefault()->get ( 'author' ) . "</th>";
+			$sRetVal .= "<td style='cursor: pointer;' onclick=\"Playpulsar.gameplay.execute('shipExamine',null,null,'{$tMessage->Author}');\">" . $tMessage->SenderName . "</th>";
+			$sRetVal .= "</tr>";
 		}
-		$actionPanel .= "<tr>";
-		$actionPanel .= "<th>" . TranslateController::getDefault()->get ( 'date' ) . "</th>";
-		$actionPanel .= "<td>" . \General\Formater::formatDateTime ( $tMessage->CreateTime ) . "</td>";
-		$actionPanel .= "</tr>";
-		$actionPanel .= "<tr>";
-		$actionPanel .= "<td colspan='2'>" . $tMessage->Text . "</td>";
-		$actionPanel .= "</tr>";
+		$sRetVal .= "<tr>";
+		$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'date' ) . "</th>";
+		$sRetVal .= "<td>" . \General\Formater::formatDateTime ( $tMessage->CreateTime ) . "</td>";
+		$sRetVal .= "</tr>";
+		$sRetVal .= "<tr>";
+		$sRetVal .= "<td colspan='2'>" . $tMessage->Text . "</td>";
+		$sRetVal .= "</tr>";
 
-		$actionPanel .= "</table>";
+		$sRetVal .= "</table>";
 
-		$actionPanel .= \General\Controls::bootstrapButton ( '{T:close}', "Playpulsar.gameplay.execute('showMessages',null,null,null);");
+		$sRetVal .= \General\Controls::bootstrapButton ( '{T:close}', "Playpulsar.gameplay.execute('showMessages',null,null,null);");
 		/**
 		 * @since 2010-07-31
 		 */
 		if (!empty($tMessage->Author)) {
-			$actionPanel .= \General\Controls::bootstrapButton ( '{T:reply}', "Playpulsar.gameplay.execute('sendMessage',null,null,'{$tMessage->Author}');",'btn-success');
+			$sRetVal .= \General\Controls::bootstrapButton ( '{T:reply}', "Playpulsar.gameplay.execute('sendMessage',null,null,'{$tMessage->Author}');",'btn-success');
 		}
-		$actionPanel .= \General\Controls::bootstrapButton ( '{T:delete}', "Playpulsar.gameplay.execute('deleteMessage',null,null,'{$tMessage->MessageID}');",'btn-danger');
+		$sRetVal .= \General\Controls::bootstrapButton ( '{T:delete}', "Playpulsar.gameplay.execute('deleteMessage',null,null,'{$tMessage->MessageID}');",'btn-danger');
+
+		\Gameplay\Panel\Action::getInstance()->add($sRetVal);
 
 		$tQuery = "UPDATE messages SET Received='yes' WHERE MessageID='{$messageID}'";
 		\Database\Controller::getInstance()->execute ( $tQuery );
 
-		\Cache\Controller::getInstance()->clear('message::sGetUnreadCount',$userID);
+		\Cache\Controller::getInstance()->clear(new \Cache\CacheKey('message::sGetUnreadCount',$userID));
 
 		return true;
 	}
@@ -195,13 +197,13 @@ class message extends baseItem {
 			\Database\Controller::getInstance()->execute ( $tQuery );
 
 			$oCacheKey = new \Cache\CacheKey('message::sGetUnreadCount', $receiver);
-			
+
 			$tVal = \Cache\Controller::getInstance()->get($oCacheKey);
 			if (empty($tVal)) {
 				$tVal = 0;
 			}
 			$tVal++;
-			
+
 			\Cache\Controller::getInstance()->set($oCacheKey, $tVal);
 
 		}catch(Exception $e) {
@@ -219,32 +221,34 @@ class message extends baseItem {
 	 */
 	static public function sSend($author, $receiver) {
 
-		global $actionPanel, $portPanel;
+		global $portPanel;
 
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 
-		$actionPanel .= "<h1>" . TranslateController::getDefault()->get ( 'newMessage' ) . "</h1>";
+		$sRetVal = "<h1>{T:newMessage}</h1>";
 
-		$actionPanel .= "<table class=\"table table-striped table-condensed\">";
+		$sRetVal .= "<table class=\"table table-striped table-condensed\">";
 
 		$item = new userProperties ( );
 		$otheruserParameters = $item->load ( $receiver, true, true );
 		unset($item);
 
-		$actionPanel .= "<tr>";
-		$actionPanel .= "<th style=\"width: 20em;\">" . TranslateController::getDefault()->get ( 'receiver' ) . "</th>";
-		$actionPanel .= "<td>{$otheruserParameters->Name}</td>";
-		$actionPanel .= "</tr>";
+		$sRetVal .= "<tr>";
+		$sRetVal .= "<th style=\"width: 20em;\">{T:receiver}</th>";
+		$sRetVal .= "<td>{$otheruserParameters->Name}</td>";
+		$sRetVal .= "</tr>";
 
-		$actionPanel .= "<tr>";
-		$actionPanel .= "<th>" . TranslateController::getDefault()->get ( 'text' ) . "</th>";
-		$actionPanel .= "<th>" . \General\Controls::renderInput ( 'textarea', '', 'msgText', 'msgText', 1024 ) . "</th>";
-		$actionPanel .= "</tr>";
+		$sRetVal .= "<tr>";
+		$sRetVal .= "<th>{T:text}</th>";
+		$sRetVal .= "<th>" . \General\Controls::renderInput ( 'textarea', '', 'msgText', 'msgText', 1024 ) . "</th>";
+		$sRetVal .= "</tr>";
 
-		$actionPanel .= '</table>';
-		$actionPanel .= "<center><div class=\"closeButton\" onClick=\"Playpulsar.gameplay.execute('sendMessageExecute',null,$('#msgText').val(),'{$receiver}');\">" . TranslateController::getDefault()->get ( 'send' ) . "</div></center>";
+		$sRetVal .= '</table>';
+		$sRetVal .= "<center><div class=\"closeButton\" onClick=\"Playpulsar.gameplay.execute('sendMessageExecute',null,$('#msgText').val(),'{$receiver}');\">{T:send}</div></center>";
+
+		\Gameplay\Panel\Action::getInstance()->add($sRetVal);
 	}
 
 	/**

@@ -13,12 +13,11 @@ class shipWeaponsRegistry extends simpleRegistry {
 	 */
 	static public function sRender() {
 
-		global $userID, $actionPanel, $shipPosition, $portProperties, $action, $subaction, $value, $id, $portPanel;
+		global $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id, $portPanel;
 
 		$registry = new shipWeaponsRegistry ( $userID );
-		$actionPanel .= $registry->get ( $shipPosition, $portProperties, $action, $subaction, $value, $id );
-		unset($registry);
 
+		\Gameplay\Panel\Action::getInstance()->add($registry->get ( $shipPosition, $portProperties, $action, $subaction, $value, $id ));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
@@ -119,7 +118,7 @@ class shipWeaponsRegistry extends simpleRegistry {
 			if ($shipPosition->Docked == 'yes' && $portProperties->Type == 'station' && $tR1->MaxAmmo > 0 && $tR1->Ammo != $tR1->MaxAmmo && $userStats->Cash > $tReloadPrice) {
 				$tString .= \General\Controls::renderImgButton ( 'reload', "Playpulsar.gameplay.execute('weaponReload',null,null,{$tR1->ShipWeaponID},null);", TranslateController::getDefault()->get ( 'Reload for' ) . ' ' . $tReloadPrice . '$' );
 			}
-			
+
 			if (empty ( $tString )) {
 				$tString = '&nbsp;';
 			}

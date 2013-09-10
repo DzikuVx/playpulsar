@@ -17,7 +17,7 @@ class allianceRequest extends baseItem {
 	 * @throws securityException
 	 */
 	static public function sNewExecute($allianceID, $xml) {
-		global $actionPanel, $portPanel, $userAlliance, $userID, $t, $userProperties;
+		global $portPanel, $userAlliance, $userID, $t, $userProperties;
 
 		if (!empty($userAlliance->AllianceID)) {
 			throw new securityException();
@@ -56,7 +56,7 @@ class allianceRequest extends baseItem {
 			message::sInsert(null, $tMember, $tString);
 		}
 
-		$actionPanel = \General\Controls::displayConfirmDialog(TranslateController::getDefault()->get('confirm'), TranslateController::getDefault()->get('allianceApplianceSaved'),'Playpulsar.gameplay.execute(\'allianceDetail\',null,null,\''.$allianceID.'\')');
+		\Gameplay\Panel\Action::getInstance()->add(\General\Controls::displayConfirmDialog(TranslateController::getDefault()->get('confirm'), TranslateController::getDefault()->get('allianceApplianceSaved'),'Playpulsar.gameplay.execute(\'allianceDetail\',null,null,\''.$allianceID.'\')'));
 
 		\Cache\Controller::getInstance()->clear('allianceRequest::sGetCount', $allianceID);
 
@@ -72,7 +72,7 @@ class allianceRequest extends baseItem {
 	 * @throws securityException
 	 */
 	static public function sNew($allianceID) {
-		global $actionPanel, $portPanel, $userAlliance, $userID, $t, $userProperties;
+		global $portPanel, $userAlliance, $userID, $t, $userProperties;
 
 		if (!empty($userAlliance->AllianceID)) {
 			throw new securityException();
@@ -102,8 +102,7 @@ class allianceRequest extends baseItem {
 		$template->add('AllianceName', $tAlliance->Name);
 		$template->add('action', "alliance.applySave('{$allianceID}');");
 
-		$actionPanel = $template;
-
+		\Gameplay\Panel\Action::getInstance()->add((string) $template);
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
@@ -140,7 +139,7 @@ class allianceRequest extends baseItem {
 	 * @throws securityException
 	 */
 	static private function sInsert($userID, $allianceID, $text = '') {
-		
+
 		$tSecondAlliance = userAlliance::quickLoad($userID);
 
 		if (!empty($tSecondAlliance->AllianceID)) {
@@ -190,9 +189,9 @@ class allianceRequest extends baseItem {
 		try {
 
 			$oCacheKey = new \Cache\CacheKey('allianceRequest::sGetCount', $allianceID);
-			
+
 			if (!\Cache\Controller::getInstance()->check($oCacheKey)) {
-					
+
 				if (\Database\Controller::getInstance()->getHandle() === false) {
 					throw new \Database\Exception('Connection lost');
 				}
@@ -200,9 +199,9 @@ class allianceRequest extends baseItem {
 				$tQuery = "SELECT COUNT(*) AS ILE FROM alliancerequests WHERE AllianceID='{$allianceID}'";
 				$tQuery = \Database\Controller::getInstance()->execute($tQuery);
 				$retVal = \Database\Controller::getInstance()->fetch($tQuery)->ILE;
-					
+
 				\Cache\Controller::getInstance()->set($oCacheKey, $retVal);
-					
+
 			}else {
 				$retVal = \Cache\Controller::getInstance()->get($oCacheKey);
 			}
@@ -224,7 +223,7 @@ class allianceRequest extends baseItem {
 	 */
 	static public function sRender() {
 
-		global $userID, $actionPanel, $portPanel, $userAlliance, $t;
+		global $userID, $portPanel, $userAlliance, $t;
 
 		$tOperations = '';
 		if (empty($userAlliance->AllianceID)) {
@@ -239,9 +238,7 @@ class allianceRequest extends baseItem {
 		 * Wyrenderowanie sojuszu
 		 */
 		$registry = new allianceRequestsRegistry ( $userID );
-		$actionPanel .= $registry->get ($userAlliance->AllianceID);
-		unset($registry);
-
+		\Gameplay\Panel\Action::getInstance()->add($registry->get ($userAlliance->AllianceID));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
@@ -256,7 +253,7 @@ class allianceRequest extends baseItem {
 	 * @since 2010-07-31
 	 */
 	static public function sAccept($apprenticeID) {
-		global $userAlliance, $userID, $actionPanel, $portPanel, $t;
+		global $userAlliance, $userID, $portPanel, $t;
 
 		/*
 		 * Warunki bezpieczeństwa
@@ -287,8 +284,7 @@ class allianceRequest extends baseItem {
 		$tName = userProperties::quickLoad($apprenticeID)->Name;
 		$tString = str_replace('{name}',$tName, $tString);
 
-		$actionPanel = \General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"Playpulsar.gameplay.execute('allianceAcceptExecute',null,null,'{$apprenticeID}')","Playpulsar.gameplay.execute('allianceAppliances',null,null,null)");
-
+		\Gameplay\Panel\Action::getInstance()->add(\General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"Playpulsar.gameplay.execute('allianceAcceptExecute',null,null,'{$apprenticeID}')","Playpulsar.gameplay.execute('allianceAppliances')"));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
@@ -302,7 +298,7 @@ class allianceRequest extends baseItem {
 	 * @since 2010-07-31
 	 */
 	static public function sAcceptExecute($apprenticeID) {
-		global $userAlliance, $userID, $actionPanel, $portPanel, $t;
+		global $userAlliance, $userID, $portPanel, $t;
 
 		/*
 		 * Warunki bezpieczeństwa
@@ -376,7 +372,7 @@ class allianceRequest extends baseItem {
 	 * @since 2010-07-31
 	 */
 	static public function sDecline($apprenticeID) {
-		global $userAlliance, $userID, $actionPanel, $portPanel, $t;
+		global $userAlliance, $userID, $portPanel, $t;
 
 		/*
 		 * Warunki bezpieczeństwa
@@ -407,8 +403,7 @@ class allianceRequest extends baseItem {
 		$tName = userProperties::quickLoad($apprenticeID)->Name;
 		$tString = str_replace('{name}',$tName, $tString);
 
-		$actionPanel = \General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"Playpulsar.gameplay.execute('allianceDeclineExecute',null,null,'{$apprenticeID}')","Playpulsar.gameplay.execute('allianceAppliances',null,null,null)");
-
+		\Gameplay\Panel\Action::getInstance()->add(\General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"Playpulsar.gameplay.execute('allianceDeclineExecute',null,null,'{$apprenticeID}')","Playpulsar.gameplay.execute('allianceAppliances')"));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
@@ -422,7 +417,7 @@ class allianceRequest extends baseItem {
 	 * @since 2010-07-31
 	 */
 	static public function sDeclineExecute($apprenticeID) {
-		global $userAlliance, $userID, $actionPanel, $portPanel;
+		global $userAlliance, $userID, $portPanel;
 
 		/*
 		 * Warunki bezpieczeństwa

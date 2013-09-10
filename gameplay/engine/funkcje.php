@@ -8,15 +8,14 @@ function routingSort($a, $b) {
 	return ($a->value < $b->value) ? 1 : - 1;
 }
 
+/**
+ * @deprecated
+ */
 function clearActionPanel() {
-
-	global $actionPanel;
-	$actionPanel = "&nbsp;";
+	\Gameplay\Panel\Action::getInstance()->clear();
 }
 
 function shipExamine($id, $userID) {
-
-	global $actionPanel;
 
 	$item = new userStats ( );
 	$otheruserStats = $item->load ( $id, true, true );
@@ -49,46 +48,48 @@ function shipExamine($id, $userID) {
 	\Gameplay\Panel\SectorResources::getInstance()->hide ();
 	\Gameplay\Panel\SectorShips::getInstance()->hide ();
 
-	$actionPanel = "";
-	$actionPanel .= \General\Controls::bootstrapIconButton('{T:close}',"Playpulsar.gameplay.execute('shipRefresh',null,null,null,null)",'pull-right close','icon-remove');
-	$actionPanel .= "<div>";
-	$actionPanel .= "<table class='table table-striped'>";
-	$actionPanel .= "<tr><th>{T:playername}</th><td>" . $otheruserParameters->Name . "</td>";
-	$actionPanel .= "<td rowspan='3' colspan='2' class='center'><img src=\"" . $avatar . "\" class='avatar' style='width: 100px; height: 100px;' /></td></tr>";
-	$actionPanel .= "<tr><th>{T:playerid}</th><td> " . $id . "</td></tr>";
-	$actionPanel .= "<tr><th>{T:specialization}</th><td>" . $othershipParameters->SpecializationName . "</td></tr>";
-	$actionPanel .= "<tr><th>{T:alliance}</th><td>" . $othershipAlliance->Name . "</td>";
-	$actionPanel .= "<th>{T:lastaction}</th><td>" . date ( "Y-m-d H:i", $otheruserTimes->LastAction ) . "</td></tr>";
-	$actionPanel .= "<tr><th>{T:experiencefull}</th><td>" . $otheruserStats->Experience . "</td>";
-	$actionPanel .= "<th>{T:level}</th><td>" . $otheruserStats->Level . "</td></tr>";
-	$actionPanel .= "<tr><th>{T:kills}</th><td>" . $otheruserStats->Kills . "</td>";
-	$actionPanel .= "<th>{T:deaths}</th><td>" . $otheruserStats->Deaths . "</td></tr>";
-	// 	$actionPanel .= "<tr><th>{T:pirates}</th><td>" . $otheruserStats->Pirates . "</td>";
-	// 	$actionPanel .= "<th>{T:raids}</th><td>" . $otheruserStats->Raids . "</td></tr>";
-	$actionPanel .= "</table>";
+	$sRetVal = "";
+	$sRetVal .= \General\Controls::bootstrapIconButton('{T:close}',"Playpulsar.gameplay.execute('shipRefresh',null,null,null,null)",'pull-right close','icon-remove');
+	$sRetVal .= "<div>";
+	$sRetVal .= "<table class='table table-striped'>";
+	$sRetVal .= "<tr><th>{T:playername}</th><td>" . $otheruserParameters->Name . "</td>";
+	$sRetVal .= "<td rowspan='3' colspan='2' class='center'><img src=\"" . $avatar . "\" class='avatar' style='width: 100px; height: 100px;' /></td></tr>";
+	$sRetVal .= "<tr><th>{T:playerid}</th><td> " . $id . "</td></tr>";
+	$sRetVal .= "<tr><th>{T:specialization}</th><td>" . $othershipParameters->SpecializationName . "</td></tr>";
+	$sRetVal .= "<tr><th>{T:alliance}</th><td>" . $othershipAlliance->Name . "</td>";
+	$sRetVal .= "<th>{T:lastaction}</th><td>" . date ( "Y-m-d H:i", $otheruserTimes->LastAction ) . "</td></tr>";
+	$sRetVal .= "<tr><th>{T:experiencefull}</th><td>" . $otheruserStats->Experience . "</td>";
+	$sRetVal .= "<th>{T:level}</th><td>" . $otheruserStats->Level . "</td></tr>";
+	$sRetVal .= "<tr><th>{T:kills}</th><td>" . $otheruserStats->Kills . "</td>";
+	$sRetVal .= "<th>{T:deaths}</th><td>" . $otheruserStats->Deaths . "</td></tr>";
+	// 	$sRetVal .= "<tr><th>{T:pirates}</th><td>" . $otheruserStats->Pirates . "</td>";
+	// 	$sRetVal .= "<th>{T:raids}</th><td>" . $otheruserStats->Raids . "</td></tr>";
+	$sRetVal .= "</table>";
 
 	if ($otheruserParameters->Type == 'player' && $id != $userID) {
 
-		$actionPanel .= \General\Controls::bootstrapButton('{T:sendMessage}',"Playpulsar.gameplay.execute('sendMessage',null,null,'{$id}');",null,'icon-white icon-envelope');
+		$sRetVal .= \General\Controls::bootstrapButton('{T:sendMessage}',"Playpulsar.gameplay.execute('sendMessage',null,null,'{$id}');",null,'icon-white icon-envelope');
 
 		if (!buddyList::sCheckEntry($userID, $id)) {
-			$actionPanel .= \General\Controls::bootstrapButton('{T:Send buddy request}',"Playpulsar.gameplay.execute('addToFiends',null,null,'{$id}',null);",null,'icon-white icon-heart');
+			$sRetVal .= \General\Controls::bootstrapButton('{T:Send buddy request}',"Playpulsar.gameplay.execute('addToFiends',null,null,'{$id}',null);",null,'icon-white icon-heart');
 		}
 
-		$actionPanel .= \General\Controls::bootstrapButton('{T:Report abusement}',"Playpulsar.gameplay.execute('reportAbusement',null,null,'{$id}',null);",null,'icon-white icon-flag');
+		$sRetVal .= \General\Controls::bootstrapButton('{T:Report abusement}',"Playpulsar.gameplay.execute('reportAbusement',null,null,'{$id}',null);",null,'icon-white icon-flag');
 
-	}
-	elseif ($id == $userID) {
-		$actionPanel .= \General\Controls::bootstrapButton('{T:Account settings}',"Playpulsar.gameplay.execute('accountSettings',null,null,null,null);",null,'icon-white icon-edit');
+	} elseif ($id == $userID) {
+		$sRetVal .= \General\Controls::bootstrapButton('{T:Account settings}',"Playpulsar.gameplay.execute('accountSettings',null,null,null,null);",null,'icon-white icon-edit');
 
 		if ($othershipParameters->RookieTurns > 0) {
-			$actionPanel .= \General\Controls::bootstrapButton('{T:Drop rookie turns}',"Playpulsar.gameplay.execute('dropRookie',null,null,null,null);",null,'icon-white icon-remove');
+			$sRetVal .= \General\Controls::bootstrapButton('{T:Drop rookie turns}',"Playpulsar.gameplay.execute('dropRookie',null,null,null,null);",null,'icon-white icon-remove');
 		}
 
 		//@todo Reset konta
 	}
 
-	$actionPanel .= "</div>";
+	$sRetVal .= "</div>";
+
+	\Gameplay\Panel\Action::getInstance()->add($sRetVal);
+
 }
 
 function writeDebug($text) {

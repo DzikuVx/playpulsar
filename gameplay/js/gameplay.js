@@ -643,7 +643,6 @@ Playpulsar.gameplay = (function () {
 		
 		var requestData = {};
 		
-		requestData.userID 		= $('#userID').html();
 		requestData.action 		= action;
 		requestData.subaction 	= subaction;
 		requestData.value 		= value;

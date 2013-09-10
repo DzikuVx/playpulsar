@@ -8,7 +8,7 @@
 abstract class simpleRegistry {
 
 	//@todo to by się fajnie dało zrobić jako singleton
-	
+
 	/**
 	 * Czy umoliwić wyłączenie cache w rejestrze
 	 * @var boolean
@@ -24,12 +24,11 @@ abstract class simpleRegistry {
 	 */
 	static public function sRender() {
 
-		global $userID, $actionPanel, $portPanel;
+		global $userID, $portPanel;
 
 		$registry = new static ( $userID );
-		$actionPanel .= $registry->get ();
-		unset($registry);
 
+		\Gameplay\Panel\Action::getInstance()->add($registry->get());
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";

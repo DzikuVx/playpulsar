@@ -184,15 +184,15 @@ class user {
 		try {
 
 			$oCacheKey = new \Cache\CacheKey('user::sGetOnlineCount', '');
-			
+
 			if (!\Cache\Controller::getInstance()->check($oCacheKey)) {
-					
+
 				$tQuery = "SELECT COUNT(users.UserID) AS ILE FROM usertimes JOIN users USING(UserID) JOIN userstats USING(UserID) WHERE users.Type='player' AND usertimes.LastAction>'" . (time () - $config ['user'] ['onlineThreshold']) . "'";
 				$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
 				$retVal = \Database\Controller::getInstance()->fetch($tQuery)->ILE;
-					
+
 				\Cache\Controller::getInstance()->set($oCacheKey, $retVal, 120);
-					
+
 			}else {
 				$retVal = \Cache\Controller::getInstance()->get($oCacheKey);
 			}
@@ -252,7 +252,7 @@ class user {
 
 	static public function sEditOwnDialog() {
 
-		global $userID, $actionPanel, $portPanel, $userProperties;
+		global $userID, $portPanel, $userProperties;
 
 		$template = new \General\Templater('../templates/userDataForm.html');
 
@@ -283,7 +283,7 @@ class user {
 		$template->add ( 'spamInput', \General\Controls::renderInput ( 'checkbox', $tValue, 'spamCheckbox', 'spamCheckbox' ) );
 		$template->add ( 'saveButton', \General\Controls::renderButton ( TranslateController::getDefault()->get ( 'Save' ), 'user.editExecute();', null, 'closeButton' ) );
 
-		$actionPanel = (string) $template;
+		\Gameplay\Panel\Action::getInstance()->add((string) $template);
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
@@ -570,11 +570,11 @@ class user {
 			*/
 
 			$params = array();
-			
+
 			$params['name'] = $name;
 
 			$tUsers = new stdClass();
-			
+
 			$tUsers->Password = self::sPasswordHash(uniqid(), uniqid());
 			$tUsers->Login = uniqid();
 			$tUsers->Email = $fbMe ['email'];
@@ -626,9 +626,9 @@ class user {
 		try {
 
 			$oCacheKey = new \Cache\CacheKey('user::sGetFbPictureUrl', $facebookID);
-			
+
 			if (!\Cache\Controller::getInstance()->check($oCacheKey)) {
-					
+
 				$fb=new Facebook(array(
   'appId'  => $config['facebook']['appId'],
   'secret' => $config['facebook']['secret'],

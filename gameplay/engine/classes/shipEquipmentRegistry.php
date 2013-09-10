@@ -7,13 +7,9 @@
  */
 class shipEquipmentRegistry extends simpleRegistry {
 
-	/**
-	 * Konstruktor statyczny
-	 *
-	 */
 	static public function sRender() {
 
-		global $config, $userID, $shipProperties, $actionPanel, $shipPosition, $portProperties, $action, $subaction, $value, $id, $portPanel;
+		global $config, $userID, $shipProperties, $shipPosition, $portProperties, $action, $subaction, $value, $id, $portPanel;
 
 		$repairTemplate = new \General\Templater ( dirname ( __FILE__ ) . '/../../templates/shipRepairTable.html' );
 		$repairTemplate->add ( $shipProperties );
@@ -23,19 +19,18 @@ class shipEquipmentRegistry extends simpleRegistry {
 		$template = new \General\Templater ( dirname ( __FILE__ ) . '/../../templates/shipSummary.html' );
 
 		$sP = clone $shipProperties;
-		
+
 		$sP->CanWarpJump = \General\Formater::sParseYesNo($sP->CanWarpJump);
 		$sP->CanActiveScan = \General\Formater::sParseYesNo($sP->CanActiveScan);
-		
+
 		$template->add ( $sP );
 
 		$template->add ( 'REPAIR_TABLE', ( string ) $repairTemplate );
 
-		$actionPanel .= $template;
+		\Gameplay\Panel\Action::getInstance()->add((string) $template);
 
 		$registry = new shipEquipmentRegistry ( $userID );
-		$actionPanel .= $registry->get ( $shipPosition, $portProperties, $action, $subaction, $value, $id );
-		unset($registry);
+		\Gameplay\Panel\Action::getInstance()->add($registry->get ( $shipPosition, $portProperties, $action, $subaction, $value, $id ));
 
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
@@ -94,7 +89,7 @@ class shipEquipmentRegistry extends simpleRegistry {
 				}
 
 			} else {
- 
+
 				/*
 				 * Jeśli zadokowany w stacji
 				 */

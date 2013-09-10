@@ -16,19 +16,19 @@ class shipCargo {
 
 	static public function management($userID) {
 
-		global $actionPanel, $shipPosition, $itemJettisonCost, $shipCargo, $shipProperties, $portProperties, $userProperties;
+		global $shipPosition, $itemJettisonCost, $shipCargo, $shipProperties, $portProperties, $userProperties;
 
-		$actionPanel .= "<h1>{T:cargo}</h1>";
+		$sRetVal = "<h1>{T:cargo}</h1>";
 
-		$actionPanel .= "<table class='table table-striped table-condensed'>";
+		$sRetVal .= "<table class='table table-striped table-condensed'>";
 
-		$actionPanel .= "<tr>";
-		$actionPanel .= "<th>{T:cargo}</th>";
-		$actionPanel .= "<th>{T:size}</th>";
-		$actionPanel .= "<th>{T:amount}</th>";
-		$actionPanel .= "<th>{T:total}</th>";
-		$actionPanel .= "<th style='width: 6em;'>&nbsp;</th>";
-		$actionPanel .= "</tr>";
+		$sRetVal .= "<tr>";
+		$sRetVal .= "<th>{T:cargo}</th>";
+		$sRetVal .= "<th>{T:size}</th>";
+		$sRetVal .= "<th>{T:amount}</th>";
+		$sRetVal .= "<th>{T:total}</th>";
+		$sRetVal .= "<th style='width: 6em;'>&nbsp;</th>";
+		$sRetVal .= "</tr>";
 
 		if ($shipPosition->Docked == 'yes') {
 			$storageCargo = new storageCargo ( $userID, $portProperties->PortID, $userProperties->Language );
@@ -61,7 +61,7 @@ class shipCargo {
 				$actionString = '&nbsp;';
 			}
 
-			$actionPanel .= shipCargo::displayTableRow ( $tR1, $actionString, "green" );
+			$sRetVal .= shipCargo::displayTableRow ( $tR1, $actionString, "green" );
 		}
 
 		//Itemy
@@ -83,7 +83,7 @@ class shipCargo {
 			if ($actionString == '') {
 				$actionString = '&nbsp;';
 			}
-			$actionPanel .= shipCargo::displayTableRow ( $tR1, $actionString, "yellow" );
+			$sRetVal .= shipCargo::displayTableRow ( $tR1, $actionString, "yellow" );
 		}
 
 		//Uzbrojenie
@@ -112,7 +112,7 @@ class shipCargo {
 			if (empty ( $actionString )) {
 				$actionString = '&nbsp;';
 			}
-			$actionPanel .= shipCargo::displayTableRow ( $tR1, $actionString, "red" );
+			$sRetVal .= shipCargo::displayTableRow ( $tR1, $actionString, "red" );
 		}
 		//Equipment
 		$tQuery = $shipCargo->getEquipments ();
@@ -142,10 +142,12 @@ class shipCargo {
 			if (empty ( $actionString )) {
 				$actionString = '&nbsp;';
 			}
-			$actionPanel .= shipCargo::displayTableRow ( $tR1, $actionString );
+			$sRetVal .= shipCargo::displayTableRow ( $tR1, $actionString );
 		}
 
-		$actionPanel .= "</table>";
+		$sRetVal .= "</table>";
+
+		\Gameplay\Panel\Action::getInstance()->add($sRetVal);
 	}
 
 	static function displayTableRow($data, $action, $class = '') {
@@ -280,7 +282,7 @@ class shipCargo {
 				}catch (Exception $e) {
 
 					switch ($e->getCode()) {
-							
+
 						/*
 						 * Jeśli wystąpił 1062 (zduplikowany klucz), wykonaj update
 						*/

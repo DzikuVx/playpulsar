@@ -9,12 +9,11 @@ class newsAgencyRegistry extends simpleRegistry {
 
 	static public function sRender() {
 
-		global $userID, $actionPanel, $shipPosition, $portPanel;
+		global $userID, $shipPosition, $portPanel;
 
 		$registry = new newsAgencyRegistry ( $userID );
-		$actionPanel .= $registry->get ( $shipPosition );
-		unset($registry);
 
+		\Gameplay\Panel\Action::getInstance()->add($registry->get($shipPosition));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
@@ -32,7 +31,7 @@ class newsAgencyRegistry extends simpleRegistry {
 		global $userProperties;
 
 		$oCacheKey = new \Cache\CacheKey('newsAgency::get', $shipPosition->System . '|' . $userProperties->Language);
-		
+
 		if (! \Cache\Controller::getInstance()->check ( $oCacheKey )) {
 
 			$retVal = '';

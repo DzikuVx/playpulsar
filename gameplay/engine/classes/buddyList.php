@@ -6,7 +6,7 @@ class buddyList extends baseItem {
 	protected $defaultCacheExpire = 120;
 
 	static public function sAcceptExe($id) {
-		global $userAlliance, $userID, $actionPanel, $portPanel, $t;
+		global $userAlliance, $userID, $portPanel, $t;
 
 		/*
 		 * Warunki bezpieczeństwa
@@ -49,7 +49,7 @@ class buddyList extends baseItem {
 	}
 
 	static public function sAccept($id) {
-		global $userAlliance, $userID, $actionPanel, $portPanel, $t;
+		global $userAlliance, $userID, $portPanel, $t;
 
 		/*
 		 * Warunki bezpieczeństwa
@@ -71,15 +71,14 @@ class buddyList extends baseItem {
 		$tName = userProperties::quickLoad($id)->Name;
 		$tString = str_replace('{name}',$tName, $tString);
 
-		$actionPanel = \General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"Playpulsar.gameplay.execute('buddyAcceptExecute',null,null,'{$id}')","Playpulsar.gameplay.execute('showBuddy',null,null,null)");
-
+		\Gameplay\Panel\Action::getInstance()->add(\General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"Playpulsar.gameplay.execute('buddyAcceptExecute',null,null,'{$id}')","Playpulsar.gameplay.execute('showBuddy')"));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 	}
 
 	static public function sDeclineDialog($id) {
-		global $userAlliance, $userID, $actionPanel, $portPanel, $t;
+		global $userAlliance, $userID, $portPanel, $t;
 
 		/*
 		 * Warunki bezpieczeństwa
@@ -101,8 +100,7 @@ class buddyList extends baseItem {
 		$tName = userProperties::quickLoad($id)->Name;
 		$tString = str_replace('{name}',$tName, $tString);
 
-		$actionPanel = \General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"Playpulsar.gameplay.execute('buddyDecline',null,null,'{$id}')","Playpulsar.gameplay.execute('showBuddy',null,null,null)");
-
+		\Gameplay\Panel\Action::getInstance()->add(\General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"Playpulsar.gameplay.execute('buddyDecline',null,null,'{$id}')","Playpulsar.gameplay.execute('showBuddy')"));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
@@ -133,18 +131,16 @@ class buddyList extends baseItem {
 
 	static public function sRenderList() {
 
-		global $userID, $actionPanel, $portPanel, $userAlliance, $t;
+		global $userID, $portPanel, $userAlliance, $t;
 
 		/*
 		 * Wyrenderowanie sojuszu
 		*/
 		$registry = new buddyRequestRegistry($userID);
-		$actionPanel .= $registry->get ();
-		unset($registry);
+		\Gameplay\Panel\Action::getInstance()->add($registry->get());
 
 		$registry = new buddyRegistry($userID);
-		$actionPanel .= $registry->get ();
-		unset($registry);
+		\Gameplay\Panel\Action::getInstance()->add($registry->get());
 
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();

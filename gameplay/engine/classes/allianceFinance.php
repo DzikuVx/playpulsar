@@ -7,7 +7,7 @@ class allianceFinance extends baseItem {
 
 	static public function sCashoutExe($id, $value) {
 
-		global $shipProperties, $actionPanel, $portPanel, $userAlliance, $userID;
+		global $shipProperties, $portPanel, $userAlliance, $userID;
 
 		$value = \Database\Controller::getInstance()->quote($value);
 		$id = \Database\Controller::getInstance()->quote($id);
@@ -74,15 +74,14 @@ class allianceFinance extends baseItem {
 
 		announcementPanel::getInstance()->write('info', TranslateController::getDefault()->get('opSuccess'));
 
-		$actionPanel = alliance::sGetDetail($userAlliance->AllianceID);
-
+		\Gameplay\Panel\Action::getInstance()->add(alliance::sGetDetail($userAlliance->AllianceID));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
 	}
 
 	static public function sCashoutDialog($id) {
-		global $actionPanel, $portPanel, $userAlliance, $userID;
+		global $portPanel, $userAlliance, $userID;
 
 		if (empty($userAlliance->AllianceID)) {
 			throw new securityException();
@@ -107,7 +106,7 @@ class allianceFinance extends baseItem {
 		$template->add('maxCash', $tAlliance->Cash);
 		$template->add('action', "alliance.cashout('{$id}');");
 
-		$actionPanel = $template;
+		\Gameplay\Panel\Action::getInstance()->add((string) $template);
 
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
@@ -144,7 +143,7 @@ class allianceFinance extends baseItem {
 		}
 
 		$userStats->Cash -= $value;
-			
+
 		$item = new alliance();
 		$data = $item->load($userAlliance->AllianceID, true, true);
 		$data->Cash += $value;

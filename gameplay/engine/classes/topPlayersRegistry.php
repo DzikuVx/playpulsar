@@ -13,16 +13,14 @@ class topPlayersRegistry extends simpleRegistry {
 	 */
 	static public function sRender($sortOrder = 'Experience') {
 
-		global $userID, $actionPanel, $portPanel;
+		global $userID, $portPanel;
 
 		$registry = new topPlayersRegistry ( $userID );
-		$actionPanel .= $registry->get ( $sortOrder );
-		unset($registry);
 
+		\Gameplay\Panel\Action::getInstance()->add($registry->get($sortOrder));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		$portPanel = "&nbsp;";
-
 	}
 
 	/**
@@ -74,7 +72,7 @@ class topPlayersRegistry extends simpleRegistry {
 			$tStyle = '';
 		}
 		$retVal .= \General\Controls::renderButton ( TranslateController::getDefault()->get ( 'byKills' ), "Playpulsar.gameplay.execute('topPlayersShow','Kills', null, null);", $tStyle );
-		
+
 		if ($sortOrder == 'Deaths') {
 			$tStyle = 'font-weight: bold;';
 		} else {

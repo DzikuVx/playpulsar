@@ -18,7 +18,7 @@ class allianceRights extends baseItem {
 	 */
 	static public function sPlayerSet($id, $xml) {
 
-		global $userID, $actionPanel, $portPanel, $userAlliance, $t;
+		global $userID, $portPanel, $userAlliance, $t;
 
 		if (empty($userAlliance->AllianceID)) {
 			throw new securityException();
@@ -80,12 +80,12 @@ class allianceRights extends baseItem {
 		}
 
 		allianceRights::sRender();
-		
+
 		announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'saved' ) );
 	}
 
 	static public function sRenderForm($id) {
-		global $userID, $actionPanel, $portPanel, $userAlliance, $t;
+		global $userID, $portPanel, $userAlliance, $t;
 
 		if (empty($userAlliance->AllianceID)) {
 			throw new securityException();
@@ -162,7 +162,7 @@ class allianceRights extends baseItem {
 
 		$template->add('action',"alliance.setMemberRights('{$id}');");
 
-		$actionPanel = (string) $template;
+		\Gameplay\Panel\Action::getInstance()->add((string) $template);
 
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
@@ -177,7 +177,7 @@ class allianceRights extends baseItem {
 	 */
 	static public function sRender() {
 
-		global $userID, $actionPanel, $portPanel, $userAlliance;
+		global $userID, $portPanel, $userAlliance;
 
 		if (empty($userAlliance->AllianceID)) {
 			throw new securityException();
@@ -191,10 +191,10 @@ class allianceRights extends baseItem {
 		 * Wyrenderowanie sojuszu
 		 */
 		$registry = new allianceRightsRegistry( $userID );
-		$registry->setDisableCache(true);		
-		$actionPanel .= $registry->get ($userAlliance->AllianceID);
-		$actionPanel .= "<div style=\"text-align: center;\">" . \General\Controls::bootstrapButton ( '{T:close}', "Playpulsar.gameplay.execute('allianceDetail',null,null,'{$userAlliance->AllianceID}');" ) . "</div>";
-		unset($registry);
+		$registry->setDisableCache(true);
+
+		\Gameplay\Panel\Action::getInstance()->add($registry->get ($userAlliance->AllianceID));
+		\Gameplay\Panel\Action::getInstance()->add("<div style=\"text-align: center;\">" . \General\Controls::bootstrapButton ( '{T:close}', "Playpulsar.gameplay.execute('allianceDetail',null,null,'{$userAlliance->AllianceID}');" ) . "</div>");
 
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
@@ -400,7 +400,7 @@ class allianceRights extends baseItem {
 		//@todo wykorzystać cache
 
 		$retVal = array();
-   
+
 		$tQuery = "SELECT
 					am.UserID
 				FROM
