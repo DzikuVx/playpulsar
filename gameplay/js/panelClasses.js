@@ -117,11 +117,6 @@ function linksPanelClass() {
 }
 linksPanelClass.prototype = new basePanelClass();
 
-function iconPanelClass() {
-	this.name = 'iconPanel';
-}
-iconPanelClass.prototype = new basePanelClass();
-
 function announcementPanelClass() {
 	this.name = 'announcementPanel';
 }

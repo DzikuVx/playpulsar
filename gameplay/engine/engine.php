@@ -983,7 +983,7 @@ try {
 	/**
 	 * Wyrenderuj panel notyfikacji
 	 */
-	iconPanel::getInstance()->render ();
+	\Gameplay\Panel\Icons::getInstance()->render();
 
 	/*
 	 * Wyrenderuj stałe elementy ekranu
@@ -1037,10 +1037,9 @@ try {
 		$debug = "&nbsp;";
 	}
 	$out .= "<debugPanel>" . $debug . "</debugPanel>";
-	$out .= iconPanel::getInstance()->out ();
-	$out .= announcementPanel::getInstance()->out ();
 	$out .= $activeScanner->out ();
 	*/
+// 	$out .= announcementPanel::getInstance()->out ();
 
 	$oContentTransport->addPanel(\Gameplay\Panel\Move::getInstance());
 	$oContentTransport->addPanel(\Gameplay\Panel\Port::getInstance());
@@ -1053,6 +1052,7 @@ try {
 	$oContentTransport->addPanel(\Gameplay\Panel\PortAction::getInstance());
 	$oContentTransport->addPanel(\Gameplay\Panel\MiniMap::getInstance());
 	$oContentTransport->addPanel(\Gameplay\Panel\Navigation::getInstance());
+	$oContentTransport->addPanel(\Gameplay\Panel\Icons::getInstance());
 
 	/*
 	 * Echo prepared JSON for panel transport

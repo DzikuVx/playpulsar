@@ -78,7 +78,6 @@ shortUserStatsPanel = new shortUserStatsPanelClass();
 sectorShipsPanel = new sectorShipsPanelClass();
 sectorResourcePanel = new sectorResourcePanelClass();
 shipStatsPanel = new shipStatsPanelClass();
-iconPanel = new iconPanelClass();
 activeScanner = new activeScannerClass();
 announcementPanel = new announcementPanelClass();
 */
@@ -376,7 +375,6 @@ function executeAction(action, subaction, value, id, auth) {
 			shortShipStatsPanel.populate(data);
 			shortUserStatsPanel.populate(data);
 			shipStatsPanel.populate(data);
-			iconPanel.populate(data);
 			announcementPanel.populate(data);
 			activeScanner.populate(data);
 
@@ -581,6 +579,11 @@ Panel.Navigation = function () {
 	this.domSelector = '#navigationPanel';
 };
 Panel.Navigation.prototype = new Panel.Base();
+
+Panel.Icons = function () {
+	this.domSelector = '#iconPanel';
+};
+Panel.Icons.prototype = new Panel.Base();
 
 /*
  * Simple panels definition
