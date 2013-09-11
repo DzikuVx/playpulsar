@@ -380,8 +380,6 @@ function executeAction(action, subaction, value, id, auth) {
 			announcementPanel.populate(data);
 			activeScanner.populate(data);
 
-			panel.populate(data, 'newsAgencyPanel');
-
 			tString = parseXmlValue(data, 'debugPanel');
 			if (tString != "") {
 				$('#debugPanel').html(tString);

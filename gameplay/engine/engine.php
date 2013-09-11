@@ -985,8 +985,6 @@ try {
 	 */
 	iconPanel::getInstance()->render ();
 
-	newsAgencyPanel::getInstance()->render ( $shipPosition );
-
 	/*
 	 * Wyrenderuj stałe elementy ekranu
 	*/
@@ -1040,7 +1038,6 @@ try {
 	}
 	$out .= "<debugPanel>" . $debug . "</debugPanel>";
 	$out .= iconPanel::getInstance()->out ();
-	$out .= newsAgencyPanel::getInstance()->out ();
 	$out .= announcementPanel::getInstance()->out ();
 	$out .= $activeScanner->out ();
 	*/

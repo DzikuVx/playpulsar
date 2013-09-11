@@ -1,60 +1,53 @@
 <?php
 
-/**
- * Klasa panelu agentcji informacyjnej
- *
- * @version $Rev: 457 $
- * @package Engine
- *
- */
-class newsAgencyPanel extends basePanel {
+namespace Gameplay\Panel;
 
-	private static $instance = null;
-	
+use Interfaces\Singleton;
+
+/**
+ * @deprecated
+ */
+class NewsAgency extends Renderable implements Singleton {
+
 	/**
-	* Konstruktor statyczny
-	* @return newsAgencyPanel
-	*/
+	 *
+	 * @var NewsAgency
+	 */
+	private static $instance = null;
+
+	/**
+	 * @return \Gameplay\Panel\NewsAgency
+	 */
 	public static function getInstance(){
 		if (empty(self::$instance)) {
 			$className = __CLASS__;
-	
+
 			global $userProperties;
-	
+
 			self::$instance = new $className($userProperties->Language);
 		}
 		return self::$instance;
 	}
-	
-	/**
-	 * Nazwa DIV
-	 *
-	 * @var string
-	 */
-	protected $panelTag = "newsAgencyPanel";
 
-	/**
-	 * Wyrenderowanie
-	 *
-	 * @param stdClass $shipPosition
-	 */
+	protected $panelTag = "NewsAgency";
+
 	public function render($shipPosition) {
 		global $userProperties;
 
 		$oCacheKey = new \Cache\CacheKey('newsAgency::render', $shipPosition->System . '|' . $userProperties->Language);
-		
+
 		if (! \Cache\Controller::getInstance()->check ( $oCacheKey )) {
 
 			$tQuery = " SELECT newsagency . *
-        FROM 
+        FROM
           newsagency
-        JOIN 
+        JOIN
           newsagencytypes ON newsagencytypes.ID = newsagency.Type
-        WHERE 
+        WHERE
           newsagency.System = '{$shipPosition->System}'
           AND NewsagencyID >0
           AND newsagencytypes.Visible = 'yes'
-        ORDER BY 
+        ORDER BY
           NewsagencyID DESC
 		    LIMIT 5
 		    ";
