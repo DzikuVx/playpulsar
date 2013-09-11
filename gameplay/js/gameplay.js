@@ -77,7 +77,6 @@ shortShipStatsPanel = new shortShipStatsPanelClass();
 shortUserStatsPanel = new shortUserStatsPanelClass();
 sectorShipsPanel = new sectorShipsPanelClass();
 sectorResourcePanel = new sectorResourcePanelClass();
-navigationPanel = new navigationPanelClass();
 shipStatsPanel = new shipStatsPanelClass();
 iconPanel = new iconPanelClass();
 activeScanner = new activeScannerClass();
@@ -376,7 +375,6 @@ function executeAction(action, subaction, value, id, auth) {
 			portInfoPanel.populate(data);
 			shortShipStatsPanel.populate(data);
 			shortUserStatsPanel.populate(data);
-			navigationPanel.populate(data);
 			shipStatsPanel.populate(data);
 			iconPanel.populate(data);
 			announcementPanel.populate(data);
@@ -580,6 +578,11 @@ Panel.MiniMap = function () {
 	this.domSelector = '#miniMap';
 };
 Panel.MiniMap.prototype = new Panel.Base();
+
+Panel.Navigation = function () {
+	this.domSelector = '#navigationPanel';
+};
+Panel.Navigation.prototype = new Panel.Base();
 
 /*
  * Simple panels definition

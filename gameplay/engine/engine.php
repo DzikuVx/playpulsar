@@ -660,6 +660,9 @@ try {
 		}
 
 		if (! $error) {
+
+			$tPlot = new \stdClass();
+
 			list ( $tPlot->System, $tPlot->X, $tPlot->Y ) = $tCoords;
 			unset ( $tCoords );
 
@@ -683,7 +686,7 @@ try {
 
 		shipRouting::checkArrive ( $shipPosition, $shipRouting );
 
-		navigationPanel::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
+		\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
 
 	}
 
@@ -734,7 +737,7 @@ try {
 			$action = 'portMarketplace';
 			portProperties::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
 			clearActionPanel ();
-			navigationPanel::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
+			\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
 		}
 	}
 
@@ -779,7 +782,7 @@ try {
 			\Gameplay\Panel\Port::getInstance()->render ( $shipPosition, $portProperties, $shipProperties, $jumpNode );
 			\Gameplay\Panel\SectorResources::getInstance()->render ( $shipPosition, $shipProperties, $sectorProperties );
 			\Gameplay\Panel\SectorResources::getInstance()->clearForceAction ();
-			navigationPanel::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
+			\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
 			clearActionPanel ();
 		}
 	}
@@ -847,11 +850,10 @@ try {
 			\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
 			\Gameplay\Panel\SectorResources::getInstance()->render ( $shipPosition, $shipProperties, $sectorProperties );
 			\Gameplay\Panel\Port::getInstance()->render ( $shipPosition, $portProperties, $shipProperties, $jumpNode );
-
 			\Gameplay\Panel\Port::getInstance()->load ( $userID, $shipPosition->System, $shipPosition );
 
 			if (shipRouting::checkArrive ( $shipPosition, $shipRouting )) {
-				navigationPanel::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
+				\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
 				announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'infoArrived' ) );
 			}
 
@@ -934,7 +936,7 @@ try {
 			if (shipRouting::checkArrive ( $shipPosition, $shipRouting )) {
 				announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'infoArrived' ) );
 			}
-			navigationPanel::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
+			\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
 
 			clearActionPanel ();
 		}
@@ -960,7 +962,7 @@ try {
 
 		\Gameplay\Panel\SectorResources::getInstance()->render ( $shipPosition, $shipProperties, $sectorProperties );
 		\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
-		navigationPanel::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
+		\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
 
 		portProperties::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
 		clearActionPanel ();
@@ -1037,7 +1039,6 @@ try {
 		$debug = "&nbsp;";
 	}
 	$out .= "<debugPanel>" . $debug . "</debugPanel>";
-	$out .= navigationPanel::getInstance()->out ();
 	$out .= iconPanel::getInstance()->out ();
 	$out .= newsAgencyPanel::getInstance()->out ();
 	$out .= announcementPanel::getInstance()->out ();
@@ -1054,6 +1055,7 @@ try {
 	$oContentTransport->addPanel(\Gameplay\Panel\Action::getInstance());
 	$oContentTransport->addPanel(\Gameplay\Panel\PortAction::getInstance());
 	$oContentTransport->addPanel(\Gameplay\Panel\MiniMap::getInstance());
+	$oContentTransport->addPanel(\Gameplay\Panel\Navigation::getInstance());
 
 	/*
 	 * Echo prepared JSON for panel transport

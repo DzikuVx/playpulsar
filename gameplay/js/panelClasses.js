@@ -65,11 +65,6 @@ function weaponsPanelClass() {
 }
 weaponsPanelClass.prototype = new basePanelClass();
 
-function navigationPanelClass() {
-	this.name = 'navigationPanel';
-}
-navigationPanelClass.prototype = new basePanelClass();
-
 function activeScannerClass() {
 	this.name = 'activeScanner';
 

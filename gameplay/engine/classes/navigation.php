@@ -57,7 +57,7 @@ class navigation {
 		$shipRouting->X = null;
 		$shipRouting->Y = null;
 
-		navigationPanel::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
+		\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
 
 	}
 
@@ -68,54 +68,49 @@ class navigation {
 	static public function sNextWaypoint() {
 
 		global $shipPosition, $shipRouting, $action, $subaction;
-		try {
+		/**
+		 * Pobierz współrzędne docelowe
+		 */
+
+		$tCoords = new \stdClass();
+
+		if ($shipPosition->System == $shipRouting->System) {
+			$tCoords->System = $shipRouting->System;
+			$tCoords->X = $shipRouting->X;
+			$tCoords->Y = $shipRouting->Y;
+		} else {
 			/**
-			 * Pobierz współrzędne docelowe
+			 * Przypadek gdy lecisz do innego systemu, pobierz współrzędne następnego Jump Node
 			 */
-			
-			$tCoords = new \stdClass();
-			
-			if ($shipPosition->System == $shipRouting->System) {
-				$tCoords->System = $shipRouting->System;
-				$tCoords->X = $shipRouting->X;
-				$tCoords->Y = $shipRouting->Y;
-			} else {
-				/**
-				 * Przypadek gdy lecisz do innego systemu, pobierz współrzędne następnego Jump Node
-				 */
 
-				/**
-				 * Inicjacja obiektu galaxyRoute
-				 */
-				$galaxyRoute = new galaxyRouting ( \Database\Controller::getInstance(), $shipRouting );
-				$nextSystem = $galaxyRoute->next ( $shipPosition );
-				unset($galaxyRoute);
+			/**
+			 * Inicjacja obiektu galaxyRoute
+			 */
+			$galaxyRoute = new \galaxyRouting ( \Database\Controller::getInstance(), $shipRouting );
+			$nextSystem = $galaxyRoute->next ( $shipPosition );
 
-				/**
-				 * Inicjacja obiektu transNode
-				 */
-				$tNode->Source = $shipPosition->System;
-				$tNode->Destination = $nextSystem;
-				$transNodeObject = new transNode ( );
-				$transNode = $transNodeObject->load ( $tNode, true, true );
-				unset($transNodeObject);
+			/**
+			 * Inicjacja obiektu transNode
+			 */
+			$tNode = new \stdClass();
+			$tNode->Source = $shipPosition->System;
+			$tNode->Destination = $nextSystem;
+			$transNodeObject = new \transNode ( );
+			$transNode = $transNodeObject->load ( $tNode, true, true );
 
-				$tCoords->System = $shipPosition->System;
-				$tCoords->X = $transNode->X;
-				$tCoords->Y = $transNode->Y;
-					
-			}
+			$tCoords->System = $shipPosition->System;
+			$tCoords->X = $transNode->X;
+			$tCoords->Y = $transNode->Y;
 
-			$route = new systemRouting ( \Database\Controller::getInstance(), $tCoords );
+		}
 
-			if ($shipPosition->System != $shipRouting->System && $shipPosition->X == $tCoords->X && $shipPosition->Y == $tCoords->Y) {
-				$action = "shipNodeJump";
-			} else {
-				$action = "shipMove";
-				$subaction = $route->next ( $shipPosition )->direction;
-			}
-		} catch ( Exception $e ) {
+		$route = new \systemRouting ( \Database\Controller::getInstance(), $tCoords );
 
+		if ($shipPosition->System != $shipRouting->System && $shipPosition->X == $tCoords->X && $shipPosition->Y == $tCoords->Y) {
+			$action = "shipNodeJump";
+		} else {
+			$action = "shipMove";
+			$subaction = $route->next ( $shipPosition )->direction;
 		}
 	}
 

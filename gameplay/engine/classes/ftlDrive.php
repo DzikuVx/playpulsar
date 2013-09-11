@@ -117,7 +117,7 @@ class ftlDrive {
 		$miniMap->load ( $userID, $shipPosition->System, $shipPosition );
 
 		if (shipRouting::checkArrive ( $shipPosition, $shipRouting )) {
-			navigationPanel::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
+			\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
 			announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'infoArrived' ) );
 		}
 
