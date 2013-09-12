@@ -221,7 +221,7 @@ try {
 				$iSystemId = $shipPosition->System;
 			}
 
-			$oMap = new systemMap ($userID, $iSystemId, $shipPosition);
+			$oMap = new \Gameplay\Panel\SystemMap($userID, $iSystemId, $shipPosition);
 			\Gameplay\Panel\Overlay::getInstance()->add($oMap->render()->getRetVal());
 			throw new Overlay();
 			break;

@@ -47,8 +47,3 @@ function systemMapClass() {
 	};
 
 }
-
-/*
- * Inicjuj obiekt
- */
-systemMap = new systemMapClass();

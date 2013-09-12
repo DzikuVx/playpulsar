@@ -5,11 +5,11 @@
  * @version $Rev: 423 $
  * @package Engine
  */
-class activeScanner extends systemMap {
+class activeScanner extends \Gameplay\Panel\SystemMap {
 
 	protected $panelTag = "activeScanner";
 	protected $sectorClass = "systemMap";
-	protected $onClick = "systemMap.sectorInfo";
+	protected $onClick = "Playpulsar.gameplay.sectorInfo";
 	protected $onEmpty = "hide";
 
 	/**

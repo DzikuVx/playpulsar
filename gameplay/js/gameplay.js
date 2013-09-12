@@ -651,6 +651,22 @@ Playpulsar.gameplay = (function () {
 	
 	self.AuthCode = 0;
 	
+	self.sectorInfo = function(System, X, Y) {
+
+		$('#remoteSectorInfo').css('top', mouseY + "px");
+		$('#remoteSectorInfo').css('left', mouseX + "px");
+		$('#remoteSectorInfo').css('width', 320 + "px");
+
+		//TODO refactor
+		$.post('engine/ajax/sectorInfo.php', {
+			System: System,
+			X: X,
+			Y: Y
+		}, function(data) {
+			$('#remoteSectorInfo').html(data).show();
+		});
+	};
+	
 	self.systemMap = function(systemID) {
 		self.execute('systemMap', systemID);
 	}

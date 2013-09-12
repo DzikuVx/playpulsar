@@ -1,14 +1,16 @@
 <?php
 
+//FIXME move to full panel compability
+
 require_once 'ajaxHeader.php';
 
 $retVal = "";
 
 $shipPosition = new stdClass();
 
-$shipPosition->System = xml::sGetValue ( $xml, "<system>", "</system>" );
-$shipPosition->X = xml::sGetValue ( $xml, "<x>", "</x>" );
-$shipPosition->Y = xml::sGetValue ( $xml, "<y>", "</y>" );
+$shipPosition->System = $_REQUEST['System'];
+$shipPosition->X = $_REQUEST['X'];
+$shipPosition->Y = $_REQUEST['Y'];
 $shipPosition->Docked = null;
 
 $systemProperties = systemProperties::quickLoad ( $shipPosition->System );
@@ -17,4 +19,4 @@ $sectorProperties = sectorProperties::quickLoad ( $shipPosition );
 remoteSectorInfo::initiateInstance($userProperties->Language);
 remoteSectorInfo::getInstance()->render ( $sectorProperties, $systemProperties, $shipPosition );
 
-echo TranslateController::translate(remoteSectorInfo::getInstance()->out ());
+echo TranslateController::translate(remoteSectorInfo::getInstance()->getRetVal());

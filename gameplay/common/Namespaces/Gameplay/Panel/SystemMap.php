@@ -1,11 +1,17 @@
 <?php
-//TODO spearate view (Panel) from rendering
-class systemMap extends \Gameplay\Panel\MiniMap {
 
-	protected $panelTag = "systemMap";
+namespace Gameplay\Panel;
+
+use Interfaces\Singleton;
+
+//FIXME spearate view (Panel) from rendering
+
+class SystemMap extends MiniMap implements Singleton{
+
+	protected $panelTag = "SystemMap";
 	protected $sectorClass = "systemMap";
 	protected $useBorder = true;
-	protected $onClick = "systemMap.sectorInfo";
+	protected $onClick = "Playpulsar.gameplay.sectorInfo";
 
 	public function __construct($userID, $system, $shipPosition = null, $getShips = false, $getStacks = false) {
 		$this->load ( $userID, $system, $shipPosition, $getShips, $getStacks );

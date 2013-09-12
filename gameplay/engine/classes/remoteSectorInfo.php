@@ -12,31 +12,31 @@ class remoteSectorInfo extends \Gameplay\Panel\Sector {
 	protected $renderCloser = true;
 
 	static private $instance = null;
-	
+
 	/**
 	 * @throws \Exception
 	 * @return \Gameplay\Panel\ShortStats
 	 */
 	static public function getInstance() {
-	
+
 		if (empty(self::$instance)) {
 			throw new \Exception('Panel not initialized');
 		}
 		else {
 			return self::$instance;
 		}
-	
+
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param string $language
 	 * @param int $localUserID
 	 */
 	static public function initiateInstance($language = 'pl', $localUserID = null) {
 		self::$instance = new self($language, $localUserID);
 	}
-	
+
 	/**
 	 * (non-PHPdoc)
 	 * @see Gameplay\Panel.Sector::render()
@@ -48,9 +48,9 @@ class remoteSectorInfo extends \Gameplay\Panel\Sector {
 		parent::render ( $sectorProperties, $systemProperties, $shipPosition );
 
 		$this->retVal = '<button onclick="$(this).parent().hide();" class="close" title="{T:close}"><i class="icon-white icon-remove"></i></button>'.$this->retVal;
-		
+
 		$this->retVal .= '<div style="clear: both;"></div>';
-		
+
 		$item = new portProperties ( );
 		$portProperties = $item->load ( $shipPosition, true, true );
 		unset($item);
@@ -71,7 +71,7 @@ class remoteSectorInfo extends \Gameplay\Panel\Sector {
 			$this->retVal .= $item->getRetVal ();
 			$this->retVal .= '<div style="clear: both;"></div>';
 			if (!empty($portProperties->PortID)) {
-					
+
 				//Sprzedaż portu
 				$item = new portCargo ( 0, $portProperties, $userProperties->Language );
 				$tQuery = $item->getProductsSell ();
@@ -132,7 +132,7 @@ class remoteSectorInfo extends \Gameplay\Panel\Sector {
 				}
 			}
 			$this->retVal .= mb_substr ( $tString, 2 );
-				
+
 			/*
 			 * Lista okrętów
 			 */
@@ -152,9 +152,9 @@ class remoteSectorInfo extends \Gameplay\Panel\Sector {
 		}
 
 		$this->retVal .= "<div style='margin-top: 4px; text-align: center;'>";
-		$this->retVal .= Controls::bootstrapButton(TranslateController::getDefault()->get ( 'setNavPoint' ),"systemMap.plot('{$shipPosition->System}', '{$shipPosition->X}', '{$shipPosition->Y}')",'btn-mini','icon-forward');
+		$this->retVal .= Controls::bootstrapButton('{T:setNavPoint}', "Playpulsar.gameplay.plot('{$shipPosition->System}', '{$shipPosition->X}', '{$shipPosition->Y}')",'btn-mini','icon-forward');
 		$this->retVal .= "</div>";
 
-		return true;
+		return $this;
 	}
 }
