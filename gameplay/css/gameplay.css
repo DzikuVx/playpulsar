@@ -628,3 +628,8 @@ div.resource label{
 	margin-bottom: 0;
 	font-size: 0.9em;
 }
+
+#overlayPanel .panel {
+	margin-bottom: 1em;
+	padding-bottom: 1em;
+}

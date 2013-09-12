@@ -9,6 +9,11 @@ abstract class Base {
 	protected $userID		= null;
 	protected $language 	= 'pl';
 	protected $rendered 	= false;
+	protected $aParams = null;
+
+	public function setParams($aParams) {
+		$this->aParams = $aParams;
+	}
 
 	protected function __construct($language = 'pl', $localUserID = null) {
 

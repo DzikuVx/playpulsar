@@ -1,16 +1,15 @@
 <?php
-/**
- * Mapa systemu
- *
- * @version $Rev: 460 $
- * @package Engine
- */
+//TODO spearate view (Panel) from rendering
 class systemMap extends \Gameplay\Panel\MiniMap {
 
 	protected $panelTag = "systemMap";
 	protected $sectorClass = "systemMap";
 	protected $useBorder = true;
 	protected $onClick = "systemMap.sectorInfo";
+
+	public function __construct($userID, $system, $shipPosition = null, $getShips = false, $getStacks = false) {
+		$this->load ( $userID, $system, $shipPosition, $getShips, $getStacks );
+	}
 
 	/**
 	 * (non-PHPdoc)
@@ -34,7 +33,7 @@ class systemMap extends \Gameplay\Panel\MiniMap {
 	 * @param boolean $displayEmpty
 	 * @param boolean $displayName
 	 */
-	static public function sRenderAvaibleSystemsSelect($attr = null, $displayEmpty = true, $displayName = false) {
+	static public function sRenderAvaibleSystemsSelect($currentSystem, $attr = null, $displayEmpty = true, $displayName = false) {
 		global $userID, $shipRouting;
 
 		if (!isset($attr['class'])) {
@@ -68,7 +67,7 @@ class systemMap extends \Gameplay\Panel\MiniMap {
         systems.SystemID;
         " );
 		while ( $resultRow = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
-			if ($shipRouting->System == $resultRow->SystemID) {
+			if ($currentSystem == $resultRow->SystemID) {
 				$tString = "selected";
 			} else {
 				$tString = "";
@@ -100,9 +99,9 @@ class systemMap extends \Gameplay\Panel\MiniMap {
 
 		$retVal .= '<div style="float: left; margin-right: 1em;">';
 		$tArray = array();
-		$tArray['onchange'] = 'systemMap.show($(this).val());';
+		$tArray['onchange'] = 'Playpulsar.gameplay.systemMap($(this).val());';
 		$tArray['class'] = 'input-small';
-		$retVal .= self::sRenderAvaibleSystemsSelect($tArray, false, true);
+		$retVal .= self::sRenderAvaibleSystemsSelect($this->system->SystemID, $tArray, false, true);
 		$retVal .= '</div>';
 
 		$retVal .= parent::renderHeader ();

@@ -601,7 +601,7 @@ Panel.Action = function () {
 			this.show();
 		}
 		
-		return true;
+		return this;
 	};
 	
 };
@@ -612,11 +612,48 @@ Panel.PortAction = function () {
 };
 Panel.PortAction.prototype = new Panel.Action();
 
+Panel.Overlay = function () {
+	this.domSelector = '#overlayPanel';
+	
+	this.populate = function(obj) {
+
+		if (!obj.rendered) {
+			return this;
+		}
+
+		if (obj.params && obj.params.closer !== undefined && obj.params.closer === false) {
+			this.getDomObject().find('.close:first').hide();
+		}else {
+			this.getDomObject().find('.close:first').show();
+		}
+		
+		$('#overlayPanelContent').html(obj.content);
+		
+		$("#mainGameplay").hide();
+		this.show();
+		
+		return this;
+	};	
+	
+	this.hide = function() {
+		$('#remoteSectorInfo').hide();
+		$("#mainGameplay").show();
+		this.getDomObject().hide();
+		this.visible = false;
+	};
+	
+};
+Panel.Overlay.prototype = new Panel.Base();
+
 Playpulsar.gameplay = (function () {
 	
 	var self = {};
 	
 	self.AuthCode = 0;
+	
+	self.systemMap = function(systemID) {
+		self.execute('systemMap', systemID);
+	}
 	
 	self.execute = function(action, subaction, value, id) {
 		

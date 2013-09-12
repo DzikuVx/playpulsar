@@ -3,10 +3,8 @@
 <head>
 <title>{pageTitle}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link href="{cdnUrl}common/bootstrap_slate/css/bootstrap.min.css"
-	rel="stylesheet" />
-<link rel="stylesheet" type="text/css"
-	href="{cdnUrl}common/css/vader/jquery-ui-1.10.2.custom.min.css" />
+<link href="{cdnUrl}common/bootstrap_slate/css/bootstrap.min.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="{cdnUrl}common/css/vader/jquery-ui-1.10.2.custom.min.css" />
 <link rel="stylesheet" type="text/css" href="{cdnUrl}css/gameplay.css" />
 <link href="{cdnUrl}common/pnotify-1.2.0/jquery.pnotify.default.css" media="all" rel="stylesheet" type="text/css" />
 <link rel="shortcut icon" href="favicon.ico" />
@@ -138,14 +136,14 @@
 		</div>
 	</div>
 
-	<div id="systemMap" class="container hiddenDiv">
+	<div id="overlayPanel" class="container hiddenDiv">
 		<div class="row">
 			<div class="span12 panel">
 				<button class="close" style="margin: 1em;" title="{T:close}"
-					onclick="systemMap.hide();">
+					onclick="Panel.Factory.createPanel('Overlay').hide();">
 					<i class="icon-white icon-remove" /></i>
 				</button>
-				<div id="systemMapContent"></div>
+				<div id="overlayPanelContent"></div>
 			</div>
 		</div>
 	</div>

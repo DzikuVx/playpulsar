@@ -3,7 +3,7 @@
 namespace Gameplay\Panel;
 
 use Interfaces\Singleton;
-
+//TODO MiniMap as a function should be independend from MiniMap as Panel. Move Rendering to separate class
 class MiniMap extends BaseTable implements Singleton {
 	protected $sector;
 	protected $system;
@@ -63,6 +63,9 @@ class MiniMap extends BaseTable implements Singleton {
 		return true;
 	}
 
+	/**
+	 * @return \Gameplay\Panel\MiniMap
+	 */
 	public function render() {
 		$this->rendered = true;
 
@@ -93,7 +96,7 @@ class MiniMap extends BaseTable implements Singleton {
 
 		$this->retVal .= $this->renderFooter ();
 
-		return true;
+		return $this;
 	}
 
 	public function checkAvaible() {

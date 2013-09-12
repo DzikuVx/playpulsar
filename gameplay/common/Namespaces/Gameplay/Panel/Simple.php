@@ -6,12 +6,6 @@ use Gameplay\Framework\PanelTransport;
 
 abstract class Simple extends Base {
 
-	protected $panelTag 	= "empty";
-	protected $retVal	 	= "";
-	protected $userID		= null;
-	protected $language 	= 'pl';
-	protected $rendered 	= false;
-
 	/**
 	 * Add new content to panel
 	 * @param string $sValue
@@ -34,7 +28,7 @@ abstract class Simple extends Base {
 	 * @return PanelTransport
 	 */
 	public function getTransport() {
-		return new PanelTransport(null, $this->encodeOutput(), $this->rendered);
+		return new PanelTransport(null, $this->encodeOutput(), $this->rendered, $this->aParams);
 	}
 
 }

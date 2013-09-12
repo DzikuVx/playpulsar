@@ -5,12 +5,12 @@ namespace Gameplay\Panel;
 use Gameplay\Framework\PanelTransport;
 
 abstract class Renderable extends Base {
-	
+
 	protected $onEmpty 		= "none"; //Jak ma się zachować panel gdy jego zawartość jest pusta: none / hide / clear
 	protected $forceAction 	= null;
 
 	public function getTransport() {
-		
+
 		if (empty($this->forceAction)) {
 
 			if ($this->retVal != "") {
@@ -18,15 +18,14 @@ abstract class Renderable extends Base {
 			} else {
 				$sTransportAction = $this->onEmpty;
 			}
-			
+
 		} else {
 			$sTransportAction = $this->forceAction;
 		}
-		
-		return new PanelTransport($sTransportAction, $this->encodeOutput(), $this->rendered);
-		
+
+		return new PanelTransport($sTransportAction, $this->encodeOutput(), $this->rendered, $this->aParams);
 	}
-	
+
 	/**
 	 * @param string $onEmpty
 	 * //TODO Method unused

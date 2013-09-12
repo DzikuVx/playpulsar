@@ -1,39 +1,8 @@
 /**
  * Klasa obsługi mapy systemu
+ * @deprecated
  */
-
 function systemMapClass() {
-
-	/**
-	 * Pobranie mapy systemu z serwera i wyświetlenie
-	 * 
-	 * @param systemID
-	 */
-	this.show = function(systemID) {
-		if (systemID == null)
-			systemID = 'null';
-
-		var sendXML = "";
-		sendXML = sendXML + "<userID>" + $('#userID').html() + "</userID>";
-		sendXML = sendXML + "<systemID>" + systemID + "</systemID>";
-
-		$.post('engine/ajax/systemMap.php', sendXML, function(data) {
-
-			$('#systemMapContent').html(parseXmlValue(data, 'content'));
-
-			$("#mainGameplay").hide();
-			$("#systemMap").show();
-		});
-	};
-
-	/**
-	 * Ukrycie panelu mapy
-	 */
-	this.hide = function() {
-		panel.hide('remoteSectorInfo');
-		$("#mainGameplay").show();
-		$("#systemMap").hide();
-	};
 
 	/**
 	 * Ustawienie punktu nawigacyjnego

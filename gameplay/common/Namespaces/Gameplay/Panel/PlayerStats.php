@@ -8,11 +8,15 @@ use \TranslateController as Translate;
 
 class PlayerStats extends Renderable implements Singleton {
 
+	/**
+	 *
+	 * @var PlayerStats
+	 */
 	static private $instance = null;
 
 	/**
+	 * @return \Gameplay\Panel\PlayerStats
 	 * @throws \Exception
-	 * @return \Gameplay\Panel\ShortStats
 	 */
 	static public function getInstance() {
 
@@ -37,9 +41,9 @@ class PlayerStats extends Renderable implements Singleton {
 	 * @param \stdClass $shipProperties
 	 */
 	public function render($userStats, $shipProperties) {
-		
+
 		$this->rendered = true;
-		
+
 		$this->retVal = '';
 
 		$this->retVal .= "<div class='row'>";
@@ -59,7 +63,7 @@ class PlayerStats extends Renderable implements Singleton {
 		$this->retVal .= "<div>";
 		$this->retVal .= "<strong>".Translate::getDefault()->get ( 'Fame' ) . ":</strong> " . number_format ( $userStats->Fame, 0, "", " " );
 		$this->retVal .= "</div>";
-		
+
 		$this->retVal .= "</div>";
 		$this->retVal .= "</div>";
 
@@ -67,19 +71,19 @@ class PlayerStats extends Renderable implements Singleton {
 
 		$iExpForCurrent = \userStats::computeExperience($userStats->Level);
 		$iExpForNext = \userStats::computeExperience($userStats->Level + 1);
-		
+
 		$iDiff = $iExpForNext-$iExpForCurrent;
 		$iCurrent = $userStats->Experience - $iExpForCurrent;
 		$iValue = ceil(($iCurrent / $iDiff) * 100);
 		$this->retVal .= "<label style='color: #DBCD64;' title='".Translate::getDefault()->get ( 'Progress for next level [%]' )."'>".Translate::getDefault()->get ( 'Next lvl.' )."</label>";
 		$this->retVal .= "<input data-skin='tron' class='knob' data-width='50' data-fgColor='#DBCD64' data-thickness='.2' data-readOnly=true data-max='100' value='{$iValue}'>";
 		$this->retVal .= "</div>";
-		
+
 		$this->retVal .= "<div class='column25 center'>";
 		$this->retVal .= "<label style='color: #BBFF47;' title='".Translate::getDefault()->get ( 'Used cargo space' )."'>".Translate::getDefault()->get ( 'cargo' )."</label>";
 		$this->retVal .= "<input data-skin='tron' class='knob' data-width='50' data-fgColor='#BBFF47' data-thickness='.2' data-readOnly=true data-max='{$shipProperties->CargoMax}' value='{$shipProperties->Cargo}'>";
 		$this->retVal .= "</div>";
-		
+
 		$this->retVal .= "</div>";
 
 		date_default_timezone_set('UTC');

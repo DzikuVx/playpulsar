@@ -1,5 +1,7 @@
 <?php
 
+use Gameplay\Exception\Overlay;
+
 use Gameplay\Framework\Controller as GameplayController;
 use Gameplay\Framework\ContentTransport;
 
@@ -205,6 +207,27 @@ try {
 	 */
 	$userAllianceObject = new userAlliance ( );
 	$userAlliance 		= $userAllianceObject->load ( $userID, false, false);
+
+	/*
+	 * Here place calls for all event that do not require other panels initialized
+	 * or uses Gameplay\Panel\Overlay
+	 */
+	switch ($action) {
+
+		case 'systemMap':
+
+			$iSystemId = $subaction;
+			if (empty($iSystemId)) {
+				$iSystemId = $shipPosition->System;
+			}
+
+			$oMap = new systemMap ($userID, $iSystemId, $shipPosition);
+			\Gameplay\Panel\Overlay::getInstance()->add($oMap->render()->getRetVal());
+			throw new Overlay();
+			break;
+
+	}
+
 
 	/*
 	 * Initiate all panels
@@ -1037,9 +1060,9 @@ try {
 		$debug = "&nbsp;";
 	}
 	$out .= "<debugPanel>" . $debug . "</debugPanel>";
-	$out .= $activeScanner->out ();
 	*/
 // 	$out .= announcementPanel::getInstance()->out ();
+// 	$out .= $activeScanner->out ();
 
 	$oContentTransport->addPanel(\Gameplay\Panel\Move::getInstance());
 	$oContentTransport->addPanel(\Gameplay\Panel\Port::getInstance());
@@ -1053,10 +1076,17 @@ try {
 	$oContentTransport->addPanel(\Gameplay\Panel\MiniMap::getInstance());
 	$oContentTransport->addPanel(\Gameplay\Panel\Navigation::getInstance());
 	$oContentTransport->addPanel(\Gameplay\Panel\Icons::getInstance());
+	$oContentTransport->addPanel(\Gameplay\Panel\Overlay::getInstance());
 
 	/*
 	 * Echo prepared JSON for panel transport
 	 */
+	echo $oContentTransport->get();
+
+} catch (\Gameplay\Exception\Overlay $e) {
+
+	$oContentTransport->addPanel(\Gameplay\Panel\Overlay::getInstance());
+
 	echo $oContentTransport->get();
 
 } catch ( combatException $e ) {

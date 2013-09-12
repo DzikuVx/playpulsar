@@ -44,7 +44,7 @@ class Navigation extends Renderable implements Singleton {
 		$this->retVal .= "<div>";
 		$this->retVal .= "<div class='column50'>";
 
-		$this->retVal .= \systemMap::sRenderAvaibleSystemsSelect();
+		$this->retVal .= \systemMap::sRenderAvaibleSystemsSelect($shipRouting->System);
 
 		$this->retVal .= "/";
 		$this->retVal .= "<input onkeyup=\"javascript:return maskPlot(this.value,this)\" onblur=\"javascript:return maskPlot(this.value,this)\" type=\"text\" value=\"{$shipRouting->X}\" class=\"plot\" id=\"plotX\" />";
@@ -74,7 +74,7 @@ class Navigation extends Renderable implements Singleton {
 
 		$this->retVal .= "<div class='btn-toolbar'>";
 		$this->retVal .= "<div class='btn-group'>";
-		$this->retVal .= "<button class='btn btn-small' onclick=\"systemMap.show();\" title='{T:systemMap}'><i class='icon-list-alt icon-white'></i>{T:systemMap}</button>";
+		$this->retVal .= "<button class='btn btn-small' onclick=\"Playpulsar.gameplay.systemMap();\" title='{T:systemMap}'><i class='icon-list-alt icon-white'></i>{T:systemMap}</button>";
 		$this->retVal .= "</div>";
 
 		$this->retVal .= '<div class="btn-group">';
