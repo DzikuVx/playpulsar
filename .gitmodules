@@ -1,0 +1,3 @@
+[submodule "gameplay/common/pnotify"]
+	path = gameplay/common/pnotify
+	url = git@github.com:sciactive/pnotify.git
