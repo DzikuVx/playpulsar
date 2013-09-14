@@ -1,3 +1,6 @@
 [submodule "gameplay/common/pnotify"]
 	path = gameplay/common/pnotify
 	url = git@github.com:sciactive/pnotify.git
+[submodule "gameplay/common/Namespaces/SSMQ"]
+	path = gameplay/common/Namespaces/SSMQ
+	url = git@github.com:DzikuVx/SSMQ.git
