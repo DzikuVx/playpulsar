@@ -288,6 +288,20 @@ function executeAction(action, subaction, value, id, auth) {
 
 var Playpulsar = Playpulsar || {};
 
+Playpulsar.notifications = (function () {
+	
+	var self = {};
+	
+	self.push = function (notification) {
+		$.pnotify({
+			text : notification.text,
+			type : notification.type
+		});
+	}
+	
+	return self;
+})();
+
 Playpulsar.gameplay = (function () {
 	
 	var self = {};
@@ -365,7 +379,8 @@ Playpulsar.gameplay = (function () {
 		
 		var panelName,
 			panelData,
-			panelObject;
+			panelObject,
+			notificationIndex;
 		
 		/*
 		 * Process variables
@@ -375,6 +390,17 @@ Playpulsar.gameplay = (function () {
 			
 			if (data.variables.AuthCode) {
 				Playpulsar.gameplay.AuthCode = data.variables.AuthCode;
+			}
+			
+		}
+		
+		if (data.notifications) {
+			console.log('Process notifications ', data.notifications);
+			
+			for (notificationIndex in data.notifications) {
+				if (data.notifications.hasOwnProperty(notificationIndex)) {
+					Playpulsar.notifications.push(data.notifications[notificationIndex]);
+				}
 			}
 			
 		}
@@ -389,8 +415,6 @@ Playpulsar.gameplay = (function () {
 				if (data.panels.hasOwnProperty(panelName)) {
 					
 					panelData = data.panels[panelName];
-					
-					console.log(panelName, panelData);
 					
 					panelObject = Panel.Factory.createPanel(panelName);
 					panelObject.populate(panelData);

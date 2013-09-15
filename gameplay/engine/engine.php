@@ -17,6 +17,11 @@ try {
 	$oContentTransport 	= ContentTransport::getInstance();
 	$oController 		= GameplayController::getInstance();
 
+	//FIXME remove
+	$oContentTransport->addNotification('info', 'test info');
+	$oContentTransport->addNotification('warning', 'test warinign');
+	$oContentTransport->addNotification('error', 'test erro');
+
 	$oController->registerParameters($_REQUEST);
 
 	$userID = $_SESSION ['userID'];
