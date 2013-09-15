@@ -78,7 +78,6 @@ shortUserStatsPanel = new shortUserStatsPanelClass();
 sectorShipsPanel = new sectorShipsPanelClass();
 sectorResourcePanel = new sectorResourcePanelClass();
 shipStatsPanel = new shipStatsPanelClass();
-activeScanner = new activeScannerClass();
 announcementPanel = new announcementPanelClass();
 */
 function bankClass() {
@@ -376,7 +375,6 @@ function executeAction(action, subaction, value, id, auth) {
 			shortUserStatsPanel.populate(data);
 			shipStatsPanel.populate(data);
 			announcementPanel.populate(data);
-			activeScanner.populate(data);
 
 			tString = parseXmlValue(data, 'debugPanel');
 			if (tString != "") {

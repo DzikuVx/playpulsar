@@ -1,19 +1,17 @@
 <?php
-/**
- * Skaner aktywny
- *
- * @version $Rev: 423 $
- * @package Engine
- */
-class activeScanner extends \Gameplay\Panel\SystemMap {
 
-	protected $panelTag = "activeScanner";
+namespace Gameplay\Panel;
+use Interfaces\Singleton;
+
+//FIXME separate view from model!!
+
+class ActiveScanner extends SystemMap implements Singleton {
+
+	protected $panelTag = "ActiveScanner";
 	protected $sectorClass = "systemMap";
 	protected $onClick = "Playpulsar.gameplay.sectorInfo";
-	protected $onEmpty = "hide";
 
 	/**
-	 *
 	 * @param string $language
 	 */
 	function __construct($language = 'pl') {
@@ -34,7 +32,7 @@ class activeScanner extends \Gameplay\Panel\SystemMap {
 	public function setShipPosition($shipPosition) {
 		$this->shipPosition = $shipPosition;
 
-		$this->system = systemProperties::quickLoad ( $this->shipPosition->System );
+		$this->system = \systemProperties::quickLoad ( $this->shipPosition->System );
 
 	}
 
@@ -45,7 +43,7 @@ class activeScanner extends \Gameplay\Panel\SystemMap {
 	public function render() {
 
 		if (empty($this->shipPosition)) {
-			throw new securityException();
+			throw new \securityException();
 		}
 
 		$this->rendered = true;
@@ -85,31 +83,33 @@ class activeScanner extends \Gameplay\Panel\SystemMap {
 	}
 
 	static public function sEngage() {
-		global $activeScanner, $userID, $shipProperties, $shipPosition, $shipRouting, $userStats, $config, $sectorProperties,$portProperties, $systemProperties, $jumpNode, $sectorPropertiesObject, $portPropertiesObject, $jumpNodeObject;
+		global $userProperties, $userID, $shipProperties, $shipPosition, $shipRouting, $userStats, $config, $sectorProperties,$portProperties, $systemProperties, $jumpNode, $sectorPropertiesObject, $portPropertiesObject, $jumpNodeObject;
 
-		if (shipProperties::sCheckMalfunction ( $shipProperties )) {
-			announcementPanel::getInstance()->write ( 'error', TranslateController::getDefault()->get ( 'shipMalfunctionEmp' ) );
+		$activeScanner 	= new ActiveScanner($userProperties->Language, $userID);
+
+		if (\shipProperties::sCheckMalfunction ( $shipProperties )) {
+			\announcementPanel::getInstance()->write ( 'error', '{T:shipMalfunctionEmp}');
 			return false;
 		}
 
 		if ($shipPosition->Docked != 'no') {
-			throw new securityException();
+			throw new \securityException();
 		}
 
 		if (empty($shipProperties->CanActiveScan)) {
-			throw new securityException();
+			throw new \securityException();
 		}
 
-		$tPowerUsage = self::sGetPowerUsage($shipProperties);
-		$tAmUsage = self::sGetAmUsage($shipRouting, $shipPosition);
+		$tPowerUsage 	= self::sGetPowerUsage($shipProperties);
+		$tAmUsage 		= self::sGetAmUsage($shipRouting, $shipPosition);
 
 		if ($shipProperties->Power < $tPowerUsage) {
-			announcementPanel::getInstance()->write ('warning', TranslateController::getDefault()->get('notEnoughPower'));
+			\announcementPanel::getInstance()->write ('warning', TranslateController::getDefault()->get('notEnoughPower'));
 			return false;
 		}
 
 		if ($shipProperties->Turns < $tAmUsage) {
-			announcementPanel::getInstance()->write ('warning', TranslateController::getDefault()->get('notEnoughTurns'));
+			\announcementPanel::getInstance()->write ('warning', TranslateController::getDefault()->get('notEnoughTurns'));
 			return false;
 		}
 
@@ -131,7 +131,9 @@ class activeScanner extends \Gameplay\Panel\SystemMap {
 		$activeScanner->setShipPosition($shipPosition);
 		$activeScanner->render();
 
-		return;
+		\Gameplay\Panel\Overlay::getInstance()->add($activeScanner->getRetVal());
+
+		throw new \Gameplay\Exception\Overlay();
 	}
 
 	/**
@@ -191,16 +193,19 @@ class activeScanner extends \Gameplay\Panel\SystemMap {
 
 	/**
 	 * (non-PHPdoc)
-	 * @see miniMap::getCacheProperty()
+	 * @see Gameplay\Panel.SystemMap::getCacheProperty()
 	 */
 	protected function getCacheProperty() {
 		return $this->system->SystemID;
 	}
 
+	/**
+	 * (non-PHPdoc)
+	 * @see Gameplay\Panel.SystemMap::renderHeader()
+	 */
 	public function renderHeader() {
-
 		$retVal = "<h1>{T:System Scan}: " . $this->system->Name . "</h1>";
-		$retVal .= miniMap::renderHeader ();
+		$retVal .= MiniMap::renderHeader ();
 		return $retVal;
 	}
 

@@ -226,6 +226,10 @@ try {
 			throw new Overlay();
 			break;
 
+		case 'engageActiveScanner':
+			\Gameplay\Panel\ActiveScanner::sEngage();
+			break;
+
 	}
 
 
@@ -243,7 +247,7 @@ try {
 	\Gameplay\Panel\PortAction::initiateInstance($userProperties->Language);
 	\Gameplay\Panel\MiniMap::initiateInstance($userID, $shipPosition->System, $shipPosition, true);
 
-	$activeScanner 	= new activeScanner ( $userProperties->Language, $userID );
+
 	$shipCargo 		= new shipCargo ( $userID, $userProperties->Language );
 	$shipWeapons 	= new shipWeapons ( $userID, $userProperties->Language );
 	$shipEquipment 	= new shipEquipment ( $userID, $userProperties->Language );
@@ -290,10 +294,6 @@ try {
 
 		case 'engageFtl':
 			ftlDrive::sEngage();
-			break;
-
-		case 'engageActiveScanner':
-			activeScanner::sEngage();
 			break;
 
 		case 'addToFiends':
@@ -1062,7 +1062,6 @@ try {
 	$out .= "<debugPanel>" . $debug . "</debugPanel>";
 	*/
 // 	$out .= announcementPanel::getInstance()->out ();
-// 	$out .= $activeScanner->out ();
 
 	$oContentTransport->addPanel(\Gameplay\Panel\Move::getInstance());
 	$oContentTransport->addPanel(\Gameplay\Panel\Port::getInstance());

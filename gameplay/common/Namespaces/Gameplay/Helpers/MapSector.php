@@ -63,7 +63,7 @@ class MapSector {
 
 			}
 		}
-		elseif ($mapType == 'activeScanner') {
+		elseif ($mapType == 'Gameplay\Panel\ActiveScanner') {
 			if (\additional::checkRand($this->showPercentage,100)) {
 				$retVal .= '<img src="gfx/shipMarker.png" style="position: absolute; margin-top: -1px;" />';
 			}
