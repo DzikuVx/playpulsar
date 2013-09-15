@@ -4,6 +4,7 @@
  * @author Paweł
  * @since 2011-03-21
  * @see basePanel
+ * @deprecated
  *
  */
 class announcementPanel extends basePanel {
