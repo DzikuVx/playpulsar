@@ -357,7 +357,7 @@ table.moveCell td {
 	font-weight: bold;
 }
 
-.actionButton,.examineButton,.closeButton
+.actionButton, .examineButton, .closeButton
 	{
 	font-size: 9pt;
 	font-weight: bold;
@@ -628,4 +628,9 @@ div.resource label{
 #overlayPanel .panel {
 	margin-bottom: 1em;
 	padding-bottom: 1em;
+}
+
+#debugPanel div label {
+	font-weight: bold;
+	display: inline;
 }

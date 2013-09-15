@@ -44,7 +44,7 @@ try {
 	$value 		= $oController->getParameter('value');
 
 	if (!empty($config ['debug'] ['gameplayDebugOutput'])) {
-		writeDebug ( $action );
+		\Gameplay\Panel\Debug::getInstance()->add('Request action', $action);
 	}
 
 	/**
@@ -1028,7 +1028,7 @@ try {
 	$czas_gen = round ( $timek2 - $timek1, 4 );
 
 	if (!empty($config ['debug'] ['gameplayDebugOutput'])) {
-		writeDebug ( "T: " . $czas_gen );
+		\Gameplay\Panel\Debug::getInstance()->add('Execution time', $czas_gen);
 	}
 
 	if (!empty($config ['debug'] ['script'])) {
@@ -1056,8 +1056,6 @@ try {
 	$userAllianceObject->synchronize($userAlliance, true, true);
 
 // 	$out .= announcementPanel::getInstance()->out ();
-
-	\Gameplay\Panel\Debug::getInstance()->add($debug);
 
 	$oContentTransport->addPanel(\Gameplay\Panel\Move::getInstance());
 	$oContentTransport->addPanel(\Gameplay\Panel\Port::getInstance());
@@ -1090,6 +1088,7 @@ try {
 	$Combat = new combat ( $userID, $userProperties->Language );
 	$Combat->execute ( $action );
 
+	\Gameplay\Panel\Overlay::getInstance()->setParams(array('closer' => false));
 	\Gameplay\Panel\Overlay::getInstance()->clear();
 	\Gameplay\Panel\Overlay::getInstance()->add((string) $Combat);
 

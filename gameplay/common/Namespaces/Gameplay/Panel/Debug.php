@@ -8,9 +8,9 @@ class Debug extends Renderable implements Singleton {
 	protected $panelTag = "Debug";
 	protected $onEmpty = "clear";
 
-	public function add($sString) {
+	public function add($sKey, $sValue) {
 		$this->rendered = true;
-		$this->retVal .= $sString;
+		$this->retVal .= '<div><label>' . $sKey . ': </label>' . $sValue . '</div>';
 	}
 
 	/**

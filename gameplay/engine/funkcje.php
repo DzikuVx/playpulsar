@@ -85,12 +85,6 @@ function shipExamine($id, $userID) {
 
 }
 
-function writeDebug($text) {
-
-	global $debug;
-	$debug .= "<span style='margin-right: 1em;'>".$text."</span>";
-}
-
 function getParameterColor($current, $max) {
 
 	global $colorTable;
