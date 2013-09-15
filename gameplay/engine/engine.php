@@ -11,7 +11,6 @@ $timek1 = microtime ();
 
 $out = "";
 $error = false;
-$debug = "";
 
 try {
 
@@ -998,14 +997,10 @@ try {
 		\Cache\Controller::getInstance()->clear(new \Cache\CacheKey('user::sGetOnlineCount', ''));
 	}
 
-	/**
-	 * Wyrenderuj panel notyfikacji
-	 */
-	\Gameplay\Panel\Icons::getInstance()->render();
-
 	/*
 	 * Wyrenderuj stałe elementy ekranu
 	*/
+	\Gameplay\Panel\Icons::getInstance()->render();
 	\Gameplay\Panel\PlayerStats::getInstance()->render ( $userStats, $shipProperties );
 	\Gameplay\Panel\ShortStats::getInstance()->render ( $shipProperties, $shipWeapons, $shipEquipment );
 	\Gameplay\Panel\Move::getInstance()->render($systemProperties, $shipPosition, $portProperties, $shipRouting, $shipProperties);
