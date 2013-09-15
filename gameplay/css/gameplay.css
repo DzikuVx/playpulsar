@@ -5,14 +5,10 @@ body {
 hr {
 	margin: 5px 0 5px 0;
 	padding: 0;
+	border: none;
 	border-bottom: 1px dashed #777;
-	border-top: 0px;
-	border-left: 0px;
-	border-right: 0px;
-	line-height: 0px;
+	line-height: 0;
 	height: 1px;
-	display: block;
-	width: 90%;
 }
 
 a:link {

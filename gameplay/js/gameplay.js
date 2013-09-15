@@ -66,20 +66,7 @@ function basicPanelClass() {
 	};
 
 }
-/*
-panel = new basicPanelClass();
 
-miniMapPanel = new miniMapClass();
-sectorPanel = new sectorPanelClass();
-portInfoPanel = new portInfoPanelClass();
-movePanel = new movePanelClass();
-shortShipStatsPanel = new shortShipStatsPanelClass();
-shortUserStatsPanel = new shortUserStatsPanelClass();
-sectorShipsPanel = new sectorShipsPanelClass();
-sectorResourcePanel = new sectorResourcePanelClass();
-shipStatsPanel = new shipStatsPanelClass();
-announcementPanel = new announcementPanelClass();
-*/
 function bankClass() {
 
 	this.deposit = function() {
@@ -509,6 +496,13 @@ Panel.Base = function () {
 			case "clearAndHide":
 				this.clearAndHide();
 				break;
+				
+			case 'clearIfRendered':
+				if (obj.rendered && obj.content.length === 0) {
+					this.clear();
+				} 
+				break;
+				
 		}
 
 		return true;
