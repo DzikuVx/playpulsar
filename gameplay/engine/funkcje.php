@@ -85,6 +85,11 @@ function shipExamine($id, $userID) {
 
 }
 
+/**
+ * @deprecated
+ * @param unknown_type $current
+ * @param unknown_type $max
+ */
 function getParameterColor($current, $max) {
 
 	global $colorTable;

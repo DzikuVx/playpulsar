@@ -998,11 +998,6 @@ try {
 		\Cache\Controller::getInstance()->clear(new \Cache\CacheKey('user::sGetOnlineCount', ''));
 	}
 
-	/*
-	 * Renderowanie panelu linków
-	*/
-// 	linksPanel::getInstance()->render ();
-
 	/**
 	 * Wyrenderuj panel notyfikacji
 	 */
