@@ -8,13 +8,6 @@ function routingSort($a, $b) {
 	return ($a->value < $b->value) ? 1 : - 1;
 }
 
-/**
- * @deprecated
- */
-function clearActionPanel() {
-	\Gameplay\Panel\Action::getInstance()->clear();
-}
-
 function shipExamine($id, $userID) {
 
 	$item = new userStats ( );

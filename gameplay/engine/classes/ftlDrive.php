@@ -121,7 +121,7 @@ class ftlDrive {
 			announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'infoArrived' ) );
 		}
 
-		clearActionPanel ();
+		\Gameplay\Panel\PortAction::getInstance()->clear ();
 
 	}
 

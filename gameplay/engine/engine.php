@@ -759,7 +759,7 @@ try {
 
 			$action = 'portMarketplace';
 			portProperties::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
-			clearActionPanel ();
+			\Gameplay\Panel\PortAction::getInstance()->clear ();
 			\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
 		}
 	}
@@ -806,7 +806,7 @@ try {
 			\Gameplay\Panel\SectorResources::getInstance()->render ( $shipPosition, $shipProperties, $sectorProperties );
 			\Gameplay\Panel\SectorResources::getInstance()->clearForceAction ();
 			\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
-			clearActionPanel ();
+			\Gameplay\Panel\PortAction::getInstance()->clear ();
 		}
 	}
 
@@ -880,7 +880,7 @@ try {
 				announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'infoArrived' ) );
 			}
 
-			clearActionPanel ();
+			\Gameplay\Panel\PortAction::getInstance()->clear ();
 		}
 	}
 
@@ -961,7 +961,7 @@ try {
 			}
 			\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
 
-			clearActionPanel ();
+			\Gameplay\Panel\PortAction::getInstance()->clear ();
 		}
 	}
 
@@ -973,7 +973,7 @@ try {
 		\Gameplay\Panel\Port::getInstance()->render ( $shipPosition, $portProperties, $shipProperties, $jumpNode );
 		portProperties::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
 
-		clearActionPanel ();
+		\Gameplay\Panel\PortAction::getInstance()->clear ();
 	}
 
 	if ($action == "pageReload" || $action == 'shipAttack' || $action == 'refresh' || $action == 'fireWeapons' || $action == 'disengage') {
@@ -988,7 +988,7 @@ try {
 		\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
 
 		portProperties::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
-		clearActionPanel ();
+		\Gameplay\Panel\PortAction::getInstance()->clear ();
 	}
 
 	/**

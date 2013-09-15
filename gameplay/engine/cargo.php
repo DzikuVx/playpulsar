@@ -106,7 +106,7 @@ if ($action == "buyStorageRoom") {
 	\Gameplay\Panel\SectorResources::getInstance()->hide ();
 	$action = "portStorehouse";
 	portProperties::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
-	clearActionPanel ();
+	\Gameplay\Panel\PortAction::getInstance()->clear ();
 }
 
 /*
@@ -290,7 +290,7 @@ if ($action == "gather") {
 
 		\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
 		\Gameplay\Panel\SectorResources::getInstance()->render ( $shipPosition, $shipProperties, $sectorProperties );
-		clearActionPanel ();
+		\Gameplay\Panel\PortAction::getInstance()->clear ();
 	}
 }
 
@@ -383,7 +383,7 @@ if ($action == 'toCargohold') {
 		sectorProperties::sResetResources ( $shipPosition, $sectorProperties );
 		portProperties::sReset ( $portProperties );
 
-		clearActionPanel ();
+		\Gameplay\Panel\PortAction::getInstance()->clear ();
 	}
 }
 
@@ -542,7 +542,7 @@ if ($action == "itemSell") {
 	\Gameplay\Panel\SectorResources::getInstance()->hide ();
 	$action = "portMarketplace";
 	portProperties::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
-	clearActionPanel ();
+	\Gameplay\Panel\PortAction::getInstance()->clear ();
 }
 
 //---------------------------------------------------------------------------------------------------
@@ -600,7 +600,7 @@ if ($action == "productSell") {
 	\Gameplay\Panel\SectorResources::getInstance()->hide ();
 	$action = "portMarketplace";
 	portProperties::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
-	clearActionPanel ();
+	\Gameplay\Panel\PortAction::getInstance()->clear ();
 }
 
 //---------------------------------------------------------------------------------------------------
@@ -666,7 +666,7 @@ if ($action == "productBuy") {
 	\Gameplay\Panel\SectorResources::getInstance()->hide ();
 	$action = "portMarketplace";
 	portProperties::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
-	clearActionPanel ();
+	\Gameplay\Panel\PortAction::getInstance()->clear ();
 }
 
 /**
@@ -705,5 +705,5 @@ if ($action == "mapBuy") {
 	$action = "portMarketplace";
 	portProperties::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
 	\Gameplay\Panel\Navigation::getInstance()->render($shipPosition, $shipRouting, $shipProperties);
-	clearActionPanel ();
+	\Gameplay\Panel\PortAction::getInstance()->clear ();
 }
