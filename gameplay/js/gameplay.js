@@ -9,62 +9,11 @@ var fireWeaponsTimeout;
 globalChat = new chatClass();
 
 function setCenterable() {
-	$("[centerable=true]")
-			.each(
-					function(tIndex) {
-
-						$(this).css('top',
-								Math.round(mouseY - ($(this).height() / 2)));
-						$(this).css(
-								'left',
-								Math.round(($(window).width() / 2)
-										- ($(this).width() / 2)));
-
-					});
-}
-
-function basicPanelClass() {
-
-	this.hide = function(name) {
-		$("#" + name).slideUp("fast");
-	};
-
-	this.populate = function(xml, name) {
-		var tString = '';
-		var tAction = '';
-		var tContent = '';
-
-		tString = parseXmlValue(xml, name);
-		tAction = parseXmlValue(tString, 'action');
-		tContent = parseXmlValue(tString, 'content');
-
-		if (tContent != "") {
-			$("#" + name).html(tContent);
-		}
-
-		switch (tAction) {
-		case "show":
-			$("#" + name).show();
-			break;
-
-		case "hide":
-			$("#" + name).hide();
-			break;
-
-		case "clear":
-			$("#" + name).html('');
-			break;
-
-		case "clearAndHide":
-			$("#" + name).hide();
-			$("#" + name).html('');
-			break;
-
-		}
-
-		return true;
-	};
-
+	$("[centerable=true]").each(
+		function (tIndex) {
+			$(this).css('top', Math.round(mouseY - ($(this).height() / 2)));
+			$(this).css('left', Math.round(($(window).width() / 2) - ($(this).width() / 2)));
+		});
 }
 
 function bankClass() {
@@ -228,31 +177,6 @@ function allianceClass() {
 
 alliance = new allianceClass();
 
-/**
- * @deprecated
- * @param xml
- * @param tag
- * @returns {String}
- */
-function parseXmlValue(xml, tag) {
-	var out = "";
-	var startMark;
-	var endMark;
-	var startPosition;
-	var endPosition;
-
-	startMark = "<" + tag + ">";
-	endMark = "</" + tag + ">";
-
-	startPosition = xml.search(startMark);
-	endPosition = xml.search(endMark);
-	if (startPosition != -1 && endPosition != -1) {
-		out = xml.substr(startPosition + startMark.length, endPosition
-				- startPosition - startMark.length);
-	}
-	return out;
-}
-
 function getXmlRpc(targetHtml, method, param0, param1, param2, param3) {
 
 	progressBar.start();
@@ -313,36 +237,6 @@ var wasInCombat = false;
  */
 function executeAction(action, subaction, value, id, auth) {
 
-	if (action == 'productBuy') {
-		value = $('#buy_' + id).val();
-		if (value == '')
-			value = 0;
-	}
-
-	if (action == 'productSell') {
-		value = $('#sell_' + id).val();
-		if (value == '')
-			value = 0;
-	}
-
-	if (action == 'itemSell') {
-		value = $('#item_sell_' + id).val();
-		if (value == '')
-			value = 0;
-	}
-
-	if (action == 'plotSet') {
-		value = $('#plotSystem').val() + "/" + $('#plotX').val() + "/"
-				+ $('#plotY').val();
-	}
-
-	var sendXML = '<?xml version="1.0"?>';
-	sendXML = sendXML + "<userID>" + $('#userID').html() + "</userID>";
-	sendXML = sendXML + "<action>" + action + "</action>";
-	sendXML = sendXML + "<subaction>" + subaction + "</subaction>";
-	sendXML = sendXML + "<value>" + value + "</value>";
-	sendXML = sendXML + "<id>" + id + "</id>";
-
 	progressBar.start();
 	
 	$.post(
@@ -355,12 +249,6 @@ function executeAction(action, subaction, value, id, auth) {
 				return true;
 			}
 
-			miniMapPanel.populate(data);
-			sectorPanel.populate(data);
-			portInfoPanel.populate(data);
-			shortShipStatsPanel.populate(data);
-			shortUserStatsPanel.populate(data);
-			shipStatsPanel.populate(data);
 			announcementPanel.populate(data);
 
 			tString = parseXmlValue(data, 'debugPanel');
@@ -371,13 +259,6 @@ function executeAction(action, subaction, value, id, auth) {
 			tString = parseXmlValue(data, 'psDebug');
 			if (tString != "") {
 				$('#debugPanel').html(tString);
-			}
-
-			if (trim($('#sectorShipsPanel').html()) == ''
-					&& trim($('#sectorResourcePanel').html()) == '') {
-				$('#primaryPanel').hide();
-			} else {
-				$('#primaryPanel').show();
 			}
 
 			tString = parseXmlValue(data, 'combatScreen');
@@ -402,240 +283,10 @@ function executeAction(action, subaction, value, id, auth) {
 				}
 			}
 
-			$('.knob').knob();
-
-			progressBar.stop();
 		});
-
-}
-
-function trim(str) {
-	var tString;
-
-	if (str) {
-
-		tString = str;
-		tString = tString.replace(/^\s\s*/, '').replace(/\s\s*$/, '').replace(
-				'&nbsp;', '');
-
-		return tString;
-	} else {
-		return '';
-	}
 }
 
 var Playpulsar = Playpulsar || {};
-var Panel = Panel || {};
-
-Panel.Factory = (function () {
-	
-	var self = {},
-		panels = [];
-	
-	self.createPanel = function(className) {
-		
-		var myClass;
-		
-		if (!panels[className]) {
-			myClass 			= window.Panel[className];
-			panels[className] 	= new myClass();
-		}
-
-		return panels[className];
-		
-	};
-	
-	return self;
-})();
-
-Panel.Base = function () {
-	this.domSelector = '';
-	this.$panel = null;
-	
-	this.visible;
-	
-	this.hide = function() {
-		this.getDomObject().hide();
-		this.visible = false;
-	};
-
-	this.show = function() {
-		this.getDomObject().show();
-		this.visible = true;
-	};
-
-	this.clear = function() {
-		this.getDomObject().html('');
-	};
-
-	this.clearAndHide = function() {
-		this.visible = false;
-		this.getDomObject().hide();
-		this.getDomObject().html('');
-	};
-
-	this.populate = function(obj) {
-
-		if (obj.content != "") {
-			this.getDomObject().html(obj.content);
-		}
-
-		switch (obj.action) {
-			case "show":
-				this.show();
-				break;
-	
-			case "hide":
-				this.hide();
-				break;
-	
-			case "clear":
-				this.clear();
-				break;
-				
-			case "clearAndHide":
-				this.clearAndHide();
-				break;
-				
-			case 'clearIfRendered':
-				if (obj.rendered && obj.content.length === 0) {
-					this.clear();
-				} 
-				break;
-				
-		}
-
-		return true;
-	};
-
-	this.getDomObject = function () {
-		if (!this.$panel) {
-			this.$panel = $(this.domSelector);
-		}
-		return this.$panel;
-	}
-	
-};
-
-Panel.Main = function () {
-	this.domSelector = '#mainPanel';
-};
-Panel.Main.prototype = new Panel.Base();
-
-Panel.Primary = function () {
-	this.domSelector = '#primaryPanel';
-};
-Panel.Primary.prototype = new Panel.Base();
-
-Panel.Move = function () {
-	this.domSelector = '#movePanel';
-};
-Panel.Move.prototype = new Panel.Base();
-
-Panel.Port = function () {
-	this.domSelector = '#portInfoPanel';
-};
-Panel.Port.prototype = new Panel.Base();
-
-Panel.SectorResources = function () {
-	this.domSelector = '#sectorResourcePanel';
-};
-Panel.SectorResources.prototype = new Panel.Base();
-
-Panel.SectorShips = function () {
-	this.domSelector = '#sectorShipsPanel';
-};
-Panel.SectorShips.prototype = new Panel.Base();
-
-Panel.PlayerStats = function () {
-	this.domSelector = '#shortUserStatsPanel';
-};
-Panel.PlayerStats.prototype = new Panel.Base();
-
-Panel.Sector = function () {
-	this.domSelector = '#sectorPanel';
-};
-Panel.Sector.prototype = new Panel.Base();
-
-Panel.ShortStats = function () {
-	this.domSelector = '#shortShipStatsPanel';
-};
-Panel.ShortStats.prototype = new Panel.Base();
-
-Panel.MiniMap = function () {
-	this.domSelector = '#miniMap';
-};
-Panel.MiniMap.prototype = new Panel.Base();
-
-Panel.Navigation = function () {
-	this.domSelector = '#navigationPanel';
-};
-Panel.Navigation.prototype = new Panel.Base();
-
-Panel.Icons = function () {
-	this.domSelector = '#iconPanel';
-};
-Panel.Icons.prototype = new Panel.Base();
-
-/*
- * Simple panels definition
- */
-Panel.Action = function () {
-	this.domSelector = '#actionPanel';
-	
-	this.populate = function(obj) {
-
-		this.getDomObject().html(obj.content);
-
-		if (obj.content == '' || obj.content == '&nbsp;') {
-			this.hide();
-		} else {
-			this.show();
-		}
-		
-		return this;
-	};
-	
-};
-Panel.Action.prototype = new Panel.Base();
-
-Panel.PortAction = function () {
-	this.domSelector = '#portPanel';
-};
-Panel.PortAction.prototype = new Panel.Action();
-
-Panel.Overlay = function () {
-	this.domSelector = '#overlayPanel';
-	
-	this.populate = function(obj) {
-
-		if (!obj.rendered) {
-			return this;
-		}
-
-		if (obj.params && obj.params.closer !== undefined && obj.params.closer === false) {
-			this.getDomObject().find('.close:first').hide();
-		}else {
-			this.getDomObject().find('.close:first').show();
-		}
-		
-		$('#overlayPanelContent').html(obj.content);
-		
-		$("#mainGameplay").hide();
-		this.show();
-		
-		return this;
-	};	
-	
-	this.hide = function() {
-		$('#remoteSectorInfo').hide();
-		$("#mainGameplay").show();
-		this.getDomObject().hide();
-		this.visible = false;
-	};
-	
-};
-Panel.Overlay.prototype = new Panel.Base();
 
 Playpulsar.gameplay = (function () {
 	

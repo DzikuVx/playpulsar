@@ -77,7 +77,13 @@ class combat {
 	 */
 	protected $sectorPropertiesObject = null;
 
+	protected $authCode;
+
 	static protected $weaponCriticalHit = false;
+
+	public function getAuthCode() {
+		return $this->authCode;
+	}
 
 	/**
 	 * Magic
@@ -444,7 +450,7 @@ class combat {
 	/**
 	 * Pobranie dotyczących mnie raportów z bazy
 	 *
-	 * @return unknown
+	 * @return mixed
 	 */
 	protected function getMyCombatMessages() {
 		$retVal = '';
@@ -760,9 +766,10 @@ class combat {
 			\Database\Controller::getInstance()->enableAutocommit();
 
 		}
-		userTimes::genAuthCode ( $this->player->userTimes, $this->player->userFastTimes );
-		$this->retVal .= "<authCode>" . $this->player->userFastTimes->AuthCode . "</authCode>";
 
+		//FIXME move authcode outside combat class
+		userTimes::genAuthCode ( $this->player->userTimes, $this->player->userFastTimes );
+		$this->authCode = $this->player->userFastTimes->AuthCode;
 	}
 
 	/**
@@ -1553,7 +1560,7 @@ class combat {
 			case 2:
 				npc::sSummonProtective($position, $defenderAlliance);
 				break;
-					
+
 			case 3:
 				$tArray = npc::sGetProtectiveAtPosition($position, $defenderAlliance);
 				foreach ($tArray as $npcID) {
@@ -1588,7 +1595,7 @@ class combat {
 			}
 
 		}
-			
+
 		return true;
 	}
 

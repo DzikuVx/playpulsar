@@ -1055,13 +1055,9 @@ try {
 	$shipRoutingObject->synchronize ( $shipRouting, true, true );
 	$userAllianceObject->synchronize($userAlliance, true, true);
 
-	/*
-	if ($debug == "" || empty($config ['debug'] ['gameplayDebugOutput'])) {
-		$debug = "&nbsp;";
-	}
-	$out .= "<debugPanel>" . $debug . "</debugPanel>";
-	*/
 // 	$out .= announcementPanel::getInstance()->out ();
+
+	\Gameplay\Panel\Debug::getInstance()->add($debug);
 
 	$oContentTransport->addPanel(\Gameplay\Panel\Move::getInstance());
 	$oContentTransport->addPanel(\Gameplay\Panel\Port::getInstance());
@@ -1076,6 +1072,7 @@ try {
 	$oContentTransport->addPanel(\Gameplay\Panel\Navigation::getInstance());
 	$oContentTransport->addPanel(\Gameplay\Panel\Icons::getInstance());
 	$oContentTransport->addPanel(\Gameplay\Panel\Overlay::getInstance());
+	$oContentTransport->addPanel(\Gameplay\Panel\Debug::getInstance());
 
 	/*
 	 * Echo prepared JSON for panel transport
@@ -1090,15 +1087,11 @@ try {
 
 } catch ( combatException $e ) {
 
-	$retVal = '';
-
-	/*
-	 * Zainicjuj obiekt walki
-	*/
-
 	$Combat = new combat ( $userID, $userProperties->Language );
 	$Combat->execute ( $action );
-	$retVal .= $Combat;
+
+	\Gameplay\Panel\Overlay::getInstance()->clear();
+	\Gameplay\Panel\Overlay::getInstance()->add((string) $Combat);
 
 	$timek2 = microtime ();
 	$arr_time = explode ( " ", $timek1 );
@@ -1111,7 +1104,11 @@ try {
 		psScriptDebug::sSaveExecution($action, $subaction, $czas_gen);
 	}
 
-	echo \TranslateController::translate($retVal);
+	$oContentTransport->addVariable('AuthCode', $Combat->getAuthCode());
+
+	$oContentTransport->addPanel(\Gameplay\Panel\Overlay::getInstance());
+
+	echo $oContentTransport->get();
 
 } catch ( securityException $e ) {
 

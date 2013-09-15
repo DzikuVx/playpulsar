@@ -19,7 +19,11 @@ class alliance extends baseItem {
 	static public function quickLoad($ID) {
 		$item = new self();
 		$retVal = $item->load ( $ID, true, true );
-		unset($item);
+
+		if (empty($retVal)) {
+			$retVal = new \stdClass();
+		}
+
 		return $retVal;
 	}
 
