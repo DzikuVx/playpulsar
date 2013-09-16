@@ -88,7 +88,7 @@ class ActiveScanner extends SystemMap implements Singleton {
 		$activeScanner 	= new ActiveScanner($userProperties->Language, $userID);
 
 		if (\shipProperties::sCheckMalfunction ( $shipProperties )) {
-			\announcementPanel::getInstance()->write ( 'error', '{T:shipMalfunctionEmp}');
+			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'error', '{T:shipMalfunctionEmp}');
 			return false;
 		}
 
@@ -104,12 +104,12 @@ class ActiveScanner extends SystemMap implements Singleton {
 		$tAmUsage 		= self::sGetAmUsage($shipRouting, $shipPosition);
 
 		if ($shipProperties->Power < $tPowerUsage) {
-			\announcementPanel::getInstance()->write ('warning', TranslateController::getDefault()->get('notEnoughPower'));
+			\Gameplay\Framework\ContentTransport::getInstance()->addNotification('warning', TranslateController::getDefault()->get('notEnoughPower'));
 			return false;
 		}
 
 		if ($shipProperties->Turns < $tAmUsage) {
-			\announcementPanel::getInstance()->write ('warning', TranslateController::getDefault()->get('notEnoughTurns'));
+			\Gameplay\Framework\ContentTransport::getInstance()->addNotification('warning', TranslateController::getDefault()->get('notEnoughTurns'));
 			return false;
 		}
 

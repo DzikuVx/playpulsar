@@ -81,7 +81,7 @@ class allianceRights extends baseItem {
 
 		allianceRights::sRender();
 
-		announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'saved' ) );
+		\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'info', TranslateController::getDefault()->get ( 'saved' ) );
 	}
 
 	static public function sRenderForm($id) {

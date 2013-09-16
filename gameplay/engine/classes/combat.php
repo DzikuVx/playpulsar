@@ -1083,7 +1083,7 @@ class combat {
 		}
 
 		if (shipProperties::sCheckMalfunction ( $attackerProperties )) {
-			announcementPanel::getInstance()->write ( 'error', TranslateController::getDefault()->get ( 'shipMalfunctionEmp' ) );
+			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'error', '{T:shipMalfunctionEmp}');
 			return false;
 		}
 

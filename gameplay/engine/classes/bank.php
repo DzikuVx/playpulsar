@@ -37,7 +37,7 @@ class bank {
 		$userStats->Cash += $value;
 		$userStats->Bank -= $value;
 
-		announcementPanel::getInstance()->write('info', TranslateController::getDefault()->get('opSuccess'));
+		\Gameplay\Framework\ContentTransport::getInstance()->addNotification('info', TranslateController::getDefault()->get('opSuccess'));
 		$action = 'portBank';
 
 	}
@@ -76,7 +76,7 @@ class bank {
 		$userStats->Cash -= $value;
 		$userStats->Bank += floor($value * 0.9);
 
-		announcementPanel::getInstance()->write('info', TranslateController::getDefault()->get('opSuccess'));
+		\Gameplay\Framework\ContentTransport::getInstance()->addNotification('info', TranslateController::getDefault()->get('opSuccess'));
 		$action = 'portBank';
 
 	}

@@ -74,7 +74,7 @@ class alliancePost extends baseItem {
 		\Cache\Controller::getInstance()->clear('alliancePostsRegistry::get',  md5($userAlliance->AllianceID.'|'.serialize(true)));
 		\Cache\Controller::getInstance()->clear('alliancePostsRegistry::get',  md5($userAlliance->AllianceID.'|'.serialize(false)));
 
-		announcementPanel::getInstance()->write('info', TranslateController::getDefault()->get('messageDeleted'));
+		\Gameplay\Framework\ContentTransport::getInstance()->addNotification('info', TranslateController::getDefault()->get('messageDeleted'));
 
 		\Gameplay\Panel\Action::getInstance()->add(alliance::sGetDetail($userAlliance->AllianceID));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();

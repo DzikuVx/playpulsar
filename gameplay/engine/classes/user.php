@@ -247,7 +247,7 @@ class user {
 
 		$userPropertiesObject->synchronize($userProperties, true, true);
 		userStats::sExamineMe();
-		announcementPanel::getInstance()->write('info', TranslateController::getDefault()->get('opSuccess'));
+		\Gameplay\Framework\ContentTransport::getInstance()->addNotification('success', '{T:opSuccess}');
 	}
 
 	static public function sEditOwnDialog() {

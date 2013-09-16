@@ -44,7 +44,7 @@ class buddyList extends baseItem {
 		\Cache\Controller::getInstance()->clear('buddyRegistry::get', $id);
 		\Cache\Controller::getInstance()->clear('buddyRequestRegistry::get', $id);
 
-		announcementPanel::getInstance()->write('info', TranslateController::getDefault()->get('opSuccess'));
+		\Gameplay\Framework\ContentTransport::getInstance()->addNotification('info', TranslateController::getDefault()->get('opSuccess'));
 		self::sRenderList();
 	}
 
@@ -125,7 +125,7 @@ class buddyList extends baseItem {
 		\Cache\Controller::getInstance()->clear('buddyRegistry::get', $id);
 		\Cache\Controller::getInstance()->clear('buddyRequestRegistry::get', $id);
 
-		announcementPanel::getInstance()->write('info', TranslateController::getDefault()->get('opSuccess'));
+		\Gameplay\Framework\ContentTransport::getInstance()->addNotification('info', TranslateController::getDefault()->get('opSuccess'));
 		self::sRenderList();
 	}
 
@@ -223,7 +223,7 @@ class buddyList extends baseItem {
 
 		\Cache\Controller::getInstance()->clear('buddyRequestRegistry::get', $id);
 
-		announcementPanel::getInstance()->write('info', TranslateController::getDefault()->get('Request has been sent'));
+		\Gameplay\Framework\ContentTransport::getInstance()->addNotification('info', TranslateController::getDefault()->get('Request has been sent'));
 		shipExamine ( $id, $userID );
 		\Gameplay\Panel\PortAction::getInstance()->clear();
 	}

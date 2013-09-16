@@ -25,7 +25,7 @@ class navigation {
 			\Database\Controller::getInstance()->execute ( $tQuery );
 		}
 
-		announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'sectorAddedToFavs' ) );
+		\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:sectorAddedToFavs}');
 	}
 
 	/**
@@ -42,7 +42,7 @@ class navigation {
 		$tQuery = "DELETE FROM favouritesectors WHERE UserID='{$userProperties->UserID}' AND System='{$tArray[0]}' AND X='{$tArray[1]}' AND Y='{$tArray[2]}'";
 		\Database\Controller::getInstance()->execute ( $tQuery );
 
-		announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'sectorDeletedFromFavs' ) );
+		\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:sectorDeletedFromFavs}');
 	}
 
 	/**

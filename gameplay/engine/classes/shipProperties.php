@@ -28,7 +28,7 @@ class shipProperties extends baseItem {
 
 		shipExamine ( $userID, $userID );
 		\Gameplay\Panel\PortAction::getInstance()->clear();
-		announcementPanel::getInstance()->write('info', TranslateController::getDefault()->get('opSuccess'));
+		\Gameplay\Framework\ContentTransport::getInstance()->addNotification('success', '{T:opSuccess}');
 		return true;
 	}
 
@@ -691,7 +691,7 @@ class shipProperties extends baseItem {
 
 		$action = "portHangar";
 
-		announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'shipBought' ) . $tShip->Price . '$' );
+		\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:shipBought}' . $tShip->Price . '$' );
 	}
 
 }

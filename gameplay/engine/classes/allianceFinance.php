@@ -72,7 +72,7 @@ class allianceFinance extends baseItem {
 		$item->insert($data);
 		unset ($item);
 
-		announcementPanel::getInstance()->write('info', TranslateController::getDefault()->get('opSuccess'));
+		\Gameplay\Framework\ContentTransport::getInstance()->addNotification('info', TranslateController::getDefault()->get('opSuccess'));
 
 		\Gameplay\Panel\Action::getInstance()->add(alliance::sGetDetail($userAlliance->AllianceID));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
@@ -166,7 +166,7 @@ class allianceFinance extends baseItem {
 		$item->insert($data);
 		unset ($item);
 
-		announcementPanel::getInstance()->write('info', TranslateController::getDefault()->get('opSuccess'));
+		\Gameplay\Framework\ContentTransport::getInstance()->addNotification('info', TranslateController::getDefault()->get('opSuccess'));
 		$action = 'portBank';
 	}
 

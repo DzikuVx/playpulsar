@@ -97,7 +97,7 @@ class ContentTransport implements \Interfaces\Singleton {
 	 * @return ContentTransport
 	 */
 	public function addNotification($sType, $sText) {
-		$this->aNotifications[] = array('type' => $sType, 'text' => $sText);
+		$this->aNotifications[] = array('type' => $sType, 'text' => \TranslateController::translate($sText));
 
 		return $this;
 	}

@@ -17,11 +17,6 @@ try {
 	$oContentTransport 	= ContentTransport::getInstance();
 	$oController 		= GameplayController::getInstance();
 
-	//FIXME remove
-	$oContentTransport->addNotification('info', 'test info');
-	$oContentTransport->addNotification('warning', 'test warinign');
-	$oContentTransport->addNotification('error', 'test erro');
-
 	$oController->registerParameters($_REQUEST);
 
 	$userID = $_SESSION ['userID'];
@@ -553,11 +548,11 @@ try {
 			break;
 
 		case 'deleteMessage' :
-			announcementPanel::getInstance()->populate(\General\Controls::sRenderDialog ( TranslateController::getDefault()->get ( 'confirm' ), TranslateController::getDefault()->get ( 'wantDeleteMessage' ), "Playpulsar.gameplay.execute('wantDeleteMessageExecute','',null,'$id')", 'Playpulsar.gameplay.execute()' ));
+			\Gameplay\Framework\ContentTransport::getInstance()->addNotification(\General\Controls::sRenderDialog ( TranslateController::getDefault()->get ( 'confirm' ), TranslateController::getDefault()->get ( 'wantDeleteMessage' ), "Playpulsar.gameplay.execute('wantDeleteMessageExecute','',null,'$id')", 'Playpulsar.gameplay.execute()' ));
 			break;
 
 		case 'dropRookie' :
-			announcementPanel::getInstance()->populate(\General\Controls::sRenderDialog ( TranslateController::getDefault()->get ( 'confirm' ), TranslateController::getDefault()->get ( 'Do you want to drop rookie turns?' ), "Playpulsar.gameplay.execute('dropRookieExe','',null,null)", 'Playpulsar.gameplay.execute()' ));
+			\Gameplay\Framework\ContentTransport::getInstance()->addNotification(\General\Controls::sRenderDialog ( TranslateController::getDefault()->get ( 'confirm' ), TranslateController::getDefault()->get ( 'Do you want to drop rookie turns?' ), "Playpulsar.gameplay.execute('dropRookieExe','',null,null)", 'Playpulsar.gameplay.execute()' ));
 			break;
 
 		case 'dropRookieExe':
@@ -622,7 +617,7 @@ try {
 			break;
 
 		case 'buyShip' :
-			announcementPanel::getInstance()->populate(\General\Controls::sRenderDialog ( TranslateController::getDefault()->get ( 'confirm' ), TranslateController::getDefault()->get ( 'wantBuyShip' ), "Playpulsar.gameplay.execute('buyShipExecute','',null,'$id')", 'Playpulsar.gameplay.execute()' ));
+			\Gameplay\Framework\ContentTransport::getInstance()->addNotification(\General\Controls::sRenderDialog ( TranslateController::getDefault()->get ( 'confirm' ), TranslateController::getDefault()->get ( 'wantBuyShip' ), "Playpulsar.gameplay.execute('buyShipExecute','',null,'$id')", 'Playpulsar.gameplay.execute()' ));
 			break;
 
 		case 'buyShipExecute' :
@@ -772,11 +767,11 @@ try {
 
 		if (shipProperties::sCheckMalfunction ( $shipProperties )) {
 			$error = true;
-			announcementPanel::getInstance()->write ( 'error', TranslateController::getDefault()->get ( 'shipMalfunctionEmp' ) );
+			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'error', '{T:shipMalfunctionEmp}');
 		}
 
 		if ($shipProperties->Turns < $sectorProperties->MoveCost) {
-			throw new warningException ( TranslateController::getDefault()->get ( 'notEnoughTurns' ) );
+			throw new warningException ('{T:notEnoughTurns}');
 		}
 
 		//Sprawdzenie, czy w sektorze jest port lub stacja
@@ -818,7 +813,7 @@ try {
 
 		if (shipProperties::sCheckMalfunction ( $shipProperties )) {
 			$error = true;
-			announcementPanel::getInstance()->write ( 'error', TranslateController::getDefault()->get ( 'shipMalfunctionEmp' ) );
+			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'error', '{T:shipMalfunctionEmp}');
 		}
 
 		if ($shipPosition->Docked == 'yes') {
@@ -881,7 +876,7 @@ try {
 
 			if (shipRouting::checkArrive ( $shipPosition, $shipRouting )) {
 				\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
-				announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'infoArrived' ) );
+				\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:infoArrived}');
 			}
 
 			\Gameplay\Panel\PortAction::getInstance()->clear ();
@@ -891,7 +886,7 @@ try {
 	if ($action == "shipMove") {
 		if (shipProperties::sCheckMalfunction ( $shipProperties )) {
 			$error = true;
-			announcementPanel::getInstance()->write ( 'error', TranslateController::getDefault()->get ( 'shipMalfunctionEmp' ) );
+			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'error', '{T:shipMalfunctionEmp}');
 		}
 
 		if ($shipPosition->Docked == 'yes') {
@@ -901,7 +896,7 @@ try {
 		//Sprawdzenie, czy statek może się ruszyć
 		if ($shipProperties->Turns < $sectorProperties->MoveCost) {
 			$error = true;
-			announcementPanel::getInstance()->write ( 'warning', TranslateController::getDefault()->get ( 'notEnoughTurns' ) );
+			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'warning', '{T:notEnoughTurns}');
 		}
 
 		switch ($subaction) {
@@ -961,7 +956,7 @@ try {
 			\Gameplay\Panel\Port::getInstance()->render ( $shipPosition, $portProperties, $shipProperties, $jumpNode );
 
 			if (shipRouting::checkArrive ( $shipPosition, $shipRouting )) {
-				announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'infoArrived' ) );
+				\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:infoArrived}');
 			}
 			\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
 
@@ -1033,7 +1028,8 @@ try {
 	/*
 	 * Wiadomość do wszystkich
 	*/
-	gameplayMessage::populate(announcementPanel::getInstance());
+	//FIXME implement
+// 	gameplayMessage::populate(announcementPanel::getInstance());
 
 	/**
 	 * Zapisz obiekty do bazy danych i ew. cache
@@ -1106,26 +1102,52 @@ try {
 
 } catch ( securityException $e ) {
 
+	if (empty($oContentTransport)) {
+		$oContentTransport 	= ContentTransport::getInstance();
+	}
+
+	/**
+	 * @var string
+	 */
 	$tMessage = $e->getMessage();
 
 	if (empty($tMessage)) {
-		announcementPanel::getInstance()->write('error', TranslateController::getDefault()->get ( 'securityError' ));
+		$oContentTransport->addNotification('error', '{T:securityError}');
 	}else {
-		announcementPanel::getInstance()->write('error', $tMessage);
+		$oContentTransport->addNotification('error', $tMessage);
 	}
 
-	echo announcementPanel::getInstance()->out();
+	echo $oContentTransport->get();
 
 } catch ( warningException $e ) {
 
+	if (empty($oContentTransport)) {
+		$oContentTransport 	= ContentTransport::getInstance();
+	}
+
 	$tString = $e->getMessage ();
 	if (empty ( $tString )) {
-		$tString = TranslateController::getDefault()->get ( 'warning' );
+		$tString = '{T:warning}';
 	}
-	announcementPanel::getInstance()->write('warning', $tString);
-	echo \TranslateController::translate(announcementPanel::getInstance()->out());
+
+	$oContentTransport->addNotification('warning', $tString);
+
+	echo $oContentTransport->get();
+
 } catch ( Exception $e ) {
-	$out .= '<psDebug>' . psDebug::cThrow ( null, $e ) . '</psDebug>';
+
+	/*
+	 * Rethrow exception and send error notification
+	 */
+	psDebug::cThrow(null, $e);
+
+	if (empty($oContentTransport)) {
+		$oContentTransport 	= ContentTransport::getInstance();
+	}
+
+	$oContentTransport->addNotification('error', '{T:An error occured, try again or contact game administrators}');
+
 	\Cache\Controller::getInstance()->clearAll();
-	echo \TranslateController::translate($out);
+
+	echo $oContentTransport->get();
 }

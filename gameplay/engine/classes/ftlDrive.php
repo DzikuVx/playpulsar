@@ -28,7 +28,7 @@ class ftlDrive {
 		global $userID, $shipProperties, $shipPosition, $shipRouting, $userStats, $config, $sectorProperties,$portProperties, $systemProperties, $jumpNode, $sectorPropertiesObject, $portPropertiesObject, $jumpNodeObject;
 
 		if (shipProperties::sCheckMalfunction ( $shipProperties )) {
-			announcementPanel::getInstance()->write ( 'error', TranslateController::getDefault()->get ( 'shipMalfunctionEmp' ) );
+			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'error', '{T:shipMalfunctionEmp}');
 			return false;
 		}
 
@@ -48,12 +48,12 @@ class ftlDrive {
 		$tAmUsage = self::sGetAmUsage($shipRouting, $shipPosition);
 
 		if ($shipProperties->Power < $tPowerUsage) {
-			announcementPanel::getInstance()->write ('warning', TranslateController::getDefault()->get('notEnoughPower'));
+			\Gameplay\Framework\ContentTransport::getInstance()->addNotification('warning', '{T:notEnoughPower}');
 			return false;
 		}
 
 		if ($shipProperties->Turns < $tAmUsage) {
-			announcementPanel::getInstance()->write ('warning', TranslateController::getDefault()->get('notEnoughTurns'));
+			\Gameplay\Framework\ContentTransport::getInstance()->addNotification('warning', '{T:notEnoughTurns}');
 			return false;
 		}
 
@@ -118,7 +118,7 @@ class ftlDrive {
 
 		if (shipRouting::checkArrive ( $shipPosition, $shipRouting )) {
 			\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
-			announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'infoArrived' ) );
+			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:infoArrived}');
 		}
 
 		\Gameplay\Panel\PortAction::getInstance()->clear ();

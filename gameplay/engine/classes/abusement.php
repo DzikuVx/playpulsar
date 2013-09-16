@@ -86,7 +86,7 @@ class abusement extends baseItem {
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		\Gameplay\Panel\PortAction::getInstance()->clear();
 
-		announcementPanel::getInstance()->write('info', TranslateController::getDefault()->get('opSuccess'));
+		\Gameplay\Framework\ContentTransport::getInstance()->addNotification('info', TranslateController::getDefault()->get('opSuccess'));
 
 	}
 

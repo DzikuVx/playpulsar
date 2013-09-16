@@ -644,7 +644,7 @@ class shipWeapons {
 				$portProperties->Cash = 0;
 			}
 
-			announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'weaponSold' ) . $tPrice . '$' );
+			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:weaponSold}' . $tPrice . '$' );
 			shipWeaponsRegistry::sRender ();
 			$shipWeapons->computeOffensiveRating ( $shipProperties );
 		}
@@ -689,7 +689,7 @@ class shipWeapons {
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		\Gameplay\Panel\PortAction::getInstance()->clear();
-		announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'weaponSold' ) . $tPrice . '$' );
+		\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:weaponSold}' . $tPrice . '$' );
 	}
 
 	/**
@@ -740,7 +740,7 @@ class shipWeapons {
 			userStats::decCash ( $userStats, $tReloadPrice );
 			$portProperties->Cash += $tReloadPrice;
 
-			announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'weaponReloadedFor' ) . $tReloadPrice . '$' );
+			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:weaponReloadedFor}' . $tReloadPrice . '$' );
 			shipWeaponsRegistry::sRender ();
 		}
 
@@ -777,7 +777,7 @@ class shipWeapons {
 			userStats::decCash ( $userStats, $tRepairPrice );
 			$portProperties->Cash += $tRepairPrice;
 
-			announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'weaponRepairedFor' ) . $tRepairPrice . '$' );
+			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:weaponRepairedFor}' . $tRepairPrice . '$' );
 			shipWeaponsRegistry::sRender ();
 		}
 
@@ -825,7 +825,7 @@ class shipWeapons {
 		userStats::decFame ( $userStats, $tWeapon->Fame );
 		$portProperties->Cash += $tWeapon->Price;
 
-		announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'weaponBought' ) . $tWeapon->Price . '$' );
+		\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:weaponBought}' . $tWeapon->Price . '$' );
 		$action = "portHangar";
 		$shipWeapons->computeOffensiveRating ( $shipProperties );
 	}

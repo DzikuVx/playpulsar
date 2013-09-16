@@ -55,7 +55,7 @@ class message extends baseItem {
 			throw new securityException ( );
 		}
 
-		announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'messageDeleted' ) );
+		\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:messageDeleted}');
 		$tQuery = "DELETE FROM messages WHERE MessageID='{$messageID}' LIMIT 1";
 		\Database\Controller::getInstance()->execute ( $tQuery );
 
@@ -165,7 +165,7 @@ class message extends baseItem {
 
 		self::sInsert($author, $receiver, $text);
 
-		announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'messageSent' ) );
+		\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:messageSent}');
 		messageRegistry::sRender ();
 	}
 

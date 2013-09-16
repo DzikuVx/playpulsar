@@ -347,7 +347,7 @@ class shipEquipment {
 			userStats::decFame ( $userStats, $tEquipment->Fame );
 			$portProperties->Cash += $tEquipment->Price;
 
-			announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'equipmentBought' ) . $tEquipment->Price . '$' );
+			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:equipmentBought}' . $tEquipment->Price . '$' );
 			shipProperties::computeMaxValues ( $shipProperties );
 			$action = "portHangar";
 		}
@@ -381,7 +381,7 @@ class shipEquipment {
 			userStats::decCash ( $userStats, $tRepairPrice );
 			$portProperties->Cash += $tRepairPrice;
 
-			announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'equipmentRepaired' ) . $tRepairPrice . '$' );
+			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:equipmentRepaired}' . $tRepairPrice . '$' );
 			shipProperties::computeMaxValues ( $shipProperties );
 			shipEquipmentRegistry::sRender ();
 		}
@@ -426,7 +426,7 @@ class shipEquipment {
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		\Gameplay\Panel\PortAction::getInstance()->clear();
-		announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'equipmentSold' ) . $tPrice . '$' );
+		\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:equipmentSold}' . $tPrice . '$' );
 	}
 
 	/**
@@ -469,7 +469,7 @@ class shipEquipment {
 				$portProperties->Cash = 0;
 			}
 
-			announcementPanel::getInstance()->write ( 'info', TranslateController::getDefault()->get ( 'equipmentSold' ) . $tPrice . '$' );
+			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:equipmentSold}' . $tPrice . '$' );
 			shipProperties::computeMaxValues ( $shipProperties );
 			shipEquipmentRegistry::sRender ();
 		}
