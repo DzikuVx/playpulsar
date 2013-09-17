@@ -758,7 +758,7 @@ try {
 
 			$action = 'portMarketplace';
 			portProperties::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
-			\Gameplay\Panel\PortAction::getInstance()->clear ();
+			\Gameplay\Panel\Action::getInstance()->clear ();
 			\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
 		}
 	}
@@ -800,12 +800,10 @@ try {
 			portProperties::sReset ( $portProperties );
 
 			\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
-			\Gameplay\Panel\PortAction::getInstance()->clear();
 			\Gameplay\Panel\Port::getInstance()->render ( $shipPosition, $portProperties, $shipProperties, $jumpNode );
 			\Gameplay\Panel\SectorResources::getInstance()->render ( $shipPosition, $shipProperties, $sectorProperties );
 			\Gameplay\Panel\SectorResources::getInstance()->clearForceAction ();
 			\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
-			\Gameplay\Panel\PortAction::getInstance()->clear ();
 		}
 	}
 
@@ -879,7 +877,6 @@ try {
 				\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:infoArrived}');
 			}
 
-			\Gameplay\Panel\PortAction::getInstance()->clear ();
 		}
 	}
 
@@ -959,8 +956,6 @@ try {
 				\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:infoArrived}');
 			}
 			\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
-
-			\Gameplay\Panel\PortAction::getInstance()->clear ();
 		}
 	}
 
@@ -971,8 +966,6 @@ try {
 		\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
 		\Gameplay\Panel\Port::getInstance()->render ( $shipPosition, $portProperties, $shipProperties, $jumpNode );
 		portProperties::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
-
-		\Gameplay\Panel\PortAction::getInstance()->clear ();
 	}
 
 	if ($action == "pageReload" || $action == 'shipAttack' || $action == 'refresh' || $action == 'fireWeapons' || $action == 'disengage') {
@@ -987,7 +980,6 @@ try {
 		\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
 
 		portProperties::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
-		\Gameplay\Panel\PortAction::getInstance()->clear ();
 	}
 
 	/**

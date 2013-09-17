@@ -14,6 +14,7 @@ $translationTable ['pl'] ['Details'] = "Szczegóły";
 $translationTable ['pl'] ['Links'] = "Linki";
 $translationTable ['pl'] ['Resources'] = "Zasoby";
 $translationTable ['pl'] ['System Scan'] = "Skan systemu";
+$translationTable ['pl'] ['Jump completed'] = "Wykonano skok";
 
 $translationTable ['pl'] ['Help'] = "Pomoc";
 $translationTable ['pl'] ['helpFiles'] = "http://pl.guide.playpulsar.com/";

@@ -106,20 +106,19 @@ class ftlDrive {
 		sectorProperties::sResetResources ( $shipPosition, $sectorProperties );
 		portProperties::sReset ( $portProperties );
 
-		global $miniMap;
-
 		\Gameplay\Panel\Sector::getInstance()->render ( $sectorProperties, $systemProperties, $shipPosition );
 
 		\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
 		\Gameplay\Panel\SectorResources::getInstance()->render ( $shipPosition, $shipProperties, $sectorProperties );
 		\Gameplay\Panel\Port::getInstance()->render ( $shipPosition, $portProperties, $shipProperties, $jumpNode );
 
-		$miniMap->load ( $userID, $shipPosition->System, $shipPosition );
+		\Gameplay\Panel\MiniMap::getInstance()->load ( $userID, $shipPosition->System, $shipPosition );
 
 		if (shipRouting::checkArrive ( $shipPosition, $shipRouting )) {
 			\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:infoArrived}');
 		}
+		\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:Jump completed}');
 
 		\Gameplay\Panel\PortAction::getInstance()->clear ();
 
