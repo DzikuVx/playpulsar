@@ -2,6 +2,8 @@
 
 namespace Controlpanel;
 
+use Cache\CacheKey;
+
 use \Database\Controller as Database;
 use \Cache\Controller as Cache;
 use \General\Controls as Controls;
@@ -41,7 +43,7 @@ class News extends BaseItem{
 	}
 
 	protected function clearCache($language) {
-		Cache::getInstance()->clear('newsRegistry', $language);
+		Cache::getInstance()->clear(new CacheKey('newsRegistry', $language));
 	}
 
 	/**
@@ -86,7 +88,7 @@ class News extends BaseItem{
 		$this->db->execute($tQuery);
 
 		global $config;
-		
+
 		$retVal = Controls::reloadWithMessage($config['backend']['fileName'].'?class='.get_class($this).'&method=browse', 'Item created');
 
 		$this->clearCache($params['Language']);
@@ -212,10 +214,10 @@ class News extends BaseItem{
 		/*
 		 * I wyczyść cache poszczególnych plików
 		*/
-		Cache::getInstance()->clear('portalNews::get',$params['id']);
-			
+		Cache::getInstance()->clear(new CacheKey('portalNews::get',$params['id']));
+
 		$retVal = Controls::reloadWithMessage($config['backend']['fileName'].'?class='.get_class($this).'&method=browse', 'Item modified');
-		
+
 		return $retVal;
 	}
 
