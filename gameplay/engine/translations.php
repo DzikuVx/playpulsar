@@ -1,7 +1,8 @@
 <?php
-/*
- * Tablica translacji
+/**
+ * Translation table
  */
+
 $translationTable ['pl'] ['pageDescription'] = "Pulsar Online, darmowa gra przeglądarkowa. Handluj, wykonuj misje, walcz i bądź wśród najlepszych. Przez przeglądarkę, za darmo, na zawsze";
 $translationTable ['en'] ['pageDescription'] = "Pulsar Online, free browser game. Trade, perform missionos, fight and be amont the best. With your browser, for free, forever";
 $translationTable ['pl'] ['pageKeywords'] = "gra, online, mmorpg, przez przeglądarkę, mmo, walka, darmowe, gra za darmo, kosmos";

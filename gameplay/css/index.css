@@ -4,17 +4,29 @@ body {
 	
 }
 
-.logoSpan {
+.logo-container {
 	background: url(../gfx/logo_r3.jpg) top left no-repeat;
-	padding-right: 0;
-	padding-left: 0;
+	height: 150px;
+	border-radius: 4px;
+}
+
+.fb-container {
+	height: 30px;
+	margin-top: 5px;
 }
 
 .motto {
+	float: right;
+	width: 600px;
 	text-align: right;
-	margin-right: 10px;
-	margin-top: 60px;
-	width: 700px;
+	margin: 1rem 1rem 1rem 0;
+	font-size: 1.1em;
+	line-height: 1.4em;
+}
+
+.motto .Header1 {
+	font-weight: bold;
+	font-size: 1.4em;
 }
 
 .news-list {
@@ -26,7 +38,7 @@ body {
 }
 
 .headerSpan {
-	height: 100px;
+	height: 110px;
 }
 
 body {
