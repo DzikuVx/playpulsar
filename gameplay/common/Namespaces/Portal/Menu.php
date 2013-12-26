@@ -2,7 +2,6 @@
 
 namespace Portal;
 
-use \Cache\Controller as Cache;
 use \Database\Controller as Database;
 
 class Menu {
@@ -80,11 +79,10 @@ class Menu {
 
 	public static function render($params) {
 
-		$oCacheKey = new \Cache\CacheKey('menuNavigator::sRender', $params['language']);
-		
-		if (!Cache::getInstance()->check($oCacheKey)) {
+		$oCacheKey = new \phpCache\CacheKey('menuNavigator::sRender', $params['language']);
+        $oCache    = \phpCache\Factory::getInstance()->create();
 
-			$retVal = '';
+		if (!$oCache->check($oCacheKey)) {
 
 			$tList = array();
 
@@ -93,9 +91,9 @@ class Menu {
 			usort($tList, "\Portal\Menu::sSortMe");
 
 			$retVal = self::sRenderList($tList, $params);
-			Cache::getInstance()->set($oCacheKey, $retVal, 86400);
-		}else {
-			$retVal = Cache::getInstance()->get($oCacheKey);
+			$oCache->set($oCacheKey, $retVal, 86400);
+		} else {
+			$retVal = $oCache->get($oCacheKey);
 		}
 
 		return $retVal;

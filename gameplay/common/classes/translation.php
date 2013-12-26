@@ -4,6 +4,7 @@
  *
  * @version $Rev: 456 $
  * @package Common
+ * @deprecated
  */
 class translation {
 	protected $language;
@@ -20,17 +21,20 @@ class translation {
 
 		$this->language = $language;
 		
-		$oCacheKey = new \Cache\CacheKey('translationList', $this->language);
-		if (!translation::$useCache || ! \Cache\Controller::getInstance()->check ($oCacheKey)) {
+		$oCacheKey = new \phpCache\CacheKey('translationList', $this->language);
+        $cache     = \phpCache\Factory::getInstance()->create();
+
+		if (!translation::$useCache || ! $cache->check ($oCacheKey)) {
 			require $file;
-			$this->table = $translationTable [$this->language];
+            /** @noinspection PhpUndefinedVariableInspection */
+            $this->table = $translationTable [$this->language];
 			unset ( $translationTable );
 
 			if (translation::$useCache) {
-				\Cache\Controller::getInstance()->set ( $oCacheKey, $this->table, 86400 );
+				$cache->set ( $oCacheKey, $this->table, 86400 );
 			}
 		} else {
-			$this->table = \Cache\Controller::getInstance()->get ( $oCacheKey );
+			$this->table = $cache->get ( $oCacheKey );
 		}
 
 	}

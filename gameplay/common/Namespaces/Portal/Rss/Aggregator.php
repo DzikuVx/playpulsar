@@ -20,18 +20,18 @@ class Aggregator {
 
 	/**
 	 * Sets renderer function output items number limit
-	 * @param unknown_type $value
+	 * @param int $value
 	 */
 	public function setRenderItemLimit($value) {
 		$this->renderItemLimit = $value;
 	}
 
-	/**
-	 * Konstruktor
-	 * @param string $uri
-	 * @param boolean $cacheable
-	 */
-	public function __construct($uri, $cacheable = false, $cacheValidThreshold = 3600) {
+    /**
+     * @param string $uri
+     * @param bool $cacheable
+     * @param int $cacheValidThreshold
+     */
+    public function __construct($uri, $cacheable = false, $cacheValidThreshold = 3600) {
 		$this->rssURI = $uri;
 		$this->uriCache = $cacheable;
 		$this->cacheValidThreshold = $cacheValidThreshold;
@@ -55,13 +55,14 @@ class Aggregator {
 		}else {
 			try {
 
-				$oCacheKey = new \Cache\CacheKey('psRssAgregator::open', md5($this->rssURI));
-				
-				if (!\Cache\Controller::getInstance()->check($oCacheKey)) {
+				$oCacheKey = new \phpCache\CacheKey('psRssAgregator::open', md5($this->rssURI));
+                $oCache    = \phpCache\Factory::getInstance()->create();
+
+				if (!$oCache->check($oCacheKey)) {
 					$this->loadContent();
-					\Cache\Controller::getInstance()->set($oCacheKey, $this->uriContent, $this->cacheValidThreshold);
+					$oCache->set($oCacheKey, $this->uriContent, $this->cacheValidThreshold);
 				}else {
-					$this->uriContent = \Cache\Controller::getInstance()->get($oCacheKey);
+					$this->uriContent = $oCache->get($oCacheKey);
 				}
 
 			}catch (Exception $e) {

@@ -27,12 +27,6 @@ abstract class extendedItem {
 	protected $dbID = null;
 	protected $cacheID = null;
 
-	/**
-	 * Wstawienie pozycji do bazy danych
-	 *
-	 * @param stdClass $data
-	 * @return int - id wstawionej pozycji
-	 */
 	protected function insert() {
 
 		$tQuery = $this->formatInsertQuery ( );
@@ -41,20 +35,18 @@ abstract class extendedItem {
 		return \Database\Controller::getInstance()->lastUsedID ();
 	}
 
-	/**
-	 * Konstruktor klasy bazowej
-	 *
-	 * @param int $ID
-	 * @param boolean $useCache
-	 * @param dataBase $db
-	 * @param mixed $cache
-	 */
-	function __construct($ID = null, $useCache = true, $db = null, $cache = null) {
+    /**
+     * @param null $ID
+     * @param bool $useCache
+     * @param null $db
+     * @param null $cache
+     */
+    function __construct($ID = null, $useCache = true, $db = null, $cache = null) {
 
 		$this->cache = $cache;
 
 		if (empty($this->cache)) {
-			$this->cache = \Cache\Controller::getInstance();
+			$this->cache = \phpCache\Factory::getInstance()->create();
 		}
 
 		$this->ID = $ID;
@@ -70,21 +62,18 @@ abstract class extendedItem {
 
 	}
 
-	/**
-	 * Pobranie obiektu z cache
-	 *
-	 * @param int $ID - ID obiektu do pobrania
-	 * @throws Exception
-	 * @return boolean
-	 */
-	protected function fromCache() {
+    /**
+     * @return bool
+     * @throws Exception
+     */
+    protected function fromCache() {
 
 		if (empty($this->cacheID)) {
 			throw new Exception('Cache ID empty, load failed');
 		}
 		//@FIXME cache identifier have to come from table name not class name
 		
-		$oCacheKey = new \Cache\CacheKey($this, $this->cacheID);
+		$oCacheKey = new \phpCache\CacheKey($this, $this->cacheID);
 		
 		if ($this->cache->check ( $oCacheKey )) {
 			$this->loadData( $this->cache->get ( $oCacheKey ), true );
@@ -95,11 +84,6 @@ abstract class extendedItem {
 
 	}
 
-	/**
-	 * Zapis obiektu do cache
-	 *
-	 * @return boolean
-	 */
 	protected function toCache() {
 
 		if (empty($this->cacheID)) {
@@ -107,7 +91,7 @@ abstract class extendedItem {
 		}
 
 		//@FIXME make $oCacheKey a global class identifier
-		$oCacheKey = new \Cache\CacheKey($this, $this->cacheID);
+		$oCacheKey = new \phpCache\CacheKey($this, $this->cacheID);
 		
 		$this->cache->set ( $oCacheKey, $this->serializeData(), $this->cacheExpire );
 
@@ -116,7 +100,7 @@ abstract class extendedItem {
 
 	public function clearCache() {
 		//@FIXME make $oCacheKey a global class identifier
-		$oCacheKey = new \Cache\CacheKey($this, $this->cacheID);
+		$oCacheKey = new \phpCache\CacheKey($this, $this->cacheID);
 		
 		$this->cache->clear($oCacheKey);
 	}

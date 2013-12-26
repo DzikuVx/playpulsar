@@ -22,9 +22,10 @@ class portalMainNews extends baseItem{
 	 */
 	function get($ID = null) {
 
-		$oCacheKey = new \Cache\CacheKey('portalMainNews', $this->language);
-			
-		if (!\Cache\Controller::getInstance()->check($oCacheKey)) {
+		$oCacheKey = new \phpCache\CacheKey('portalMainNews', $this->language);
+        $oCache    = \phpCache\Factory::getInstance()->create();
+
+		if (!$oCache->check($oCacheKey)) {
 
 			$query = "
 			SELECT
@@ -44,10 +45,10 @@ class portalMainNews extends baseItem{
 			$result = \Database\Controller::getPortalInstance()->execute ( $query );
 			$this->dataObject = \Database\Controller::getPortalInstance()->fetch ( $result );
 
-			\Cache\Controller::getInstance()->set($oCacheKey, $this->dataObject);
+			$oCache->set($oCacheKey, $this->dataObject);
 
 		}else {
-			$this->dataObject = \Cache\Controller::getInstance()->get($oCacheKey);
+			$this->dataObject = $oCache->get($oCacheKey);
 		}
 		return true;
 	}

@@ -58,7 +58,7 @@ class WeaponTypes extends GameplayItem{
 
 		$tQuery = BaseItem::sMakeUpdateQuery('weapontypes', 'WeaponID', $tFields, $params);
 		\Database\Controller::getInstance()->execute($tQuery);
-		\Cache\Controller::getInstance()->clear('weapon',$params['id']);
+        \phpCache\Factory::getInstance()->create()->clear('weapon', $params['id']);
 
 		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
 	}
@@ -134,15 +134,14 @@ class WeaponTypes extends GameplayItem{
 	 */
 	static public function sGetStationList($id, $cacheAble = true) {
 
-		$retVal = array();
+		$oCacheKey = new \phpCache\CacheKey('cpWeaponTypes::sGetStationList', $id);
+        $oCache    = \phpCache\Factory::getInstance()->create();
 
-		$oCacheKey = new \Cache\CacheKey('cpWeaponTypes::sGetStationList', $id);
-		
-		if ($cacheAble && \Cache\Controller::getInstance()->check($oCacheKey)) {
-			$retVal = \Cache\Controller::getInstance()->get($oCacheKey);
+		if ($cacheAble && $oCache->check($oCacheKey)) {
+			$retVal = $oCache->get($oCacheKey);
 		}else {
 			$retVal = self::sStationListData($id);
-			\Cache\Controller::getInstance()->set($oCacheKey, $retVal);
+			$oCache->set($oCacheKey, $retVal);
 		}
 
 		return $retVal;
@@ -150,15 +149,14 @@ class WeaponTypes extends GameplayItem{
 
 	static public function sGetNpcList($id, $cacheAble = true) {
 
-		$retVal = array();
+		$oCacheKey = new \phpCache\CacheKey('cpWeaponTypes::sGetNpcList', $id);
+        $oCache    = \phpCache\Factory::getInstance()->create();
 
-		$oCacheKey = new \Cache\CacheKey('cpWeaponTypes::sGetNpcList', $id);
-
-		if ($cacheAble && \Cache\Controller::getInstance()->check($oCacheKey)) {
-			$retVal = \Cache\Controller::getInstance()->get($oCacheKey);
+		if ($cacheAble && $oCache->check($oCacheKey)) {
+			$retVal = $oCache->get($oCacheKey);
 		}else {
 			$retVal = self::sNpcListData($id);
-			\Cache\Controller::getInstance()->set($oCacheKey, $retVal);
+			$oCache->set($oCacheKey, $retVal);
 		}
 
 		return $retVal;

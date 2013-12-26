@@ -21,9 +21,8 @@ try {
 
 	$userID = $_SESSION ['userID'];
 
-	/**
-	 * Sprawdz, czy jest polecenie wyczyszczenia cache
-	 */
+    //FIXME rozwiązać problem tabeli cacheclear
+    /*
 	$tExists = false;
 	$tQuery = \Database\Controller::getInstance()->execute ( "SELECT Module FROM cacheclear WHERE UserID='$userID'" );
 	while ( $tRow = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
@@ -33,6 +32,7 @@ try {
 	if ($tExists) {
 		$tQuery = \Database\Controller::getInstance()->execute ( "DELETE FROM cacheclear WHERE UserID='$userID'" );
 	}
+    */
 
 	/*
 	 * Koniec czyszczenia cache
@@ -98,11 +98,12 @@ try {
 		/*
 		 * Sprawdź, czy na tego kolesia jest założona blokada
 		*/
-		$oCacheKey = new \Cache\CacheKey('npcCombatLocked', $tResult->UserID);
+		$oCacheKey = new \phpCache\CacheKey('npcCombatLocked', $tResult->UserID);
+        $oCache    = \phpCache\Factory::getInstance()->create();
 
-		if (\Cache\Controller::getInstance()->check($oCacheKey) === false) {
+		if ($oCache->check($oCacheKey) === false) {
 
-			\Cache\Controller::getInstance()->set($oCacheKey, 1, 2);
+			$oCache->set($oCacheKey, 1, 2);
 
 			$Combat = new combat ( $tResult->UserID, 'en' );
 			switch ($tResult->Behavior) {
@@ -122,7 +123,7 @@ try {
 				'doSummon' => false
 			)	);
 			unset ( $Combat );
-			\Cache\Controller::getInstance()->clear($oCacheKey);
+			$oCache->clear($oCacheKey);
 		}
 	}
 
@@ -547,6 +548,7 @@ try {
 			message::sDelete ( $id );
 			break;
 
+        //FIXME to chyba nie działa
 		case 'deleteMessage' :
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification(\General\Controls::sRenderDialog ( TranslateController::getDefault()->get ( 'confirm' ), TranslateController::getDefault()->get ( 'wantDeleteMessage' ), "Playpulsar.gameplay.execute('wantDeleteMessageExecute','',null,'$id')", 'Playpulsar.gameplay.execute()' ));
 			break;
@@ -986,7 +988,7 @@ try {
 	 * Czyszczenie cache przy pełnym odświeżeniu strony
 	 */
 	if ($action == "pageReload") {
-		\Cache\Controller::getInstance()->clear(new \Cache\CacheKey('user::sGetOnlineCount', ''));
+        \phpCache\Factory::getInstance()->create()->clear(new \phpCache\CacheKey('user::sGetOnlineCount', ''));
 	}
 
 	/*
@@ -1139,7 +1141,7 @@ try {
 
 	$oContentTransport->addNotification('error', '{T:An error occured, try again or contact game administrators}');
 
-	\Cache\Controller::getInstance()->clearAll();
+    \phpCache\Factory::getInstance()->create()->clearAll();
 
 	echo $oContentTransport->get();
 }

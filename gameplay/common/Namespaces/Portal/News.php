@@ -2,7 +2,6 @@
 
 namespace Portal;
 
-use \Cache\Controller as Cache;
 use \Database\Controller as Database;
 
 class News extends BaseItem {
@@ -30,11 +29,12 @@ class News extends BaseItem {
 		if ($ID == null)
 			return false;
 
-		$oCacheKey = new \Cache\CacheKey('portalNews::get', $ID);
-		
-		if (Cache::getInstance()->check($oCacheKey)) {
-			$this->dataObject = unserialize(Cache::getInstance()->get($oCacheKey));
-		}else {
+		$oCacheKey = new \phpCache\CacheKey('portalNews::get', $ID);
+        $oCache    = \phpCache\Factory::getInstance()->create();
+
+		if ($oCache->check($oCacheKey)) {
+			$this->dataObject = unserialize($oCache->get($oCacheKey));
+		} else {
 			$query = "
 			SELECT
 			portal_news.NewsID AS NewsID,
@@ -51,7 +51,7 @@ class News extends BaseItem {
 			$result = Database::getPortalInstance()->execute ( $query );
 			$this->dataObject = Database::getPortalInstance()->fetch ( $result );
 
-			Cache::getInstance()->set($oCacheKey, serialize($this->dataObject), 86400);
+			$oCache->set($oCacheKey, serialize($this->dataObject), 86400);
 
 		}
 
@@ -116,8 +116,8 @@ class News extends BaseItem {
 	}
 
 	/**
-	 * @return stdClass
-	 * @param stdClass $object
+	 * @return \stdClass
+	 * @param \stdClass $object
 	 */
 	private function getNext($object = null) {
 

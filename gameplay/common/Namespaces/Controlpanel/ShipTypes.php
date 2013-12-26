@@ -10,14 +10,14 @@ class ShipTypes extends GameplayItem{
 
 	protected $tableName = 'shiptypes';
 	protected $tableIdField = 'ShipID';
-	
-	/**
-	 * Edycja, wykonanie
-	 * @param user $user
-	 * @param array $params
-	 * @throws customException
-	 */
-	public function editExe($user, $params) {
+
+    /**
+     * @param $user
+     * @param $params
+     * @return string
+     * @throws \customException
+     */
+    public function editExe($user, $params) {
 		$retVal = '';
 	
 		if (empty($_SESSION['returnUser'])) {
@@ -35,8 +35,7 @@ class ShipTypes extends GameplayItem{
 	
 		$tQuery = BaseItem::sMakeUpdateQuery('shiptypes', 'ShipID', $tFields, $params);
 		\Database\Controller::getInstance()->execute($tQuery);
-		\Cache\Controller::getInstance()->clear('ship',$params['id']);
-	
+        \phpCache\Factory::getInstance()->create()->clear('ship',$params['id']);
 		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
 		
 		return $retVal;
@@ -88,15 +87,14 @@ class ShipTypes extends GameplayItem{
 	 */
 	static public function sGetStationList($id, $cacheAble = true) {
 
-		$retVal = array();
+		$oCacheKey = new \phpCache\CacheKey('cpShipTypes::sGetStationList', $id);
+		$oCache    = \phpCache\Factory::getInstance()->create();
 
-		$oCacheKey = new \Cache\CacheKey('cpShipTypes::sGetStationList', $id);
-		
-		if ($cacheAble && \Cache\Controller::getInstance()->check($oCacheKey)) {
-			$retVal = \Cache\Controller::getInstance()->get($oCacheKey);
+		if ($cacheAble && $oCache->check($oCacheKey)) {
+			$retVal = $oCache->get($oCacheKey);
 		}else {
 			$retVal = self::sStationListData($id);
-			\Cache\Controller::getInstance()->set($oCacheKey, $retVal);
+			$oCache->set($oCacheKey, $retVal);
 		}
 
 		return $retVal;

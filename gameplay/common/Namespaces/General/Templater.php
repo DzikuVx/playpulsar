@@ -1,7 +1,6 @@
 <?php
 
 namespace General;
-use \Cache\Controller as Cache;
 
 class Templater {
 
@@ -24,7 +23,7 @@ class Templater {
 
 	/**
 	 * Translation class
-	 * @var translation
+	 * @var \Translate
 	 */
 	protected $translation = null;
 
@@ -34,15 +33,11 @@ class Templater {
 	 */
 	static $useCache = false;
 
-	/**
-	 * Construct function
-	 *
-	 * @param string $fileName
-	 * @param string $cacheModule
-	 * @param string $cacheProperty
-	 * @return boolean
-	 */
-	public function __construct($fileName, $translation = null) {
+    /**
+     * @param string $fileName
+     * @param \Translate $translation
+     */
+    public function __construct($fileName, $translation = null) {
 
 		$this->fileName = $fileName;
 		$this->load ();
@@ -62,9 +57,10 @@ class Templater {
 	 */
 	protected function load() {
 
-		$oCachekey = new \Cache\CacheKey('Templater::load', md5(realpath('').'|'.$this->fileName));
-		
-		if (!self::$useCache || !Cache::getInstance()->check($oCachekey)) {
+		$oCachekey = new \phpCache\CacheKey('Templater::load', md5(realpath('').'|'.$this->fileName));
+        $oCache    = \phpCache\Factory::getInstance()->create();
+
+		if (!self::$useCache || !$oCache->check($oCachekey)) {
 
 			try {
 				if (file_exists ( $this->fileName )) {
@@ -78,16 +74,16 @@ class Templater {
 					flock ( $tFile, LOCK_UN );
 					fclose ( $tFile );
 
-					Cache::getInstance()->set($oCachekey, $this->template, 86400);
+					$oCache->set($oCachekey, $this->template, 86400);
 
 				} else {
-					throw new Exception ( 'Brak pliku' );
+					throw new \Exception ( 'File not found' );
 				}
-			} catch ( Exception $e ) {
-				throw new Exception ( 'Błąd otwarcia szablonu' );
+			} catch ( \Exception $e ) {
+				throw new \Exception ( 'Error loading template' );
 			}
 		}else {
-			$this->template = Cache::getInstance()->get($oCachekey);
+			$this->template = $oCache->get($oCachekey);
 		}
 	}
 
@@ -123,7 +119,7 @@ class Templater {
 					$this->add ( $tKey, $tValue );
 				}
 			}
-		} catch ( Exception $e ) {
+		} catch ( \Exception $e ) {
 			return false;
 		}
 

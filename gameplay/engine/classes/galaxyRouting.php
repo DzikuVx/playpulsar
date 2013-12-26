@@ -65,9 +65,10 @@ class galaxyRouting extends systemRouting {
 	 */
 	private function getNodes() {
 
-		$oCacheKey = new \Cache\CacheKey('galaxyRouting::getNodes', '');
-		
-		if (!\Cache\Controller::getInstance()->check($oCacheKey)) {
+		$oCacheKey = new \phpCache\CacheKey('galaxyRouting::getNodes', '');
+        $oCache    = \phpCache\Factory::getInstance()->create();
+
+		if (!$oCache->check($oCacheKey)) {
 
 			$this->tNodes = array ();
 
@@ -88,10 +89,10 @@ class galaxyRouting extends systemRouting {
 				$this->tNodes [$resultRow->DstSystem] [$resultRow->SrcSystem] = true;
 			}
 
-			\Cache\Controller::getInstance()->set($oCacheKey, serialize($this->tNodes), $this->cacheTime);
+			$oCache->set($oCacheKey, serialize($this->tNodes), $this->cacheTime);
 
-		}else {
-			$this->tNodes = unserialize(\Cache\Controller::getInstance()->get($oCacheKey));
+		} else {
+			$this->tNodes = unserialize($oCache->get($oCacheKey));
 		}
 
 		return true;
@@ -103,27 +104,28 @@ class galaxyRouting extends systemRouting {
 	 */
 	private function getSystems() {
 
-		$oCacheKey = new \Cache\CacheKey('galaxyRouting::getSystems', '');
-		
-		if (!\Cache\Controller::getInstance()->check($oCacheKey)) {
+		$oCacheKey = new \phpCache\CacheKey('galaxyRouting::getSystems', '');
+        $oCache    = \phpCache\Factory::getInstance()->create();
+
+		if (!$oCache->check($oCacheKey)) {
 
 			$this->tRoute = array ();
 
 			$tQuery = \Database\Controller::getInstance()->execute ( "SELECT
-        systems.SystemID
-      FROM 
-        systems
-      WHERE
-        systems.Enabled = 'yes'
-        " );
+                systems.SystemID
+              FROM
+                systems
+              WHERE
+                systems.Enabled = 'yes'
+                " );
 			while ( $resultRow = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 				$this->tRoute [$resultRow->SystemID] = new routingSystem ( );
 			}
 
-			\Cache\Controller::getInstance()->set($oCacheKey, serialize($this->tRoute), $this->cacheTime);
+			$oCache->set($oCacheKey, serialize($this->tRoute), $this->cacheTime);
 
 		}else {
-			$this->tRoute = unserialize(\Cache\Controller::getInstance()->get($oCacheKey));
+			$this->tRoute = unserialize($oCache->get($oCacheKey));
 		}
 
 		return true;

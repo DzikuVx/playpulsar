@@ -174,23 +174,18 @@ class allianceRequest extends baseItem {
 		\Database\Controller::getInstance()->execute($tQuery);
 	}
 
-	/**
-	 *
-	 * Pobranie liczby zgłoszeń do sojuszu
-	 * @param int $allianceID
-	 * @return int
-	 * @since 2010-07-27
-	 * @throws \Database\Exception
-	 */
-	static public function sGetCount($allianceID) {
-
-		$retVal = 0;
+    /**
+     * @param $allianceID
+     * @return int
+     */
+    static public function sGetCount($allianceID) {
 
 		try {
 
-			$oCacheKey = new \Cache\CacheKey('allianceRequest::sGetCount', $allianceID);
+			$oCacheKey = new \phpCache\CacheKey('allianceRequest::sGetCount', $allianceID);
+            $oCache    = \phpCache\Factory::getInstance()->create();
 
-			if (!\Cache\Controller::getInstance()->check($oCacheKey)) {
+			if (!$oCache->check($oCacheKey)) {
 
 				if (\Database\Controller::getInstance()->getHandle() === false) {
 					throw new \Database\Exception('Connection lost');
@@ -200,10 +195,10 @@ class allianceRequest extends baseItem {
 				$tQuery = \Database\Controller::getInstance()->execute($tQuery);
 				$retVal = \Database\Controller::getInstance()->fetch($tQuery)->ILE;
 
-				\Cache\Controller::getInstance()->set($oCacheKey, $retVal);
+				$oCache->set($oCacheKey, $retVal);
 
 			}else {
-				$retVal = \Cache\Controller::getInstance()->get($oCacheKey);
+				$retVal = $oCache->get($oCacheKey);
 			}
 
 		}catch (Exception $e) {
@@ -214,18 +209,13 @@ class allianceRequest extends baseItem {
 		return $retVal;
 	}
 
-	/**
-	 *
-	 * Lista podań do sojuszu, konstruktor statyczny
-	 * @param int $allianceID
-	 * @throws securityException
-	 * @since 2010-07-27
-	 */
-	static public function sRender() {
+    /**
+     * @throws securityException
+     */
+    static public function sRender() {
 
-		global $userID, $userAlliance, $t;
+		global $userID, $userAlliance;
 
-		$tOperations = '';
 		if (empty($userAlliance->AllianceID)) {
 			throw new securityException();
 		}
@@ -245,14 +235,11 @@ class allianceRequest extends baseItem {
 
 	}
 
-	/**
-	 *
-	 * Dialog przyjęcia do sojuszu
-	 * @param int $apprenticeID
-	 * @throws securityException
-	 * @since 2010-07-31
-	 */
-	static public function sAccept($apprenticeID) {
+    /**
+     * @param int $apprenticeID
+     * @throws securityException
+     */
+    static public function sAccept($apprenticeID) {
 		global $userAlliance, $userID;
 
 		/*
@@ -337,11 +324,14 @@ class allianceRequest extends baseItem {
 		/*
 		 * Oczyść cache
 		 */
+        //FIXME to jest bez sensu
 		\Cache\Controller::forceClear($apprenticeID, 'userAlliance');
 		\Cache\Controller::forceClear($apprenticeID, 'allianceRights');
-		\Cache\Controller::getInstance()->clearModule('alliance::getRegistry');
-		\Cache\Controller::getInstance()->clearModule('allianceMembersRegistry::get');
-		\Cache\Controller::getInstance()->clearModule('allianceRequest::sGetCount');
+
+        $oCache    = \phpCache\Factory::getInstance()->create();
+        $oCache->clearModule('alliance::getRegistry');
+		$oCache->clearModule('allianceMembersRegistry::get');
+		$oCache->clearModule('allianceRequest::sGetCount');
 
 		/*
 		 * Nadaj puste prawa

@@ -3,7 +3,6 @@
 namespace Controlpanel;
 use \Database\Controller as Database;
 use \General\Controls as Controls;
-use \Cache\Controller as Cache;
 
 class Player extends BaseItem {
 

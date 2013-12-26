@@ -5,7 +5,7 @@
  * @version $Rev: 456 $
  * @package Engine
  */
-use Cache\CacheKey;
+use phpCache\CacheKey;
 
 class npc extends baseItem {
 
@@ -518,7 +518,7 @@ class npc extends baseItem {
 				/*
 				 * Wyczyść cache jego pozycji
 				 */
-				\Cache\Controller::getInstance()->clear(new CacheKey('shipPosition', $tR1->NpcID));
+				\phpCache\Factory::getInstance()->create()->clear(new CacheKey('shipPosition', $tR1->NpcID));
 
 			}
 

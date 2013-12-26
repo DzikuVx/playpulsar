@@ -374,7 +374,7 @@ Playpulsar.gameplay = (function () {
 			});
 		
 	}
-	
+
 	self.processSuccess = function (data, textStatus, jqXHR) {
 		
 		var panelName,

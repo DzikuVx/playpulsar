@@ -22,6 +22,8 @@ if (! isset ( $_REQUEST ['method'] )) {
 	$_REQUEST ['method'] = 'browse';
 }
 
+require_once '../common/Namespaces/phpCache/Factory.php';
+require_once '../common/Namespaces/SSMQ/SSMQ.php';
 require_once '../common/Namespaces/General/Autoloader.php';
 \General\Autoloader::register();
 
@@ -36,8 +38,6 @@ require_once '../config.inc.php';
 require_once 'config.inc.php';
 
 psDebug::create ();
-
-$cache = \Cache\Session::getInstance();
 
 TranslateController::setDefaultLanguage('en');
 $t = TranslateController::getDefault();

@@ -11,28 +11,29 @@ class Translate implements ArrayAccess {
 
 	static public $useCache = false;
 
-	/**
-	 * Konstruktor
-	 *
-	 * @param string $language
-	 */
-	public function __construct($language, $file = 'translations.php') {
+    /**
+     * @param string $language
+     * @param string $file
+     */
+    public function __construct($language, $file = 'translations.php') {
 
 		$this->language = $language;
 
-		$key = new \Cache\CacheKey('translationList', $this->language);
-		
-		if (!self::$useCache || ! \Cache\Controller::getInstance()->check ($key)) {
+		$key   = new \phpCache\CacheKey('translationList', $this->language);
+        $cache = \phpCache\Factory::getInstance()->create();
+
+		if (!self::$useCache || ! $cache->check ($key)) {
 			require dirname ( __FILE__ ).'/../../engine/'.$file;
-			
-			$this->table = $translationTable [$this->language];
+
+            /** @noinspection PhpUndefinedVariableInspection */
+            $this->table = $translationTable [$this->language];
 			unset ( $translationTable );
 
 			if (self::$useCache) {
-				\Cache\Controller::getInstance()->set ( $key, $this->table, 86400 );
+                $cache->set ( $key, $this->table, 86400 );
 			}
 		} else {
-			$this->table = \Cache\Controller::getInstance()->get ($key);
+			$this->table = $cache->get ($key);
 		}
 
 	}

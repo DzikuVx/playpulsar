@@ -21,14 +21,11 @@ abstract class baseRegistry {
 	protected $query;
 	protected $rowCount = 0;
 
-	/**
-	 * Konstruktor
-	 *
-	 * @param string $language
-	 * @param item $item2page
-	 * @return boolean
-	 */
-	function __construct($language, $item2page) {
+    /**
+     * @param string $language
+     * @param int $item2page
+     */
+    function __construct($language, $item2page) {
 
 		$this->language = $language;
 		$this->itemToPage = $item2page;

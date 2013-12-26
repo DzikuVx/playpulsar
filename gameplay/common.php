@@ -4,9 +4,14 @@
  */
 header ( 'Content-Type: text/html; charset=utf-8' );
 
+/*
+ * Require external modules
+ */
+require_once 'common/Namespaces/phpCache/Factory.php';
+require_once 'common/Namespaces/SSMQ/SSMQ.php';
+
 require_once 'common/Namespaces/General/Autoloader.php';
 \General\Autoloader::register();
-
 
 session_start ();
 
@@ -35,11 +40,7 @@ if (empty ( $_SESSION ['lastNPCMoveTime'] )) {
 	$_SESSION ['lastNPCMoveTime'] = time () - $config ['timeThresholds'] ['npcMove'];
 }
 
-/**
- * Stara metoda cache
- * @var \Cache\Session
- */
-$cache = \Cache\Session::getInstance();
+//FIXME default caching method
 
 $colorTable ['green'] = "#00f000";
 $colorTable ['yellow'] = "#f0f000";

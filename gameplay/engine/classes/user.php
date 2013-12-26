@@ -179,22 +179,21 @@ class user {
 
 		global $config;
 
-		$retVal = 0;
-
 		try {
 
-			$oCacheKey = new \Cache\CacheKey('user::sGetOnlineCount', '');
+			$oCacheKey = new \phpCache\CacheKey('user::sGetOnlineCount', '');
+            $oCache    = \phpCache\Factory::getInstance()->create();
 
-			if (!\Cache\Controller::getInstance()->check($oCacheKey)) {
+			if (!$oCache->check($oCacheKey)) {
 
 				$tQuery = "SELECT COUNT(users.UserID) AS ILE FROM usertimes JOIN users USING(UserID) JOIN userstats USING(UserID) WHERE users.Type='player' AND usertimes.LastAction>'" . (time () - $config ['user'] ['onlineThreshold']) . "'";
 				$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
 				$retVal = \Database\Controller::getInstance()->fetch($tQuery)->ILE;
 
-				\Cache\Controller::getInstance()->set($oCacheKey, $retVal, 120);
+				$oCache->set($oCacheKey, $retVal, 120);
 
 			}else {
-				$retVal = \Cache\Controller::getInstance()->get($oCacheKey);
+				$retVal = $oCache->get($oCacheKey);
 			}
 
 		}catch (Exception $e) {

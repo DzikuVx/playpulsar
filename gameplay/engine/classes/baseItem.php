@@ -58,13 +58,12 @@ abstract class baseItem {
 	 */
 	function fromCache($ID) {
 
-		global $config;
+		$oCacheKey = new \phpCache\CacheKey($this, $ID);
+        $oCache    = \phpCache\Factory::getInstance()->create();
 
-		$oCacheKey = new \Cache\CacheKey($this, $ID);
-		
-		if (\Cache\Controller::getInstance()->check ( $oCacheKey )) {
+		if ($oCache->check( $oCacheKey )) {
 			$this->ID = $ID;
-			$this->dataObject = $this->toObject ( \Cache\Controller::getInstance()->get ( $oCacheKey ) );
+			$this->dataObject = $this->toObject($oCache->get ( $oCacheKey ) );
 			return true;
 		} else {
 			return false;
@@ -79,14 +78,14 @@ abstract class baseItem {
 	 */
 	function toCache($useSession = false) {
 
-		$oCacheKey = new \Cache\CacheKey($this, $this->ID);
-		\Cache\Controller::getInstance()->set ( $oCacheKey, $this->toArray (), $this->defaultCacheExpire );
+		$oCacheKey = new \phpCache\CacheKey($this, $this->ID);
+        \phpCache\Factory::getInstance()->create()->set ( $oCacheKey, $this->toArray (), $this->defaultCacheExpire );
 		
 		return true;
 	}
 
 	public function clearCache() {
-		\Cache\Controller::getInstance()->clear(get_class ( $this ), $this->ID);
+        \phpCache\Factory::getInstance()->create()->clear(get_class ( $this ), $this->ID);
 	}
 
 	/**

@@ -1,10 +1,5 @@
 <?php
-/**
- * Wiadomość
- *
- * @version $Rev: 460 $
- * @package Engine
- */
+
 class message extends baseItem {
 
 	protected $tableName = "messages";
@@ -21,18 +16,19 @@ class message extends baseItem {
 	 */
 	static public function sGetUnreadCount($userID) {
 
-		$oCacheKey = new \Cache\CacheKey('message::sGetUnreadCount', $userID);
+		$oCacheKey = new \phpCache\CacheKey('message::sGetUnreadCount', $userID);
+        $oCache    = \phpCache\Factory::getInstance()->create();
 
-		if (!\Cache\Controller::getInstance()->check($oCacheKey)) {
+		if (!$oCache->check($oCacheKey)) {
 
 			$tQuery = "SELECT COUNT(*) AS ILE FROM messages WHERE Receiver='{$userID}' AND Received='no'";
 			$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
 			$retVal = \Database\Controller::getInstance()->fetch ( $tQuery )->ILE;
 
-			\Cache\Controller::getInstance()->set($oCacheKey, $retVal);
+			$oCache->set($oCacheKey, $retVal);
 
 		}else {
-			$retVal = \Cache\Controller::getInstance()->get($oCacheKey);
+			$retVal = $oCache->get($oCacheKey);
 		}
 
 		return $retVal;
@@ -59,7 +55,7 @@ class message extends baseItem {
 		$tQuery = "DELETE FROM messages WHERE MessageID='{$messageID}' LIMIT 1";
 		\Database\Controller::getInstance()->execute ( $tQuery );
 
-		\Cache\Controller::getInstance()->clear('message::sGetUnreadCount',$userID);
+        \phpCache\Factory::getInstance()->create()->clear('message::sGetUnreadCount',$userID);
 
 		messageRegistry::sRender ();
 
@@ -149,7 +145,7 @@ class message extends baseItem {
 		$tQuery = "UPDATE messages SET Received='yes' WHERE MessageID='{$messageID}'";
 		\Database\Controller::getInstance()->execute ( $tQuery );
 
-		\Cache\Controller::getInstance()->clear(new \Cache\CacheKey('message::sGetUnreadCount',$userID));
+		\phpCache\Factory::getInstance()->create()->clear(new \phpCache\CacheKey('message::sGetUnreadCount',$userID));
 
 		return true;
 	}
@@ -196,15 +192,16 @@ class message extends baseItem {
 			$tQuery = "INSERT INTO messages(Author, Receiver, Text, CreateTime) VALUES({$author},'{$receiver}','{$text}','" . time () . "')";
 			\Database\Controller::getInstance()->execute ( $tQuery );
 
-			$oCacheKey = new \Cache\CacheKey('message::sGetUnreadCount', $receiver);
+			$oCacheKey = new \phpCache\CacheKey('message::sGetUnreadCount', $receiver);
+            $oCache    = \phpCache\Factory::getInstance()->create();
 
-			$tVal = \Cache\Controller::getInstance()->get($oCacheKey);
+			$tVal = $oCache->get($oCacheKey);
 			if (empty($tVal)) {
 				$tVal = 0;
 			}
 			$tVal++;
 
-			\Cache\Controller::getInstance()->set($oCacheKey, $tVal);
+			$oCache->set($oCacheKey, $tVal);
 
 		}catch(Exception $e) {
 			$retVal = false;

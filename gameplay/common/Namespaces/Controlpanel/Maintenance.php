@@ -5,7 +5,6 @@ use \General\Controls as Controls;
 use \General\Formater as Formater;
 use \Database\Controller as Database;
 use \stdClass as stdClass;
-use \Cache\Controller as Cache;
 
 class Maintenance extends BaseItem {
 
@@ -21,8 +20,7 @@ class Maintenance extends BaseItem {
 			\user::sAccountReset($tResult->UserID);
 		}
 
-		Cache::getInstance()->clearAll();
-
+        \phpCache\Factory::getInstance()->create()->clearAll();
 	}
 
 	final public function resetAll($user, $params) {
@@ -69,7 +67,7 @@ class Maintenance extends BaseItem {
 
 		global $config;
 
-		Cache::getInstance()->clearAll();
+        \phpCache\Factory::getInstance()->create()->clearAll();
 
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail", "Operation completed");
 	}
@@ -110,7 +108,7 @@ class Maintenance extends BaseItem {
 		}
 
 		Database::getInstance()->execute("UPDATE userstats SET Fame=Fame+'{$params['value']}'");
-		Cache::getInstance()->clearAll();
+        \phpCache\Factory::getInstance()->create()->clearAll();
 
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail", "<strong>Operation completed</strong>");
 	}
@@ -120,8 +118,6 @@ class Maintenance extends BaseItem {
 		if ($user->sGetRole () != 'admin') {
 			throw new \customException ( 'No rights to perform selected operation' );
 		}
-
-		global $config;
 
 		$text = '<form method="post" name="myForm" style="margin: 0; padding: 0;">';
 		$text .= '<input masked="int10" class="span2" value="0" name="value" />';
@@ -143,8 +139,6 @@ class Maintenance extends BaseItem {
 		if ($user->sGetRole () != 'admin') {
 			throw new \customException ( 'No rights to perform selected operation' );
 		}
-
-		global $config;
 
 		$text = '<form method="post" name="myForm" style="margin: 0; padding: 0;">';
 
@@ -198,7 +192,7 @@ class Maintenance extends BaseItem {
 		}
 
 		Database::getInstance()->execute("UPDATE userships SET Turns=Turns+'{$params['value']}'");
-		Cache::getInstance()->clearAll();
+        \phpCache\Factory::getInstance()->create()->clearAll();
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail", "Operation completed");
 	}
 
@@ -267,7 +261,7 @@ class Maintenance extends BaseItem {
 					break;
 
 				case 'resetSharedCache' :
-					Cache::getInstance()->clearAll();
+                    \phpCache\Factory::getInstance()->create()->clearAll();
 					break;
 
 				case 'cleanupWeapons' :
@@ -510,7 +504,7 @@ class Maintenance extends BaseItem {
 			}
 
 		}
-		Cache::getInstance()->clear ( 'maintenance', 'sGetOverheadTablesCount' );
+        \phpCache\Factory::getInstance()->create()->clear ( 'maintenance', 'sGetOverheadTablesCount' );
 		return true;
 	}
 
@@ -523,9 +517,10 @@ class Maintenance extends BaseItem {
 
 		$retVal = 0;
 
-		$oCacheKey = new \Cache\CacheKey('maintenance', 'sGetTablesCount');
-		
-		if (! Cache::getInstance()->check ( $oCacheKey )) {
+		$oCacheKey = new \phpCache\CacheKey('maintenance', 'sGetTablesCount');
+        $oCache    = \phpCache\Factory::getInstance()->create();
+
+		if (! $oCache->check ( $oCacheKey )) {
 
 			$tQuery = "SHOW TABLE STATUS";
 			$tQuery = Database::getInstance()->execute ( $tQuery );
@@ -534,9 +529,9 @@ class Maintenance extends BaseItem {
 					$retVal ++;
 				}
 			}
-			Cache::getInstance()->set ( $oCacheKey, $retVal, 3600 );
+			$oCache->set ( $oCacheKey, $retVal, 3600 );
 		} else {
-			$retVal = Cache::getInstance()->get ( $oCacheKey );
+			$retVal = $oCache->get ( $oCacheKey );
 		}
 
 		return $retVal;
@@ -551,9 +546,10 @@ class Maintenance extends BaseItem {
 
 		$retVal = 0;
 
-		$oCacheKey = new \Cache\CacheKey('maintenance', 'sGetOverheadTablesCount');
+		$oCacheKey = new \phpCache\CacheKey('maintenance', 'sGetOverheadTablesCount');
+        $oCache    = \phpCache\Factory::getInstance()->create();
 		
-		if (! Cache::getInstance()->check ( $oCacheKey )) {
+		if (! $oCache->check ( $oCacheKey )) {
 
 			$tQuery = "SHOW TABLE STATUS";
 			$tQuery = Database::getInstance()->execute ( $tQuery );
@@ -562,9 +558,9 @@ class Maintenance extends BaseItem {
 					$retVal ++;
 				}
 			}
-			Cache::getInstance()->set ( $oCacheKey, $retVal, 300 );
+			$oCache->set ( $oCacheKey, $retVal, 300 );
 		} else {
-			$retVal = Cache::getInstance()->get ( $oCacheKey );
+			$retVal = $oCache->get ( $oCacheKey );
 		}
 
 		return $retVal;
@@ -724,9 +720,9 @@ class Maintenance extends BaseItem {
 
 
 	/**
-	 * Pobranie liczby przeterminowanych wiadomości
+	 * Get number of old messages
 	 *
-	 * @return unknown
+	 * @return int
 	 */
 	static private function sGetOldMessages() {
 
@@ -742,7 +738,7 @@ class Maintenance extends BaseItem {
 	}
 
 	/**
-	 * Przeterminowane newsagency
+	 * Get count of old newsagency entries
 	 *
 	 * @return int
 	 */
@@ -760,7 +756,7 @@ class Maintenance extends BaseItem {
 	}
 
 	/**
-	 * Liczba przeterminowanych combatmessages typu offensive
+	 * Get count of old offensive combat messages
 	 *
 	 * @return int
 	 */

@@ -34,23 +34,23 @@ class NewsAgency extends Renderable implements Singleton {
 	public function render($shipPosition) {
 		global $userProperties;
 
-		$oCacheKey = new \Cache\CacheKey('newsAgency::render', $shipPosition->System . '|' . $userProperties->Language);
+		$oCacheKey = new \phpCache\CacheKey('newsAgency::render', $shipPosition->System . '|' . $userProperties->Language);
+        $oCache    = \phpCache\Factory::getInstance()->create();
 
-		if (! \Cache\Controller::getInstance()->check ( $oCacheKey )) {
+		if (! $oCache->check ( $oCacheKey )) {
 
 			$tQuery = " SELECT newsagency . *
-        FROM
-          newsagency
-        JOIN
-          newsagencytypes ON newsagencytypes.ID = newsagency.Type
-        WHERE
-          newsagency.System = '{$shipPosition->System}'
-          AND NewsagencyID >0
-          AND newsagencytypes.Visible = 'yes'
-        ORDER BY
-          NewsagencyID DESC
-		    LIMIT 5
-		    ";
+                FROM
+                  newsagency
+                JOIN
+                  newsagencytypes ON newsagencytypes.ID = newsagency.Type
+                WHERE
+                  newsagency.System = '{$shipPosition->System}'
+                  AND NewsagencyID >0
+                  AND newsagencytypes.Visible = 'yes'
+                ORDER BY
+                  NewsagencyID DESC
+                    LIMIT 5";
 			$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
 			$tFound = false;
 			$tValue = '';
@@ -70,9 +70,9 @@ class NewsAgency extends Renderable implements Singleton {
 
 			}
 			$this->retVal .= $tValue;
-			\Cache\Controller::getInstance()->set ( $oCacheKey, $tValue, 3600 );
+			$oCache->set ( $oCacheKey, $tValue, 3600 );
 		} else {
-			$tValue = \Cache\Controller::getInstance()->get ( $oCacheKey );
+			$tValue = $oCache->get ( $oCacheKey );
 			if (empty ( $tValue )) {
 				$tFound = false;
 			} else {

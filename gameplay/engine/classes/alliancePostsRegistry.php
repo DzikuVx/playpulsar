@@ -9,18 +9,18 @@ class alliancePostsRegistry extends simpleRegistry {
 	 */
 	public function get($allianceID) {
 
-		global $config, $userID, $userAlliance;
+		global $userID, $userAlliance;
 
 		$tRights['post'] = allianceRights::sCheck($userID, $userAlliance->AllianceID, 'post');
 
-		$oCacheKey = new \Cache\CacheKey('alliancePostsRegistry::get', md5($allianceID.'|'.serialize($tRights['post'])));
-		
-		if (!\Cache\Controller::getInstance()->check($oCacheKey)) {
+		$oCacheKey = new \phpCache\CacheKey('alliancePostsRegistry::get', md5($allianceID.'|'.serialize($tRights['post'])));
+        $oCache    = \phpCache\Factory::getInstance()->create();
+
+		if (!$oCache->check($oCacheKey)) {
 
 			$retVal = '';
 
-			$retVal .= "<h1>" . TranslateController::getDefault()->get ( 'allianceWall' ) . "</h1>";
-
+			$retVal .= "<h1>{T:allianceWall}</h1>";
 
 			$tQuery = "SELECT
 					allianceposts.Text,
@@ -48,10 +48,10 @@ class alliancePostsRegistry extends simpleRegistry {
 				$retVal .= '</div>';
 			}
 
-			\Cache\Controller::getInstance()->set($oCacheKey, $retVal, 7200);
+			$oCache->set($oCacheKey, $retVal, 7200);
 
 		}else {
-			$retVal = \Cache\Controller::getInstance()->get($oCacheKey);
+			$retVal = $oCache->get($oCacheKey);
 		}
 
 		return $retVal;

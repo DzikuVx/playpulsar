@@ -128,15 +128,11 @@ class combatShip {
 
 	}
 
-	/**
-	 * Destruktor
-	 *
-	 */
 	public function __destruct() {
 		
-		$oKilledKey = new \Cache\CacheKey('userKilled', $this->userID);
+		$oKilledKey = new \phpCache\CacheKey('userKilled', $this->userID);
 		
-		$tLastKill = \Cache\Controller::getInstance()->get($oKilledKey, $this->userID);
+		$tLastKill = \phpCache\Factory::getInstance()->create()->get($oKilledKey, $this->userID);
 		if (empty($tLastKill)) {
 			$tLastKill = 0;
 		}
@@ -157,7 +153,7 @@ class combatShip {
 
 			global $config;
 			
-			\Cache\Controller::getInstance()->set($oKilledKey, time(), 10);
+			\phpCache\Factory::getInstance()->create()->set($oKilledKey, time(), 10);
 
 			$this->shipProperties->RookieTurns = $config ['combat'] ['killRookieTurns'];
 
@@ -266,7 +262,7 @@ class combatShip {
 			$this->userStatsObject->synchronize ( $this->userStats, true, true );
 
 		} catch ( Exception $e ) {
-			\Cache\Controller::getInstance()->clearAll();
+			\phpCache\Factory::getInstance()->create()->clearAll();
 			echo $e->getMessage ();
 		}
 
@@ -278,14 +274,14 @@ class combatShip {
 		$value['name'] = $action;
 		$value['time'] = time();
 		
-		\Cache\Controller::getInstance()->set(new \Cache\CacheKey('combatLastAction', $this->userID), $value, 60);
+		\phpCache\Factory::getInstance()->create()->set(new \phpCache\CacheKey('combatLastAction', $this->userID), $value, 60);
 	}
 
 	public function getLastAction() {
 
 		global $config;
 
-		$value = \Cache\Controller::getInstance()->get('combatLastAction', $this->userID);
+		$value = \phpCache\Factory::getInstance()->create()->get('combatLastAction', $this->userID);
 
 		if ((time() - $value['time']) > $config ['combat'] ['salvoInterval']) {
 			$value['name'] = '';

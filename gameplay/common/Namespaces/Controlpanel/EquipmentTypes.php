@@ -42,7 +42,7 @@ class EquipmentTypes extends GameplayItem{
 
 		$tQuery = BaseItem::sMakeUpdateQuery('equipmenttypes', 'EquipmentID', $tFields, $params);
 		\Database\Controller::getInstance()->execute($tQuery);
-		\Cache\Controller::getInstance()->clear('equipment',$params['id']);
+		\phpCache\Factory::getInstance()->create()->clear('equipment',$params['id']);
 
 		Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
 	}
@@ -110,15 +110,14 @@ class EquipmentTypes extends GameplayItem{
 	 */
 	static public function sGetStationList($id, $cacheAble = true) {
 
-		$retVal = array();
+		$oCacheKey = new \phpCache\CacheKey('cpEquipmentTypes::sGetStationList', $id);
+        $cache = \phpCache\Factory::getInstance()->create();
 
-		$oCacheKey = new \Cache\CacheKey('cpEquipmentTypes::sGetStationList', $id);
-		
-		if ($cacheAble && \Cache\Controller::getInstance()->check($oCacheKey)) {
-			$retVal = \Cache\Controller::getInstance()->get($oCacheKey);
+		if ($cacheAble && $cache->check($oCacheKey)) {
+			$retVal = $cache->get($oCacheKey);
 		}else {
 			$retVal = self::sStationListData($id);
-			\Cache\Controller::getInstance()->set($oCacheKey, $retVal);
+			$cache->set($oCacheKey, $retVal);
 		}
 
 		return $retVal;

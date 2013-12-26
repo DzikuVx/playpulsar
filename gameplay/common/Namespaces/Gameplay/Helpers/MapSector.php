@@ -22,13 +22,6 @@ class MapSector {
 
 		global $config;
 
-		if ($this->border) {
-			$tBgColor = "00a000";
-		}
-		else {
-			$tBgColor = $this->bgColor;
-		}
-
 		if (empty($this->gfx)) {
 			$retVal = "<td style=\"background-color: #000; color: #" . $this->iconColor . ";\" ";
 		}
@@ -44,21 +37,21 @@ class MapSector {
 
 		if ($mapType == 'Gameplay\Panel\MiniMap') {
 
-			$oCacheKey = new \Cache\CacheKey('mapSectorMarker', $this->system.'|'.$this->X.'|'.$this->Y);
+			$oCacheKey = new \phpCache\CacheKey('mapSectorMarker', $this->system.'|'.$this->X.'|'.$this->Y);
+            $oCache    = \phpCache\Factory::getInstance()->create();
 
 			if (\additional::checkRand($this->showPercentage,100)) {
 				$retVal .= '<img src="gfx/shipMarker.png" style="position: absolute; margin-top: -1px;" />';
-				\Cache\Controller::getInstance()->set($oCacheKey, 1);
-			}
-			else {
+				$oCache->set($oCacheKey, 1);
+			} else {
 
 				/*
 				 * Marker że był kontakt
 				 */
-				$tMarker = \Cache\Controller::getInstance()->get($oCacheKey);
+				$tMarker = $oCache->get($oCacheKey);
 				if ($tMarker === 1) {
 					$retVal .= '<img src="gfx/shipMarker.png" style="position: absolute; margin-top: -1px; opacity: 0.5;"/>';
-					\Cache\Controller::getInstance()->set($oCacheKey, 0);
+					$oCache->set($oCacheKey, 0);
 				}
 
 			}

@@ -131,17 +131,13 @@ class MiniMap extends BaseTable implements Singleton {
 
 	protected function getSectors() {
 
-		global $t;
-
 		//FIXME change to class's global cache key
-// 		$module = $this->getCacheModule();
-// 		$property = $this->getCacheProperty();
+		$oCacheKey = new \phpCache\CacheKey($this->getCacheModule(), $this->getCacheProperty());
+        $oCache    = \phpCache\Factory::getInstance()->create();
 
-		$oCacheKey = new \Cache\CacheKey($this->getCacheModule(), $this->getCacheProperty());
-
-		if (\Cache\Controller::getInstance()->check($oCacheKey)) {
-			$this->sector = unserialize(\Cache\Controller::getInstance()->get($oCacheKey));
-		}else {
+		if ($oCache->check($oCacheKey)) {
+			$this->sector = unserialize($oCache->get($oCacheKey));
+		} else {
 
 			/**
 			 * Zaincjuj tablicę sektorów
@@ -160,21 +156,21 @@ class MiniMap extends BaseTable implements Singleton {
 			 * Znajdź kolory sektorów
 			 */
 			$tQuery = "SELECT
-        sectortypes.Color AS Color,
-        sectortypes.Image,
-        sectortypes.Name,
-        sectortypes.Visibility,
-        sectors.X AS X,
-        sectors.Y AS Y
-      FROM
-        sectors JOIN sectortypes ON sectortypes.SectorTypeID = sectors.SectorTypeID
-      WHERE
-        sectors.System = '{$this->system->SystemID}' AND
-        sectors.X >= '{$this->X['start']}' AND
-        sectors.X <= '{$this->X['stop']}' AND
-        sectors.Y >= '{$this->Y['start']}' AND
-        sectors.Y <= '{$this->Y['stop']}'
-      ";
+                    sectortypes.Color AS Color,
+                    sectortypes.Image,
+                    sectortypes.Name,
+                    sectortypes.Visibility,
+                    sectors.X AS X,
+                    sectors.Y AS Y
+                FROM
+                  sectors JOIN sectortypes ON sectortypes.SectorTypeID = sectors.SectorTypeID
+                WHERE
+                    sectors.System = '{$this->system->SystemID}' AND
+                    sectors.X >= '{$this->X['start']}' AND
+                    sectors.X <= '{$this->X['stop']}' AND
+                    sectors.Y >= '{$this->Y['start']}' AND
+                    sectors.Y <= '{$this->Y['stop']}'
+            ";
 			$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
 			while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 				$this->sector [$tR1->X] [$tR1->Y]->bgColor = $tR1->Color;
@@ -192,19 +188,19 @@ class MiniMap extends BaseTable implements Singleton {
 			 * Znajdź porty
 			 */
 			$tQuery = "SELECT
-        ports.State AS State,
-        ports.X AS X,
-        ports.Y AS Y,
-        porttypes.Type AS Type
-      FROM
-        ports JOIN porttypes ON porttypes.PortTypeID = ports.PortTypeID
-      WHERE
-        ports.System = '{$this->system->SystemID}' AND
-        ports.X >= '{$this->X['start']}' AND
-        ports.X <= '{$this->X['stop']}' AND
-        ports.Y >= '{$this->Y['start']}' AND
-        ports.Y <= '{$this->Y['stop']}'
-      ";
+                ports.State AS State,
+                ports.X AS X,
+                ports.Y AS Y,
+                porttypes.Type AS Type
+              FROM
+                ports JOIN porttypes ON porttypes.PortTypeID = ports.PortTypeID
+              WHERE
+                ports.System = '{$this->system->SystemID}' AND
+                ports.X >= '{$this->X['start']}' AND
+                ports.X <= '{$this->X['stop']}' AND
+                ports.Y >= '{$this->Y['start']}' AND
+                ports.Y <= '{$this->Y['stop']}'
+              ";
 			$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
 			while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 				if ($tR1->Type == "port")
@@ -217,26 +213,26 @@ class MiniMap extends BaseTable implements Singleton {
 
 			//Znajdz Jump Node
 			$tQuery = "SELECT
-        *
-      FROM
-        nodes
-      WHERE
-        nodes.Active = 'yes' AND
-        (
-        (nodes.SrcSystem = '{$this->system->SystemID}' AND
-        nodes.SrcX >= '{$this->X['start']}' AND
-        nodes.SrcX <= '{$this->X['stop']}' AND
-        nodes.SrcY >= '{$this->Y['start']}' AND
-        nodes.SrcY <= '{$this->Y['stop']}'
-        )
-        OR
-        (nodes.DstSystem = '{$this->system->SystemID}' AND
-        nodes.DstX >= '{$this->X['start']}' AND
-        nodes.DstX <= '{$this->X['stop']}' AND
-        nodes.DstY >= '{$this->Y['start']}' AND
-        nodes.DstY <= '{$this->Y['stop']}'
-        )
-        )";
+                *
+              FROM
+                nodes
+              WHERE
+                nodes.Active = 'yes' AND
+                (
+                (nodes.SrcSystem = '{$this->system->SystemID}' AND
+                nodes.SrcX >= '{$this->X['start']}' AND
+                nodes.SrcX <= '{$this->X['stop']}' AND
+                nodes.SrcY >= '{$this->Y['start']}' AND
+                nodes.SrcY <= '{$this->Y['stop']}'
+                )
+                OR
+                (nodes.DstSystem = '{$this->system->SystemID}' AND
+                nodes.DstX >= '{$this->X['start']}' AND
+                nodes.DstX <= '{$this->X['stop']}' AND
+                nodes.DstY >= '{$this->Y['start']}' AND
+                nodes.DstY <= '{$this->Y['stop']}'
+                )
+                )";
 			$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
 			while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 				if ($tR1->SrcSystem == $this->system->SystemID) {
@@ -246,10 +242,7 @@ class MiniMap extends BaseTable implements Singleton {
 				}
 			}
 
-			/*
-			 * Zapisz do cache
-			*/
-			\Cache\Controller::getInstance()->set($oCacheKey, serialize($this->sector), 86400);
+            \phpCache\Factory::getInstance()->create()->set($oCacheKey, serialize($this->sector), 86400);
 
 		}
 	}
@@ -272,7 +265,7 @@ class MiniMap extends BaseTable implements Singleton {
 					$this->sector [$indexX] [$indexY]->border = true;
 				}
 
-				$retVal .= $this->sector [$indexX] [$indexY]->render (get_class($this));
+				$retVal .= $this->sector[$indexX][$indexY]->render(get_class($this));
 			}
 			$retVal .= $this->closeRow ();
 		}

@@ -2,40 +2,34 @@
 
 namespace Portal;
 
-use \Cache\Controller as Cache;
 use \Database\Controller as Database;
 
 class NewsRegistry extends \baseRegistry{
 
-	/**
-	 * Konstruktor
-	 *
-	 * @param string $language
-	 * @param item $item2page
-	 * @return boolean
-	 */
-	function __construct($language, $item2page) {
+    /**
+     * @param string $language
+     * @param int $item2page
+     */
+    public function __construct($language, $item2page) {
 		parent::__construct ( $language, $item2page );
 
 		$this->selectFields = "
 				portal_news.NewsID AS NewsID,
-        portal_news.Time AS Time,
-        portal_news.Title AS Title,
-        portal_news.Text AS Text,
-        portal_news.UserName AS Name,
-        portal_news.Language
-      ";
+                portal_news.Time AS Time,
+                portal_news.Title AS Title,
+                portal_news.Text AS Text,
+                portal_news.UserName AS Name,
+                portal_news.Language
+              ";
 
-		$this->selectTables = "
-        portal_news
-      ";
+		$this->selectTables = " portal_news ";
 
 		$this->selectCondition = "
-        portal_news.Type='news' AND
-        portal_news.Published='yes' AND
-        portal_news.Language='{$this->language}' AND
-        portal_news.MainNews='no'
-      ";
+            portal_news.Type='news' AND
+            portal_news.Published='yes' AND
+            portal_news.Language='{$this->language}' AND
+            portal_news.MainNews='no'
+        ";
 
 		$this->orderCondition = "portal_news.Time DESC";
 
@@ -54,11 +48,11 @@ class NewsRegistry extends \baseRegistry{
 
 	function get() {
 		$retVal = "";
-		global $config;
 
-		$oCachekey = new \Cache\CacheKey('newsRegistry', $this->language);
-		
-		if (!Cache::getInstance()->check($oCachekey)) {
+		$oCachekey = new \phpCache\CacheKey('newsRegistry', $this->language);
+        $oCache    = \phpCache\Factory::getInstance()->create();
+
+		if (!$oCache->check($oCachekey)) {
 
 			$this->getData ();
 			$news = new \Portal\News ( );
@@ -66,10 +60,10 @@ class NewsRegistry extends \baseRegistry{
 				$retVal .= $news->render ( $resultRow );
 			}
 
-			Cache::getInstance()->set($oCachekey, $retVal);
+			$oCache->set($oCachekey, $retVal);
 
 		}else {
-			$retVal = Cache::getInstance()->get($oCachekey);
+			$retVal = $oCache->get($oCachekey);
 		}
 		return $retVal;
 	}

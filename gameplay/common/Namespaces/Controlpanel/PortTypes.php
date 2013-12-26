@@ -3,7 +3,6 @@
 namespace Controlpanel;
 
 use \Database\Controller as Database;
-use \Cache\Controller as Cache;
 
 class PortTypes extends GameplayItem{
 

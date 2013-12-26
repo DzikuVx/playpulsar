@@ -47,36 +47,37 @@ class allianceRegistry extends simpleRegistry {
 	 */
 	public function get() {
 
-		$oCacheKey = new \Cache\CacheKey('alliance::getRegistry', null);
+		$oCacheKey = new \phpCache\CacheKey('alliance::getRegistry', null);
+        $oCache    = \phpCache\Factory::getInstance()->create();
 
-		if (! \Cache\Controller::getInstance()->check ( $oCacheKey )) {
+		if (!$oCache->check ( $oCacheKey )) {
 
 			$retVal = '';
 			//@todo: nawigacja po stronach
-			$retVal .= "<h1>" . TranslateController::getDefault()->get ( 'alliances' ) . "</h1>";
+			$retVal .= "<h1>{T:alliances}</h1>";
 			$retVal .= "<table class=\"table table-striped table-condensed linked\">";
 
 			$retVal .= '<thead>';
 			$retVal .= '<tr>';
 			$retVal .= '<th>#</th>';
-			$retVal .= '<th>' . TranslateController::getDefault()->get ( 'Symbol' ) . '</th>';
-			$retVal .= '<th>' . TranslateController::getDefault()->get ( 'Name' ) . '</th>';
-			$retVal .= '<th>' . TranslateController::getDefault()->get ( 'Members' ) . '</th>';
+			$retVal .= '<th>{T:Symbol}</th>';
+			$retVal .= '<th>{T:Name}</th>';
+			$retVal .= '<th>{T:Members}</th>';
 			$retVal .= '</tr>';
 			$retVal .= '</thead>';
 			$retVal .= '<tbody>';
 
 			$tQuery = "SELECT
-        alliances.*,
-        (SELECT COUNT(*) FROM alliancemembers WHERE alliancemembers.AllianceID=alliances.AllianceID) AS MembersCount
-      FROM
-        alliances
-      WHERE
-        1
-      ORDER BY
-        Name ASC
-      LIMIT 30
-        ";
+                alliances.*,
+                (SELECT COUNT(*) FROM alliancemembers WHERE alliancemembers.AllianceID=alliances.AllianceID) AS MembersCount
+              FROM
+                alliances
+              WHERE
+                1
+              ORDER BY
+                Name ASC
+              LIMIT 30
+                ";
 			$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
 			$tIndex = 0;
 			while ( $tResult = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
@@ -93,9 +94,9 @@ class allianceRegistry extends simpleRegistry {
 
 			$retVal .= '</table>';
 			$retVal .= '</div>';
-			\Cache\Controller::getInstance()->set ( $oCacheKey, $retVal, 3600 );
+			$oCache->set ( $oCacheKey, $retVal, 3600 );
 		} else {
-			$retVal = \Cache\Controller::getInstance()->get ( $oCacheKey );
+			$retVal = $oCache->get ( $oCacheKey );
 		}
 		return $retVal;
 	}

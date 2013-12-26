@@ -384,12 +384,10 @@ class alliance extends baseItem {
 		\Gameplay\Panel\PortAction::getInstance()->clear();
 	}
 
-	/**
-	 *
-	 * Formularz edycji danych sojuszu
-	 * @throws securityException
-	 */
-	static public function sEdit() {
+    /**
+     * @throws securityException
+     */
+    static public function sEdit() {
 
 		global $userAlliance, $userID;
 

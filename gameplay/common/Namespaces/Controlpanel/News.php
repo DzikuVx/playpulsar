@@ -2,10 +2,7 @@
 
 namespace Controlpanel;
 
-use Cache\CacheKey;
-
 use \Database\Controller as Database;
-use \Cache\Controller as Cache;
 use \General\Controls as Controls;
 
 class News extends BaseItem{
