@@ -33,11 +33,14 @@ class PanelTransport {
 		return \TranslateController::translate($content);
 	}
 
-	/**
-	 * @param string $action
-	 * @param string $content
-	 */
-	public function __construct($action, $content, $rendered, $params = null) {
+    /**
+     * @param $action
+     * @param $content
+     * @param $rendered
+     * @param null $params
+     * FIXME move translate from PanelTransport to ContentTransport
+     */
+    public function __construct($action, $content, $rendered, $params = null) {
 		$this->action  	= $action;
 		$this->content 	= $this->encode($this->translate($content));
 		$this->rendered = $rendered;

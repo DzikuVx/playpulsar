@@ -376,12 +376,23 @@ Playpulsar.gameplay = (function () {
 	}
 
 	self.processSuccess = function (data, textStatus, jqXHR) {
-		
+
+        /**
+         * @namespace data.rawHtml
+         * @namespace data.variables
+         */
+ s
 		var panelName,
 			panelData,
 			panelObject,
 			notificationIndex;
-		
+
+        if (data.rawHtml) {
+            $('#rawHtml').html(data.rawHtml);
+        } else {
+            $('#rawHtml').html('');
+        }
+
 		/*
 		 * Process variables
 		 */
