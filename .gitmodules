@@ -4,3 +4,6 @@
 [submodule "gameplay/common/Namespaces/SSMQ"]
 	path = gameplay/common/Namespaces/SSMQ
 	url = git@github.com:DzikuVx/SSMQ.git
+[submodule "gameplay/common/Namespaces/phpCache"]
+	path = gameplay/common/Namespaces/phpCache
+	url = git@github.com:DzikuVx/phpCache.git
