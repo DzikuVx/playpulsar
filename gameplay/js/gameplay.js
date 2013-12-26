@@ -381,8 +381,8 @@ Playpulsar.gameplay = (function () {
          * @namespace data.rawHtml
          * @namespace data.variables
          */
- s
-		var panelName,
+
+        var panelName,
 			panelData,
 			panelObject,
 			notificationIndex;
