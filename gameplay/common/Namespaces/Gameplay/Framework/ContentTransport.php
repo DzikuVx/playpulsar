@@ -23,12 +23,16 @@ class ContentTransport implements \Interfaces\Singleton {
 	 */
 	private $aNotifications;
 
-
 	/**
 	 * Array of variables
 	 * @var array
 	 */
 	private $aVariables;
+
+    /**
+     * @var string
+     */
+    private $sRawHtml;
 
 	/**
 	 * @var ContentTransport
@@ -52,9 +56,13 @@ class ContentTransport implements \Interfaces\Singleton {
 
 	}
 
+    public function addRawHtml($sHtml) {
+        $this->sRawHtml .= $sHtml;
+    }
+
 	/**
-	 * add panel object for transort
-	 * @param \Gameplay\Panel\Base $oPanel
+	 * add panel object for transport
+	 * @param \Gameplay\Panel\Renderable $oPanel
 	 * @return ContentTransport
 	 */
 	public function addPanel($oPanel) {
@@ -71,9 +79,10 @@ class ContentTransport implements \Interfaces\Singleton {
 	public function get() {
 
 		$out = new \stdClass();
-		$out->panels 	= $this->aPanels;
-		$out->variables = $this->aVariables;
+		$out->panels 	    = $this->aPanels;
+		$out->variables     = $this->aVariables;
 		$out->notifications = $this->aNotifications;
+        $out->rawHtml       = \TranslateController::translate($this->sRawHtml);
 
 		return json_encode($out);
 	}

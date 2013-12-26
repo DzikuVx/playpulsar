@@ -548,11 +548,11 @@ try {
 			break;
 
 		case 'deleteMessage' :
-			\Gameplay\Framework\ContentTransport::getInstance()->addNotification(\General\Controls::sRenderDialog ( TranslateController::getDefault()->get ( 'confirm' ), TranslateController::getDefault()->get ( 'wantDeleteMessage' ), "Playpulsar.gameplay.execute('wantDeleteMessageExecute','',null,'$id')", 'Playpulsar.gameplay.execute()' ));
+			\Gameplay\Framework\ContentTransport::getInstance()->addRawHtml(\General\Controls::sRenderDialog ( TranslateController::getDefault()->get ( 'confirm' ), TranslateController::getDefault()->get ( 'wantDeleteMessage' ), "Playpulsar.gameplay.execute('wantDeleteMessageExecute','',null,'$id')", 'Playpulsar.gameplay.execute()' ));
 			break;
 
 		case 'dropRookie' :
-			\Gameplay\Framework\ContentTransport::getInstance()->addNotification(\General\Controls::sRenderDialog ( TranslateController::getDefault()->get ( 'confirm' ), TranslateController::getDefault()->get ( 'Do you want to drop rookie turns?' ), "Playpulsar.gameplay.execute('dropRookieExe','',null,null)", 'Playpulsar.gameplay.execute()' ));
+			\Gameplay\Framework\ContentTransport::getInstance()->addRawHtml(\General\Controls::sRenderDialog ( TranslateController::getDefault()->get ( 'confirm' ), TranslateController::getDefault()->get ( 'Do you want to drop rookie turns?' ), "Playpulsar.gameplay.execute('dropRookieExe','',null,null)", 'Playpulsar.gameplay.execute()' ));
 			break;
 
 		case 'dropRookieExe':
@@ -617,7 +617,7 @@ try {
 			break;
 
 		case 'buyShip' :
-			\Gameplay\Framework\ContentTransport::getInstance()->addNotification(\General\Controls::sRenderDialog ( TranslateController::getDefault()->get ( 'confirm' ), TranslateController::getDefault()->get ( 'wantBuyShip' ), "Playpulsar.gameplay.execute('buyShipExecute','',null,'$id')", 'Playpulsar.gameplay.execute()' ));
+			\Gameplay\Framework\ContentTransport::getInstance()->addRawHtml(\General\Controls::sRenderDialog ( TranslateController::getDefault()->get ( 'confirm' ), TranslateController::getDefault()->get ( 'wantBuyShip' ), "Playpulsar.gameplay.execute('buyShipExecute','',null,'$id')", 'Playpulsar.gameplay.execute()' ));
 			break;
 
 		case 'buyShipExecute' :
