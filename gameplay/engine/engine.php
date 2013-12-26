@@ -21,22 +21,6 @@ try {
 
 	$userID = $_SESSION ['userID'];
 
-    //FIXME rozwiązać problem tabeli cacheclear
-    /*
-	$tExists = false;
-	$tQuery = \Database\Controller::getInstance()->execute ( "SELECT Module FROM cacheclear WHERE UserID='$userID'" );
-	while ( $tRow = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
-		\Cache\Session::getInstance()->clear ( $tRow->Module );
-		$tExists = true;
-	}
-	if ($tExists) {
-		$tQuery = \Database\Controller::getInstance()->execute ( "DELETE FROM cacheclear WHERE UserID='$userID'" );
-	}
-    */
-
-	/*
-	 * Koniec czyszczenia cache
-	*/
 	$action 	= $oController->getParameter('action');
 	$subaction 	= $oController->getParameter('subaction');
 	$id 		= $oController->getParameter('id');

@@ -250,7 +250,7 @@ class shipProperties extends baseItem {
 		shipWeapons::sUpdateCount($shipProperties, $userID);
 		shipEquipment::sUpdateCount($shipProperties, $userID);
 		$shipPropertiesObject->synchronize($shipProperties, true, true);
-		\Cache\Controller::getInstance()->clear('shipProperties', $userID);
+        \phpCache\Factory::getInstance()->create()->clear('shipProperties', $userID);
 	}
 
 	/**

@@ -51,7 +51,6 @@ abstract class baseItem {
 	}
 
 	/**
-	 * Pobranie obiektu z cache
 	 *
 	 * @param int $ID - ID obiektu do pobrania
 	 * @return boolean

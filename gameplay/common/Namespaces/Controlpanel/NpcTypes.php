@@ -29,7 +29,7 @@ class NpcTypes extends GameplayItem{
 
 		$tQuery = BaseItem::sMakeUpdateQuery('npctypes', 'NPCTypeID', $tFields, $params);
 		\Database\Controller::getInstance()->execute($tQuery);
-		\Cache\Controller::getInstance()->clear('npc',$params['id']);
+		\phpCache\Factory::getInstance()->create()->clear('npc',$params['id']);
 
 		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
 
@@ -59,7 +59,7 @@ class NpcTypes extends GameplayItem{
 
 			$tQuery2 = "SELECT UserID FROM users WHERE NPCTypeID='{$row1->NPCTypeID}'";
 			$tQuery2 = \Database\Controller::getInstance()->execute ( $tQuery2 );
-			while ( $row2 = \Database\Controller::getInstance()->fetch ( $tQuery2 ) ) {
+            while ($row2 = \Database\Controller::getInstance()->fetch ( $tQuery2 ) ) {
 				Player::sDrop($row2->UserID);
 			}
 

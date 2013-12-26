@@ -5,7 +5,7 @@ namespace Controlpanel;
 use \Database\Controller as Database;
 use \General\Controls as Controls;
 
-class News extends BaseItem{
+class News extends BaseItem {
 
 	protected $tableName = 'portal_news';
 	protected $tableIdField = 'NewsID';

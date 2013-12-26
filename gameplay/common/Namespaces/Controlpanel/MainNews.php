@@ -7,7 +7,7 @@ class MainNews extends News{
 	protected $templateFileName = 'templates/portalMainNews.html';
 
 	protected function clearCache($language) {
-		\Cache\Controller::getInstance()->clear('portalMainNews', $language);
+		\phpCache\Factory::getInstance()->create()->clear('portalMainNews', $language);
 	}
 
 }

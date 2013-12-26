@@ -135,8 +135,6 @@ class alliance extends baseItem {
 	}
 
 	/**
-	 *
-	 * Wyrzucenie gracza z sojuszu
 	 * @param int $kickedID
 	 * @throws securityException
 	 */
@@ -178,8 +176,8 @@ class alliance extends baseItem {
 		 */
 		\Cache\Controller::forceClear($kickedID, 'userAlliance');
 		\Cache\Controller::forceClear($kickedID, 'allianceRights');
-		\Cache\Controller::getInstance()->clearModule('alliance::getRegistry');
-		\Cache\Controller::getInstance()->clearModule('allianceMembersRegistry::get');
+        \phpCache\Factory::getInstance()->create()->clearModule('alliance::getRegistry');
+        \phpCache\Factory::getInstance()->create()->clearModule('allianceMembersRegistry::get');
 
 		/*
 		 * Wyślij wiadomość
@@ -215,8 +213,6 @@ class alliance extends baseItem {
 	}
 
 	/**
-	 *
-	 * Opuszczenie sojuszu
 	 * @throws securityException
 	 */
 	static public function sLeaveExecute() {
@@ -239,10 +235,8 @@ class alliance extends baseItem {
 
 		$action = "pageReload";
 
-		\Cache\Controller::getInstance()->clearModule('alliance::getRegistry');
-		\Cache\Controller::getInstance()->clearModule('allianceMembersRegistry::get');
-
-
+        \phpCache\Factory::getInstance()->create()->clearModule('alliance::getRegistry');
+        \phpCache\Factory::getInstance()->create()->clearModule('allianceMembersRegistry::get');
 	}
 
 	/**
@@ -374,9 +368,8 @@ class alliance extends baseItem {
 		 * Usuń wszystkie wysłane zaproszenia
 		 */
 		allianceRequest::sDeleteAll($userID);
-		\Cache\Controller::getInstance()->clearModule('allianceRequest::sGetCount');
-
-		\Cache\Controller::getInstance()->clearModule('alliance::getRegistry');
+        \phpCache\Factory::getInstance()->create()->clearModule('allianceRequest::sGetCount');
+        \phpCache\Factory::getInstance()->create()->clearModule('alliance::getRegistry');
 
 		\Gameplay\Panel\Action::getInstance()->add(self::sGetDetail($userAlliance->AllianceID));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();

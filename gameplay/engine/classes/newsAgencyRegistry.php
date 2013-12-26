@@ -30,9 +30,10 @@ class newsAgencyRegistry extends simpleRegistry {
 
 		global $userProperties;
 
-		$oCacheKey = new \Cache\CacheKey('newsAgency::get', $shipPosition->System . '|' . $userProperties->Language);
+		$oCacheKey = new \phpCache\CacheKey('newsAgency::get', $shipPosition->System . '|' . $userProperties->Language);
+        $oCache    = \phpCache\Factory::getInstance()->create();
 
-		if (! \Cache\Controller::getInstance()->check ( $oCacheKey )) {
+		if (!$oCache->check ( $oCacheKey )) {
 
 			$retVal = '';
 			//@todo: nawigacja po stronach
@@ -42,16 +43,16 @@ class newsAgencyRegistry extends simpleRegistry {
 			$retVal .= "<table class=\"table table-striped table-condensed\">";
 
 			$tQuery = "SELECT
-        newsagency.*
-      FROM
-        newsagency JOIN newsagencytypes ON newsagencytypes.ID=newsagency.Type
-      WHERE
-        newsagencytypes.Visible='yes' AND
-        newsagency.System='{$shipPosition->System}'
-      ORDER BY
-        Date DESC
-      LIMIT 30
-        ";
+                newsagency.*
+              FROM
+                newsagency JOIN newsagencytypes ON newsagencytypes.ID=newsagency.Type
+              WHERE
+                newsagencytypes.Visible='yes' AND
+                newsagency.System='{$shipPosition->System}'
+              ORDER BY
+                Date DESC
+              LIMIT 30
+                ";
 			$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
 			while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 
@@ -64,9 +65,9 @@ class newsAgencyRegistry extends simpleRegistry {
 			$retVal .= '</tbody>';
 			$retVal .= '</table>';
 			$retVal .= '</div>';
-			\Cache\Controller::getInstance()->set ( $oCacheKey, $retVal, 3600 );
+			$oCache->set ( $oCacheKey, $retVal, 3600 );
 		} else {
-			$retVal = \Cache\Controller::getInstance()->get ( $oCacheKey );
+			$retVal = $oCache->get ( $oCacheKey );
 		}
 		return $retVal;
 	}

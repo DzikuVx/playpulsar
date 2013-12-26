@@ -20,16 +20,16 @@ class sectorCargo {
 	}
 
 	/**
-	 * Konstruktor publiczny
 	 * @param stdClass $position
-	 * @param mixed $cache
+	 * @param \phpCache\Apc $cache
 	 */
+    //FIXME $cache is depreciated, resolve
 	public function __construct($position, $cache = null) {
 
 		$this->position = $position;
 
 		if (empty($cache)) {
-			$this->cache = \Cache\Controller::getInstance();
+			$this->cache = \phpCache\Factory::getInstance()->create();
 		}else {
 			$this->cache = $cache;
 		}
@@ -45,7 +45,7 @@ class sectorCargo {
 	}
 
 	private function clearCache($type = 'product') {
-		$this->cache->clear(new \Cache\CacheKey('sectorCargo::sGetList::'.$type, '|'.$this->getCacheID()));
+		$this->cache->clear(new \phpCache\CacheKey('sectorCargo::sGetList::'.$type, '|'.$this->getCacheID()));
 	}
 
 	public function getAmount($type, $productID) {
@@ -74,8 +74,8 @@ class sectorCargo {
 	 */
 	public function getList($type = 'product') {
 
-		$oCacheKey = new \Cache\CacheKey('sectorCargo::sGetList::'.$type, '|'.$this->getCacheID());
-		
+		$oCacheKey = new \phpCache\CacheKey('sectorCargo::sGetList::'.$type, '|'.$this->getCacheID());
+
 		if ($this->cache->check($oCacheKey)) {
 			$retVal = unserialize($this->cache->get($oCacheKey));
 		}else {

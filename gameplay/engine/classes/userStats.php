@@ -97,7 +97,7 @@ class userStats extends baseItem {
 				$tAlliance = userAlliance::quickLoad($userStats->UserID);
 
 				if (!empty($tAlliance->AllianceID)) {
-					\Cache\Controller::getInstance()->clearModule('allianceMembersRegistry::get::'.$tAlliance->AllianceID);
+                    \phpCache\Factory::getInstance()->create()->clearModule('allianceMembersRegistry::get::'.$tAlliance->AllianceID);
 				}
 			}
 

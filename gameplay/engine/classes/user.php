@@ -624,27 +624,28 @@ class user {
 
 		try {
 
-			$oCacheKey = new \Cache\CacheKey('user::sGetFbPictureUrl', $facebookID);
+			$oCacheKey = new \phpCache\CacheKey('user::sGetFbPictureUrl', $facebookID);
+            $oCache    = \phpCache\Factory::getInstance()->create();
 
-			if (!\Cache\Controller::getInstance()->check($oCacheKey)) {
+			if (!$oCache->check($oCacheKey)) {
 
 				$fb=new Facebook(array(
-  'appId'  => $config['facebook']['appId'],
-  'secret' => $config['facebook']['secret'],
-  'cookie' => $config['facebook']['cookie']
+                    'appId'  => $config['facebook']['appId'],
+                    'secret' => $config['facebook']['secret'],
+                    'cookie' => $config['facebook']['cookie']
 				));
 
 				$data = $fb->api($facebookID, array(
-    'fields' => 'picture',
-    'type' => 'large'
+                    'fields' => 'picture',
+                    'type' => 'large'
 				));
 
 				$retVal = $data['picture'];
 
-				\Cache\Controller::getInstance()->set($oCacheKey, $retVal, 86400);
+				$oCache->set($oCacheKey, $retVal, 86400);
 
 			}else {
-				$retVal = \Cache\Controller::getInstance()->get($oCacheKey);
+				$retVal = $oCache->get($oCacheKey);
 			}
 		}catch (Exception $e) {
 			psDebug::cThrow(null, $e, array('display'=>false));
@@ -662,9 +663,9 @@ class user {
 		global $config;
 
 		$fb=new Facebook(array(
-  'appId'  => $config['facebook']['appId'],
-  'secret' => $config['facebook']['secret'],
-  'cookie' => $config['facebook']['cookie']
+          'appId'  => $config['facebook']['appId'],
+          'secret' => $config['facebook']['secret'],
+          'cookie' => $config['facebook']['cookie']
 		));
 
 		$user = $fb->getUser();
@@ -720,8 +721,6 @@ class user {
 					throw new customException ( 'Unknown login od bad password' );
 				}
 
-				global $config;
-
 				$_SESSION ['cpLoggedUserID'] = $tResult->UserID;
 				$_SESSION ['cpLoggedUserName'] = $tResult->Name;
 				$_SESSION ['cpLoggedUserRole'] = $tResult->Type;
@@ -736,13 +735,11 @@ class user {
 		return $retVal;
 	}
 
-	/**
-	 * Listener wylogowania użytkownika
-	 *
-	 * @param array $params
-	 * @return string
-	 */
-	static function sLogoutListener($params) {
+    /**
+     * @param $params
+     * @return string
+     */
+    static function sLogoutListener($params) {
 
 		$retVal = '';
 

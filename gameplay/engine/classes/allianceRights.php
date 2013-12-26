@@ -1,17 +1,10 @@
 <?php
-/**
- * Klasa uprawnień gracza do sojuszu
- * @author Paweł
- * @version $Rev: 460 $
- * @package Engine
- */
 class allianceRights extends baseItem {
 
 	protected $tableName = "alliancerights";
 	protected $defaultCacheExpire = 120;
 
 	/**
-	 * Ustawienie uprawnień gracza w sojuszu
 	 * @param int $id
 	 * @param string $xml
 	 * @throws securityException
@@ -234,7 +227,6 @@ class allianceRights extends baseItem {
 	}
 
 	/**
-	 * Sprawdzenie prawa
 	 * @param int $userID
 	 * @param int $allianceID
 	 * @param string $module
@@ -248,47 +240,16 @@ class allianceRights extends baseItem {
 
 		$tObject = new allianceRights();
 		$retVal = $tObject->load(array('UserID'=>$userID,'AllianceID'=>$allianceID,'Module'=>$module), true, true);
-		unset($tObject);
 		return $retVal;
 	}
 
-	/**
-	 * Ustawienie prawa
-	 * @param int $userID
-	 * @param int $allianceID
-	 * @param string $module
-	 * @param string $value
-	 */
 	static public function sSet($userID, $allianceID, $module, $value) {
-
 		$tObject = new allianceRights();
-		$retVal = $tObject->load(array('UserID'=>$userID,'AllianceID'=>$allianceID,'Module'=>$module), true, true);
+		$tObject->load(array('UserID'=>$userID,'AllianceID'=>$allianceID,'Module'=>$module), true, true);
 		$tObject->synchronize($value, true, true);
-		unset($tObject);
-
-		/*
-		 * Wyczyść moduł
-		 */
-		\Cache\Controller::forceClear($userID,'allianceRights');
+        $tObject->clearCache();
 	}
 
-	/**
-	 * Zapis do cache
-	 * @see engine/classes/baseItem::toCache()
-	 * @param boolean $useSession
-	 * @return boolean
-	 */
-	function toCache($useSession = false) {
-
-		\Cache\Session::getInstance()->set ( get_class ( $this ), md5(serialize($this->ID)), $this->dataObject, $useSession, $this->defaultCacheExpire );
-
-		return true;
-	}
-
-	/**
-	 * Utworzenie unkalanego identyfikatora uprawnienia
-	 * @param array $data
-	 */
 	public function createUniqueID(array $data) {
 
 		$retVal = $data['UserID'] . '|'.$data['AllianceID']. '|'.$data['Module'];
@@ -300,10 +261,6 @@ class allianceRights extends baseItem {
 		return $this->createUniqueID ( $ID );
 	}
 
-	/**
-	 * Kontruktor
-	 * @param array $position
-	 */
 	function __construct(array $data = null) {
 
 		if (!empty($data)) {
@@ -311,12 +268,6 @@ class allianceRights extends baseItem {
 		}
 	}
 
-	/**
-	 * Pobranie obiektu uprawnień
-	 * @see engine/classes/baseItem::get()
-	 * @param array $data
-	 * @throws Exception
-	 */
 	function get(array $data) {
 
 		$this->dataObject = false;
@@ -334,15 +285,15 @@ class allianceRights extends baseItem {
 		}
 
 		$tResult = \Database\Controller::getInstance()->execute ( "
-      SELECT
-        COUNT(*) AS Ile
-      FROM
-        alliancerights
-      WHERE
-        UserID = '{$data['UserID']}' AND
-        AllianceID = '{$data['AllianceID']}' AND
-        Module = '{$data['Module']}'
-      LIMIT 1" );
+              SELECT
+                COUNT(*) AS Ile
+              FROM
+                alliancerights
+              WHERE
+                UserID = '{$data['UserID']}' AND
+                AllianceID = '{$data['AllianceID']}' AND
+                Module = '{$data['Module']}'
+              LIMIT 1" );
 		if (\Database\Controller::getInstance()->fetch ( $tResult )->Ile > 0 ) {
 			$this->dataObject = true;
 		}

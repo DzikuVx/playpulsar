@@ -29,10 +29,8 @@ class ProductTypes extends GameplayItem{
 
 		$tQuery = BaseItem::sMakeUpdateQuery('products', 'ProductID', $tFields, $params);
 		\Database\Controller::getInstance()->execute($tQuery);
-		\Cache\Controller::getInstance()->clear('product',$params['id']);
-
+		\phpCache\Factory::getInstance()->create()->clear('product',$params['id']);
 		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
-		
 	}
 
 	protected function getDataObject($itemID) {

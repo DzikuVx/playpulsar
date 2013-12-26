@@ -29,8 +29,7 @@ class ShipPosition extends \shipPosition{
 		$tQuery = BaseItem::sMakeUpdateQuery($this->tableName, $this->tableID, $this->tableUseFields, $params);
 
 		\Database\Controller::getInstance()->execute($tQuery);
-		\Cache\Controller::getInstance()->clear('shipPosition', $params['id']);
-
+		\phpCache\Factory::getInstance()->create()->clear('shipPosition', $params['id']);
 		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
 
 		return $retVal;

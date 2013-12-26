@@ -58,7 +58,7 @@ class allianceRequest extends baseItem {
 
 		\Gameplay\Panel\Action::getInstance()->add(\General\Controls::displayConfirmDialog(TranslateController::getDefault()->get('confirm'), TranslateController::getDefault()->get('allianceApplianceSaved'),'Playpulsar.gameplay.execute(\'allianceDetail\',null,null,\''.$allianceID.'\')'));
 
-		\Cache\Controller::getInstance()->clear('allianceRequest::sGetCount', $allianceID);
+		\phpCache\Factory::getInstance()->create()->clear('allianceRequest::sGetCount', $allianceID);
 
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
@@ -328,10 +328,10 @@ class allianceRequest extends baseItem {
 		\Cache\Controller::forceClear($apprenticeID, 'userAlliance');
 		\Cache\Controller::forceClear($apprenticeID, 'allianceRights');
 
-        $oCache    = \phpCache\Factory::getInstance()->create();
-        $oCache->clearModule('alliance::getRegistry');
-		$oCache->clearModule('allianceMembersRegistry::get');
-		$oCache->clearModule('allianceRequest::sGetCount');
+        $oCache = \phpCache\Factory::getInstance()->create();
+        $oCache->clearModule(new \phpCache\CacheKey('alliance::getRegistry'));
+		$oCache->clearModule(new \phpCache\CacheKey('allianceMembersRegistry::get'));
+		$oCache->clearModule(new \phpCache\CacheKey('allianceRequest::sGetCount'));
 
 		/*
 		 * Nadaj puste prawa
@@ -436,12 +436,11 @@ class allianceRequest extends baseItem {
 		self::sDelete($apprenticeID, $userAlliance->AllianceID);
 
 		$tSecondPlayer = userProperties::quickLoad($apprenticeID);
-		$t = new translation($tSecondPlayer->Language, dirname ( __FILE__ ) . '/../translations.php');
 		$tString = TranslateController::getDefault()->get('allianceApplianceDeclined');
 		$tString = str_replace('{name}',$userAlliance->Name, $tString);
 		message::sInsert(null, $apprenticeID, $tString);
 
-		\Cache\Controller::getInstance()->clear('allianceRequest::sGetCount', $userAlliance->AllianceID);
+		\phpCache\Factory::getInstance()->create()->clear('allianceRequest::sGetCount', $userAlliance->AllianceID);
 
 		/*
 		 * Wyrenderuj listę innych podań

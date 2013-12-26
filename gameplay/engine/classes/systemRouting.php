@@ -112,9 +112,7 @@ class systemRouting {
 	 * @return boolean
 	 */
 	protected function delete() {
-
-		\Cache\Controller::getInstance()->clear($this->getCacheModule(), $this->getCacheProperty());
-
+        \phpCache\Factory::getInstance()->create()->clear($this->getCacheModule(), $this->getCacheProperty());
 		return true;
 	}
 
@@ -128,9 +126,8 @@ class systemRouting {
 			return false;
 		}
 
-		$oCacheKey = new \Cache\CacheKey($this->getCacheModule(), $this->getCacheProperty());
-		
-		\Cache\Controller::getInstance()->set($oCacheKey, serialize ( $this->routeTable ), $this->cacheTime);
+		$oCacheKey = new \phpCache\CacheKey($this->getCacheModule(), $this->getCacheProperty());
+        \phpCache\Factory::getInstance()->create()->set($oCacheKey, serialize ( $this->routeTable ), $this->cacheTime);
 
 		return true;
 	}
@@ -143,18 +140,14 @@ class systemRouting {
 
 		$this->routeTable = null;
 
-		$oCacheKey = new \Cache\CacheKey($this->getCacheModule(), $this->getCacheProperty()); 
-		
-		if (\Cache\Controller::getInstance()->check($oCacheKey)) {
-			$this->routeTable = unserialize (\Cache\Controller::getInstance()->get($oCacheKey));
+		$oCacheKey = new \phpCache\CacheKey($this->getCacheModule(), $this->getCacheProperty());
+        $oCache    = \phpCache\Factory::getInstance()->create();
+
+		if ($oCache->check($oCacheKey)) {
+			$this->routeTable = unserialize ($oCache->get($oCacheKey));
 		}
 	}
 
-	/**
-	 * Załadowanie tablicy routingu dla system
-	 *
-	 * @param stdClass $destination
-	 */
 	public function load($destination) {
 
 		$this->systemObject = systemProperties::quickLoad ( $destination->System );
@@ -205,9 +198,10 @@ class systemRouting {
 	 */
 	private function getSectors($systemID) {
 
-		$oCacheKey = new \Cache\CacheKey('systemRouting::getSectors', $systemID);
+		$oCacheKey = new \phpCache\CacheKey('systemRouting::getSectors', $systemID);
+        $oCache    = \phpCache\Factory::getInstance()->create();
 		
-		if (!\Cache\Controller::getInstance()->check($oCacheKey)) {
+		if (!$oCache->check($oCacheKey)) {
 			$this->tRoute = null;
 
 			/*
@@ -223,23 +217,23 @@ class systemRouting {
 			 * Pobierz sektory
 			 */
 			$tQuery = "SELECT
-        sectortypes.MoveCost AS MoveCost,
-        sectors.X AS X,
-        sectors.Y AS Y
-      FROM
-        sectors JOIN sectortypes ON sectortypes.SectorTypeID = sectors.SectorTypeID
-      WHERE
-        sectors.System = '{$systemID}'
-      ";
+                sectortypes.MoveCost AS MoveCost,
+                sectors.X AS X,
+                sectors.Y AS Y
+              FROM
+                sectors JOIN sectortypes ON sectortypes.SectorTypeID = sectors.SectorTypeID
+              WHERE
+                sectors.System = '{$systemID}'
+              ";
 			$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
 			while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 				$this->tRoute [$tR1->X] [$tR1->Y]->cost = $tR1->MoveCost;
 			}
 
-			\Cache\Controller::getInstance()->set($oCacheKey, serialize($this->tRoute), $this->cacheTime);
+			$oCache->set($oCacheKey, serialize($this->tRoute), $this->cacheTime);
 
 		}else {
-			$this->tRoute = unserialize(\Cache\Controller::getInstance()->get($oCacheKey));
+			$this->tRoute = unserialize($oCache->get($oCacheKey));
 		}
 
 	}

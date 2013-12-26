@@ -71,8 +71,8 @@ class alliancePost extends baseItem {
 
 		self::sRemove($id);
 
-		\Cache\Controller::getInstance()->clear('alliancePostsRegistry::get',  md5($userAlliance->AllianceID.'|'.serialize(true)));
-		\Cache\Controller::getInstance()->clear('alliancePostsRegistry::get',  md5($userAlliance->AllianceID.'|'.serialize(false)));
+		\phpCache\Factory::getInstance()->create()->clear('alliancePostsRegistry::get',  md5($userAlliance->AllianceID.'|'.serialize(true)));
+        \phpCache\Factory::getInstance()->create()->clear('alliancePostsRegistry::get',  md5($userAlliance->AllianceID.'|'.serialize(false)));
 
 		\Gameplay\Framework\ContentTransport::getInstance()->addNotification('info', TranslateController::getDefault()->get('messageDeleted'));
 
@@ -138,8 +138,8 @@ class alliancePost extends baseItem {
 		$item = new alliancePost();
 		$item->insert($data);
 
-		\Cache\Controller::getInstance()->clear('alliancePostsRegistry::get',  md5($userAlliance->AllianceID.'|'.serialize(true)));
-		\Cache\Controller::getInstance()->clear('alliancePostsRegistry::get',  md5($userAlliance->AllianceID.'|'.serialize(false)));
+        \phpCache\Factory::getInstance()->create()->clear('alliancePostsRegistry::get',  md5($userAlliance->AllianceID.'|'.serialize(true)));
+        \phpCache\Factory::getInstance()->create()->clear('alliancePostsRegistry::get',  md5($userAlliance->AllianceID.'|'.serialize(false)));
 
 		\Gameplay\Panel\Action::getInstance()->add(alliance::sGetDetail($userAlliance->AllianceID));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();

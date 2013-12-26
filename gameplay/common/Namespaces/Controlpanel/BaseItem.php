@@ -102,10 +102,10 @@ abstract class BaseItem {
 	protected $modified = false;
 
 	/**
-		* Date obiektu
-		*
-		* @var stdClass
-		*/
+    * Date obiektu
+    *
+    * @var \stdClass
+    */
 	protected $dataObject = null;
 
 	public function dummy() {

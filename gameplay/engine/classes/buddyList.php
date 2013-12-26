@@ -39,10 +39,10 @@ class buddyList extends baseItem {
 		message::sInsert(null, $id, $tString);
 		unset($tSecondPlayer);
 
-		\Cache\Controller::getInstance()->clear('buddyRegistry::get', $userID);
-		\Cache\Controller::getInstance()->clear('buddyRequestRegistry::get', $userID);
-		\Cache\Controller::getInstance()->clear('buddyRegistry::get', $id);
-		\Cache\Controller::getInstance()->clear('buddyRequestRegistry::get', $id);
+        \phpCache\Factory::getInstance()->create()->clear('buddyRegistry::get', $userID);
+        \phpCache\Factory::getInstance()->create()->clear('buddyRequestRegistry::get', $userID);
+        \phpCache\Factory::getInstance()->create()->clear('buddyRegistry::get', $id);
+        \phpCache\Factory::getInstance()->create()->clear('buddyRequestRegistry::get', $id);
 
 		\Gameplay\Framework\ContentTransport::getInstance()->addNotification('info', TranslateController::getDefault()->get('opSuccess'));
 		self::sRenderList();
@@ -120,10 +120,10 @@ class buddyList extends baseItem {
 		/*
 		 * Oczyść cache
 		*/
-		\Cache\Controller::getInstance()->clear('buddyRegistry::get', $userID);
-		\Cache\Controller::getInstance()->clear('buddyRequestRegistry::get', $userID);
-		\Cache\Controller::getInstance()->clear('buddyRegistry::get', $id);
-		\Cache\Controller::getInstance()->clear('buddyRequestRegistry::get', $id);
+        \phpCache\Factory::getInstance()->create()->clear('buddyRegistry::get', $userID);
+        \phpCache\Factory::getInstance()->create()->clear('buddyRequestRegistry::get', $userID);
+        \phpCache\Factory::getInstance()->create()->clear('buddyRegistry::get', $id);
+        \phpCache\Factory::getInstance()->create()->clear('buddyRequestRegistry::get', $id);
 
 		\Gameplay\Framework\ContentTransport::getInstance()->addNotification('info', TranslateController::getDefault()->get('opSuccess'));
 		self::sRenderList();
@@ -221,7 +221,7 @@ class buddyList extends baseItem {
 		message::sInsert(null, $id, $tString);
 		unset($tSecondPlayer);
 
-		\Cache\Controller::getInstance()->clear('buddyRequestRegistry::get', $id);
+        \phpCache\Factory::getInstance()->create()->clear('buddyRequestRegistry::get', $id);
 
 		\Gameplay\Framework\ContentTransport::getInstance()->addNotification('info', TranslateController::getDefault()->get('Request has been sent'));
 		shipExamine ( $id, $userID );

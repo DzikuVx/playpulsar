@@ -60,8 +60,6 @@ class PlayerEquipment extends \equipment{
 
 	final public function addExe($user, $params) {
 
-		global $config;
-
 		if (empty($_SESSION['returnUser'])) {
 			throw new \customException('Security error');
 		}
