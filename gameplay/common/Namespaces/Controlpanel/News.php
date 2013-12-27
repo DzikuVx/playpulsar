@@ -40,7 +40,7 @@ class News extends BaseItem {
 	}
 
 	protected function clearCache($language) {
-		Cache::getInstance()->clear(new CacheKey('newsRegistry', $language));
+		\phpCache\Factory::getInstance()->create()->clear(new \phpCache\CacheKey('newsRegistry', $language));
 	}
 
 	/**
@@ -134,9 +134,9 @@ class News extends BaseItem {
 	}
 
 	/**
-	 * @since 2010-12-05
-	 * @param user $user
+	 * @param \user $user
 	 * @param array $params
+     * @return string
 	 */
 	public function edit($user, $params) {
 
@@ -176,9 +176,9 @@ class News extends BaseItem {
 	}
 
 	/**
-	 * @param user $user
+	 * @param \user $user
 	 * @param array $params
-	 * @since 2010-12-05
+     * @return null
 	 */
 	public function editExe($user, $params) {
 
@@ -208,14 +208,11 @@ class News extends BaseItem {
 
 		$this->clearCache($params['Language']);
 
-		/*
-		 * I wyczyść cache poszczególnych plików
-		*/
-		Cache::getInstance()->clear(new CacheKey('portalNews::get',$params['id']));
+        \phpCache\Factory::getInstance()->create()->clear(new \phpCache\CacheKey('portalNews::get',$params['id']));
 
-		$retVal = Controls::reloadWithMessage($config['backend']['fileName'].'?class='.get_class($this).'&method=browse', 'Item modified');
+		Controls::reloadWithMessage($config['backend']['fileName'].'?class='.get_class($this).'&method=browse', 'Item modified');
 
-		return $retVal;
+		return null;
 	}
 
 }

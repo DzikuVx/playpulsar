@@ -64,8 +64,9 @@ class PlayerEquipment extends \equipment{
 			throw new \customException('Security error');
 		}
 
-		\Cache\Controller::forceClear($_SESSION['returnUser'], 'shipEquipment');
-		\Cache\Controller::forceClear($_SESSION['returnUser'], 'shipProperties');
+        $oObject = new \shipProperties();
+        $oObject->load($_SESSION['returnUser'], true, true);
+        $oObject->clearCache();
 
 		$shipEquipment = new \shipEquipment($_SESSION['returnUser']);
 
@@ -91,13 +92,16 @@ class PlayerEquipment extends \equipment{
 
 	final public function deleteExe($user, $params) {
 
-		global $config;
+        $oDb = \Database\Controller::getInstance();
 
-		\Database\Controller::getInstance()->quoteAll($params);
-		\Database\Controller::getInstance()->execute("DELETE FROM shipequipment WHERE ShipEquipmentID = '{$params['id']}'");
-		if (!empty($_SESSION['returnUser'])) {
-			\Cache\Controller::forceClear($_SESSION['returnUser'], 'shipEquipment');
-			\Cache\Controller::forceClear($_SESSION['returnUser'], 'shipProperties');
+        $oDb->quoteAll($params);
+        $oDb->execute("DELETE FROM shipequipment WHERE ShipEquipmentID = '{$params['id']}'");
+
+        if (!empty($_SESSION['returnUser'])) {
+
+            $oObject = new \shipProperties();
+            $oObject->load($_SESSION['returnUser'], true, true);
+            $oObject->clearCache();
 
 			\shipProperties::sQuickRecompute($_SESSION['returnUser']);
 		}

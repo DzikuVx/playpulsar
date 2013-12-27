@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Klasa parametrów statku
- *
- * @version $Rev: 460 $
- * @package Engine
- */
 class shipProperties extends baseItem {
 	protected $tableName = "userships";
 	protected $tableID = "UserID";
@@ -14,13 +8,13 @@ class shipProperties extends baseItem {
 	protected $useMemcached = true;
 
 	/**
-	 * Zrzucenie RookieTurns, wykonanie
 	 * @param stdClass $shipProperties
 	 * @param shipProperties $shipPropertiesObject
+     * @return boolean
 	 */
 	static public function sDropRookie($shipProperties, $shipPropertiesObject) {
 
-		global $userID, $userStats;
+		global $userID;
 
 		$shipProperties->RookieTurns = 0;
 
@@ -34,7 +28,11 @@ class shipProperties extends baseItem {
 
 	//@todo dodać cloak multiplier do włączania i wyłączania
 
-	static public function sRenderRepairButtons($template, $return = 'hangar') {
+    /**
+     * @param \General\Templater $template
+     * @param string $return
+     */
+    static public function sRenderRepairButtons($template, $return = 'hangar') {
 		global $shipProperties, $shipPosition, $config, $userStats;
 
 		if ($shipPosition->Docked == 'yes') {
@@ -67,12 +65,11 @@ class shipProperties extends baseItem {
 
 	}
 
-	/**
-	 * Naprawa statku w stacji/porcie
-	 *
-	 * @return unknown
-	 */
-	static public function sStationRepair() {
+    /**
+     * @return bool
+     * @throws securityException
+     */
+    static public function sStationRepair() {
 
 		global $action, $value, $config, $portProperties, $shipPosition, $shipProperties, $subaction, $userStats;
 
@@ -178,8 +175,6 @@ class shipProperties extends baseItem {
 	}
 
 	/**
-	 * Widoczność statku w sektorze
-	 *
 	 * @param stdClass $shipProperties
 	 * @param stdClass $userStats
 	 * @param stdClass $otherShipProperties
@@ -253,11 +248,11 @@ class shipProperties extends baseItem {
         \phpCache\Factory::getInstance()->create()->clear('shipProperties', $userID);
 	}
 
-	/**
-	 * Przeliczenie wartości okrętu
-	 * @param stcClass $shipProperties
-	 */
-	static public function sRecomputeValues($shipProperties, $userID) {
+    /**
+     * @param \stdClass $shipProperties
+     * @param int $userID
+     */
+    static public function sRecomputeValues($shipProperties, $userID) {
 		self::computeMaxValues($shipProperties);
 		shipWeapons::sUpdateCount($shipProperties, $userID);
 		shipEquipment::sUpdateCount($shipProperties, $userID);
@@ -424,6 +419,7 @@ class shipProperties extends baseItem {
 	 * @param boolean $display - czy wyświetlać informację o naprawie
 	 * @return boolean
 	 */
+    //FIXME remove unused parameter
 	public function autoRepair($shipProperties, $userTimes, $display = true) {
 
 		global $config;
@@ -603,16 +599,12 @@ class shipProperties extends baseItem {
 		$shipProperties = $shipPropertiesObject->load ( $userID, true, true );
 		$retVal = $shipProperties->Price;
 
-		/*
-		 * Pobierz wartość uzbrojenia
-		 */
 		$tQuery = "SELECT
-        SUM(weapontypes.Price) AS Value
-      FROM
-        shipweapons JOIN weapontypes USING(WeaponID)
-      WHERE
-        shipweapons.UserID = '{$userID}'
-      ";
+                SUM(weapontypes.Price) AS Value
+            FROM
+                shipweapons JOIN weapontypes USING(WeaponID)
+            WHERE
+                shipweapons.UserID = '{$userID}'";
 		$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
 		while ( $tResult = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 			$retVal += $tResult->Value;
@@ -622,12 +614,11 @@ class shipProperties extends baseItem {
 		 * Pobierz wartość equipu
 		 */
 		$tQuery = "SELECT
-        SUM(equipmenttypes.Price) AS Value
-      FROM
-        shipequipment JOIN equipmenttypes USING(EquipmentID)
-      WHERE
-        shipequipment.UserID = '{$userID}'
-      ";
+                SUM(equipmenttypes.Price) AS Value
+            FROM
+                shipequipment JOIN equipmenttypes USING(EquipmentID)
+            WHERE
+                shipequipment.UserID = '{$userID}'";
 		$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
 		while ( $tResult = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 			$retVal += $tResult->Value;
@@ -636,12 +627,11 @@ class shipProperties extends baseItem {
 		return $retVal;
 	}
 
-	/**
-	 * Zakup statku
-	 *
-	 * @param int $shipID
-	 */
-	static public function sBuy($shipID) {
+    /**
+     * @param $shipID
+     * @throws securityException
+     */
+    static public function sBuy($shipID) {
 
 		global $shipPropertiesObject, $shipCargo, $shipWeapons, $userProperties, $action, $userStats, $shipProperties, $shipPosition, $portProperties, $shipEquipment;
 
@@ -693,5 +683,4 @@ class shipProperties extends baseItem {
 
 		\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:shipBought}' . $tShip->Price . '$' );
 	}
-
 }

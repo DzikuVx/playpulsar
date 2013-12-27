@@ -13,8 +13,8 @@ class PortTypes extends GameplayItem{
 	protected $tableName = 'porttypes';
 	protected $tableIdField = 'PortTypeID';
 
-	public function editExe($user, $params) {
-		$retVal = '';
+	public function editExe(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 
 		if (empty($_SESSION['returnUser'])) {
 			throw new \customException('Security error');
@@ -31,10 +31,8 @@ class PortTypes extends GameplayItem{
 
 		$tQuery = BaseItem::sMakeUpdateQuery('porttypes', 'PortTypeID', $tFields, $params);
 		Database::getInstance()->execute($tQuery);
-		Cache::getInstance()->clearModule('portProperties');
-
+        \phpCache\Factory::getInstance()->create()->clearModule(new \phpCache\CacheKey('portProperties'));
 		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
-		
 	}
 
 	public function deleteExe($user, $params) {

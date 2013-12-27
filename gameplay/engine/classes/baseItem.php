@@ -84,7 +84,7 @@ abstract class baseItem {
 	}
 
 	public function clearCache() {
-        \phpCache\Factory::getInstance()->create()->clear(get_class ( $this ), $this->ID);
+        \phpCache\Factory::getInstance()->create()->clear(new \phpCache\CacheKey($this, $this->ID));
 	}
 
 	/**
@@ -291,8 +291,6 @@ abstract class baseItem {
 	}
 
 	/**
-	 * Ładuje obiekt z bazy danych lub cache
-	 *
 	 * @param $object
 	 * @param boolean $useCache
 	 * @param boolean $useSession

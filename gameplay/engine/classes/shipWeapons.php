@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Klasa uzbrojenia statku
- *
- * @version $Rev: 460 $
- * @package Engine
- */
 class shipWeapons {
 	protected $userID = null;
 	protected $language = 'pl';
@@ -30,9 +24,9 @@ class shipWeapons {
 	public function damageRandom() {
 
 		$tQuery = "UPDATE shipweapons SET Damaged='1' WHERE UserID='{$this->userID}' AND Damaged='0' ORDER BY Rand() LIMIT 1";
-		$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
+		\Database\Controller::getInstance()->execute($tQuery);
 
-		if (\Database\Controller::getInstance()->getAffectedRows () == 0) {
+		if (\Database\Controller::getInstance()->getAffectedRows() == 0) {
 			return false;
 		} else {
 			return true;
@@ -142,18 +136,17 @@ class shipWeapons {
 		return true;
 	}
 
-	/**
-	 * Usunięcie broni z listy uzbrojenia
-	 *
-	 * @param int $ID
-	 * @return boolean
-	 */
-	public function remove($ID, $shipProperties) {
+    /**
+     * @param int $ID
+     * @param stdClass $shipProperties
+     * @return bool
+     */
+    public function remove($ID, $shipProperties) {
 
 		$tQuery = "DELETE FROM
-        shipweapons
-      WHERE
-        ShipWeaponID='{$ID}' AND UserID='$this->userID}'";
+                shipweapons
+            WHERE
+                ShipWeaponID='{$ID}' AND UserID='$this->userID}'";
 		\Database\Controller::getInstance()->execute ( $tQuery );
 
 		$shipProperties->CurrentWeapons -= 1;
@@ -161,12 +154,11 @@ class shipWeapons {
 		return true;
 	}
 
-	/**
-	 * Usunięcie całego uzbrojenia
-	 *
-	 * @return boolean
-	 */
-	public function removeAll($shipProperties) {
+    /**
+     * @param stdClass $shipProperties
+     * @return bool
+     */
+    public function removeAll($shipProperties) {
 
 		$tQuery = "DELETE FROM
         shipweapons
@@ -480,6 +472,7 @@ class shipWeapons {
 	 */
 	private function getPrevSequence($currentSequence) {
 
+        $retVal = new stdClass();
 		$retVal->Sequence = null;
 		$retVal->ShipWeaponID = null;
 
@@ -501,6 +494,7 @@ class shipWeapons {
 	 */
 	private function getNextSequence($currentSequence) {
 
+        $retVal = new stdClass();
 		$retVal->Sequence = null;
 		$retVal->ShipWeaponID = null;
 
@@ -515,8 +509,6 @@ class shipWeapons {
 	}
 
 	/**
-	 * Ustawienie sequence dla broni
-	 *
 	 * @param int $shipWeaponID
 	 * @param int $sequence
 	 */
@@ -527,13 +519,12 @@ class shipWeapons {
 
 	}
 
-	/**
-	 * Przeniesienie broni o jedną pozycję wyżej w sekwencji ognia
-	 *
-	 * @param int $shipWeaponID
-	 * @return boolean
-	 */
-	static public function sMoveUp($shipWeaponID) {
+    /**
+     * @param $shipWeaponID
+     * @return bool
+     * @throws securityException
+     */
+    static public function sMoveUp($shipWeaponID) {
 
 		global $t, $error, $shipWeapons;
 
@@ -563,13 +554,12 @@ class shipWeapons {
 		return true;
 	}
 
-	/**
-	 * Przeniesienie broni o jedną pozycję niżej w sekwencji ognia
-	 *
-	 * @param int $shipWeaponID
-	 * @return boolean
-	 */
-	static public function sMoveDown($shipWeaponID) {
+    /**
+     * @param $shipWeaponID
+     * @return bool
+     * @throws securityException
+     */
+    static public function sMoveDown($shipWeaponID) {
 
 		global $t, $error, $shipWeapons;
 

@@ -7,7 +7,6 @@ use \General\Controls as Controls;
 class Player extends BaseItem {
 
 	/**
-	 * Usunięcie śladów po userze
 	 * @param int $playerID
 	 */
 	static public function sDrop($playerID) {
@@ -33,15 +32,12 @@ class Player extends BaseItem {
 	}
 
 	/**
-	 * Wysłanie standardowej wiadomośći do użytkownika
-	 * @param user $user
+	 * @param \user $user
 	 * @param array $params
 	 * @return string
 	 */
-	final public function msgSend($user, $params) {
-
-		global $config;
-
+	final public function msgSend(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 		$text = '<form method="post" name="myForm" style="margin: 0; padding: 0;">';
 		$text .= '<textarea class="span5" name="msgText" rows="5"></textarea>';
 		$text .= '<input type="hidden" name="class" value="\Controlpanel\Player">';
@@ -59,12 +55,12 @@ class Player extends BaseItem {
 	}
 
 	/**
-	 * Wysłanie standardowej wiadomośći do użytkownika, wykonanie
-	 * @param user $user
+	 * @param \user $user
 	 * @param array $params
 	 * @return string
 	 */
-	final public function msgSendExe($user, $params) {
+	final public function msgSendExe(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 
 		global $config;
 
@@ -72,17 +68,15 @@ class Player extends BaseItem {
 		Database::getInstance()->execute("INSERT INTO messages(Receiver, Text, CreateTime) VALUES('{$params['id']}', '{$params['msgText']}', '".time()."') ");
 		
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
-		
 	}
 
 	/**
-	 * Dialog o zablokowanie konta użytkownika
-	 * @param user $user
+	 * @param \user $user
 	 * @param array $params
 	 * @return string
-	 * @since 2011-03-22
 	 */
-	final public function lockDialog($user, $params) {
+	final public function lockDialog(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 
 		global $config;
 
@@ -90,26 +84,28 @@ class Player extends BaseItem {
 	}
 
 	/**
-	 * Zablokowanie konta użytkownika
-	 * @param user $user
+	 * @param \user $user
 	 * @param array $params
 	 * @return string
-	 * @since 2011-03-22
 	 */
-	final public function lockExe($user, $params) {
+	final public function lockExe(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 
 		global $config;
 
 		Database::getInstance()->quoteAll($params);
 		Database::getInstance()->execute("UPDATE users SET UserLocked='yes' WHERE UserID='{$params['id']}'" );
-		Cache::forceClear($params['id'], 'userProperties');
+
+        $oObject = new \userProperties();
+        $oObject->load($params['id'], true, true);
+        $oObject->clearCache();
+
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
-		
 	}
 
 	/**
 	 * Odblokowanie konta użytkownika
-	 * @param user $user
+	 * @param \user $user
 	 * @param array $params
 	 * @return string
 	 * @since 2011-03-22
@@ -120,16 +116,18 @@ class Player extends BaseItem {
 
 		Database::getInstance()->quoteAll($params);
 		Database::getInstance()->execute("UPDATE users SET UserLocked='no' WHERE UserID='{$params['id']}'" );
-		Cache::forceClear($params['id'], 'userProperties');
+
+        $oObject = new \userProperties();
+        $oObject->load($params['id'], true, true);
+        $oObject->clearCache();
+
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
 	}
 
 	/**
-	 * Dialog o odblokowanie konta użytkownika
-	 * @param user $user
+	 * @param \user $user
 	 * @param array $params
 	 * @return string
-	 * @since 2011-03-22
 	 */
 	final public function unlockDialog($user, $params) {
 
@@ -139,13 +137,12 @@ class Player extends BaseItem {
 	}
 
 	/**
-	 * Dialog o aktywację konta użytkownika
-	 * @param user $user
+	 * @param \user $user
 	 * @param array $params
 	 * @return string
-	 * @since 2011-03-22
 	 */
-	final public function activateDialog($user, $params) {
+	final public function activateDialog(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 
 		global $config;
 
@@ -153,27 +150,30 @@ class Player extends BaseItem {
 	}
 
 	/**
-	 * Aktywowanie konta użytkownika
-	 * @param user $user
+	 * @param \user $user
 	 * @param array $params
 	 * @return string
-	 * @since 2011-03-22
 	 */
-	final public function activateExe($user, $params) {
+	final public function activateExe(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 
 		global $config;
 
 		Database::getInstance()->quoteAll($params);
 		Database::getInstance()->execute("UPDATE users SET UserActivated='yes' WHERE UserID='{$params['id']}'" );
-		Cache::forceClear($params['id'], 'userProperties');
+
+        $oObject = new \userProperties();
+        $oObject->load($params['id'], true, true);
+        $oObject->clearCache();
+
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
 	}
 
 	/**
-	 * Dialog usuwanie rookie turns
-	 * @param user $user
+	 * Rookie turns delete dialog
+	 * @param \user $user
 	 * @param array $params
-	 * @since 2011-03-23
+     * @return string
 	 */
 	final public function removeRookieDialog($user, $params) {
 
@@ -183,8 +183,8 @@ class Player extends BaseItem {
 	}
 
 	/**
-	 * Usuwanie rookie turns
-	 * @param user $user
+	 * Drop rookie turns for player
+	 * @param \user $user
 	 * @param array $params
 	 * @since 2011-03-23
 	 */
@@ -193,14 +193,16 @@ class Player extends BaseItem {
 
 		Database::getInstance()->quoteAll($params);
 		Database::getInstance()->execute("UPDATE userships SET RookieTurns='0' WHERE UserID='{$params['id']}'" );
-		Cache::getInstance()->clear('shipProperties',$params['id']);
+        \phpCache\Factory::getInstance()->create()->clear('shipProperties',$params['id']);
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
-		
 	}
 
-	final public function giveRookieDialog($user, $params) {
-
-		global $config;
+    /**
+     * @param \user $user
+     * @param array $params
+     * @return string
+     */
+    final public function giveRookieDialog($user, $params) {
 
 		$text = '<form method="post" name="myForm" style="margin: 0; padding: 0;">';
 		$text .= '<input masked="int10" class="span1" value="0" name="value"/>';
@@ -223,21 +225,17 @@ class Player extends BaseItem {
 
 		Database::getInstance()->quoteAll($params);
 		Database::getInstance()->execute("UPDATE userships SET RookieTurns=RookieTurns+'{$params['value']}' WHERE UserID='{$params['id']}'" );
-		Cache::getInstance()->clear('shipProperties',$params['id']);
-
+        \phpCache\Factory::getInstance()->create()->clear('shipProperties',$params['id']);
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
-		
 	}
 
-	final public function giveTraxiumDialog($user, $params) {
-
-		global $config;
-
+	final public function giveTraxiumDialog(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 		$text = '<form method="post" name="myForm" style="margin: 0; padding: 0;">';
 		$text .= '<input masked="int10" class="span1" value="0" name="value"/>';
 		$text .= '<input type="hidden" name="class" value="\Controlpanel\Player">';
 		$text .= '<input type="hidden" name="method" value="giveTraxiumExe">';
-		$text .= '<input type="hidden" name="id" value="'.$params['id'].'">';
+		$text .= '<input type="hidden" name="id" value="' . $params['id'] . '">';
 		$text .= '</form>';
 
 		$retVal = Controls::dialog( "Give Traxium", $text, "player.giveRookie()", "window.history.back();", 'OK','Cancel', 'height: 100px;' );
@@ -254,15 +252,11 @@ class Player extends BaseItem {
 
 		Database::getInstance()->quoteAll($params);
 		Database::getInstance()->execute("UPDATE userstats SET Fame=Fame+'{$params['value']}' WHERE UserID='{$params['id']}'" );
-		Cache::getInstance()->clear('userStats',$params['id']);
-
+        \phpCache\Factory::getInstance()->create()->clear('userStats',$params['id']);
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
-		
 	}
 
 	final public function giveAntimatterDialog($user, $params) {
-
-		global $config;
 
 		$text = '<form method="post" name="myForm" style="margin: 0; padding: 0;">';
 		$text .= '<input masked="int10" class="span1" value="0" name="value" />';
@@ -286,7 +280,7 @@ class Player extends BaseItem {
 		Database::getInstance()->quoteAll($params);
 
 		Database::getInstance()->execute("UPDATE userships SET Turns=Turns+'{$params['value']}' WHERE UserID='{$params['id']}'" );
-		Cache::getInstance()->clear('shipProperties',$params['id']);
+        \phpCache\Factory::getInstance()->create()->clear('shipProperties',$params['id']);
 
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
 		
@@ -340,7 +334,6 @@ class Player extends BaseItem {
 		/*
 		 * Lista do tworzenia NPCów
 		 */
-		
 		$tWeapons = new \shipWeapons($params['id']);
 		$tData = $tWeapons->get('all');
 		$tArray = array();
@@ -383,7 +376,6 @@ class Player extends BaseItem {
 
 			/**
 			 * Operacje na rookie turns
-			 * @since 2011-03-23
 			 */
 			if ($shipProperties->RookieTurns == 0) {
 				$template->add('rookieTurns',Controls::bootstrapButton ( "Give rookie turns", "document.location='index.php?class=\Controlpanel\Player&method=giveRookieDialog&id={$params['id']}'",'','icon-plus'));

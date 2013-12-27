@@ -1,10 +1,5 @@
 <?php
-/**
- * Element wyposażenia statku
- *
- * @version $Rev: 460 $
- * @package Engine
- */
+
 class shipEquipment {
 	protected $userID = null;
 	protected $language = 'pl';
@@ -13,12 +8,15 @@ class shipEquipment {
 	protected $addCondition = "";
 	protected $changed = false;
 
-	static public function sGetDamagedCount($userID) {
+    /**
+     * @param int $userID
+     * @return int
+     */
+    static public function sGetDamagedCount($userID) {
 
 		$tQuery = "SELECT COUNT(*) AS ILE FROM shipequipment WHERE UserID='{$userID}' AND Damaged='1'";
 		$tQuery = \Database\Controller::getInstance()->execute($tQuery);
 		return \Database\Controller::getInstance()->fetch($tQuery)->ILE;
-
 	}
 
 	static public function sUpdateCount(&$shipProperties, $userID) {
@@ -198,8 +196,6 @@ class shipEquipment {
 	}
 
 	/**
-	 * Uszkodzenie całego uzbrojenia
-	 *
 	 * @return boolean
 	 */
 	public function damageAll() {
@@ -239,16 +235,15 @@ class shipEquipment {
 	}
 
 	/**
-	 * Lista wyposażenia okrętu
-	 *
 	 * @param string $mode
 	 * @param int $ID
 	 * @return resource
 	 */
 	function get($mode = "working", $ID = null) {
 
-		if ($ID == null)
-		$ID = $this->userID;
+		if ($ID == null) {
+		    $ID = $this->userID;
+        }
 
 		switch ($mode) {
 			case "all" :
@@ -262,37 +257,32 @@ class shipEquipment {
 		}
 
 		$tQuery = "SELECT
-        equipmenttypes.*,
-        equipmenttypes.{$this->nameField} AS Name,
-        shipequipment.ShipEquipmentID,
-        shipequipment.Damaged
-      FROM
-        shipequipment LEFT JOIN equipmenttypes ON equipmenttypes.EquipmentID = shipequipment.EquipmentID
-      WHERE
-        shipequipment.UserID='{$ID}' {$addQuery}
-      ";
-		$retVal = \Database\Controller::getInstance()->execute ( $tQuery );
-		return $retVal;
+                equipmenttypes.*,
+                equipmenttypes.{$this->nameField} AS Name,
+                shipequipment.ShipEquipmentID,
+                shipequipment.Damaged
+            FROM
+                shipequipment LEFT JOIN equipmenttypes ON equipmenttypes.EquipmentID = shipequipment.EquipmentID
+            WHERE
+                shipequipment.UserID='{$ID}' {$addQuery}";
+        return \Database\Controller::getInstance()->execute ( $tQuery );
 	}
 
-	/**
-	 * Pobranie parametrów equipu na podstawie ShipEquipmentID
-	 *
-	 * @param int $ID
-	 * @return stdClass
-	 */
-	function getSingle($equipmentID) {
+    /**
+     * @param $equipmentID
+     * @return stdClass
+     */
+    function getSingle($equipmentID) {
 
 		$tQuery = "SELECT
-        equipmenttypes.*,
-        equipmenttypes.{$this->nameField} AS Name,
-        shipequipment.ShipEquipmentID,
-        shipequipment.Damaged
-      FROM
-        shipequipment LEFT JOIN equipmenttypes ON equipmenttypes.EquipmentID = shipequipment.EquipmentID
-      WHERE
-        shipequipment.ShipEquipmentID='{$equipmentID}'
-      ";
+            equipmenttypes.*,
+            equipmenttypes.{$this->nameField} AS Name,
+            shipequipment.ShipEquipmentID,
+            shipequipment.Damaged
+        FROM
+            shipequipment LEFT JOIN equipmenttypes ON equipmenttypes.EquipmentID = shipequipment.EquipmentID
+        WHERE
+            shipequipment.ShipEquipmentID='{$equipmentID}'";
 		$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
 		while ( $tResult = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 			$retVal = $tResult;
@@ -353,12 +343,11 @@ class shipEquipment {
 		}
 	}
 
-	/**
-	 * Naprawa wyposażenia
-	 *
-	 * @param unknown_type $equipmentID
-	 */
-	static public function sStationRepair($equipmentID) {
+    /**
+     * @param $equipmentID
+     * @throws securityException
+     */
+    static public function sStationRepair($equipmentID) {
 
 		global $userStats, $shipProperties, $shipPosition, $portProperties, $shipEquipment, $error;
 
@@ -429,12 +418,11 @@ class shipEquipment {
 		\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:equipmentSold}' . $tPrice . '$' );
 	}
 
-	/**
-	 * Sprzedaż wyposażenia
-	 *
-	 * @param int $equipmentID
-	 */
-	static public function sSell($equipmentID) {
+    /**
+     * @param int $equipmentID
+     * @throws securityException
+     */
+    static public function sSell($equipmentID) {
 
 		global $action, $userStats, $shipProperties, $shipPosition, $portProperties, $shipEquipment, $error;
 
@@ -474,5 +462,4 @@ class shipEquipment {
 			shipEquipmentRegistry::sRender ();
 		}
 	}
-
 }

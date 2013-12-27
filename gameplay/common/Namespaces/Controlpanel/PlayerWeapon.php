@@ -37,13 +37,13 @@ class PlayerWeapon extends \weapon{
 
 	final public function deleteExe($user, $params) {
 
-		global $config;
-
 		\Database\Controller::getInstance()->quoteAll($params);
 		\Database\Controller::getInstance()->execute("DELETE FROM shipweapons WHERE ShipWeaponID = '{$params['id']}'");
 		if (!empty($_SESSION['returnUser'])) {
-			\Cache\Controller::forceClear($_SESSION['returnUser'], 'shipWeapons');
-			\Cache\Controller::forceClear($_SESSION['returnUser'], 'shipProperties');
+            $oObject = new \shipProperties();
+            $oObject->load($_SESSION['returnUser'], true, true);
+            $oObject->clearCache();
+
 			\shipProperties::sQuickRecompute($_SESSION['returnUser']);
 		}
 		
@@ -82,8 +82,9 @@ class PlayerWeapon extends \weapon{
 			throw new \customException('Security error');
 		}
 
-		\Cache\Controller::forceClear($_SESSION['returnUser'], 'shipWeapons');
-		\Cache\Controller::forceClear($_SESSION['returnUser'], 'shipProperties');
+        $oObject = new \shipProperties();
+        $oObject->load($_SESSION['returnUser'], true, true);
+        $oObject->clearCache();
 
 		$shipWeapons = new \shipWeapons($_SESSION['returnUser']);
 

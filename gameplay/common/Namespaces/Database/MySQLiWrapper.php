@@ -356,7 +356,7 @@ class MySQLiWrapper {
 	 * Pobranie kolejnych pól z wyniku zapytania
 	 *
 	 * @param resource $result
-	 * @return obiekt zawierający zwracana pola
+	 * @return \stdClass
 	 */
 	public function fetch($result) {
 
