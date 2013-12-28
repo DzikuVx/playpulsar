@@ -32,29 +32,30 @@ bank = new bankClass();
 
 function userClass() {
 
-	/**
-	 * Edycja danych użytkownika
-	 */
 	this.editExecute = function() {
 
-		if ($('#userName').val().length < 4) {
+        var $userName = $('#userName'),
+            $passwordA = $('#passwordA'),
+            $passwordB = $('#passwordA');
+
+		if ($userName.val().length < 4) {
 			alert("Name too short (min 4 chars)");
 			return false;
 		}
 
-		if ($('#userName').val().length > 20) {
+		if ($userName.val().length > 20) {
 			alert("Name too long (max 20 chars)");
 			return false;
 		}
 
-		if ($('#passwordA').val() != '' || $('#passwordB').val() != '') {
+		if ($passwordA.val() != '' || $passwordB.val() != '') {
 
-			if ($('#passwordA').val() != $('#passwordB').val()) {
+			if ($passwordA.val() != $passwordB.val()) {
 				alert('Wrong password');
 				return false;
 			}
 
-			if ($('#passwordA').val().length < 6) {
+			if ($passwordA.val().length < 6) {
 				alert("Password too short (min 6 chars)");
 				return false;
 			}
@@ -213,12 +214,15 @@ function getXmlRpc(targetHtml, method, param0, param1, param2, param3) {
 
 	$.post('engine/ajax/xmlrpc.php', sendXml, function(data) {
 
-		if (targetHtml != null) {
-			$('#' + targetHtml).html(parseXmlValue(data, 'value'));
-			$('#' + targetHtml).show();
-			$('#' + targetHtml).css('top', mouseY - 75);
-			$('#' + targetHtml).css('left', mouseX - 100);
-			$('#' + targetHtml).prepend('<button class="close" style="margin: 0.5em;" title="x" onclick="$(this).parent().hide()"><i class="icon-white icon-remove" /></i></button>');
+		if (targetHtml) {
+
+            var $targetHtml = $('#' + targetHtml);
+
+            $targetHtml.html(parseXmlValue(data, 'value'));
+            $targetHtml.show();
+            $targetHtml.css('top', mouseY - 75);
+            $targetHtml.css('left', mouseX - 100);
+            $targetHtml.prepend('<button class="close" style="margin: 0.5em;" title="x" onclick="$(this).parent().hide()"><i class="icon-white icon-remove" /></i></button>');
 		}
 
 		progressBar.stop();
@@ -373,7 +377,7 @@ Playpulsar.gameplay = (function () {
 			  error: self.processFailure
 			});
 		
-	}
+	};
 
 	self.processSuccess = function (data, textStatus, jqXHR) {
 
@@ -452,11 +456,11 @@ Playpulsar.gameplay = (function () {
 		
 		$('.knob').knob();
 		
-	}
+	};
 	
 	self.processFailure = function (data) {
 		console.log('Failure', data);
-	}
+	};
 	
 	return self;
 })();

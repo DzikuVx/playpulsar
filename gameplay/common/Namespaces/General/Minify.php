@@ -45,7 +45,8 @@ class Minify {
 	 */
 	private function getConfig() {
 		require dirname(__FILE__).'/../../../minify.inc.php';
-		$this->config = $minify;
+        /** @noinspection PhpUndefinedVariableInspection */
+        $this->config = $minify;
 	}
 
 	/**

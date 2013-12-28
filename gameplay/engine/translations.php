@@ -438,8 +438,8 @@ $translationTable ['en'] ['emailAlreadyUsed'] = '<h2>Given e-mail adress i alrea
 $translationTable ['pl'] ['accountCreated'] = '<h2>Konto utworzone, możesz się zalogować</h2>';
 $translationTable ['en'] ['accountCreated'] = '<h2>Your account has been created, you might log in now</h2>';
 
-$translationTable ['pl'] ['registerHere'] = '<a href="index.php?class=user&method=register" rel="nofollow"><button class="btn" style="margin-left: 1em;" title="Załóż konto" style="font-weight: bold;">Zarejestruj się</button></a>';
-$translationTable ['en'] ['registerHere'] = '<a href="index.php?class=user&method=register" rel="nofollow"><button class="btn" style="margin-left: 1em;" title="New account" style="font-weight: bold;">Sign Up</button></a>';
+$translationTable ['pl'] ['registerHere'] = '<a href="index.php?class=user&method=register" rel="nofollow" class="btn" style="margin-left: 1em; font-weight: bold;" title="Załóż konto">Zarejestruj się</a>';
+$translationTable ['en'] ['registerHere'] = '<a href="index.php?class=user&method=register" rel="nofollow" class="btn" style="margin-left: 1em; font-weight: bold;" title="New account">Sign Up</a>';
 
 $translationTable ['pl'] ['login'] = 'Logowanie';
 $translationTable ['en'] ['login'] = 'Login';
