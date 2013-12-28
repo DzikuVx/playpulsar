@@ -1,7 +1,5 @@
 <?php
-/**
- * Obiekt przechowujący powiązanie gracza z sojuszem
- */
+
 class userAlliance extends baseItem {
 
 	protected $tableName = "alliancemembers";
@@ -10,12 +8,11 @@ class userAlliance extends baseItem {
 	protected $defaultCacheExpire = 3600;
 	protected $useMemcached = true;
 
-	/**
-	 *
-	 * konstruktor statyczny
-	 * @param int $ID
-	 */
-	static public function quickLoad($ID) {
+    /**
+     * @param $ID
+     * @return stdClass
+     */
+    static public function quickLoad($ID) {
 		$item = new userAlliance ( );
 		$retVal = $item->load ( $ID, true, true );
 		unset($item);
@@ -101,4 +98,3 @@ class userAlliance extends baseItem {
 	//@todo: przypadek, kiedy osoba odchodząca zabiera cały zestaw praw
 	//@todo : w przypadku usunięcia AllianceID, usunąć wpis w alliances
 }
-?>

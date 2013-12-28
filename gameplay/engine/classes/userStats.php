@@ -1,10 +1,4 @@
 <?php
-/**
- * Statystyki gracza
- *
- * @version $Rev: 456 $
- * @package Engine
- */
 class userStats extends baseItem {
 	protected $tableName = "userstats";
 	protected $tableID = "UserID";
@@ -19,8 +13,6 @@ class userStats extends baseItem {
 	}
 
 	/**
-	 * Obliczenie levelu usera
-	 *
 	 * @param int $exp
 	 * @return int
 	 */
@@ -41,9 +33,7 @@ class userStats extends baseItem {
 	}
 
 	/**
-	 * Zwiększenie kasy
-	 *
-	 * @param userStats $userStats
+	 * @param stdClass $userStats
 	 * @param int $amount
 	 */
 	static public function incCash($userStats, $amount) {
@@ -51,9 +41,7 @@ class userStats extends baseItem {
 	}
 
 	/**
-	 * Zmniejszenie kasy
-	 *
-	 * @param userStats $userStats
+	 * @param stdClass $userStats
 	 * @param int $amount
 	 */
 	static public function decCash($userStats, $amount) {
@@ -66,7 +54,7 @@ class userStats extends baseItem {
 	/**
 	 * Zmniejszenie Fame
 	 *
-	 * @param int $userStats
+	 * @param stdClass $userStats
 	 * @param int $amount
 	 */
 	static public function decFame($userStats, $amount) {
@@ -97,7 +85,7 @@ class userStats extends baseItem {
 				$tAlliance = userAlliance::quickLoad($userStats->UserID);
 
 				if (!empty($tAlliance->AllianceID)) {
-                    \phpCache\Factory::getInstance()->create()->clearModule('allianceMembersRegistry::get::'.$tAlliance->AllianceID);
+                    \phpCache\Factory::getInstance()->create()->clearModule(new \phpCache\CacheKey('allianceMembersRegistry::get::'.$tAlliance->AllianceID));
 				}
 			}
 
@@ -118,8 +106,6 @@ class userStats extends baseItem {
 	}
 
 	/**
-	 * Ustawienie doświadczenia usera
-	 *
 	 * @param stdClass $userStats
 	 * @param int $amount
 	 */
@@ -129,4 +115,3 @@ class userStats extends baseItem {
 	}
 
 }
-?>

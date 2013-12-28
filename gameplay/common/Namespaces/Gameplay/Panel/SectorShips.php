@@ -12,17 +12,21 @@ class SectorShips extends Renderable implements Singleton {
 	protected $onEmpty = "clearAndHide";
 	protected $panelTag = "SectorShips";
 
-	private static $instance = null;
+    /**
+     * @var SectorShips
+     */
+    private static $instance = null;
 
-	static public function getInstance() {
-
+    /**
+     * @return SectorShips
+     * @throws \Exception
+     */
+    static public function getInstance() {
 		if (empty(self::$instance)) {
 			throw new \Exception('Panel not initialized');
-		}
-		else {
+		} else {
 			return self::$instance;
 		}
-
 	}
 
 	static public function initiateInstance($language = 'pl', $localUserID = null) {

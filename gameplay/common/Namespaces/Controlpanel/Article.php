@@ -10,7 +10,7 @@ class Article extends News {
 	protected $templateFileName = 'templates/portalArticle.html';
 
 	protected function clearCache($language) {
-		\phpCache\Factory::getInstance()->create()->clear('menuNavigator::sRender', $language);
+		\phpCache\Factory::getInstance()->create()->clear(new \phpCache\CacheKey('menuNavigator::sRender', $language));
 	}
 
     /**

@@ -23,7 +23,13 @@ class Maintenance extends BaseItem {
         \phpCache\Factory::getInstance()->create()->clearAll();
 	}
 
-	final public function resetAll($user, $params) {
+    /**
+     * @param \user $user
+     * @param array $params
+     * @return string
+     * @throws \customException
+     */
+    final public function resetAll($user, $params) {
 
 		if ($user->sGetRole () != 'admin') {
 			throw new \customException ( 'No rights to perform selected operation' );
@@ -34,8 +40,13 @@ class Maintenance extends BaseItem {
 		return Controls::dialog( "Confirm", "Do you want to <strong>reset all player accounts</strong>?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=resetAllExe'", "window.history.back();", 'Yes','No' );
 	}
 
-
-	final public function resetAllExe($user, $params) {
+    /**
+     * @param \user $user
+     * @param array $params
+     * @throws \customException
+     */
+    final public function resetAllExe($user, /** @noinspection PhpUnusedParameterInspection */
+                                      $params) {
 
 		if ($user->sGetRole () != 'admin') {
 			throw new \customException ( 'No rights to perform selected operation' );
@@ -48,7 +59,13 @@ class Maintenance extends BaseItem {
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail", "Operation completed");
 	}
 
-	final public function flushAll($user, $params) {
+    /**
+     * @param \user $user
+     * @param array $params
+     * @return string
+     * @throws \customException
+     */
+    final public function flushAll($user, $params) {
 
 		if ($user->sGetRole () != 'admin') {
 			throw new \customException ( 'No rights to perform selected operation' );
@@ -78,8 +95,6 @@ class Maintenance extends BaseItem {
 			throw new \customException ( 'No rights to perform selected operation' );
 		}
 
-		global $config;
-
 		$text = '<form method="post" name="myForm" style="margin: 0; padding: 0;">';
 		$text .= '<input masked="int10" class="span1" value="0" name="value"/>';
 		$text .= '<input type="hidden" name="class" value="'.get_class($this).'">';
@@ -95,7 +110,12 @@ class Maintenance extends BaseItem {
 		return $retVal;
 	}
 
-	final public function giveTraxiumExe($user, $params) {
+    /**
+     * @param \user $user
+     * @param array $params
+     * @throws \customException
+     */
+    final public function giveTraxiumExe($user, $params) {
 
 		if ($user->sGetRole () != 'admin') {
 			throw new \customException ( 'No rights to perform selected operation' );
@@ -113,7 +133,14 @@ class Maintenance extends BaseItem {
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail", "<strong>Operation completed</strong>");
 	}
 
-	final public function giveAntimatter($user, $params) {
+    /**
+     * @param \user $user
+     * @param array $params
+     * @return string
+     * @throws \customException
+     */
+    final public function giveAntimatter($user, /** @noinspection PhpUnusedParameterInspection */
+                                         $params) {
 
 		if ($user->sGetRole () != 'admin') {
 			throw new \customException ( 'No rights to perform selected operation' );
@@ -134,7 +161,13 @@ class Maintenance extends BaseItem {
 		return $retVal;
 	}
 
-	final public function gameplayMessage($user, $params) {
+    /**
+     * @param \user $user
+     * @param array $params
+     * @return string
+     * @throws \customException
+     */
+    final public function gameplayMessage($user, $params) {
 
 		if ($user->sGetRole () != 'admin') {
 			throw new \customException ( 'No rights to perform selected operation' );
@@ -179,7 +212,12 @@ class Maintenance extends BaseItem {
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail", "Operation completed");
 	}
 
-	final public function giveAntimatterExe($user, $params) {
+    /**
+     * @param \user $user
+     * @param array $params
+     * @throws \customException
+     */
+    final public function giveAntimatterExe($user, $params) {
 
 		if ($user->sGetRole () != 'admin') {
 			throw new \customException ( 'No rights to perform selected operation' );
@@ -196,7 +234,13 @@ class Maintenance extends BaseItem {
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail", "Operation completed");
 	}
 
-	public function detail($user, $params) {
+    /**
+     * @param \user $user
+     * @param array $params
+     * @return string
+     * @throws \customException
+     */
+    public function detail($user, $params) {
 
 		global $config;
 
@@ -504,7 +548,7 @@ class Maintenance extends BaseItem {
 			}
 
 		}
-        \phpCache\Factory::getInstance()->create()->clear ( 'maintenance', 'sGetOverheadTablesCount' );
+        \phpCache\Factory::getInstance()->create()->clear(new \phpCache\CacheKey('maintenance', 'sGetOverheadTablesCount'));
 		return true;
 	}
 
@@ -630,7 +674,7 @@ class Maintenance extends BaseItem {
 	/**
 	 * Usunięcie przeterminowanych cacheclear
 	 *
-	 * @return unknown
+	 * @return bool
 	 */
 	static private function sDeleteOldClearCache() {
 
@@ -639,22 +683,18 @@ class Maintenance extends BaseItem {
 		$tTime = time () - ($maintenance ['cacheClearValid'] * 3600);
 
 		$tQuery = "DELETE FROM cacheclear WHERE (SELECT usertimes.LastAction FROM usertimes WHERE usertimes.UserID=cacheclear.UserID) < '{$tTime}'";
-		$tQuery = Database::getInstance()->execute ( $tQuery );
+		Database::getInstance()->execute ( $tQuery );
 		return true;
 	}
 
 	/**
-	 * Liczba wpisów w cacheclear dla NPC
-	 *
 	 * @return int
 	 */
 	static private function sGetNpcClearCache() {
 
 		$tQuery = "SELECT COUNT(*) AS ILE FROM cacheclear JOIN users USING (UserID) WHERE users.Type!='player'";
 		$tQuery = Database::getInstance()->execute ( $tQuery );
-		$retVal = Database::getInstance()->fetch ( $tQuery )->ILE;
-
-		return $retVal;
+		return Database::getInstance()->fetch ( $tQuery )->ILE;
 	}
 
 	/**
@@ -705,7 +745,7 @@ class Maintenance extends BaseItem {
 	/**
 	 * Usunięcie starych npc contact
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	static private function sDeleteOldNpcContact() {
 
@@ -714,7 +754,7 @@ class Maintenance extends BaseItem {
 		$tTime = time () - ($maintenance ['npcContactValid'] * 3600);
 
 		$tQuery = "DELETE FROM npccontact WHERE ContactTime<'{$tTime}'";
-		$tQuery = Database::getInstance()->execute ( $tQuery );
+		Database::getInstance()->execute ( $tQuery );
 		return true;
 	}
 
@@ -785,7 +825,7 @@ class Maintenance extends BaseItem {
 		$tTime = time () - ($maintenance ['offensiveReportsValid'] * 3600);
 
 		$tQuery = "DELETE FROM combatmessages WHERE Type='offensive' AND CreateTime<'{$tTime}'";
-		$tQuery = Database::getInstance()->execute ( $tQuery );
+		Database::getInstance()->execute ( $tQuery );
 		return true;
 	}
 
@@ -841,8 +881,6 @@ class Maintenance extends BaseItem {
 	}
 
 	/**
-	 * Usunięcie przeterminowanych wiadomości
-	 *
 	 * @return bool
 	 */
 	static private function sDeleteOldMessages() {
@@ -852,7 +890,7 @@ class Maintenance extends BaseItem {
 		$tTime = time () - ($maintenance ['messagesValid'] * 3600);
 
 		$tQuery = "DELETE FROM messages WHERE CreateTime<'{$tTime}'";
-		$tQuery = Database::getInstance()->execute ( $tQuery );
+		Database::getInstance()->execute ( $tQuery );
 
 		return true;
 	}
@@ -871,16 +909,16 @@ class Maintenance extends BaseItem {
 		Database::getInstance()->disableAutocommit();
 
 		$tQuery = "SELECT
-		sectorcargo.System,
-		sectorcargo.X,
-		sectorcargo.Y,
-		sectors.System AS System2,
-		sectors.X AS X2,
-		sectors.Y AS Y2
-		FROM
-		sectorcargo LEFT JOIN sectors ON sectors.SectorID=sectorcargo.SectorID
-		WHERE
-		sectorcargo.Type='{$type}' LIMIT {$count}";
+                sectorcargo.System,
+                sectorcargo.X,
+                sectorcargo.Y,
+                sectors.System AS System2,
+                sectors.X AS X2,
+                sectors.Y AS Y2
+            FROM
+                sectorcargo LEFT JOIN sectors ON sectors.SectorID=sectorcargo.SectorID
+            WHERE
+                sectorcargo.Type='{$type}' LIMIT {$count}";
 		$tQuery = Database::getInstance()->execute ( $tQuery );
 		while ($tResult = Database::getInstance()->fetch($tQuery)) {
 

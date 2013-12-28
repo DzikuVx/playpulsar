@@ -156,16 +156,13 @@ class allianceRights extends baseItem {
 		$template->add('action',"alliance.setMemberRights('{$id}');");
 
 		\Gameplay\Panel\Action::getInstance()->add((string) $template);
-
-		\Gameplay\Panel\SectorShips::getInstance()->hide ();
-		\Gameplay\Panel\SectorResources::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide();
+		\Gameplay\Panel\SectorResources::getInstance()->hide();
 		\Gameplay\Panel\PortAction::getInstance()->clear();
 
 	}
 
 	/**
-	 *
-	 * Renderowanie listy członków na których można ustawić prawa do sojuszu
 	 * @throws securityException
 	 */
 	static public function sRender() {
@@ -192,7 +189,6 @@ class allianceRights extends baseItem {
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		\Gameplay\Panel\PortAction::getInstance()->clear();
-
 	}
 
 	/**
@@ -212,7 +208,6 @@ class allianceRights extends baseItem {
 	}
 
 	/**
-	 * Zabranie wszystkich praw do sojuszu
 	 * @param int $userID
 	 * @param int $allianceID
 	 */
@@ -239,8 +234,7 @@ class allianceRights extends baseItem {
 		}
 
 		$tObject = new allianceRights();
-		$retVal = $tObject->load(array('UserID'=>$userID,'AllianceID'=>$allianceID,'Module'=>$module), true, true);
-		return $retVal;
+        return $tObject->load(array('UserID'=>$userID,'AllianceID'=>$allianceID,'Module'=>$module), true, true);
 	}
 
 	static public function sSet($userID, $allianceID, $module, $value) {
@@ -251,8 +245,7 @@ class allianceRights extends baseItem {
 	}
 
 	public function createUniqueID(array $data) {
-
-		$retVal = $data['UserID'] . '|'.$data['AllianceID']. '|'.$data['Module'];
+		$retVal = $data['UserID'] . '|' . $data['AllianceID'] . '|' . $data['Module'];
 		return md5 ( $retVal );
 	}
 

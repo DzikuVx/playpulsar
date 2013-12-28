@@ -13,14 +13,13 @@ class EquipmentTypes extends GameplayItem{
 	protected $tableName = 'equipmenttypes';
 	protected $tableIdField = 'EquipmentID';
 
-	/**
-	 * Edycja, wykonanie
-	 * @param user $user
-	 * @param array $params
-	 * @throws customException
-	 */
-	public function editExe($user, $params) {
-		$retVal = '';
+    /**
+     * @param \user $user
+     * @param array $params
+     * @throws \customException
+     */
+    public function editExe(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 
 		if (empty($_SESSION['returnUser'])) {
 			throw new \customException('Security error');
@@ -42,7 +41,7 @@ class EquipmentTypes extends GameplayItem{
 
 		$tQuery = BaseItem::sMakeUpdateQuery('equipmenttypes', 'EquipmentID', $tFields, $params);
 		\Database\Controller::getInstance()->execute($tQuery);
-		\phpCache\Factory::getInstance()->create()->clear('equipment',$params['id']);
+		\phpCache\Factory::getInstance()->create()->clear(new \phpCache\CacheKey('equipment',$params['id']));
 
 		Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
 	}

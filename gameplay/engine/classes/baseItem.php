@@ -8,7 +8,10 @@ abstract class baseItem {
 
 	//@todo !quotowanie!
 
-	protected $dataObject = null;
+    /**
+     * @var stdClass
+     */
+    protected $dataObject = null;
 	protected $language;
 	protected $tableName = "";
 	protected $tableID = "";

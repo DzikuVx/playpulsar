@@ -192,8 +192,9 @@ class Player extends BaseItem {
 		global $config;
 
 		Database::getInstance()->quoteAll($params);
-		Database::getInstance()->execute("UPDATE userships SET RookieTurns='0' WHERE UserID='{$params['id']}'" );
-        \phpCache\Factory::getInstance()->create()->clear('shipProperties',$params['id']);
+		Database::getInstance()->execute("UPDATE userships SET RookieTurns='0' WHERE UserID='{$params['id']}'");
+        //FIXME it will not work FIX!!!!
+        \phpCache\Factory::getInstance()->create()->clear(new \phpCache\CacheKey('shipProperties',$params['id']));
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
 	}
 

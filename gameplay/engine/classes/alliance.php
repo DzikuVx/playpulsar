@@ -171,13 +171,13 @@ class alliance extends baseItem {
 		$secondPlayerAlliance->Name = null;
 
 		$secondPlayerAllianceObject->synchronize($secondPlayerAlliance, true, true);
-		/*
-		 * Oczyść cache
-		 */
-		\Cache\Controller::forceClear($kickedID, 'userAlliance');
-		\Cache\Controller::forceClear($kickedID, 'allianceRights');
-        \phpCache\Factory::getInstance()->create()->clearModule('alliance::getRegistry');
-        \phpCache\Factory::getInstance()->create()->clearModule('allianceMembersRegistry::get');
+
+        $oObject = new userAlliance();
+        $oObject->load($kickedID, true, true);
+        $oObject->clearCache();
+
+        \phpCache\Factory::getInstance()->create()->clearModule(new \phpCache\CacheKey('alliance::getRegistry'));
+        \phpCache\Factory::getInstance()->create()->clearModule(new \phpCache\CacheKey('allianceMembersRegistry::get'));
 
 		/*
 		 * Wyślij wiadomość
@@ -235,8 +235,8 @@ class alliance extends baseItem {
 
 		$action = "pageReload";
 
-        \phpCache\Factory::getInstance()->create()->clearModule('alliance::getRegistry');
-        \phpCache\Factory::getInstance()->create()->clearModule('allianceMembersRegistry::get');
+        \phpCache\Factory::getInstance()->create()->clearModule(new \phpCache\CacheKey('alliance::getRegistry'));
+        \phpCache\Factory::getInstance()->create()->clearModule(new \phpCache\CacheKey('allianceMembersRegistry::get'));
 	}
 
 	/**
@@ -364,16 +364,13 @@ class alliance extends baseItem {
 
 		userStats::decFame($userStats, $config ['alliance']['createFameCost']);
 
-		/*
-		 * Usuń wszystkie wysłane zaproszenia
-		 */
 		allianceRequest::sDeleteAll($userID);
-        \phpCache\Factory::getInstance()->create()->clearModule('allianceRequest::sGetCount');
-        \phpCache\Factory::getInstance()->create()->clearModule('alliance::getRegistry');
+        \phpCache\Factory::getInstance()->create()->clearModule(new \phpCache\CacheKey('allianceRequest::sGetCount'));
+        \phpCache\Factory::getInstance()->create()->clearModule(new \phpCache\CacheKey('alliance::getRegistry'));
 
 		\Gameplay\Panel\Action::getInstance()->add(self::sGetDetail($userAlliance->AllianceID));
-		\Gameplay\Panel\SectorShips::getInstance()->hide ();
-		\Gameplay\Panel\SectorResources::getInstance()->hide ();
+		\Gameplay\Panel\SectorShips::getInstance()->hide();
+		\Gameplay\Panel\SectorResources::getInstance()->hide();
 		\Gameplay\Panel\PortAction::getInstance()->clear();
 	}
 

@@ -278,11 +278,8 @@ class allianceRequest extends baseItem {
 	}
 
 	/**
-	 *
-	 * Zaakceptowanie podania do sojuszu, wykonanie
 	 * @param int $apprenticeID
 	 * @throws securityException
-	 * @since 2010-07-31
 	 */
 	static public function sAcceptExecute($apprenticeID) {
 		global $userAlliance, $userID;
@@ -321,12 +318,11 @@ class allianceRequest extends baseItem {
 
 		self::sDeleteAll($apprenticeID);
 
-		/*
-		 * Oczyść cache
-		 */
-        //FIXME to jest bez sensu
-		\Cache\Controller::forceClear($apprenticeID, 'userAlliance');
-		\Cache\Controller::forceClear($apprenticeID, 'allianceRights');
+        allianceRights::sGiveNone($apprenticeID, $userAlliance->AllianceID);
+
+        $oObject = new userAlliance();
+        $oObject->load($apprenticeID, true, true);
+        $oObject->clearCache();
 
         $oCache = \phpCache\Factory::getInstance()->create();
         $oCache->clearModule(new \phpCache\CacheKey('alliance::getRegistry'));

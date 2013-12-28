@@ -11,7 +11,10 @@ class SectorResources extends Renderable implements Singleton {
 	protected $onEmpty = "clearAndHide";
 	protected $panelTag = "SectorResources";
 
-	private static $instance = null;
+    /**
+     * @var SectorResources
+     */
+    private static $instance = null;
 
 	static public function getInstance() {
 

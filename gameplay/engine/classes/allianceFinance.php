@@ -7,10 +7,10 @@ class allianceFinance extends baseItem {
 
 	static public function sCashoutExe($id, $value) {
 
-		global $shipProperties, $userAlliance, $userID;
+		global $userAlliance, $userID;
 
 		$value = \Database\Controller::getInstance()->quote($value);
-		$id = \Database\Controller::getInstance()->quote($id);
+		$id    = \Database\Controller::getInstance()->quote($id);
 
 		if (empty($userAlliance->AllianceID)) {
 			throw new securityException();
@@ -40,7 +40,6 @@ class allianceFinance extends baseItem {
 			throw new securityException();
 		}
 
-
 		$tUserStatsObject = new userStats();
 		$tUserStats = $tUserStatsObject->load($id, true, true);
 
@@ -50,8 +49,12 @@ class allianceFinance extends baseItem {
 		$tUserStatsObject->synchronize($tUserStats, true, true);
 		$item->synchronize($data, true, true);
 
-		\Cache\Controller::forceClear($id, 'userStats');
-		//@todo czyszczenie cache dla wszystkich członków sojuszu
+        //TODO is this really nessesary? synchronize is setting cache right?
+        $oObject = new \userStats();
+        $oObject->load($id, true, true);
+        $oObject->clearCache();
+
+		//todo czyszczenie cache dla wszystkich członków sojuszu
 
 		unset ($item);
 		unset($tUserStatsObject);
