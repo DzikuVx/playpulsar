@@ -1,6 +1,7 @@
 function chatClass() {
 
-	this.timer;
+	//noinspection BadExpressionStatementJS
+    this.timer;
 
 	this.lastID = 0;
 
@@ -17,9 +18,10 @@ function chatClass() {
 		this.timer = setTimeout(this.objectName + '.get()', 30000);
 	};
 
-	this.submitListener = function (e) {
-		var keynum = null;
-		var keychar;
+	//noinspection JSUnusedGlobalSymbols
+    this.submitListener = function (e) {
+		var keynum,
+            keychar;
 
 		if (window.event) {
 			keynum = e.keyCode;
@@ -46,7 +48,11 @@ function chatClass() {
 			lastID : this.lastID
 		}, function(data) {
 
-			if (data.State == 1) {
+            /** @namespace data.State */
+            /** @namespace data.LastID */
+            /** @namespace data.Count */
+            /** @namespace data.Data */
+            if (data.State == 1) {
 
 				var tString = '';
 
@@ -71,24 +77,21 @@ function chatClass() {
 	};
 
 	this.send = function() {
-		var tValue;
-		tValue = $(this.inputFieldId).val();
+		var tValue = $(this.inputFieldId).val();
 
 		var objectName = this.objectName;
 
-		if (tValue == '' || tValue == ' ') {
-			return false;
-		}
+		if (tValue && tValue != ' ') {
+            $(this.inputFieldId).val('');
+            progressBar.start();
 
-		$(this.inputFieldId).val('');
-		progressBar.start();
-		
-		$.post(this.sendFileName, {
-			text : tValue
-		}, function(data) {
-			progressBar.stop();
-			eval(objectName + '.get()');
-		});
+            //noinspection JSUnusedLocalSymbols
+            $.post(this.sendFileName, {
+                text : tValue
+            }, function(data) {
+                progressBar.stop();
+                eval(objectName + '.get()');
+            });
+        }
 	};
-
 }

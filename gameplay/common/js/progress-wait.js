@@ -9,10 +9,10 @@
  * 
  */
 
-progressBar = new Object();
+progressBar = {};
 
 progressBar.counter = 0;
-progressBar.timer;
+progressBar.timer = null;
 
 progressBar.update = function() {
  
