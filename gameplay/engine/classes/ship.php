@@ -1,11 +1,4 @@
 <?php
-/**
- * Okręt
- *
- * @version $Rev: 395 $
- * @package Engine
- * 
- */
 class ship extends baseItem {
 	protected $tableName = "shiptypes";
 	protected $tableID = "ShipID";

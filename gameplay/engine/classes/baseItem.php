@@ -69,12 +69,11 @@ abstract class baseItem {
 	}
 
 	/**
-	 * Zapis obiektu do cache
-	 *
 	 * @param boolean $useSession - czy wykorzystywać zapis w sesji
 	 * @return boolean
 	 */
-	function toCache($useSession = false) {
+	function toCache(/** @noinspection PhpUnusedParameterInspection */
+        $useSession = false) {
 
 		$oCacheKey = new \phpCache\CacheKey($this, $this->ID);
         \phpCache\Factory::getInstance()->create()->set ( $oCacheKey, $this->toArray (), $this->defaultCacheExpire );
@@ -87,8 +86,6 @@ abstract class baseItem {
 	}
 
 	/**
-	 * Przekształca obiekt na tablicę parametrów
-	 *
 	 * @return array
 	 */
 	final protected function toArray() {
@@ -187,14 +184,11 @@ abstract class baseItem {
 		return $retVal;
 	}
 
-	/**
-	 * Złożenie zapytania do INSERT
-	 *
-	 * @param stdClass $object
-	 * @param int $ID
-	 * @return string
-	 */
-	protected function formatInsertQuery($object) {
+    /**
+     * @param stdClass $object
+     * @return string
+     */
+    protected function formatInsertQuery($object) {
 
 		$retVal = "INSERT INTO " . $this->tableName . "(";
 
@@ -238,9 +232,8 @@ abstract class baseItem {
 	}
 
 	/**
-	 * Synchronizacja kopii dataObject z cache i bazą danych
 	 *
-	 * @param object $object
+	 * @param stdClass $object
 	 * @param boolean $useCache
 	 * @param boolean $useSession
 	 * @return boolean
@@ -313,13 +306,12 @@ abstract class baseItem {
 	}
 
 	/**
-	 * Przeładowanie obiektu wraz z synchronizacją do bazy danych i cache
 	 *
 	 * @param int $newID
 	 * @param mixed $object
 	 * @param boolean $useCache
 	 * @param boolean $useSession
-	 * @return strClass
+	 * @return stdClass
 	 */
 	public function reload($newID, $object, $useCache = false, $useSession = false) {
 
