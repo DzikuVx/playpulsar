@@ -15,7 +15,6 @@ class UserStats extends \userStats {
 	}
 
 	public function editExe($user, $params) {
-		$retVal = '';
 
 		if (empty($_SESSION['returnUser'])) {
 			throw new \customException('Security error');
@@ -24,8 +23,8 @@ class UserStats extends \userStats {
 		$tQuery = \Controlpanel\BaseItem::sMakeUpdateQuery($this->tableName, $this->tableID, $this->tableUseFields, $params);
 
 		\Database\Controller::getInstance()->execute($tQuery);
+        //FIXME will not work
 		\phpCache\Factory::getInstance()->create()->clear('userStats', $params['id']);
-
 		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
 	}
 

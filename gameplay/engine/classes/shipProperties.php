@@ -245,6 +245,7 @@ class shipProperties extends baseItem {
 		shipWeapons::sUpdateCount($shipProperties, $userID);
 		shipEquipment::sUpdateCount($shipProperties, $userID);
 		$shipPropertiesObject->synchronize($shipProperties, true, true);
+        //FIXME will not work
         \phpCache\Factory::getInstance()->create()->clear('shipProperties', $userID);
 	}
 

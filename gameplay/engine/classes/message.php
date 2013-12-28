@@ -55,7 +55,7 @@ class message extends baseItem {
 		$tQuery = "DELETE FROM messages WHERE MessageID='{$messageID}' LIMIT 1";
 		\Database\Controller::getInstance()->execute ( $tQuery );
 
-        \phpCache\Factory::getInstance()->create()->clear('message::sGetUnreadCount',$userID);
+        \phpCache\Factory::getInstance()->create()->clear(new \phpCache\CacheKey('message::sGetUnreadCount',$userID));
 
 		messageRegistry::sRender ();
 

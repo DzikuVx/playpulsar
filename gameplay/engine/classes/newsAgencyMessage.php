@@ -125,6 +125,7 @@ class newsAgencyMessage {
 			/**
 			 * Wyczyść cache wszystkich zaleznych modułów
 			 */
+            //Check if it will work
             \phpCache\Factory::getInstance()->create()->clearClassCache ( 'newsAgency' );
 
 		}

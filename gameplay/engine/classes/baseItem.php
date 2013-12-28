@@ -1,8 +1,4 @@
 <?php
-/**
- * Klasa bazowa dla elementów
- * @version $Rev: 456 $
- */
 abstract class baseItem {
 	protected $ID = null;
 

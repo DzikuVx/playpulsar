@@ -31,6 +31,7 @@ class PortTypes extends GameplayItem{
 
 		$tQuery = BaseItem::sMakeUpdateQuery('porttypes', 'PortTypeID', $tFields, $params);
 		Database::getInstance()->execute($tQuery);
+        //FIXME check if it will work
         \phpCache\Factory::getInstance()->create()->clearModule(new \phpCache\CacheKey('portProperties'));
 		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
 	}

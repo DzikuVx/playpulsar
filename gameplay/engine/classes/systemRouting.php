@@ -107,12 +107,10 @@ class systemRouting {
 	}
 
 	/**
-	 * Usunięcie wpisu z pamięci podręcznej
-	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function delete() {
-        \phpCache\Factory::getInstance()->create()->clear($this->getCacheModule(), $this->getCacheProperty());
+        \phpCache\Factory::getInstance()->create()->clear(new \phpCache\CacheKey($this->getCacheModule(), $this->getCacheProperty()));
 		return true;
 	}
 

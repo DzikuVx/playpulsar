@@ -518,6 +518,7 @@ class npc extends baseItem {
 				/*
 				 * Wyczyść cache jego pozycji
 				 */
+                //FIXME will not work
 				\phpCache\Factory::getInstance()->create()->clear(new CacheKey('shipPosition', $tR1->NpcID));
 
 			}

@@ -1,18 +1,11 @@
 <?php
 
-/**
- * Klasa bazowa dla elementów
- *
- * @version $Rev: 377 $
- * @package Engine
- */
 abstract class extendedItem {
 	protected $ID = null;
 
 	protected $cache = null;
 
 	/**
-	 * Oryginalne dane
 	 * @var stdClass
 	 */
 	protected $originalData = null;

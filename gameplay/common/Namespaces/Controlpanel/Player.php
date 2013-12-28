@@ -194,7 +194,7 @@ class Player extends BaseItem {
 		Database::getInstance()->quoteAll($params);
 		Database::getInstance()->execute("UPDATE userships SET RookieTurns='0' WHERE UserID='{$params['id']}'");
         //FIXME it will not work FIX!!!!
-        \phpCache\Factory::getInstance()->create()->clear(new \phpCache\CacheKey('shipProperties',$params['id']));
+        \phpCache\Factory::getInstance()->create()->clear('shipProperties',$params['id']);
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
 	}
 
@@ -226,6 +226,7 @@ class Player extends BaseItem {
 
 		Database::getInstance()->quoteAll($params);
 		Database::getInstance()->execute("UPDATE userships SET RookieTurns=RookieTurns+'{$params['value']}' WHERE UserID='{$params['id']}'" );
+        //FIXME will not work
         \phpCache\Factory::getInstance()->create()->clear('shipProperties',$params['id']);
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
 	}
@@ -253,6 +254,7 @@ class Player extends BaseItem {
 
 		Database::getInstance()->quoteAll($params);
 		Database::getInstance()->execute("UPDATE userstats SET Fame=Fame+'{$params['value']}' WHERE UserID='{$params['id']}'" );
+        //FIXME will not work
         \phpCache\Factory::getInstance()->create()->clear('userStats',$params['id']);
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
 	}
@@ -281,8 +283,8 @@ class Player extends BaseItem {
 		Database::getInstance()->quoteAll($params);
 
 		Database::getInstance()->execute("UPDATE userships SET Turns=Turns+'{$params['value']}' WHERE UserID='{$params['id']}'" );
+        //FIXME will not work
         \phpCache\Factory::getInstance()->create()->clear('shipProperties',$params['id']);
-
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
 		
 	}

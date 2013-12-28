@@ -34,14 +34,12 @@ class WeaponTypes extends GameplayItem{
 		return $retVal;
 	}
 
-	/**
-	 * Edycja, wykonanie
-	 * @param user $user
-	 * @param array $params
-	 * @throws customException
-	 */
-	public function editExe($user, $params) {
-		$retVal = '';
+    /**
+     * @param \user$user
+     * @param array $params
+     * @throws \customException
+     */
+    public function editExe($user, $params) {
 
 		if (empty($_SESSION['returnUser'])) {
 			throw new \customException('Security error');
@@ -58,6 +56,8 @@ class WeaponTypes extends GameplayItem{
 
 		$tQuery = BaseItem::sMakeUpdateQuery('weapontypes', 'WeaponID', $tFields, $params);
 		\Database\Controller::getInstance()->execute($tQuery);
+
+        //FIXME will not work
         \phpCache\Factory::getInstance()->create()->clear('weapon', $params['id']);
 
 		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
