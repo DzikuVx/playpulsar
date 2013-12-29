@@ -1,14 +1,32 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pawel
- * Date: 29.12.13
- * Time: 14:59
- */
 
 namespace Gameplay\Model;
 
+class ShipPosition extends Standard {
 
-class ShipPosition {
+    protected $tableName = "shippositions";
+    protected $tableID = "UserID";
+    protected $tableUseFields = array ("System", "X", "Y", "Docked" );
+    protected $cacheExpire = 3600;
 
-} 
+    /**
+     * @var int
+     */
+    public $System;
+
+    /**
+     * @var int
+     */
+    public $X;
+
+    /**
+     * @var int
+     */
+    public $Y;
+
+    /**
+     * @var string
+     */
+    public $Docked;
+
+}
