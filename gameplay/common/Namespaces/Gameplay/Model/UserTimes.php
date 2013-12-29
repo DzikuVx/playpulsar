@@ -36,13 +36,11 @@ class UserTimes extends Standard {
 
     /**
      * @param UserTimes $object
-     * @param $userFastTimes
+     * @param UserFastTimes $userFastTimes
      */
-    static public function genAuthCode(UserTimes $object, $userFastTimes) {
-		global $actualTime;
-
+    static public function genAuthCode(UserTimes $object, UserFastTimes $userFastTimes) {
 		$userFastTimes->AuthCode = rand ( 1, 999999 );
-		$object->LastAction = floor($actualTime/100) * 100;
+		$object->LastAction = floor(time() / 100) * 100;
 	}
 
 }

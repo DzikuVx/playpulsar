@@ -48,7 +48,7 @@ class combatShip {
 	public $userTimes = null;
 
 	/**
-	 * @var userFastTimes
+	 * @var \Gameplay\Model\UserFastTimes
 	 */
 	public $userFastTimes = null;
 
@@ -88,9 +88,8 @@ class combatShip {
 		$this->shipPropertiesObject = new shipProperties ( );
 		$this->shipProperties = $this->shipPropertiesObject->load ( $userID, true, true );
 
-		$this->userTimes = new \Gameplay\Model\UserTimes( $userID );
-
-		$this->userFastTimes = new userFastTimes ( $userID );
+		$this->userTimes     = new \Gameplay\Model\UserTimes($userID);
+		$this->userFastTimes = new \Gameplay\Model\UserFastTimes($userID);
 
 		$this->userPropertiesObject = new userProperties ( );
 		$this->userProperties = $this->userPropertiesObject->load ( $userID, true, true );

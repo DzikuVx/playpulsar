@@ -145,9 +145,8 @@ try {
 	$userStatsObject = new userStats ( );
 	$userStats = $userStatsObject->load ( $userID, true, true );
 
-    $userTimes = $oPlayerModelProvider->register('UserTimes', new \Gameplay\Model\UserTimes($userID));
-
-	$userFastTimes = new userFastTimes($userID);
+    $userTimes     = $oPlayerModelProvider->register('UserTimes', new \Gameplay\Model\UserTimes($userID));
+    $userFastTimes = $oPlayerModelProvider->register('UserFastTimes', new \Gameplay\Model\UserFastTimes($userID));
 
 	//Sprawdz authorize code
 	if ($oController->getParameter('action') != "pageReload" && $oController->getParameter('auth') != $userFastTimes->AuthCode) {

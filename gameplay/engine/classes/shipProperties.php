@@ -413,11 +413,16 @@ class shipProperties extends baseItem {
 		return true;
 	}
 
-	public function autoRepair($shipProperties, $userFastTimes) {
+    /**
+     * @param $shipProperties
+     * @param \Gameplay\Model\UserFastTimes $userFastTimes
+     * @return bool
+     */
+    public function autoRepair($shipProperties, \Gameplay\Model\UserFastTimes $userFastTimes) {
 
 		global $config;
 
-		$actualTime = time ();
+		$actualTime = time();
 
 		$repaired = false;
 

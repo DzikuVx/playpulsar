@@ -85,8 +85,8 @@ class additional {
 	/**
 	 * Sparwdzenie, czy losowy warunek został spełniony
 	 *
-	 * @param warunek $prc - np 50
-	 * @param zakres $base - np 100
+	 * @param int $prc - np 50
+	 * @param int $base - np 100
 	 * @return boolean
 	 */
 	static function checkRand($prc, $base) {
