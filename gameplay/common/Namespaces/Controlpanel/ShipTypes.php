@@ -35,8 +35,7 @@ class ShipTypes extends GameplayItem{
 	
 		$tQuery = BaseItem::sMakeUpdateQuery('shiptypes', 'ShipID', $tFields, $params);
 		\Database\Controller::getInstance()->execute($tQuery);
-        //FIXME will not work
-        \phpCache\Factory::getInstance()->create()->clear('ship',$params['id']);
+        \ship::sFlushCache($params['id']);
 		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
 		
 		return $retVal;

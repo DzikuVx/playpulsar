@@ -17,11 +17,15 @@ abstract class baseItem {
 	protected $defaultCacheExpire = 60;
 	protected $useMemcached = false;
 
+    static public function sFlushCache($id) {
+        $oObject = new static($id);
+        /** @noinspection PhpUndefinedMethodInspection */
+        $oObject->clearCache();
+    }
+
 	/**
-	 * Wstawienie pozycji do bazy danych
-	 *
 	 * @param stdClass $data
-	 * @return int - id wstawionej pozycji
+	 * @return int
 	 */
 	public function insert($data) {
 
@@ -32,8 +36,6 @@ abstract class baseItem {
 	}
 
 	/**
-	 * Konstruktor klasy bazowej
-	 *
 	 * @param int $ID
 	 * @param string $defaultAction
 	 */
@@ -41,8 +43,9 @@ abstract class baseItem {
 
 		$this->ID = $ID;
 
-		if ($this->ID != null)
-		$this->get ( $ID );
+		if ($this->ID != null) {
+		    $this->get( $ID );
+        }
 
 		if ($defaultAction != null) {
 			$this->{$defaultAction};
@@ -51,7 +54,7 @@ abstract class baseItem {
 
 	/**
 	 *
-	 * @param int $ID - ID obiektu do pobrania
+	 * @param int $ID
 	 * @return boolean
 	 */
 	function fromCache($ID) {
@@ -320,8 +323,6 @@ abstract class baseItem {
 	}
 
 	/**
-	 * Pobranie elementu z bazy danych
-	 *
 	 * @param int $ID
 	 * @return boolean
 	 */
@@ -330,20 +331,20 @@ abstract class baseItem {
 		$this->dataObject = null;
 
 		$tResult = \Database\Controller::getInstance()->execute ( "
-      SELECT
-        *
-      FROM
-		{$this->tableName}
-      WHERE
-      {$this->tableID}='$ID'
-      LIMIT
-        1
-      " );
-      while ( $resultRow = \Database\Controller::getInstance()->fetch ( $tResult ) ) {
-      	$this->dataObject = $resultRow;
-      }
-      $this->ID = $this->parseCacheID ( $ID );
-      return true;
+              SELECT
+                *
+              FROM
+                {$this->tableName}
+              WHERE
+              {$this->tableID}='$ID'
+              LIMIT
+                1
+              " );
+        while ( $resultRow = \Database\Controller::getInstance()->fetch ( $tResult ) ) {
+          	$this->dataObject = $resultRow;
+        }
+        $this->ID = $this->parseCacheID ( $ID );
+        return true;
 	}
 
 }

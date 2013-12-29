@@ -29,9 +29,7 @@ class NpcTypes extends GameplayItem{
 
 		$tQuery = BaseItem::sMakeUpdateQuery('npctypes', 'NPCTypeID', $tFields, $params);
 		\Database\Controller::getInstance()->execute($tQuery);
-        //FIXME check if will work
-		\phpCache\Factory::getInstance()->create()->clear(new \phpCache\CacheKey('npc',$params['id']));
-
+        \npc::sFlushCache($params['id']);
 		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
 
 		return $retVal;

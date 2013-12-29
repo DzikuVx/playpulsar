@@ -41,9 +41,7 @@ class EquipmentTypes extends GameplayItem{
 
 		$tQuery = BaseItem::sMakeUpdateQuery('equipmenttypes', 'EquipmentID', $tFields, $params);
 		\Database\Controller::getInstance()->execute($tQuery);
-        //FIXME will not work
-		\phpCache\Factory::getInstance()->create()->clear(new \phpCache\CacheKey('equipment',$params['id']));
-
+        \equipment::sFlushCache($params['id']);
 		Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
 	}
 

@@ -29,8 +29,7 @@ class ProductTypes extends GameplayItem{
 
 		$tQuery = BaseItem::sMakeUpdateQuery('products', 'ProductID', $tFields, $params);
 		\Database\Controller::getInstance()->execute($tQuery);
-        //FIXME will not work
-		\phpCache\Factory::getInstance()->create()->clear('product',$params['id']);
+        \product::sFlushCache($params['id']);
 		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
 	}
 

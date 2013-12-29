@@ -343,14 +343,13 @@ class npc extends baseItem {
 
 	}
 
-	/**
-	 * Ruszenie npc
-	 *
-	 * @param int $userID
-	 * @param int $actualTime
-	 * @param int $shipPosition
-	 */
-	static public function sMove($userID, $actualTime, $shipPosition) {
+    /**
+     * @param int $userID
+     * @param int $actualTime
+     * @param shipPosition $shipPosition
+     * @return bool
+     */
+    static public function sMove($userID, $actualTime, $shipPosition) {
 
 		global $config;
 
@@ -371,39 +370,39 @@ class npc extends baseItem {
 			\Database\Controller::getInstance()->disableAutocommit();
 
 			$tQuery = "UPDATE npcmove SET npcmove.Owner='$userID' WHERE npcmove.Owner IS NULL AND npcmove.MoveCount > '0' AND npcmove.SrcSystem='{$shipPosition->System}' AND  npcmove.MoveTime < '$actualTime' LIMIT {$config ['npc'] ['simulaneousMoveLimit']}";
-			$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
+			\Database\Controller::getInstance()->execute ( $tQuery );
 
 			//Pobierz tych wszystkich NPC wraz z ich parametrami
 			$tQuery = "
-      SELECT
-        npcmove.Dock AS Dock,
-        npcmove.MoveCount AS MoveCount,
-        npcmove.Direction AS Direction,
-        npcmove.NextMoveTimeMin AS NextMoveTimeMin,
-        npcmove.NextMoveTimeMax AS NextMoveTimeMax,
+                  SELECT
+                    npcmove.Dock AS Dock,
+                    npcmove.MoveCount AS MoveCount,
+                    npcmove.Direction AS Direction,
+                    npcmove.NextMoveTimeMin AS NextMoveTimeMin,
+                    npcmove.NextMoveTimeMax AS NextMoveTimeMax,
 
-        shippositions.System AS CurrentSystem,
-        shippositions.X AS CurrentX,
-        shippositions.Y AS CurrentY,
-        shippositions.Docked AS CurrentDocked,
+                    shippositions.System AS CurrentSystem,
+                    shippositions.X AS CurrentX,
+                    shippositions.Y AS CurrentY,
+                    shippositions.Docked AS CurrentDocked,
 
-        npcmove.SrcSystem AS SrcSystem,
-        npcmove.SrcX AS SrcX,
-        npcmove.SrcY AS SrcY,
+                    npcmove.SrcSystem AS SrcSystem,
+                    npcmove.SrcX AS SrcX,
+                    npcmove.SrcY AS SrcY,
 
-        npcmove.DstSystem AS DstSystem,
-        npcmove.DstX AS DstX,
-        npcmove.DstY AS DstY,
-        npcmove.UserID AS NpcID
-      FROM
-        ((npcmove JOIN userships ON userships.UserID = npcmove.UserID)
-        JOIN shippositions ON shippositions.UserID = npcmove.UserID)
-        LEFT JOIN combatlock ON combatlock.UserID=npcmove.UserID
-      WHERE
-        combatlock.Active IS NULL AND
-        npcmove.Owner = '$userID' AND
-        userships.RookieTurns < '1'
-    ";
+                    npcmove.DstSystem AS DstSystem,
+                    npcmove.DstX AS DstX,
+                    npcmove.DstY AS DstY,
+                    npcmove.UserID AS NpcID
+                  FROM
+                    ((npcmove JOIN userships ON userships.UserID = npcmove.UserID)
+                    JOIN shippositions ON shippositions.UserID = npcmove.UserID)
+                    LEFT JOIN combatlock ON combatlock.UserID=npcmove.UserID
+                  WHERE
+                    combatlock.Active IS NULL AND
+                    npcmove.Owner = '$userID' AND
+                    userships.RookieTurns < '1'
+                ";
 			$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
 
 			if (\Database\Controller::getInstance()->count($tQuery) > 0) {
@@ -412,7 +411,6 @@ class npc extends baseItem {
 				 */
 				$sPreparedPosition = mysqli_prepare(\Database\Controller::getInstance()->getHandle(), "UPDATE shippositions SET X=?, Y=?, Docked=? WHERE UserID=?");
 				$sPreparedNpcMove = mysqli_prepare(\Database\Controller::getInstance()->getHandle(), "UPDATE npcmove SET Direction=? , MoveTime=?, MoveCount=? WHERE UserID=?");
-
 			}
 
 			while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
@@ -498,54 +496,50 @@ class npc extends baseItem {
 					$moveTime = rand ( $tR1->NextMoveTimeMin, $tR1->NextMoveTimeMax ) + $actualTime;
 				}
 				//Jesli jest to NPC niedokujący
-				if ($tR1->Dock == "no")
-				$tR1->CurrentDocked = "no";
+				if ($tR1->Dock == "no") {
+				    $tR1->CurrentDocked = "no";
+                }
 
 				/**
 				 * Przygotowane zapytanie dla parametrów ruchu
-				 * @since 2011-02-07
 				 */
-				mysqli_stmt_bind_param($sPreparedNpcMove, 'siii',$tR1->Direction, $moveTime, $tR1->MoveCount, $tR1->NpcID);
+                /** @noinspection PhpUndefinedVariableInspection */
+                mysqli_stmt_bind_param($sPreparedNpcMove, 'siii',$tR1->Direction, $moveTime, $tR1->MoveCount, $tR1->NpcID);
 				mysqli_stmt_execute($sPreparedNpcMove);
 
 				/**
 				 * Wykonaj przygotowane zapytanie ustawiania pozycji statku
-				 * @since 2011-02-07
 				 */
-				mysqli_stmt_bind_param($sPreparedPosition, 'iisi', $tR1->CurrentX, $tR1->CurrentY, $tR1->CurrentDocked, $tR1->NpcID);
+                /** @noinspection PhpUndefinedVariableInspection */
+                mysqli_stmt_bind_param($sPreparedPosition, 'iisi', $tR1->CurrentX, $tR1->CurrentY, $tR1->CurrentDocked, $tR1->NpcID);
 				mysqli_stmt_execute($sPreparedPosition);
 
-				/*
-				 * Wyczyść cache jego pozycji
-				 */
-                //FIXME will not work
-				\phpCache\Factory::getInstance()->create()->clear(new CacheKey('shipPosition', $tR1->NpcID));
-
+                shipPosition::sFlushCache($tR1->NpcID);
 			}
 
 			//Dokonaj resetu tych NPC którym skończył się czas i nie zostali zniszczeni
 			$tQuery = "
-      SELECT
-        npcmove.UserID AS NpcID,
-        npctypes.Dock AS Dock,
-        npctypes.MoveCountMin AS MoveCountMin,
-        npctypes.MoveCountMax AS MoveCountMax,
-        npctypes.MoveTimeMin AS MoveTimeMin,
-        npctypes.MoveTimeMax AS MoveTimeMax,
-        shippositions.System AS PositionSystem,
-        shippositions.X AS PositionX,
-        shippositions.Y AS PositionY,
-        shippositions.Docked AS Docked
-      FROM
-        (((npcmove JOIN users ON users.UserID = npcmove.UserID)
-        JOIN shippositions ON shippositions.UserID = npcmove.UserID)
-        JOIN npctypes ON npctypes.NPCTypeID = users.NPCTypeID)
-        JOIN userships ON userships.UserID = npcmove.UserID
-      WHERE
-        npcmove.Owner = '$userID' AND
-        npcmove.MoveCount < '1' AND
-        userships.RookieTurns < 1
-    ";
+                  SELECT
+                    npcmove.UserID AS NpcID,
+                    npctypes.Dock AS Dock,
+                    npctypes.MoveCountMin AS MoveCountMin,
+                    npctypes.MoveCountMax AS MoveCountMax,
+                    npctypes.MoveTimeMin AS MoveTimeMin,
+                    npctypes.MoveTimeMax AS MoveTimeMax,
+                    shippositions.System AS PositionSystem,
+                    shippositions.X AS PositionX,
+                    shippositions.Y AS PositionY,
+                    shippositions.Docked AS Docked
+                  FROM
+                    (((npcmove JOIN users ON users.UserID = npcmove.UserID)
+                    JOIN shippositions ON shippositions.UserID = npcmove.UserID)
+                    JOIN npctypes ON npctypes.NPCTypeID = users.NPCTypeID)
+                    JOIN userships ON userships.UserID = npcmove.UserID
+                  WHERE
+                    npcmove.Owner = '$userID' AND
+                    npcmove.MoveCount < '1' AND
+                    userships.RookieTurns < 1
+                ";
 			$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
 
 			//Jesli sa NPC do zresetowania, pobierz parametry systemu

@@ -172,9 +172,7 @@ class alliance extends baseItem {
 
 		$secondPlayerAllianceObject->synchronize($secondPlayerAlliance, true, true);
 
-        $oObject = new userAlliance();
-        $oObject->load($kickedID, true, true);
-        $oObject->clearCache();
+        userAlliance::sFlushCache($kickedID);
 
         \phpCache\Factory::getInstance()->create()->clearModule(new \phpCache\CacheKey('alliance::getRegistry'));
         \phpCache\Factory::getInstance()->create()->clearModule(new \phpCache\CacheKey('allianceMembersRegistry::get'));
@@ -251,14 +249,9 @@ class alliance extends baseItem {
 	}
 
 	/**
-	 *
-	 * Plansza szczegółów sojuszu
 	 * @param int $allianceID
 	 */
 	static public function sRender($allianceID) {
-
-		global $userID;
-
 		\Gameplay\Panel\Action::getInstance()->add(self::sGetDetail($allianceID));
 
 		//@todo RELACJE z INNYMI SOJUSZAMI
@@ -315,6 +308,7 @@ class alliance extends baseItem {
 			throw new securityException();
 		}
 
+        $data = new \stdClass();
 		$data->NPCAlliance = 'no';
 		$data->Symbol = xml::sGetValue($values, '<allianceSymbol>', '</allianceSymbol>');
 		$data->Name = xml::sGetValue($values, '<allianceName>', '</allianceName>');

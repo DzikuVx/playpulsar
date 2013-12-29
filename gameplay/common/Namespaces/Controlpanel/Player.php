@@ -96,10 +96,7 @@ class Player extends BaseItem {
 		Database::getInstance()->quoteAll($params);
 		Database::getInstance()->execute("UPDATE users SET UserLocked='yes' WHERE UserID='{$params['id']}'" );
 
-        $oObject = new \userProperties();
-        $oObject->load($params['id'], true, true);
-        $oObject->clearCache();
-
+        \userProperties::sFlushCache($params['id']);
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
 	}
 
@@ -117,10 +114,7 @@ class Player extends BaseItem {
 		Database::getInstance()->quoteAll($params);
 		Database::getInstance()->execute("UPDATE users SET UserLocked='no' WHERE UserID='{$params['id']}'" );
 
-        $oObject = new \userProperties();
-        $oObject->load($params['id'], true, true);
-        $oObject->clearCache();
-
+        \userProperties::sFlushCache($params['id']);
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
 	}
 
@@ -161,11 +155,7 @@ class Player extends BaseItem {
 
 		Database::getInstance()->quoteAll($params);
 		Database::getInstance()->execute("UPDATE users SET UserActivated='yes' WHERE UserID='{$params['id']}'" );
-
-        $oObject = new \userProperties();
-        $oObject->load($params['id'], true, true);
-        $oObject->clearCache();
-
+        \userProperties::sFlushCache($params['id']);
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
 	}
 
@@ -193,8 +183,7 @@ class Player extends BaseItem {
 
 		Database::getInstance()->quoteAll($params);
 		Database::getInstance()->execute("UPDATE userships SET RookieTurns='0' WHERE UserID='{$params['id']}'");
-        //FIXME it will not work FIX!!!!
-        \phpCache\Factory::getInstance()->create()->clear('shipProperties',$params['id']);
+        \shipProperties::sFlushCache($params['id']);
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
 	}
 
@@ -226,8 +215,7 @@ class Player extends BaseItem {
 
 		Database::getInstance()->quoteAll($params);
 		Database::getInstance()->execute("UPDATE userships SET RookieTurns=RookieTurns+'{$params['value']}' WHERE UserID='{$params['id']}'" );
-        //FIXME will not work
-        \phpCache\Factory::getInstance()->create()->clear('shipProperties',$params['id']);
+        \shipProperties::sFlushCache($params['id']);
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
 	}
 
@@ -254,8 +242,7 @@ class Player extends BaseItem {
 
 		Database::getInstance()->quoteAll($params);
 		Database::getInstance()->execute("UPDATE userstats SET Fame=Fame+'{$params['value']}' WHERE UserID='{$params['id']}'" );
-        //FIXME will not work
-        \phpCache\Factory::getInstance()->create()->clear('userStats',$params['id']);
+        \userStats::sFlushCache($params['id']);
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
 	}
 
@@ -283,8 +270,7 @@ class Player extends BaseItem {
 		Database::getInstance()->quoteAll($params);
 
 		Database::getInstance()->execute("UPDATE userships SET Turns=Turns+'{$params['value']}' WHERE UserID='{$params['id']}'" );
-        //FIXME will not work
-        \phpCache\Factory::getInstance()->create()->clear('shipProperties',$params['id']);
+        \shipProperties::sFlushCache($params['id']);
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
 		
 	}

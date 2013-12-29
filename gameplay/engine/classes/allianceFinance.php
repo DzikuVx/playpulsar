@@ -50,9 +50,7 @@ class allianceFinance extends baseItem {
 		$item->synchronize($data, true, true);
 
         //TODO is this really nessesary? synchronize is setting cache right?
-        $oObject = new \userStats();
-        $oObject->load($id, true, true);
-        $oObject->clearCache();
+        \userStats::sFlushCache($id);
 
 		//todo czyszczenie cache dla wszystkich członków sojuszu
 

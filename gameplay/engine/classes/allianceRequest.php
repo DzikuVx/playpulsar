@@ -319,10 +319,7 @@ class allianceRequest extends baseItem {
 		self::sDeleteAll($apprenticeID);
 
         allianceRights::sGiveNone($apprenticeID, $userAlliance->AllianceID);
-
-        $oObject = new userAlliance();
-        $oObject->load($apprenticeID, true, true);
-        $oObject->clearCache();
+        userAlliance::sFlushCache($apprenticeID);
 
         $oCache = \phpCache\Factory::getInstance()->create();
         $oCache->clearModule(new \phpCache\CacheKey('alliance::getRegistry'));

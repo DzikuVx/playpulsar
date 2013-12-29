@@ -23,8 +23,7 @@ class UserStats extends \userStats {
 		$tQuery = \Controlpanel\BaseItem::sMakeUpdateQuery($this->tableName, $this->tableID, $this->tableUseFields, $params);
 
 		\Database\Controller::getInstance()->execute($tQuery);
-        //FIXME will not work
-		\phpCache\Factory::getInstance()->create()->clear('userStats', $params['id']);
+        \userStats::sFlushCache($params['id']);
 		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
 	}
 

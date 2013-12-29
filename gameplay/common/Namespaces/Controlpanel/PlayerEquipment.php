@@ -64,9 +64,7 @@ class PlayerEquipment extends \equipment{
 			throw new \customException('Security error');
 		}
 
-        $oObject = new \shipProperties();
-        $oObject->load($_SESSION['returnUser'], true, true);
-        $oObject->clearCache();
+        \shipProperties::sFlushCache($_SESSION['returnUser']);
 
 		$shipEquipment = new \shipEquipment($_SESSION['returnUser']);
 
@@ -98,11 +96,7 @@ class PlayerEquipment extends \equipment{
         $oDb->execute("DELETE FROM shipequipment WHERE ShipEquipmentID = '{$params['id']}'");
 
         if (!empty($_SESSION['returnUser'])) {
-
-            $oObject = new \shipProperties();
-            $oObject->load($_SESSION['returnUser'], true, true);
-            $oObject->clearCache();
-
+            \shipProperties::sFlushCache($_SESSION['returnUser']);
 			\shipProperties::sQuickRecompute($_SESSION['returnUser']);
 		}
 		

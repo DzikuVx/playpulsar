@@ -1,10 +1,4 @@
 <?php
-/**
- * Klasa newsa głównego
- * @version $Rev: 457 $
- * @package Portal
- *
- */
 class portalMainNews extends baseItem{
 
 	function __construct($language = 'pl', $defaultAction = null) {

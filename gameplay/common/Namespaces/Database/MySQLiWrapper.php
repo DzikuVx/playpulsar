@@ -31,7 +31,10 @@ class MySQLiWrapper {
 	 */
 	public $writeToFile = false;
 
-	private $statisticsDb = null;
+    /**
+     * @var MySQLiWrapper
+     */
+    private $statisticsDb = null;
 
 	public function setStatisticsDb($db) {
 		$this->statisticsDb = $db;
@@ -266,13 +269,14 @@ class MySQLiWrapper {
 
 	}
 
-	/**
-	 * Zapis danych zapytania do tabel debugu
-	 * @param string $query Zapytanie
-	 * @param int $tStartTime Czas rozpoczęcia zapytania [microtime]
-	 * @param int $tEndTime Czas zakończenia zapytania [microtime]
-	 */
-	private function saveDebugData($query, $tStartTime, $tEndTime) {
+    /**
+     * @param string $query
+     * @param int $tStartTime
+     * @param int $tEndTime
+     * @return bool
+     * @throws \customException
+     */
+    private function saveDebugData($query, $tStartTime, $tEndTime) {
 
 		if (empty($this->statisticsDb)) {
 			throw new \customException('Statistics DB not initialized. Use database::setStatisticsDb');
@@ -404,13 +408,10 @@ class MySQLiWrapper {
 		}
 	}
 
-	/**
-	 * Konstruktor bazy danych
-	 *
-	 * @param array konfiguracja połączenia
-	 * @return boolean
-	 */
-	public function __construct($dbConfig) {
+    /**
+     * @param $dbConfig
+     */
+    public function __construct($dbConfig) {
 
 		$this->dbConfig = $dbConfig;
 
@@ -427,7 +428,7 @@ class MySQLiWrapper {
 	/**
 	 * Pobranie uchwytu do bazy danych
 	 *
-	 * @return resource
+	 * @return \mysqli
 	 */
 	public function getHandle() {
 

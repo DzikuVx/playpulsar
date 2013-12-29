@@ -12,13 +12,24 @@ abstract class extendedItem {
 
 	protected $tableName = "";
 	protected $tableID = "";
-	protected $tableUseFields = "";
+
+    /**
+     * @var array
+     */
+    protected $tableUseFields = array();
+
 	protected $cacheExpire = 3600;
 
 	protected $useCache = true;
 
 	protected $dbID = null;
 	protected $cacheID = null;
+
+    static public function sFlushCache($id) {
+        $oObject = new static($id);
+        /** @noinspection PhpUndefinedMethodInspection */
+        $oObject->clearCache();
+    }
 
 	protected function insert() {
 
@@ -28,6 +39,7 @@ abstract class extendedItem {
 		return \Database\Controller::getInstance()->lastUsedID ();
 	}
 
+    //FIXME remove $db and $cache
     /**
      * @param null $ID
      * @param bool $useCache
@@ -164,8 +176,6 @@ abstract class extendedItem {
 	}
 
 	/**
-	 * Złożenie zapytania do INSERT
-	 *
 	 * @return string
 	 */
 	protected function formatInsertQuery() {
@@ -275,36 +285,19 @@ abstract class extendedItem {
 		return $ID;
 	}
 
-	/**
-	 * Ładuje obiekt z bazy danych lub cache
-	 *
-	 * @param $object
-	 * @param boolean $useCache
-	 * @param boolean $useSession
-	 * @return stdClass
-	 */
-	protected function load() {
+    protected function load() {
 
 		if ($this->useCache) {
 
-			if (! $this->fromCache()) {
-				$this->get ( );
-				$this->toCache ( );
+			if (!$this->fromCache()) {
+				$this->get( );
+				$this->toCache( );
 			}
 		} else {
-			$this->get ( );
+			$this->get();
 		}
 	}
 
-	/**
-	 * Przeładowanie obiektu wraz z synchronizacją do bazy danych i cache
-	 *
-	 * @param int $newID
-	 * @param mixed $object
-	 * @param boolean $useCache
-	 * @param boolean $useSession
-	 * @return strClass
-	 */
 	public function reload($newID) {
 
 		if (!empty($this->ID)) {
@@ -317,12 +310,6 @@ abstract class extendedItem {
 		$this->load( );
 	}
 
-	/**
-	 * Pobranie elementu z bazy danych
-	 *
-	 * @param int $ID
-	 * @return boolean
-	 */
 	protected function get() {
 
 		if (empty($this->dbID)) {
@@ -330,43 +317,40 @@ abstract class extendedItem {
 		}
 
 		$tResult = \Database\Controller::getInstance()->execute ( "
-      SELECT
-        *
-      FROM
-      {$this->tableName}
-      WHERE
-      {$this->tableID}='{$this->dbID}'
-      LIMIT
-        1" );
-      while ( $resultRow = \Database\Controller::getInstance()->fetch ( $tResult ) ) {
-      	$this->loadData($resultRow, false);
-      }
-      return true;
+          SELECT
+            *
+          FROM
+          {$this->tableName}
+          WHERE
+          {$this->tableID}='{$this->dbID}'
+          LIMIT
+            1" );
+        while ( $resultRow = \Database\Controller::getInstance()->fetch ( $tResult ) ) {
+      	    $this->loadData($resultRow, false);
+        }
+        return true;
 	}
 
 	/**
-	 * Szybkie pobranie parametrów systemu
-	 *
 	 * @param int $ID
-	 * @param boolean $useCache
+	 * @param bool $useCache
 	 * @return mixed
 	 */
-	static public function quickLoad($ID, $useCache = true) {
+	static public function quickLoad($ID, /** @noinspection PhpUnusedParameterInspection */
+                                     $useCache = true) {
 		$item = new static ($ID );
 		return $item;
 	}
 
-	/**
-	 * Szybkie wstawienie
-	 *
-	 * @param stdClass $data
-	 * @return boolean
-	 */
-	static public function quickInsert($data) {
+    /**
+     * @param $data
+     * @return mixed
+     */
+    static public function quickInsert($data) {
 
-		$item = new static ( );
-		$retVal = $item->insert ( $data );
-		unset($item);
+        $item = new static();
+        /** @noinspection PhpUndefinedMethodInspection */
+        $retVal = $item->insert ( $data );
 
 		return $retVal;
 	}

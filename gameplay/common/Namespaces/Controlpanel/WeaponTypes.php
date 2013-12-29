@@ -56,10 +56,7 @@ class WeaponTypes extends GameplayItem{
 
 		$tQuery = BaseItem::sMakeUpdateQuery('weapontypes', 'WeaponID', $tFields, $params);
 		\Database\Controller::getInstance()->execute($tQuery);
-
-        //FIXME will not work
-        \phpCache\Factory::getInstance()->create()->clear('weapon', $params['id']);
-
+        \weapon::sFlushCache($params['id']);
 		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
 	}
 
