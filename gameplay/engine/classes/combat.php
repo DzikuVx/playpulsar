@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Klasa walki
- *
- * @version $Rev: 460 $
- * @package Engine
- */
 class combat {
 
 	/**
@@ -152,7 +146,7 @@ class combat {
 		/**
 		 * Uszkodzenia emp statku
 		 */
-		if (shipProperties::sCheckMalfunction ( $this->player->shipProperties )) {
+		if (\Gameplay\Model\ShipProperties::sCheckMalfunction ( $this->player->shipProperties )) {
 			array_push ( $this->player->weaponFireResult, new weaponFireResult ( 'player', $this->player->userProperties->Name, $tTarget->userProperties->Name, $tWeapon->WeaponID, 'empDamage' ) );
 			return false;
 		}
@@ -512,7 +506,7 @@ class combat {
 
 		while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 
-			if ($this->shipPosition->Docked == 'no' && ! shipProperties::sGetVisibility ( $this->player->shipProperties, $this->player->userStats, $tR1, $tR1, $this->sectorProperties )) {
+			if ($this->shipPosition->Docked == 'no' && ! \Gameplay\Model\ShipProperties::sGetVisibility ( $this->player->shipProperties, $this->player->userStats, $tR1, $tR1, $this->sectorProperties )) {
 				continue;
 			}
 
@@ -1059,10 +1053,8 @@ class combat {
 		/*
 		 * Pobierz parametry
 		 */
-		$attackerPropertiesObject = new shipProperties ( );
-		$attackerProperties = $attackerPropertiesObject->load ( $attackerID, true, true );
-		$defenderPropertiesObject = new shipProperties ( );
-		$defenderProperties = $defenderPropertiesObject->load ( $defenderID, true, true );
+        $attackerProperties = new \Gameplay\Model\ShipProperties($attackerID);
+        $defenderProperties = new \Gameplay\Model\ShipProperties($defenderID);
 
 		$attackerPosition = new \Gameplay\Model\ShipPosition($attackerID);
 		$defenderPosition = new \Gameplay\Model\ShipPosition($defenderID);
@@ -1081,7 +1073,7 @@ class combat {
 			throw new securityException ( TranslateController::getDefault()->get('Rookie protected') );
 		}
 
-		if (shipProperties::sCheckMalfunction ( $attackerProperties )) {
+		if (\Gameplay\Model\ShipProperties::sCheckMalfunction ( $attackerProperties )) {
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'error', '{T:shipMalfunctionEmp}');
 			return false;
 		}

@@ -3,6 +3,7 @@
 namespace Gameplay\Panel;
 
 use Gameplay\Model\ShipPosition;
+use Gameplay\Model\ShipProperties;
 use Gameplay\Model\SystemProperties;
 use Interfaces\Singleton;
 
@@ -40,11 +41,11 @@ class SectorShips extends Renderable implements Singleton {
      * @param \stdClass $sectorProperties
      * @param SystemProperties $systemProperties
      * @param ShipPosition $shipPosition
-     * @param \stdClass $shipProperties
+     * @param ShipProperties $shipProperties
      * @return bool
      */
     public function render($userID, $sectorProperties, /** @noinspection PhpUnusedParameterInspection */
-                           SystemProperties $systemProperties, ShipPosition $shipPosition, $shipProperties) {
+                           SystemProperties $systemProperties, ShipPosition $shipPosition, ShipProperties $shipProperties) {
 
 		global $config, $userStats, $userAlliance;
 
@@ -103,7 +104,7 @@ class SectorShips extends Renderable implements Singleton {
 				/**
 				 * sprawdz widzialność
 				 */
-				if ($shipPosition->Docked == 'no' && ! \shipProperties::sGetVisibility ( $shipProperties, $userStats, $tR1, $tR1, $sectorProperties )) {
+				if ($shipPosition->Docked == 'no' && ! ShipProperties::sGetVisibility ( $shipProperties, $userStats, $tR1, $tR1, $sectorProperties )) {
 					continue;
 				}
 			}

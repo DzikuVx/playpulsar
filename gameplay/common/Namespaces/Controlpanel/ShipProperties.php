@@ -2,19 +2,21 @@
 
 namespace Controlpanel;
 
-class ShipProperties extends \shipProperties{
+class ShipProperties extends \Gameplay\Model\ShipProperties {
 	
-	public function edit($user, $params) {
+	public function edit(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 		$retVal = '';
 
-		$data = $this->load($params['id'], true, true);
+        $this->reload($params['id']);
 
-		$retVal .= BaseItem::sRenderEditForm($this, $data, $params['id']);
+		$retVal .= BaseItem::sRenderEditForm($this, $this, $params['id']);
 
 		return $retVal;
 	}
 
-	public function editExe($user, $params) {
+	public function editExe(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 		$retVal = '';
 
 		if (empty($_SESSION['returnUser'])) {

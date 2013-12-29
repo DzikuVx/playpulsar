@@ -2,6 +2,8 @@
 
 namespace Controlpanel;
 
+use Gameplay\Model\ShipProperties;
+
 class PlayerWeapon extends \weapon{
 
 	private function sRenderSelect($currentID = null, $name='value') {
@@ -40,16 +42,14 @@ class PlayerWeapon extends \weapon{
 		\Database\Controller::getInstance()->quoteAll($params);
 		\Database\Controller::getInstance()->execute("DELETE FROM shipweapons WHERE ShipWeaponID = '{$params['id']}'");
 		if (!empty($_SESSION['returnUser'])) {
-            \shipProperties::sFlushCache($_SESSION['returnUser']);
-			\shipProperties::sQuickRecompute($_SESSION['returnUser']);
+            ShipProperties::sFlushCache($_SESSION['returnUser']);
+            ShipProperties::sQuickRecompute($_SESSION['returnUser']);
 		}
 		
 		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Weapon has been <strong>deleted</strong>", 'success');
 	}
 
 	final public function add($user, $params) {
-
-		global $config;
 
 		if (empty($_SESSION['returnUser'])) {
 			throw new \customException('Security error');
@@ -73,24 +73,21 @@ class PlayerWeapon extends \weapon{
 
 	final public function addExe($user, $params) {
 
-		global $config;
-
 		if (empty($_SESSION['returnUser'])) {
 			throw new \customException('Security error');
 		}
 
-        \shipProperties::sFlushCache($_SESSION['returnUser']);
+        ShipProperties::sFlushCache($_SESSION['returnUser']);
 
 		$shipWeapons = new \shipWeapons($_SESSION['returnUser']);
 
 		$weapon = \weapon::quickLoad($params['value']);
 
-		$shipPropertiesObject = new \shipProperties();
-		$shipProperties = $shipPropertiesObject->load($_SESSION['returnUser'],true, true);
+		$shipProperties = new ShipProperties($_SESSION['returnUser']);
 
 		$shipWeapons->insert($weapon, $shipProperties);
 
-		$shipPropertiesObject->synchronize($shipProperties, true, true);
+		$shipProperties->synchronize();
 
 		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
 		

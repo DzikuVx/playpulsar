@@ -143,8 +143,7 @@ class npc extends baseItem {
 	 */
 	static public function sResetNpc($npcID) {
 
-		$npcShipPropertiesObject = new shipProperties ( );
-		$npcShipProperties = $npcShipPropertiesObject->load ( $npcID, true, true );
+        $npcShipProperties = new \Gameplay\Model\ShipProperties($npcID);
 
 		$npcUserPropertiesObject = new userProperties ( );
 		$npcUserProperties = $npcUserPropertiesObject->load ( $npcID, true, true );
@@ -154,7 +153,6 @@ class npc extends baseItem {
 			/*
 			 * Pełny reset
 			 */
-
 			$npcType = static::quickLoad ( $npcUserProperties->NPCTypeID );
 
 			/*
@@ -222,13 +220,13 @@ class npc extends baseItem {
 
 			$npcWeapons->computeOffensiveRating ( $npcShipProperties );
 
-			shipProperties::computeMaxValues ( $npcShipProperties );
+			\Gameplay\Model\ShipProperties::computeMaxValues ( $npcShipProperties );
 
 			/**
 			 * Ustaw aktualne maksymalne jako aktualne
 			 */
-			shipProperties::setFromFull ( $npcShipProperties );
-			shipProperties::computeDefensiveRating ( $npcShipProperties );
+            \Gameplay\Model\ShipProperties::setFromFull ( $npcShipProperties );
+            \Gameplay\Model\ShipProperties::computeDefensiveRating ( $npcShipProperties );
 
 			if ($npcType->HaveItems == 'yes') {
 				$tItems = item::getRand ( additional::rand ( 0, 5 ) );
@@ -267,11 +265,8 @@ class npc extends baseItem {
 
 		}
 
-		$npcShipPropertiesObject->synchronize ( $npcShipProperties, true, true);
-		unset($npcShipPropertiesObject);
-
-		$npcUserPropertiesObject->synchronize ( $npcUserProperties, true, true );
-		unset($npcUserPropertiesObject);
+		$npcShipProperties->synchronize();
+		$npcUserProperties->synchronize();
 	}
 
 	/**

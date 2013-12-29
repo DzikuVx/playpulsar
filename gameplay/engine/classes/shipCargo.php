@@ -477,18 +477,18 @@ class shipCargo {
 	/**
 	 * Usunięcie całej ładowni
 	 *
-	 * @param stdClass $shipProperties
-	 * @return boolean
+	 * @param \Gameplay\Model\ShipProperties $shipProperties
+	 * @return bool
 	 */
-	final public function removeAll($shipProperties) {
+	final public function removeAll(\Gameplay\Model\ShipProperties $shipProperties) {
 
 		$tQuery = "DELETE FROM
-        shipcargo
-      WHERE
-        UserID='{$this->userID}'";
+            shipcargo
+          WHERE
+            UserID='{$this->userID}'";
 		\Database\Controller::getInstance()->execute ( $tQuery );
 		$this->changed = true;
-		shipProperties::updateUsedCargo ( $shipProperties );
+		\Gameplay\Model\ShipProperties::updateUsedCargo ( $shipProperties );
 		return true;
 	}
 

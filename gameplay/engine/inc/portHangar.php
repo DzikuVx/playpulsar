@@ -5,7 +5,7 @@ global $userProperties, $config, $shipProperties, $userID, $userStats;
 /*
  * Wykonaj przeliczenie max wartości okrętu
  */
-shipProperties::sRecomputeValues($shipProperties, $userID);
+\Gameplay\Model\ShipProperties::sRecomputeValues($shipProperties, $userID);
 
 $sRetVal = "<h1>" . TranslateController::getDefault()->get ( 'hangar' ) . "</h1>";
 
@@ -15,7 +15,7 @@ $template->add ( 'EmpRegeneration', $config ['emp'] ['repairRatio'] );
 
 //@todo: zbiorcza naprawa wszystkiego jednym przyciskiem
 
-shipProperties::sRenderRepairButtons ( $template, 'hangar' );
+\Gameplay\Model\ShipProperties::sRenderRepairButtons ( $template, 'hangar' );
 
 $sRetVal .= $template;
 

@@ -4,10 +4,11 @@ use Gameplay\PlayerModelProvider;
 
 class ftlDrive {
 
-	/**
-	 * Zużycie energii przez napęd
-	 */
-	static private function sGetPowerUsage($shipProperties) {
+    /**
+     * @param \Gameplay\Model\ShipProperties $shipProperties
+     * @return float
+     */
+    static private function sGetPowerUsage(\Gameplay\Model\ShipProperties $shipProperties) {
 		return ceil($shipProperties->PowerMax / 2);
 	}
 
@@ -32,7 +33,7 @@ class ftlDrive {
         $shipPosition     = PlayerModelProvider::getInstance()->get('ShipPosition');
         $systemProperties = PlayerModelProvider::getInstance()->get('SystemProperties');
 
-		if (shipProperties::sCheckMalfunction ( $shipProperties )) {
+		if (\Gameplay\Model\ShipProperties::sCheckMalfunction ( $shipProperties )) {
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'error', '{T:shipMalfunctionEmp}');
 			return false;
 		}

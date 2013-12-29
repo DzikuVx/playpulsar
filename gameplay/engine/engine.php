@@ -176,11 +176,7 @@ try {
 	 */
     $systemProperties = $oPlayerModelProvider->register('SystemProperties', new \Gameplay\Model\SystemProperties($shipPosition->System));
 
-	/**
-	 * Inicjalizacja właściwości statku użytkownika
-	 */
-	$shipPropertiesObject 	= new shipProperties ( );
-	$shipProperties 		= $shipPropertiesObject->load ( $userID, true, true );
+    $shipProperties = $oPlayerModelProvider->register('ShipProperties', new \Gameplay\Model\ShipProperties($userID));
 
 	$shipRoutingObject 	= new shipRouting ( );
 	$shipRouting 		= $shipRoutingObject->load ( $userID, true, true );
@@ -239,8 +235,8 @@ try {
 	/*
 	 * Autonaprawa statku
 	*/
-	$shipPropertiesObject->autoRepair ( $shipProperties, $userFastTimes );
-	$shipPropertiesObject->generateTurns ( $shipProperties, $userTimes );
+	$shipProperties->autoRepair ( $shipProperties, $userFastTimes );
+	$shipProperties->generateTurns ( $shipProperties, $userTimes );
 
 	//Wyzeruj odpowiednie pozycje....
 	if ($shipPosition->Docked == 'yes') {
@@ -341,7 +337,7 @@ try {
 			break;
 
 		case 'stationRepair' :
-			shipProperties::sStationRepair ();
+            \Gameplay\Model\ShipProperties::sStationRepair ();
 			break;
 
 		case 'showAlliances' :
@@ -542,7 +538,7 @@ try {
 			break;
 
 		case 'dropRookieExe':
-			shipProperties::sDropRookie($shipProperties, $shipPropertiesObject);
+			\Gameplay\Model\ShipProperties::sDropRookie($shipProperties);
 			break;
 
 		case 'sendMessageExecute' :
@@ -607,11 +603,11 @@ try {
 			break;
 
 		case 'buyShipExecute' :
-			shipProperties::sBuy ( $id );
+            \Gameplay\Model\ShipProperties::sBuy($id);
 			break;
 
 		case 'shipExamine' :
-			shipExamine ( $id, $userID );
+			shipExamine($id, $userID);
 			\Gameplay\Panel\PortAction::getInstance()->clear();
 			break;
 
@@ -628,19 +624,19 @@ try {
 			break;
 
 		case 'weaponsManagement' :
-			shipProperties::sRecomputeValues($shipProperties, $userID);
+			\Gameplay\Model\ShipProperties::sRecomputeValues($shipProperties, $userID);
 			shipWeaponsRegistry::sRender ();
 			break;
 
 		case 'equiapmentManagement' :
-			shipProperties::updateUsedCargo ( $shipProperties );
-			shipProperties::sRecomputeValues($shipProperties, $userID);
+			\Gameplay\Model\ShipProperties::updateUsedCargo ( $shipProperties );
+			\Gameplay\Model\ShipProperties::sRecomputeValues($shipProperties, $userID);
 			shipEquipmentRegistry::sRender ();
 			break;
 
 		case 'switchWeaponState' :
 			$shipWeapons->switchState ( $id );
-			shipProperties::sUpdateRating ( $userID );
+			\Gameplay\Model\ShipProperties::sUpdateRating ( $userID );
 			if ($subaction == 'slow') {
 				shipWeaponsRegistry::sRender ();
 			}
@@ -716,7 +712,7 @@ try {
 			throw new securityException ( );
 		}
 
-		if (shipProperties::sCheckMalfunction ( $shipProperties )) {
+		if (\Gameplay\Model\ShipProperties::sCheckMalfunction ( $shipProperties )) {
 			throw new securityException (TranslateController::getDefault()->get('shipMalfunctionEmp') );
 		}
 
@@ -751,7 +747,7 @@ try {
 
 	if ($action == "shipUnDock") {
 
-		if (shipProperties::sCheckMalfunction ( $shipProperties )) {
+		if (\Gameplay\Model\ShipProperties::sCheckMalfunction ( $shipProperties )) {
 			$error = true;
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'error', '{T:shipMalfunctionEmp}');
 		}
@@ -795,7 +791,7 @@ try {
 
 	if ($action == "shipNodeJump") {
 
-		if (shipProperties::sCheckMalfunction ( $shipProperties )) {
+		if (\Gameplay\Model\ShipProperties::sCheckMalfunction ( $shipProperties )) {
 			$error = true;
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'error', '{T:shipMalfunctionEmp}');
 		}
@@ -867,7 +863,7 @@ try {
 	}
 
 	if ($action == "shipMove") {
-		if (shipProperties::sCheckMalfunction ( $shipProperties )) {
+		if (\Gameplay\Model\ShipProperties::sCheckMalfunction ( $shipProperties )) {
 			$error = true;
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'error', '{T:shipMalfunctionEmp}');
 		}
@@ -1015,10 +1011,10 @@ try {
 	$shipPosition->synchronize ();
 	$userFastTimes->synchronize();
 	$userTimes->synchronize ();
+    $shipProperties->synchronize();
 
-	$sectorPropertiesObject->synchronize ( $sectorProperties, true, true );
-	$portPropertiesObject->synchronize ( $portProperties, true, true );
-	$shipPropertiesObject->synchronize ( $shipProperties, true, true );
+    $sectorPropertiesObject->synchronize ( $sectorProperties, true, true );
+    $portPropertiesObject->synchronize ( $portProperties, true, true );
 	$userPropertiesObject->synchronize ( $userProperties, true, true );
 	$userStatsObject->synchronize ( $userStats, true, true );
 	$shipRoutingObject->synchronize ( $shipRouting, true, true );

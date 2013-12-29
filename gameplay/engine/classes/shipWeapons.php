@@ -37,9 +37,9 @@ class shipWeapons {
 	/**
 	 * Przeliczenie OffRating Statku
 	 *
-	 * @param stdClass $shipProperties
+	 * @param \Gameplay\Model\ShipProperties $shipProperties
 	 */
-	public function computeOffensiveRating($shipProperties) {
+	public function computeOffensiveRating(\Gameplay\Model\ShipProperties $shipProperties) {
 
 		if (empty($shipProperties)) {
 			$shipProperties = new stdClass();
@@ -94,13 +94,14 @@ class shipWeapons {
 	 * Wstawienie uzborojenia do statku
 	 *
 	 * @param stdClass $weapon
-	 * @param stdClass $shipProperties
+	 * @param \Gameplay\Model\ShipProperties $shipProperties
 	 * @return boolean
 	 */
-	public function insert($weapon, $shipProperties) {
+	public function insert($weapon, \Gameplay\Model\ShipProperties $shipProperties) {
 
-		if ($shipProperties->CurrentWeapons >= $shipProperties->MaxWeapons)
-		return false;
+		if ($shipProperties->CurrentWeapons >= $shipProperties->MaxWeapons) {
+		    return false;
+        }
 
 		if ($weapon->Ammo == null) {
 			$tString = "null";
@@ -138,10 +139,10 @@ class shipWeapons {
 
     /**
      * @param int $ID
-     * @param stdClass $shipProperties
+     * @param \Gameplay\Model\ShipProperties $shipProperties
      * @return bool
      */
-    public function remove($ID, $shipProperties) {
+    public function remove($ID, \Gameplay\Model\ShipProperties $shipProperties) {
 
 		$tQuery = "DELETE FROM
                 shipweapons
@@ -436,7 +437,11 @@ class shipWeapons {
 		return $retVal;
 	}
 
-	static public function sUpdateCount(&$shipProperties, $userID) {
+    /**
+     * @param \Gameplay\Model\ShipProperties $shipProperties
+     * @param int $userID
+     */
+    static public function sUpdateCount(\Gameplay\Model\ShipProperties $shipProperties, $userID) {
 
 		$tQuery = "SELECT COUNT(*) AS ile FROM shipweapons WHERE UserID='{$userID}'";
 		$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
@@ -676,7 +681,7 @@ class shipWeapons {
 			$portProperties->Cash = 0;
 		}
 
-		shipProperties::updateUsedCargo ( $shipProperties );
+        \Gameplay\Model\ShipProperties::updateUsedCargo ( $shipProperties );
 
 		shipCargo::management ( $userID );
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();

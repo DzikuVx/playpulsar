@@ -2,6 +2,7 @@
 
 namespace Controlpanel;
 use \Database\Controller as Database;
+use Gameplay\Model\ShipProperties;
 use \General\Controls as Controls;
 
 class Player extends BaseItem {
@@ -183,7 +184,7 @@ class Player extends BaseItem {
 
 		Database::getInstance()->quoteAll($params);
 		Database::getInstance()->execute("UPDATE userships SET RookieTurns='0' WHERE UserID='{$params['id']}'");
-        \shipProperties::sFlushCache($params['id']);
+        ShipProperties::sFlushCache($params['id']);
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
 	}
 
@@ -215,7 +216,7 @@ class Player extends BaseItem {
 
 		Database::getInstance()->quoteAll($params);
 		Database::getInstance()->execute("UPDATE userships SET RookieTurns=RookieTurns+'{$params['value']}' WHERE UserID='{$params['id']}'" );
-        \shipProperties::sFlushCache($params['id']);
+        ShipProperties::sFlushCache($params['id']);
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
 	}
 
@@ -270,9 +271,8 @@ class Player extends BaseItem {
 		Database::getInstance()->quoteAll($params);
 
 		Database::getInstance()->execute("UPDATE userships SET Turns=Turns+'{$params['value']}' WHERE UserID='{$params['id']}'" );
-        \shipProperties::sFlushCache($params['id']);
+        ShipProperties::sFlushCache($params['id']);
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
-		
 	}
 
 	public function detail($user, $params) {
@@ -287,8 +287,7 @@ class Player extends BaseItem {
 
 		$shipPosition = new \Gameplay\Model\ShipPosition($params['id']);
 
-		$shipPropertiesObject = new \shipProperties();
-		$shipProperties = $shipPropertiesObject->load($params['id'],true, true);
+		$shipProperties = new ShipProperties($params['id']);
 
 		$userStatsObject = new \userStats();
 		$userStats = $userStatsObject->load($params['id'],true, true);

@@ -389,4 +389,11 @@ abstract class Standard {
         return $item->insert($data);
     }
 
+    /**
+     * @return mixed
+     */
+    public function getEntryId() {
+        return $this->entryId;
+    }
+
 } 

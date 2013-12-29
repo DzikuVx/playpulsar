@@ -105,9 +105,7 @@ class allianceRights extends baseItem {
 		$otheruserParameters = $item->load ( $id, true, true );
 		unset($item);
 
-		$item = new shipProperties ( );
-		$othershipParameters = $item->load ( $id, true, true );
-		unset($item);
+        $othershipParameters = new \Gameplay\Model\ShipProperties($id);
 
 		$item = new userAlliance ( );
 		$othershipAlliance = $item->load ( $id, true, true );

@@ -19,7 +19,11 @@ class shipEquipment {
 		return \Database\Controller::getInstance()->fetch($tQuery)->ILE;
 	}
 
-	static public function sUpdateCount(&$shipProperties, $userID) {
+    /**
+     * @param \Gameplay\Model\ShipProperties $shipProperties
+     * @param $userID
+     */
+    static public function sUpdateCount(\Gameplay\Model\ShipProperties $shipProperties, $userID) {
 
 		$tQuery = "SELECT COUNT(*) AS ile FROM shipequipment WHERE UserID='{$userID}'";
 		$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
@@ -72,7 +76,7 @@ class shipEquipment {
 		global $shipProperties;
 
 		if ($this->changed) {
-			shipProperties::computeDefensiveRating ( $shipProperties );
+			\Gameplay\Model\ShipProperties::computeDefensiveRating ( $shipProperties );
 		}
 	}
 
@@ -118,10 +122,11 @@ class shipEquipment {
 	 * Wstawienie wyposażenia
 	 *
 	 * @param stdClass $equipment
-	 * @param stdClass $shipProperties
-	 * @return boolean
+	 * @param \Gameplay\Model\ShipProperties $shipProperties
+	 * @return bool
+     * @throws securityException
 	 */
-	public function insert($equipment, $shipProperties) {
+	public function insert($equipment, \Gameplay\Model\ShipProperties $shipProperties) {
 
 		if ($shipProperties->CurrentEquipment >= $shipProperties->MaxEquipment) {
 			throw new securityException();
@@ -177,17 +182,15 @@ class shipEquipment {
 	}
 
 	/**
-	 * Usunięcie całego wyposażenia okrętu
-	 *
-	 * @param stdClass $shipProperties
+	 * @param \Gameplay\Model\ShipProperties $shipProperties
 	 * @return boolean
 	 */
-	public function removeAll($shipProperties) {
+	public function removeAll(\Gameplay\Model\ShipProperties $shipProperties) {
 
 		$tQuery = "DELETE FROM
-        shipequipment
-      WHERE
-        UserID='{$this->userID}'";
+            shipequipment
+          WHERE
+            UserID='{$this->userID}'";
 		\Database\Controller::getInstance()->execute ( $tQuery );
 
 		$shipProperties->CurrentEquipment = 0;
@@ -216,19 +219,18 @@ class shipEquipment {
 	 * Usunięcie wybranego wyposażenia
 	 *
 	 * @param int $ID
-	 * @param stdClass $shipProperties
+	 * @param \Gameplay\Model\ShipProperties $shipProperties
 	 * @return boolean
 	 */
-	public function remove($ID, $shipProperties) {
+	public function remove($ID, \Gameplay\Model\ShipProperties $shipProperties) {
 
 		$tQuery = "DELETE FROM
-        shipequipment
-      WHERE
-        ShipEquipmentID='{$ID}' AND
-        UserID='$this->userID}'
-      ";
+            shipequipment
+          WHERE
+            ShipEquipmentID='{$ID}' AND
+            UserID='$this->userID}'
+          ";
 		\Database\Controller::getInstance()->execute ( $tQuery );
-
 		$shipProperties->CurrentEquipment -= 1;
 		$this->changed = true;
 		return true;
@@ -340,7 +342,7 @@ class shipEquipment {
 			$portProperties->Cash += $tEquipment->Price;
 
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:equipmentBought}' . $tEquipment->Price . '$' );
-			shipProperties::computeMaxValues ( $shipProperties );
+            \Gameplay\Model\ShipProperties::computeMaxValues ( $shipProperties );
 			$action = "portHangar";
 		}
 	}
@@ -375,7 +377,7 @@ class shipEquipment {
 			$portProperties->Cash += $tRepairPrice;
 
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:equipmentRepaired}' . $tRepairPrice . '$' );
-			shipProperties::computeMaxValues ( $shipProperties );
+            \Gameplay\Model\ShipProperties::computeMaxValues ( $shipProperties );
 			shipEquipmentRegistry::sRender ();
 		}
 	}
@@ -414,7 +416,7 @@ class shipEquipment {
 			$portProperties->Cash = 0;
 		}
 
-		shipProperties::updateUsedCargo ( $shipProperties );
+        \Gameplay\Model\ShipProperties::updateUsedCargo ( $shipProperties );
 
 		shipCargo::management ( $userID );
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
@@ -465,7 +467,7 @@ class shipEquipment {
 			}
 
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:equipmentSold}' . $tPrice . '$' );
-			shipProperties::computeMaxValues ( $shipProperties );
+            \Gameplay\Model\ShipProperties::computeMaxValues ( $shipProperties );
 			shipEquipmentRegistry::sRender ();
 		}
 	}

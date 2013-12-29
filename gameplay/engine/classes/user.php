@@ -141,8 +141,7 @@ class user {
 		/*
 		 * Załadowanie danych okrętu
 		*/
-		$shipPropertiesObject = new shipProperties ( );
-		$shipProperties = $shipPropertiesObject->load ( $playerID, false, false);
+		$shipProperties = new \Gameplay\Model\ShipProperties($playerID, false);
 
 		$shipProperties->CurrentWeapons = $weaponsCount;
 		$shipProperties->CurrentEquipment = $equipmentCount;
@@ -157,18 +156,15 @@ class user {
 		/**
 		 * Uaktualnij wartości maksymalne okrętu
 		 */
-		shipProperties::computeMaxValues ( $shipProperties );
+		\Gameplay\Model\ShipProperties::computeMaxValues($shipProperties);
 
 		/**
 		 * Ustaw aktualne maksymalne jako aktualne
 		 */
-		shipProperties::setFromFull ( $shipProperties );
+        \Gameplay\Model\ShipProperties::setFromFull($shipProperties);
+        \Gameplay\Model\ShipProperties::computeDefensiveRating($shipProperties);
 
-		shipProperties::computeDefensiveRating ( $shipProperties );
-
-		$shipPropertiesObject->synchronize ( $shipProperties, true, true );
-		unset($shipPropertiesObject);
-
+		$shipProperties->synchronize();
 	}
 
 	/**
@@ -450,42 +446,42 @@ class user {
 		 * Wstaw tabelę userships
 		*/
 		$tQuery2 = "INSERT INTO
-        userships(
-          UserID,
-          SpecializationID,
-          RookieTurns,
-          ShipID,
-          ShipName,
-          Turns
-          )
-        VALUES(
-          '$playerID',
-          '{$config ['userDefault'] ['specialization']}',
-          '{$config ['userDefault'] ['rookie']}',
-          '{$config ['userDefault'] ['ship']}',
-          '{$params['name']}',
-          '{$config ['userDefault'] ['turns']}'
-        )
-    ";
+                userships(
+                  UserID,
+                  SpecializationID,
+                  RookieTurns,
+                  ShipID,
+                  ShipName,
+                  Turns
+                  )
+                VALUES(
+                  '$playerID',
+                  '{$config ['userDefault'] ['specialization']}',
+                  '{$config ['userDefault'] ['rookie']}',
+                  '{$config ['userDefault'] ['ship']}',
+                  '{$params['name']}',
+                  '{$config ['userDefault'] ['turns']}'
+                )
+            ";
 		\Database\Controller::getInstance()->execute ( $tQuery2 );
 
 		/*
 		 * Wstaw tablelę userstats
 		*/
 		$tQuery2 = "INSERT INTO
-        userstats(
-          UserID,
-          Cash,
-          Experience,
-          Level
-          )
-        VALUES(
-          '$playerID',
-          '" . $config ['userDefault'] ['cash'] . "',
-          '" . $config ['userDefault'] ['experience'] . "',
-          '" . userStats::computeLevel ( $config ['userDefault'] ['experience'] ) . "'
-        )
-    ";
+                userstats(
+                  UserID,
+                  Cash,
+                  Experience,
+                  Level
+                  )
+                VALUES(
+                  '$playerID',
+                  '" . $config ['userDefault'] ['cash'] . "',
+                  '" . $config ['userDefault'] ['experience'] . "',
+                  '" . userStats::computeLevel ( $config ['userDefault'] ['experience'] ) . "'
+                )
+            ";
 		\Database\Controller::getInstance()->execute ( $tQuery2 );
 
 		/*
@@ -516,33 +512,30 @@ class user {
 		/*
 		 * Załadowanie danych okrętu
 		*/
-		$shipPropertiesObject = new shipProperties ( );
-		$shipProperties = $shipPropertiesObject->load ( $playerID, true, true );
+		$shipProperties = new \Gameplay\Model\ShipProperties($playerID);
 
-		$shipProperties->CurrentWeapons = $weaponsCount;
+		$shipProperties->CurrentWeapons   = $weaponsCount;
 		$shipProperties->CurrentEquipment = $equipmentCount;
 
 		/**
 		 * Przelicz OFF RATING
 		 */
 		$shipWeapons = new shipWeapons ( $playerID, $params ['language'] );
-		$shipWeapons->computeOffensiveRating ( $shipProperties );
+		$shipWeapons->computeOffensiveRating($shipProperties);
 		unset($shipWeapons);
 
 		/**
 		 * Uaktualnij wartości maksymalne okrętu
 		 */
-		shipProperties::computeMaxValues ( $shipProperties );
+		\Gameplay\Model\ShipProperties::computeMaxValues ( $shipProperties );
 
 		/**
 		 * Ustaw aktualne maksymalne jako aktualne
 		 */
-		shipProperties::setFromFull ( $shipProperties );
+		\Gameplay\Model\ShipProperties::setFromFull ( $shipProperties );
+		\Gameplay\Model\ShipProperties::computeDefensiveRating ( $shipProperties );
 
-		shipProperties::computeDefensiveRating ( $shipProperties );
-
-		$shipPropertiesObject->synchronize ( $shipProperties, true, true );
-		unset($shipPropertiesObject);
+		$shipProperties->synchronize();
 	}
 
 	/**

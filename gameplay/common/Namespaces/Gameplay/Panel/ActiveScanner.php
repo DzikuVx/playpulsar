@@ -2,6 +2,7 @@
 
 namespace Gameplay\Panel;
 use Gameplay\Model\ShipPosition;
+use Gameplay\Model\ShipProperties;
 use Gameplay\Model\SystemProperties;
 use Gameplay\PlayerModelProvider;
 use Interfaces\Singleton;
@@ -64,11 +65,12 @@ class ActiveScanner extends SystemMap implements Singleton {
 		return true;
 	}
 
-	/**
-	 * Zużycie energii przez skaner
-	 */
-	static private function sGetPowerUsage(/** @noinspection PhpUnusedParameterInspection */
-        $shipProperties) {
+    /**
+     * @param ShipProperties $shipProperties
+     * @return mixed
+     */
+    static private function sGetPowerUsage(/** @noinspection PhpUnusedParameterInspection */
+        ShipProperties $shipProperties) {
 		global $config;
 
 		return $config['activeScanner']['powerUsage'];
@@ -87,12 +89,13 @@ class ActiveScanner extends SystemMap implements Singleton {
 	}
 
 	static public function sEngage() {
-		global $userProperties, $userID, $shipProperties, $shipRouting;
+		global $userProperties, $userID, $shipRouting;
 
-        $shipPosition = PlayerModelProvider::getInstance()->get('ShipPosition');
+        $shipPosition   = PlayerModelProvider::getInstance()->get('ShipPosition');
+        $shipProperties = PlayerModelProvider::getInstance()->get('ShipProperties');
 		$activeScanner 	= new ActiveScanner($userProperties->Language, $userID);
 
-		if (\shipProperties::sCheckMalfunction ( $shipProperties )) {
+		if (ShipProperties::sCheckMalfunction($shipProperties)) {
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'error', '{T:shipMalfunctionEmp}');
 			return false;
 		}
@@ -105,8 +108,8 @@ class ActiveScanner extends SystemMap implements Singleton {
 			throw new \securityException();
 		}
 
-		$tPowerUsage 	= self::sGetPowerUsage($shipProperties);
-		$tAmUsage 		= self::sGetAmUsage($shipRouting, $shipPosition);
+		$tPowerUsage = self::sGetPowerUsage($shipProperties);
+		$tAmUsage 	 = self::sGetAmUsage($shipRouting, $shipPosition);
 
 		if ($shipProperties->Power < $tPowerUsage) {
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification('warning', TranslateController::getDefault()->get('notEnoughPower'));

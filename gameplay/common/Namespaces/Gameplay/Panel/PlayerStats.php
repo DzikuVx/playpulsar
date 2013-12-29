@@ -2,6 +2,7 @@
 
 namespace Gameplay\Panel;
 
+use Gameplay\Model\ShipProperties;
 use Interfaces\Singleton;
 
 use \TranslateController as Translate;
@@ -35,12 +36,11 @@ class PlayerStats extends Renderable implements Singleton {
 
 	protected $panelTag = "PlayerStats";
 
-	/**
-	 *
-	 * Panel render
-	 * @param \stdClass $shipProperties
-	 */
-	public function render($userStats, $shipProperties) {
+    /**
+     * @param \stdClass $userStats
+     * @param ShipProperties $shipProperties
+     */
+    public function render($userStats, ShipProperties $shipProperties) {
 
 		$this->rendered = true;
 

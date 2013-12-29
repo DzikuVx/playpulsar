@@ -52,9 +52,8 @@ if ($action == "equipFromCargo") {
 		$shipEquipment->insert ( $tItem, $shipProperties );
 	}
 
-
-	shipProperties::computeMaxValues ( $shipProperties );
-	shipProperties::updateUsedCargo ( $shipProperties );
+	\Gameplay\Model\ShipProperties::computeMaxValues($shipProperties);
+    \Gameplay\Model\ShipProperties::updateUsedCargo($shipProperties);
 
 	/**
 	 * Odświerz panele
@@ -158,7 +157,7 @@ if ($action == "jettison") {
 			}
 		}
 
-		shipProperties::updateUsedCargo ( $shipProperties );
+        \Gameplay\Model\ShipProperties::updateUsedCargo($shipProperties);
 
 		//Jesli wyrzucałem towar, zmniejsz expa o max wartość
 		if ($subaction == 'product') {
@@ -283,7 +282,7 @@ if ($action == "gather") {
 			}
 		}
 
-		shipProperties::updateUsedCargo ( $shipProperties );
+        \Gameplay\Model\ShipProperties::updateUsedCargo($shipProperties);
 
 		sectorProperties::sResetResources ( $shipPosition, $sectorProperties );
 		portProperties::sReset ( $portProperties );
@@ -374,7 +373,7 @@ if ($action == 'toCargohold') {
 		$shipCargo->incAmount ( $id, $subaction, $toMove );
 		$storageCargo->decAmount ( $id, $subaction, $toMove );
 
-		shipProperties::updateUsedCargo ( $shipProperties );
+        \Gameplay\Model\ShipProperties::updateUsedCargo ( $shipProperties );
 
 		$action = 'portStorehouse';
 
@@ -479,7 +478,7 @@ if ($action == 'toStorehouse') {
 		$shipCargo->decAmount ( $id, $subaction, $toMove );
 		$storageCargo->incAmount ( $id, $subaction, $toMove );
 
-		shipProperties::updateUsedCargo ( $shipProperties );
+        \Gameplay\Model\ShipProperties::updateUsedCargo ( $shipProperties );
 
 		shipCargo::management ( $userID );
 
@@ -528,7 +527,7 @@ if ($action == "itemSell") {
 
 	userStats::incExperience ( $userStats, $productData->Experience * $value );
 
-	shipProperties::updateUsedCargo ( $shipProperties );
+	\Gameplay\Model\ShipProperties::updateUsedCargo ( $shipProperties );
 
 	//Update portu po zakończeniu handlu
 	$portProperties->Experience += $productData->Experience * $value;
@@ -586,7 +585,7 @@ if ($action == "productSell") {
 
 	userStats::incExperience ( $userStats, $productExperience * $value );
 
-	shipProperties::updateUsedCargo ( $shipProperties );
+	\Gameplay\Model\ShipProperties::updateUsedCargo ( $shipProperties );
 
 	//Update portu po zakończeniu handlu
 	$portProperties->Experience += $productExperience * $value;
@@ -653,7 +652,7 @@ if ($action == "productBuy") {
 
 	userStats::incExperience ( $userStats, $productExperience * $value );
 
-	shipProperties::updateUsedCargo ( $shipProperties );
+	\Gameplay\Model\ShipProperties::updateUsedCargo ( $shipProperties );
 
 	//Update portu po zakończeniu handlu
 	$portProperties->Experience += $productExperience * $value;

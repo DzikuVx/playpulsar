@@ -10,7 +10,7 @@ class shipEquipmentRegistry extends simpleRegistry {
 		$repairTemplate = new \General\Templater ( dirname ( __FILE__ ) . '/../../templates/shipRepairTable.html' );
 		$repairTemplate->add ( $shipProperties );
 		$repairTemplate->add ( 'EmpRegeneration', $config ['emp'] ['repairRatio'] );
-		shipProperties::sRenderRepairButtons ( $repairTemplate, 'summary' );
+        \Gameplay\Model\ShipProperties::sRenderRepairButtons ( $repairTemplate, 'summary' );
 
 		$template = new \General\Templater ( dirname ( __FILE__ ) . '/../../templates/shipSummary.html' );
 

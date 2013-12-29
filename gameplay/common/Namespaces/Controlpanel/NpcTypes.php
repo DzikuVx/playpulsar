@@ -3,6 +3,7 @@
 namespace Controlpanel;
 
 use Gameplay\Model\ShipPosition;
+use Gameplay\Model\ShipProperties;
 use Gameplay\Model\SystemProperties;
 
 class NpcTypes extends GameplayItem{
@@ -14,11 +15,18 @@ class NpcTypes extends GameplayItem{
 	protected $tableName = 'npctypes';
 	protected $tableIdField = 'NPCTypeID';
 
-	public function editExe($user, $params) {
+    /**
+     * @param \user $user
+     * @param array $params
+     * @return string
+     * @throws \customException
+     */
+    public function editExe(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 		$retVal = '';
 
 		if (empty($_SESSION['returnUser'])) {
-			throw new customException('Security error');
+			throw new \customException('Security error');
 		}
 
 		$tData = $this->getDataObject($params['id']);
@@ -77,7 +85,7 @@ class NpcTypes extends GameplayItem{
 		$tQuery2 = "SELECT UserID FROM users WHERE NPCTypeID='{$id}'";
 		$tQuery2 = \Database\Controller::getInstance()->execute ( $tQuery2 );
 		while ( $row2 = \Database\Controller::getInstance()->fetch ( $tQuery2 ) ) {
-			player::sDrop($row2->UserID);
+			Player::sDrop($row2->UserID);
 		}
 
 		return true;
@@ -403,10 +411,6 @@ class NpcTypes extends GameplayItem{
 						$tResult = mysqli_stmt_execute($sPreparedEquipment);
 
 						if (empty($tResult)) {
-							
-							var_dump($sPreparedEquipment, $npcID, $value);
-							die();
-							
 							throw new \Database\Exception ( mysqli_error (\Database\Controller::getInstance()->getHandle()), mysqli_errno (\Database\Controller::getInstance()->getHandle()) );
 						}
 
@@ -421,9 +425,7 @@ class NpcTypes extends GameplayItem{
 				 * Załadowanie danych okrętu
 				*/
 
-				$shipPropertiesObject = new \shipProperties ( );
-				$shipProperties = $shipPropertiesObject->load ( $npcID, true, true );
-
+				$shipProperties = new ShipProperties($npcID);
 				$shipProperties->CurrentWeapons = $weaponsCount;
 				$shipProperties->CurrentEquipment = $equipmentCount;
 
@@ -439,14 +441,13 @@ class NpcTypes extends GameplayItem{
 				/**
 				 * Uaktualnij wartości maksymalne okrętu
 				 */
-				\shipProperties::computeMaxValues ( $shipProperties );
+				ShipProperties::computeMaxValues($shipProperties);
 
 				/**
 				 * Ustaw aktualne maksymalne jako aktualne
 				 */
-				\shipProperties::setFromFull ( $shipProperties );
-
-				\shipProperties::computeDefensiveRating ( $shipProperties );
+				ShipProperties::setFromFull($shipProperties);
+				ShipProperties::computeDefensiveRating($shipProperties);
 
 				/*
 				 * Jeśli NPC ma itemy ładowniach
@@ -483,9 +484,7 @@ class NpcTypes extends GameplayItem{
 					\npc::initMoveTable ($npcID, $row1->NPCTypeID, $position );
 				}
 
-				$shipPropertiesObject->synchronize ( $shipProperties, true, true );
-				unset($shipPropertiesObject);
-
+				$shipProperties->synchronize();
 			}
 		}
 

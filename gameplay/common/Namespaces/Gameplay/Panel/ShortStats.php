@@ -2,6 +2,7 @@
 
 namespace Gameplay\Panel;
 
+use Gameplay\Model\ShipProperties;
 use Interfaces\Singleton;
 
 use \TranslateController as Translate;
@@ -34,13 +35,11 @@ class ShortStats extends Renderable implements Singleton {
 	/**
 	 * 
 	 * Panel render
-	 * @param \stdClass $shipProperties
+	 * @param ShipProperties $shipProperties
 	 * @param \shipWeapons $shipWeapons
 	 * @param \shipEquipment $shipEquipment
 	 */
-	public function render($shipProperties, \shipWeapons $shipWeapons, \shipEquipment $shipEquipment) {
-
-		global $config;
+	public function render(ShipProperties $shipProperties, \shipWeapons $shipWeapons, \shipEquipment $shipEquipment) {
 
 		$this->rendered = true;
  
@@ -113,17 +112,16 @@ class ShortStats extends Renderable implements Singleton {
 		$this->retVal .= "<div style='margin-top: 1em;'>";
 		
 		$this->retVal .= "<div class='em12'>";
-		$this->retVal .= "<strong>".Translate::getDefault()->get ( 'turns' ) . ": </strong>" . $shipProperties->Turns;
+		$this->retVal .= "<strong>{T:turns}: </strong>" . $shipProperties->Turns;
 		$this->retVal .= "</div>";
 		
 		if ($shipProperties->RookieTurns > 0) {
 			$this->retVal .= "<div class='em12'>";
-			$this->retVal .= "<strong>".Translate::getDefault()->get ( 'RookieTurns' ) . ": </strong>" . $shipProperties->RookieTurns;
+			$this->retVal .= "<strong>{T:RookieTurns}: </strong>" . $shipProperties->RookieTurns;
 			$this->retVal .= "</div>";
 		}
 		
 		$this->retVal .= "</div>";
-		
 		$this->retVal .= "</div>";
 
 	}

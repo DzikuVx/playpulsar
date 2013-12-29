@@ -2,6 +2,8 @@
 
 namespace Controlpanel;
 
+use Gameplay\Model\ShipProperties;
+
 class PlayerEquipment extends \equipment{
 
 	/**
@@ -64,18 +66,17 @@ class PlayerEquipment extends \equipment{
 			throw new \customException('Security error');
 		}
 
-        \shipProperties::sFlushCache($_SESSION['returnUser']);
+        ShipProperties::sFlushCache($_SESSION['returnUser']);
 
 		$shipEquipment = new \shipEquipment($_SESSION['returnUser']);
 
 		$equipment = \equipment::quickLoad($params['value']);
 
-		$shipPropertiesObject = new \shipProperties();
-		$shipProperties = $shipPropertiesObject->load($_SESSION['returnUser'],true, true);
+		$shipProperties = new ShipProperties($_SESSION['returnUser']);
 
 		$shipEquipment->insert($equipment, $shipProperties);
 
-		$shipPropertiesObject->synchronize($shipProperties, true, true);
+		$shipProperties->synchronize();
 
 		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Equipment has been <strong>added</strong>", 'success');
 
@@ -96,8 +97,8 @@ class PlayerEquipment extends \equipment{
         $oDb->execute("DELETE FROM shipequipment WHERE ShipEquipmentID = '{$params['id']}'");
 
         if (!empty($_SESSION['returnUser'])) {
-            \shipProperties::sFlushCache($_SESSION['returnUser']);
-			\shipProperties::sQuickRecompute($_SESSION['returnUser']);
+            ShipProperties::sFlushCache($_SESSION['returnUser']);
+            ShipProperties::sQuickRecompute($_SESSION['returnUser']);
 		}
 		
 		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Equipment has been <strong>deleted</strong>", 'success');

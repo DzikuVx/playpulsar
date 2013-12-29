@@ -3,6 +3,7 @@
 namespace Gameplay\Panel;
 
 use Gameplay\Model\ShipPosition;
+use Gameplay\Model\ShipProperties;
 use Interfaces\Singleton;
 
 class Navigation extends Renderable implements Singleton {
@@ -32,10 +33,10 @@ class Navigation extends Renderable implements Singleton {
 	/**
 	 * @param ShipPosition $shipPosition
 	 * @param \stdClass $shipRouting
-	 * @param \stdClass $shipProperties
+	 * @param ShipProperties $shipProperties
      * @return string
 	 */
-	public function render(ShipPosition $shipPosition, $shipRouting, $shipProperties) {
+	public function render(ShipPosition $shipPosition, $shipRouting, ShipProperties $shipProperties) {
 		$this->rendered = true;
 
 		$this->retVal = "<label>{T:navigation}</label>";

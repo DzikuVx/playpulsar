@@ -2,11 +2,11 @@
 
 global $shipProperties, $userID, $userProperties, $userStats;
 
-shipProperties::sRecomputeValues($shipProperties, $userID);
+\Gameplay\Model\ShipProperties::sRecomputeValues($shipProperties, $userID);
 
 $sRetVal = "<h1>{T:shipyard}</h1>";
 
-$currentShipValue = floor ( shipProperties::sGetValue ( $userProperties->UserID ) / 2 );
+$currentShipValue = floor ( \Gameplay\Model\ShipProperties::sGetValue ( $userProperties->UserID ) / 2 );
 
 $sRetVal .= "<h3>{T:shipValue}: " . $currentShipValue . "$</h3>";
 

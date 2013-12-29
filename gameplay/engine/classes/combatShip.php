@@ -12,14 +12,10 @@ class combatShip {
 	public $Language = 'en';
 	public $userID = null;
 
-	/**
-	 * Obiekt ShipProperties
-	 *
-	 * @var shipProperties
-	 */
-	public $shipPropertiesObject = null;
-
-	public $shipProperties = null;
+    /**
+     * @var \Gameplay\Model\ShipProperties
+     */
+    public $shipProperties = null;
 
 	/**
 	 * uzbrojenie okrętu
@@ -85,8 +81,7 @@ class combatShip {
 		$this->Language = $Language;
 		$this->weaponFireResult = array ();
 
-		$this->shipPropertiesObject = new shipProperties ( );
-		$this->shipProperties = $this->shipPropertiesObject->load ( $userID, true, true );
+        $this->shipProperties = new \Gameplay\Model\ShipProperties($userID);
 
 		$this->userTimes     = new \Gameplay\Model\UserTimes($userID);
 		$this->userFastTimes = new \Gameplay\Model\UserFastTimes($userID);
@@ -110,7 +105,7 @@ class combatShip {
 		/*
 		 * Ponownie przelicz parametry
 		 */
-		shipProperties::computeMaxValues ( $this->shipProperties );
+		\Gameplay\Model\ShipProperties::computeMaxValues ( $this->shipProperties );
 
 		//@todo to trzeba jakoś zrefaktoryzować
 		$this->shipSize = ship::quickLoad($this->shipProperties->ShipID)->Size;
@@ -118,7 +113,7 @@ class combatShip {
 		/*
 		 * Dokonaj naprawy
 		 */
-		$this->shipPropertiesObject->autoRepair($this->shipProperties, $this->userFastTimes);
+		$this->shipProperties->autoRepair($this->userFastTimes);
 
 	}
 
@@ -237,10 +232,10 @@ class combatShip {
 			$sectorCargo->insert ( 'product', 11, ($this->shipProperties->ArmorMax / 3));
 			$sectorCargo->insert ( 'product', 13, ($this->shipProperties->ArmorMax / 3));
 
-			shipProperties::computeMaxValues ( $this->shipProperties );
+            \Gameplay\Model\ShipProperties::computeMaxValues($this->shipProperties);
 			$this->shipProperties->Armor = 1;
-			$this->shipWeapons->computeOffensiveRating ( $this->shipProperties );
-			shipProperties::computeDefensiveRating ( $this->shipProperties );
+			$this->shipWeapons->computeOffensiveRating($this->shipProperties);
+            \Gameplay\Model\ShipProperties::computeDefensiveRating($this->shipProperties);
 
 			/*
 			 * Dezaktywuj moje combatlocki
@@ -251,13 +246,14 @@ class combatShip {
 		try {
 			$this->userFastTimes->synchronize();
 			$this->userTimes->synchronize();
-			$this->shipPropertiesObject->synchronize( $this->shipProperties, true, true );
+			$this->shipProperties->synchronize();
 			$this->userStatsObject->synchronize( $this->userStats, true, true );
 
 		} catch ( Exception $e ) {
 			\phpCache\Factory::getInstance()->create()->clearAll();
-			echo $e->getMessage ();
-		}
+            echo $e->getMessage ();
+            throw new \Exception($e->getMessage(), $e->getCode(), $e->getPrevious());
+        }
 
 	}
 
