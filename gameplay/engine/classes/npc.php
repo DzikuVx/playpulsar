@@ -181,7 +181,7 @@ class npc extends baseItem {
 			} else {
 				$npcPosition->System = additional::randFormList ( $npcType->Systems );
 			}
-			$tPosition = systemProperties::randomPosition ( $npcPosition->System );
+			$tPosition = \Gameplay\Model\SystemProperties::randomPosition ( $npcPosition->System );
 			$npcPosition->X = $tPosition->X;
 			$npcPosition->Y = $tPosition->Y;
 			$npcPosition->Docked = 'no';
@@ -301,44 +301,43 @@ class npc extends baseItem {
 		$moveTime  = rand($item->MoveTimeMin, $item->MoveTimeMax) + time ();
 
 		if ($item->Dock == "yes") {
-			$tPos = systemProperties::randomPort ( $position );
+			$tPos = \Gameplay\Model\SystemProperties::randomPort ( $position );
 		} else {
-			$tPos = systemProperties::randomPosition ( $position->System );
+			$tPos = \Gameplay\Model\SystemProperties::randomPosition ( $position->System );
 		}
 
 		\Database\Controller::getInstance()->execute ( "DELETE FROM npcmove WHERE UserID = '{$npcId}'" );
 
 		$t2Query = "INSERT INTO npcmove (
-        UserID,    
-		    Direction,
-        MoveTime,
-        MoveCount,
-        NextMoveTimeMin,
-        NextMoveTimeMax,
-        SrcSystem,
-        SrcX,
-        SrcY,
-        DstSystem,
-        DstX,
-        DstY,
-        Dock
-	    ) VALUES (
-	      '{$npcId}',
-	      'Src-Dst' ,
-        '$moveTime',
-        '$moveCount',
-        '{$item->MoveTimeMin}',
-        '{$item->MoveTimeMax}',
-        '{$position->System}',
-        '{$position->X}',
-        '{$position->Y}',
-        '{$tPos->System}',
-        '{$tPos->X}',
-        '{$tPos->Y}',
-        '{$item->Dock}'
-	   )";
+                UserID,
+                Direction,
+                MoveTime,
+                MoveCount,
+                NextMoveTimeMin,
+                NextMoveTimeMax,
+                SrcSystem,
+                SrcX,
+                SrcY,
+                DstSystem,
+                DstX,
+                DstY,
+                Dock
+                ) VALUES (
+                  '{$npcId}',
+                  'Src-Dst' ,
+                '$moveTime',
+                '$moveCount',
+                '{$item->MoveTimeMin}',
+                '{$item->MoveTimeMax}',
+                '{$position->System}',
+                '{$position->X}',
+                '{$position->Y}',
+                '{$tPos->System}',
+                '{$tPos->X}',
+                '{$tPos->Y}',
+                '{$item->Dock}'
+               )";
 		\Database\Controller::getInstance()->execute ( $t2Query );
-
 	}
 
     /**
@@ -542,7 +541,7 @@ class npc extends baseItem {
 
 			//Jesli sa NPC do zresetowania, pobierz parametry systemu
 			if (\Database\Controller::getInstance()->count ( $tQuery ) > 0) {
-				$systemProperties = systemProperties::quickLoad ( $shipPosition->System );
+				$systemProperties = \Gameplay\Model\SystemProperties::quickLoad ( $shipPosition->System );
 			}
 
 			while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
@@ -564,7 +563,7 @@ class npc extends baseItem {
 					$tPos->System = $tR1->PositionSystem;
 					$tPos->X = $tR1->PositionX;
 					$tPos->Y = $tR1->PositionY;
-					$tPos = systemProperties::randomPort ( $tPos );
+					$tPos = \Gameplay\Model\SystemProperties::randomPort($tPos);
 
 					$dstSystem = $tPos->System;
 					$dstX = $tPos->X;
@@ -573,26 +572,26 @@ class npc extends baseItem {
 				}
 				//Zapisz nowe parametry tego NPC do bazy danych
 				$t2Query = "UPDATE npcmove SET
-        Direction='$direction' ,
-        MoveTime='$moveTime',
-        MoveCount='$moveCount',
-        NextMoveTimeMin = '{$tR1->MoveTimeMin}',
-        NextMoveTimeMax = '{$tR1->MoveTimeMax}',
-        SrcSystem = '$srcSystem',
-        SrcX = '$srcX',
-        SrcY = '$srcY',
-        DstSystem = '$dstSystem',
-        DstX = '$dstX',
-        DstY = '$dstY',
-        Dock = '{$tR1->Dock}'
-      WHERE
-        UserID='{$tR1->NpcID}'";
-				$t2Query = \Database\Controller::getInstance()->execute ( $t2Query );
+                    Direction='$direction' ,
+                    MoveTime='$moveTime',
+                    MoveCount='$moveCount',
+                    NextMoveTimeMin = '{$tR1->MoveTimeMin}',
+                    NextMoveTimeMax = '{$tR1->MoveTimeMax}',
+                    SrcSystem = '$srcSystem',
+                    SrcX = '$srcX',
+                    SrcY = '$srcY',
+                    DstSystem = '$dstSystem',
+                    DstX = '$dstX',
+                    DstY = '$dstY',
+                    Dock = '{$tR1->Dock}'
+                  WHERE
+                    UserID='{$tR1->NpcID}'";
+				\Database\Controller::getInstance()->execute ( $t2Query );
 			}
 
 			//Zdejmij blokadę NPC i Nadpisz następny czas ruchu
 			$tQuery = "UPDATE npcmove JOIN usertimes ON usertimes.UserID = npcmove.UserID SET npcmove.Owner=null, usertimes.LastAction='$actualTime' WHERE npcmove.Owner='$userID'";
-			$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
+			\Database\Controller::getInstance()->execute ( $tQuery );
 
 			\Database\Controller::getInstance()->commit();
 			\Database\Controller::getInstance()->enableAutocommit();

@@ -3,6 +3,7 @@
 namespace Controlpanel;
 
 use Gameplay\Model\ShipPosition;
+use Gameplay\Model\SystemProperties;
 
 class NpcTypes extends GameplayItem{
 
@@ -231,7 +232,7 @@ class NpcTypes extends GameplayItem{
 					$position->System = \additional::randFormList ( $row1->Systems );
 				}
 
-				$tPosition = \systemProperties::randomPosition ( $position->System );
+				$tPosition = SystemProperties::randomPosition ( $position->System );
 
                 $position->X = $tPosition->X;
 				$position->Y = $tPosition->Y;

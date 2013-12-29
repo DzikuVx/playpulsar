@@ -3,6 +3,7 @@
 namespace Gameplay\Panel;
 
 use Gameplay\Model\ShipPosition;
+use Gameplay\Model\SystemProperties;
 use Interfaces\Singleton;
 //TODO MiniMap as a function should be independend from MiniMap as Panel. Move Rendering to separate class
 class MiniMap extends BaseTable implements Singleton {
@@ -72,7 +73,7 @@ class MiniMap extends BaseTable implements Singleton {
     function load($userID, $system, ShipPosition $shipPosition = null, $getShips = false, $getStacks = false) {
 		$this->shipPosition = $shipPosition;
 		if (is_numeric ( $system )) {
-			$this->system = \systemProperties::quickLoad ( $system );
+			$this->system = SystemProperties::quickLoad ( $system );
 		} else {
 			$this->system = $system;
 		}

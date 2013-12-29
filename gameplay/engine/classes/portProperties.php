@@ -161,7 +161,7 @@ class portProperties extends baseItem {
 	/**
 	 * Pobranie parametrów portu
 	 *
-	 * @param int/StdClass $ID
+	 * @param int|stdClass $ID
 	 * @return boolean
 	 */
 	function get($ID) {
@@ -228,7 +228,7 @@ class portProperties extends baseItem {
 	/**
 	 * Parsowanie ID dla poru
 	 *
-	 * @param int/StdClass $ID
+	 * @param int|stdClass $ID
 	 * @return string
 	 */
 	protected function parseCacheID($ID) {
@@ -498,7 +498,7 @@ class portProperties extends baseItem {
 				if (!empty($config ['port'] ['mapCreateCount'])) {
 					$tMapCount = rand(1, $config ['port'] ['mapCreateCount']);
 					for ($tIndex = 0; $tIndex < $tMapCount; $tIndex++) {
-						\Database\Controller::getInstance()->execute("INSERT INTO portcargo(PortID, CargoID, Amount, Type, Mode, UserID)VALUES ('{$portProperties->PortID}','".galaxy::sGetRandomWithoutMap(systemProperties::getGalaxy ( $portProperties->System ))."','1','map','buy',null)");
+						\Database\Controller::getInstance()->execute("INSERT INTO portcargo(PortID, CargoID, Amount, Type, Mode, UserID)VALUES ('{$portProperties->PortID}','".galaxy::sGetRandomWithoutMap(\Gameplay\Model\SystemProperties::getGalaxy($portProperties->System))."','1','map','buy',null)");
 					}
 
 				}

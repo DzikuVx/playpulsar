@@ -39,11 +39,11 @@ class remoteSectorInfo extends \Gameplay\Panel\Sector {
 
     /**
      * @param stdClass $sectorProperties
-     * @param stdClass $systemProperties
+     * @param \Gameplay\Model\SystemProperties $systemProperties
      * @param \Gameplay\Model\ShipPosition $shipPosition
      * @return $this|bool
      */
-    public function render($sectorProperties, $systemProperties, \Gameplay\Model\ShipPosition $shipPosition = null) {
+    public function render($sectorProperties, \Gameplay\Model\SystemProperties $systemProperties, \Gameplay\Model\ShipPosition $shipPosition = null) {
 
 		global $userProperties;
 

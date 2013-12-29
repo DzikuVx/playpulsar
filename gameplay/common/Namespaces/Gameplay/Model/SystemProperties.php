@@ -1,36 +1,62 @@
 <?php
 
-/**
- * Klasa parametrów systemu
- * Używana tabela: systems
- * Parametr wejściowy: SystemID
- * @version $Rev: 455 $
- * @package Engine
- */
-class systemProperties extends extendedItem {
+namespace Gameplay\Model;
+
+class SystemProperties extends Standard {
 
 	protected $tableName = "systems";
 	protected $tableID = "SystemID";
 	protected $tableUseFields = array('SystemID','Name','Width','Height','Number','Enabled','Galaxy','MapAvaible');
 	protected $cacheExpire = 86400;
 
-	public $SystemID;
-	public $Name;
-	public $Width;
-	public $Height;
-	public $Number;
-	public $Enabled;
-	public $Galaxy;
-	public $MapAvaible;
+    /**
+     * @var int
+     */
+    public $SystemID;
+
+    /**
+     * @var string
+     */
+    public $Name;
+
+    /**
+     * @var int
+     */
+    public $Width;
+
+    /**
+     * @var int
+     */
+    public $Height;
+
+    /**
+     * @var int
+     */
+    public $Number;
+
+    /**
+     * @var string
+     */
+    public $Enabled;
+
+    /**
+     * @var int
+     */
+    public $Galaxy;
+
+    /**
+     * @var string
+     */
+    public $MapAvaible;
 
     /**
      * Get random port in system, different that current position
-     * @param \Gameplay\Model\ShipPosition $shipPosition
-     * @return stdClass
+     * @param ShipPosition $shipPosition
+     * @return \stdClass
      */
-    static function randomPort(\Gameplay\Model\ShipPosition $shipPosition) {
+    static function randomPort(ShipPosition $shipPosition) {
 
-		$retVal = new stdClass();
+		$retVal = new \stdClass();
 
 		$retVal->System = $shipPosition->System;
 
@@ -66,14 +92,12 @@ class systemProperties extends extendedItem {
 	}
 
 	/**
-	 * Zwraca losową pozycją wewnątrz systemu
-	 *
-	 * @param int $ID - ID Systemy
-	 * @return stdClass
+	 * @param int $ID
+	 * @return \stdClass
 	 */
 	static public function randomPosition($ID) {
 
-		$retVal = new stdClass();
+		$retVal = new \stdClass();
 		$retVal->X = null;
 		$retVal->Y = null;
 		$retVal->System = $ID;
@@ -83,14 +107,10 @@ class systemProperties extends extendedItem {
 		$retVal->X = rand ( 1, $tData->Width );
 		$retVal->Y = rand ( 1, $tData->Height );
 
-		unset ( $tData );
-
 		return $retVal;
 	}
 
 	/**
-	 * Pobranie numeru galaktyki do której należy system
-	 *
 	 * @param int $systemID
 	 * @return int
 	 */

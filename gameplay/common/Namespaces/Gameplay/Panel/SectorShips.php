@@ -3,6 +3,7 @@
 namespace Gameplay\Panel;
 
 use Gameplay\Model\ShipPosition;
+use Gameplay\Model\SystemProperties;
 use Interfaces\Singleton;
 
 use \TranslateController as Translate;
@@ -37,12 +38,13 @@ class SectorShips extends Renderable implements Singleton {
     /**
      * @param int $userID
      * @param \stdClass $sectorProperties
-     * @param \stdClass $systemProperties
+     * @param SystemProperties $systemProperties
      * @param ShipPosition $shipPosition
      * @param \stdClass $shipProperties
      * @return bool
      */
-    public function render($userID, $sectorProperties, $systemProperties, ShipPosition $shipPosition, $shipProperties) {
+    public function render($userID, $sectorProperties, /** @noinspection PhpUnusedParameterInspection */
+                           SystemProperties $systemProperties, ShipPosition $shipPosition, $shipProperties) {
 
 		global $config, $userStats, $userAlliance;
 

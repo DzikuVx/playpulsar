@@ -42,7 +42,7 @@ class user {
 		$position = new stdClass();
 		$position->System = additional::randFormList ( $config ['userDefault'] ['system'] );
 
-		$tPosition = systemProperties::randomPort ( $position );
+		$tPosition = \Gameplay\Model\SystemProperties::randomPort ( $position );
 		$position->X = $tPosition->X;
 		$position->Y = $tPosition->Y;
 		$position->Docked = 'yes';
@@ -417,34 +417,33 @@ class user {
 		/*
 		 * System
 		*/
-		$position = new stdClass();
+		$position = new \Gameplay\Model\ShipPosition();
 		$position->System = additional::randFormList ( $config ['userDefault'] ['system'] );
 
-		$tPosition = systemProperties::randomPort ( $position );
+		$tPosition = \Gameplay\Model\SystemProperties::randomPort ( $position );
 		$position->X = $tPosition->X;
 		$position->Y = $tPosition->Y;
 		$position->Docked = 'yes';
-		unset ( $tPosition );
 
+		unset ( $tPosition );
 
 		/*
 		 * Wstaw pozycję statku
 		*/
 		$tQuery2 = "INSERT INTO
-        shippositions(
-          UserID,
-          System,
-          X,
-          Y,
-          Docked)
-        VALUES(
-          '$playerID',
-          '{$position->System}',
-          '{$position->X}',
-          '{$position->Y}',
-          '{$position->Docked}'
-        )
-    ";
+                shippositions(
+                    UserID,
+                    System,
+                    X,
+                    Y,
+                    Docked)
+                VALUES(
+                    '$playerID',
+                    '{$position->System}',
+                    '{$position->X}',
+                    '{$position->Y}',
+                    '{$position->Docked}'
+                )";
 		\Database\Controller::getInstance()->execute ( $tQuery2 );
 
 		/*

@@ -178,7 +178,7 @@ try {
 	/**
 	 * Inicjalizaja parametrów systemu
 	 */
-	$systemProperties = new systemProperties ($shipPosition->System);
+    $systemProperties = $oPlayerModelProvider->register('SystemProperties', new \Gameplay\Model\SystemProperties($shipPosition->System));
 
 	/**
 	 * Inicjalizacja właściwości statku użytkownika
@@ -679,7 +679,7 @@ try {
 			unset ( $tCoords );
 
 			//pobierz parametry systemu docelowego
-			$tSystem = systemProperties::quickLoad ( $tPlot->System );
+			$tSystem = \Gameplay\Model\SystemProperties::quickLoad ( $tPlot->System );
 
 			//Warunek rozmiaru systemu
 			if ($tPlot->X > $tSystem->Width || $tPlot->Y > $tSystem->Height || $tSystem->Enabled == 'no') {

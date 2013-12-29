@@ -3,6 +3,7 @@
 namespace Gameplay\Panel;
 
 use Gameplay\Model\ShipPosition;
+use Gameplay\Model\SystemProperties;
 use Interfaces\Singleton;
 use \TranslateController as Translate;
 
@@ -77,7 +78,7 @@ class Port extends Renderable implements Singleton {
 
 			unset($jumpNodeObject);
 
-			$destination = \systemProperties::getGalaxy ( $destination->System ) . "/" . $destination->System . "/" . $destination->X . "/" . $destination->Y;
+			$destination = SystemProperties::getGalaxy ( $destination->System ) . "/" . $destination->System . "/" . $destination->X . "/" . $destination->Y;
 
 			$this->retVal .= "<div class='sectorImageCell'>";
 			$this->retVal .= "<label>" . Translate::getDefault()->get ( 'jumpgate' ) . "</label>";

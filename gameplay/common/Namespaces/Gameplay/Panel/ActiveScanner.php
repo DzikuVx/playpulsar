@@ -2,6 +2,7 @@
 
 namespace Gameplay\Panel;
 use Gameplay\Model\ShipPosition;
+use Gameplay\Model\SystemProperties;
 use Gameplay\PlayerModelProvider;
 use Interfaces\Singleton;
 use TranslateController;
@@ -34,7 +35,7 @@ class ActiveScanner extends SystemMap implements Singleton {
 	 */
 	public function setShipPosition(ShipPosition $shipPosition) {
 		$this->shipPosition = $shipPosition;
-		$this->system = \systemProperties::quickLoad ( $this->shipPosition->System );
+		$this->system = SystemProperties::quickLoad ( $this->shipPosition->System );
 	}
 
     /**

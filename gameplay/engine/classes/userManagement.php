@@ -43,7 +43,7 @@ class userManagement {
 		/*
 		 * Wstaw pozycję użytkownika
 		 */
-        $position = new stdClass();
+        $position = new \Gameplay\Model\ShipPosition();
 		$position->System = additional::randFormList ( $config ['userDefault'] ['system'] );
 		$position->X = 0;
 		$position->Y = 0;
@@ -52,7 +52,7 @@ class userManagement {
 		/**
 		 * Pozycja startowa, jeden z portów w systemie
 		 */
-		$tPosition = systemProperties::randomPort ( $position );
+		$tPosition = \Gameplay\Model\SystemProperties::randomPort ( $position );
 
         $tItem = new stdClass();
 		$tItem->UserID = $userID;

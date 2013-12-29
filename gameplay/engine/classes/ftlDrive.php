@@ -27,9 +27,10 @@ class ftlDrive {
 	}
 
 	static public function sEngage() {
-		global $userID, $shipProperties, $shipRouting, $userStats, $config, $sectorProperties,$portProperties, $systemProperties, $jumpNode, $sectorPropertiesObject, $portPropertiesObject, $jumpNodeObject;
+		global $userID, $shipProperties, $shipRouting, $userStats, $config, $sectorProperties, $portProperties, $jumpNode, $sectorPropertiesObject, $portPropertiesObject, $jumpNodeObject;
 
-        $shipPosition = PlayerModelProvider::getInstance()->get('ShipPosition');
+        $shipPosition     = PlayerModelProvider::getInstance()->get('ShipPosition');
+        $systemProperties = PlayerModelProvider::getInstance()->get('SystemProperties');
 
 		if (shipProperties::sCheckMalfunction ( $shipProperties )) {
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'error', '{T:shipMalfunctionEmp}');
@@ -61,7 +62,7 @@ class ftlDrive {
 			return false;
 		}
 
-		$targetSystemProperties = systemProperties::quickLoad($shipRouting->System);
+		$targetSystemProperties = \Gameplay\Model\SystemProperties::quickLoad($shipRouting->System);
 
 		$newX = rand($shipRouting->X - 2,$shipRouting->X + 2);
 		$newY = rand($shipRouting->Y - 2,$shipRouting->Y + 2);
