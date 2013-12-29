@@ -1,27 +1,25 @@
 <?php
 
-/*
- * Wykonaj przeliczenie max wartości okrętu
- */
+global $shipProperties, $userID, $userProperties, $userStats;
+
 shipProperties::sRecomputeValues($shipProperties, $userID);
 
-$sRetVal = "<h1>" . TranslateController::getDefault()->get ( 'shipyard' ) . "</h1>";
+$sRetVal = "<h1>{T:shipyard}</h1>";
 
 $currentShipValue = floor ( shipProperties::sGetValue ( $userProperties->UserID ) / 2 );
 
-$sRetVal .= "<h3>" . TranslateController::getDefault()->get ( 'shipValue' ) . ": " . $currentShipValue . "$</h3>";
+$sRetVal .= "<h3>{T:shipValue}: " . $currentShipValue . "$</h3>";
 
-//Znajdz statki, jakie port sprzedaje
 $nameField = "Name" . strtoupper ( $userProperties->Language );
 
-$sRetVal .= "<h2>" . TranslateController::getDefault()->get ( 'ships' ) . "</h2>";
+$sRetVal .= "<h2>{T:ships}</h2>";
 $sRetVal .= "<table class='table table-striped table-condensed'>";
 
 $sRetVal .= "<tr>";
-$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'name' ) . "</th>";
-$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'price' ) . " [$]</th>";
-$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'Fame' ) . "</th>";
-$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'size' ) . "</th>";
+$sRetVal .= "<th>{T:name}</th>";
+$sRetVal .= "<th>{T:price} [$]</th>";
+$sRetVal .= "<th>{T:Fame}</th>";
+$sRetVal .= "<th>{T:size}</th>";
 $sRetVal .= "<th style=\"width: 75px;\">&nbsp;</th>";
 $sRetVal .= "</tr>";
 

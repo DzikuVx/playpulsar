@@ -1,16 +1,18 @@
 <?php
-$sRetVal = "<h1>" . TranslateController::getDefault()->get ( 'marketplace' ) . "</h1>";
 
-//Znajdz towary, jakie port sprzedaje
+global $userProperties, $shipProperties, $userStats, $config, $userID;
+
+$sRetVal = "<h1>{T:marketplace}</h1>";
+
 $nameField = "Name" . strtoupper ( $userProperties->Language );
 
-$sRetVal .= "<h2>" . TranslateController::getDefault()->get ( 'buy' ) . "</h2>";
+$sRetVal .= "<h2>{T:buy}</h2>";
 $sRetVal .= "<table class='table table-striped table-condensed'>";
 
 $sRetVal .= "<tr>";
-$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'cargo' ) . "</th>";
-$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'instock' ) . "</th>";
-$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'price' ) . " [$]</th>";
+$sRetVal .= "<th>{T:cargo}</th>";
+$sRetVal .= "<th>{T:instock}</th>";
+$sRetVal .= "<th>{T:price} [$]</th>";
 $sRetVal .= "<th style=\"width: 10em;\">&nbsp;</th>";
 $sRetVal .= "</tr>";
 

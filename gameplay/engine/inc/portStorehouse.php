@@ -2,6 +2,8 @@
 
 use General\Formater;
 
+global $userID, $portProperties, $userProperties, $shipProperties, $shipPosition, $config;
+
 $sRetVal = "<h1>{T:storehouse}</h1>";
 
 $storageCargo = new storageCargo ( $userID, $portProperties->PortID, $userProperties->Language );

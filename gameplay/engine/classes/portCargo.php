@@ -65,7 +65,7 @@ class portCargo {
 	/**
 	 * Lista przedmiotów jakie sprzedaje port
 	 *
-	 * @return object
+	 * @return resource
 	 */
 	public function getProductsSell() {
 		

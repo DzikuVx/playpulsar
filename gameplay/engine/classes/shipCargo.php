@@ -564,7 +564,7 @@ class shipCargo {
 	 *
 	 * @param int $ID
 	 * @param string $orderBy
-	 * @return object
+	 * @return resource
 	 */
 	public function getProducts($ID = null, $orderBy = 'name') {
 
@@ -590,7 +590,7 @@ class shipCargo {
 	 *
 	 * @param int $ID
 	 * @param string $orderBy
-	 * @return object
+	 * @return resource
 	 */
 	public function getItems($ID = null, $orderBy = 'name') {
 
@@ -616,7 +616,7 @@ class shipCargo {
 	 *
 	 * @param int $ID
 	 * @param string $orderBy
-	 * @return object
+	 * @return resource
 	 */
 	public function getWeapons($ID = null, $orderBy = 'name') {
 
@@ -642,7 +642,7 @@ class shipCargo {
 	 *
 	 * @param int $ID
 	 * @param string $orderBy
-	 * @return object
+	 * @return resource
 	 */
 	public function getEquipments($ID = null, $orderBy = 'name') {
 

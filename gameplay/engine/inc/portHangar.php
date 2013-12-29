@@ -1,5 +1,7 @@
 <?php
 
+global $userProperties, $config, $shipProperties, $userID, $userStats;
+
 /*
  * Wykonaj przeliczenie max wartości okrętu
  */
