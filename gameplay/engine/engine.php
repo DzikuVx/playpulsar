@@ -145,10 +145,7 @@ try {
 	$userStatsObject = new userStats ( );
 	$userStats = $userStatsObject->load ( $userID, true, true );
 
-	/*
-	 * Inicjalizacja tabeli userTimes
-	*/
-	$userTimes = new userTimes ($userID);
+    $userTimes = $oPlayerModelProvider->register('UserTimes', new \Gameplay\Model\UserTimes($userID));
 
 	$userFastTimes = new userFastTimes($userID);
 
@@ -988,7 +985,7 @@ try {
 	\Gameplay\Panel\Move::getInstance()->render($systemProperties, $shipPosition, $portProperties, $shipRouting, $shipProperties);
 	\Gameplay\Panel\MiniMap::getInstance()->render();
 
-	userTimes::genAuthCode ( $userTimes, $userFastTimes );
+	\Gameplay\Model\UserTimes::genAuthCode ($userTimes, $userFastTimes);
 
 	$oContentTransport->addVariable('AuthCode', $userFastTimes->AuthCode);
 

@@ -354,13 +354,11 @@ class shipProperties extends baseItem {
 	}
 
 	/**
-	 * Metoda generująca tury i fame
-	 *
 	 * @param stdClass $shipProperties
-	 * @param stdClass $userTimes
+	 * @param \Gameplay\Model\UserTimes $userTimes
 	 * @return boolean
 	 */
-	public function generateTurns($shipProperties, $userTimes) {
+	public function generateTurns($shipProperties, \Gameplay\Model\UserTimes $userTimes) {
 
 		global $config, $actualTime, $userStats;
 
@@ -415,16 +413,7 @@ class shipProperties extends baseItem {
 		return true;
 	}
 
-	/**
-	 * Metoda automatycznego naprawiania statku
-	 *
-	 * @param stdClass $shipProperties
-	 * @param stdClass $userTimes
-	 * @param boolean $display - czy wyświetlać informację o naprawie
-	 * @return boolean
-	 */
-    //FIXME remove unused parameter
-	public function autoRepair($shipProperties, $userTimes, $display = true) {
+	public function autoRepair($shipProperties, $userFastTimes) {
 
 		global $config;
 
@@ -435,14 +424,14 @@ class shipProperties extends baseItem {
 		/*
 		 * Czy dokonać naprawy
 		 */
-		if ($actualTime - $userTimes->LastRepair >= $config ['timeThresholds'] ['shipRepair']) {
+		if ($actualTime - $userFastTimes->LastRepair >= $config ['timeThresholds'] ['shipRepair']) {
 
 			/*
 			 * Czy naprawiać Shield
 			 */
 			if ($shipProperties->Shield < $shipProperties->ShieldMax && $shipProperties->ShieldRegeneration > 0) {
 
-				$toRepair = ($actualTime - $userTimes->LastRepair) * $shipProperties->ShieldRegeneration;
+				$toRepair = ($actualTime - $userFastTimes->LastRepair) * $shipProperties->ShieldRegeneration;
 
 				$shipProperties->Shield += $toRepair;
 				if ($shipProperties->Shield > $shipProperties->ShieldMax)
@@ -456,7 +445,7 @@ class shipProperties extends baseItem {
 			 */
 			if ($shipProperties->Armor < $shipProperties->ArmorMax && $shipProperties->ArmorRegeneration > 0) {
 
-				$toRepair = ($actualTime - $userTimes->LastRepair) * $shipProperties->ArmorRegeneration;
+				$toRepair = ($actualTime - $userFastTimes->LastRepair) * $shipProperties->ArmorRegeneration;
 
 				$shipProperties->Armor += $toRepair;
 				if ($shipProperties->Armor > $shipProperties->ArmorMax)
@@ -470,7 +459,7 @@ class shipProperties extends baseItem {
 			 */
 			if ($shipProperties->Power < $shipProperties->PowerMax && $shipProperties->PowerRegeneration > 0) {
 
-				$toRepair = ($actualTime - $userTimes->LastRepair) * $shipProperties->PowerRegeneration;
+				$toRepair = ($actualTime - $userFastTimes->LastRepair) * $shipProperties->PowerRegeneration;
 
 				$shipProperties->Power += $toRepair;
 				if ($shipProperties->Power > $shipProperties->PowerMax)
@@ -483,7 +472,7 @@ class shipProperties extends baseItem {
 			 * Czy naprawiać EMP
 			 */
 			if ($shipProperties->Emp > 0) {
-				$toRepair = ($actualTime - $userTimes->LastRepair) * $config ['emp'] ['repairRatio'];
+				$toRepair = ($actualTime - $userFastTimes->LastRepair) * $config ['emp'] ['repairRatio'];
 				$shipProperties->Emp -= $toRepair;
 				if ($shipProperties->Emp < 0) {
 					$shipProperties->Emp = 0;
@@ -494,7 +483,7 @@ class shipProperties extends baseItem {
 			if ($repaired) {
 				self::computeDefensiveRating ( $shipProperties );
 			}
-			$userTimes->LastRepair = time ();
+			$userFastTimes->LastRepair = time();
 
 		}
 

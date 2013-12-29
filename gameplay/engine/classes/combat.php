@@ -768,7 +768,7 @@ class combat {
 		}
 
 		//FIXME move authcode outside combat class
-		userTimes::genAuthCode ( $this->player->userTimes, $this->player->userFastTimes );
+		\Gameplay\Model\UserTimes::genAuthCode ( $this->player->userTimes, $this->player->userFastTimes );
 		$this->authCode = $this->player->userFastTimes->AuthCode;
 	}
 

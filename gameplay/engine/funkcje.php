@@ -26,7 +26,7 @@ function shipExamine($id, $userID) {
 	$othershipAlliance = $item->load ( $id, true, true );
 	unset($item);
 
-	$otheruserTimes = new userTimes ($id );
+	$otheruserTimes = new \Gameplay\Model\UserTimes($id);
 
 	if($otheruserParameters->FacebookID) {
 		$avatar = user::sGetFbPictureUrl($otheruserParameters->FacebookID);
@@ -87,8 +87,9 @@ function shipExamine($id, $userID) {
 
 /**
  * @deprecated
- * @param unknown_type $current
- * @param unknown_type $max
+ * @param int $current
+ * @param int $max
+ * @return string
  */
 function getParameterColor($current, $max) {
 

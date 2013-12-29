@@ -43,7 +43,7 @@ class combatShip {
 	public $shipCargo = null;
 
 	/**
-	 * @var userTimes
+	 * @var \Gameplay\Model\UserTimes
 	 */
 	public $userTimes = null;
 
@@ -88,7 +88,7 @@ class combatShip {
 		$this->shipPropertiesObject = new shipProperties ( );
 		$this->shipProperties = $this->shipPropertiesObject->load ( $userID, true, true );
 
-		$this->userTimes = new userTimes ( $userID );
+		$this->userTimes = new \Gameplay\Model\UserTimes( $userID );
 
 		$this->userFastTimes = new userFastTimes ( $userID );
 
@@ -119,7 +119,7 @@ class combatShip {
 		/*
 		 * Dokonaj naprawy
 		 */
-		$this->shipPropertiesObject->autoRepair ( $this->shipProperties, $this->userFastTimes, false );
+		$this->shipPropertiesObject->autoRepair($this->shipProperties, $this->userFastTimes);
 
 	}
 
@@ -250,11 +250,10 @@ class combatShip {
 		}
 
 		try {
-
-			$this->userFastTimes->synchronize ( );
-			$this->userTimes->synchronize ( );
-			$this->shipPropertiesObject->synchronize ( $this->shipProperties, true, true );
-			$this->userStatsObject->synchronize ( $this->userStats, true, true );
+			$this->userFastTimes->synchronize();
+			$this->userTimes->synchronize();
+			$this->shipPropertiesObject->synchronize( $this->shipProperties, true, true );
+			$this->userStatsObject->synchronize( $this->userStats, true, true );
 
 		} catch ( Exception $e ) {
 			\phpCache\Factory::getInstance()->create()->clearAll();
