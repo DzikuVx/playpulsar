@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Klasa zawartości ładowni statku
- * @version $Rev: 453 $
- * @package Engine
- *
- */
 class shipCargo {
 	protected $userID = null;
 	protected $language = 'pl';
@@ -16,7 +10,9 @@ class shipCargo {
 
 	static public function management($userID) {
 
-		global $shipPosition, $itemJettisonCost, $shipCargo, $shipProperties, $portProperties, $userProperties;
+		global $itemJettisonCost, $shipCargo, $shipProperties, $portProperties, $userProperties;
+
+        $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
 
 		$sRetVal = "<h1>{T:cargo}</h1>";
 

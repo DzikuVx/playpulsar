@@ -1,5 +1,7 @@
 <?php
 
+use Gameplay\PlayerModelProvider;
+
 class ftlDrive {
 
 	/**
@@ -25,7 +27,9 @@ class ftlDrive {
 	}
 
 	static public function sEngage() {
-		global $userID, $shipProperties, $shipPosition, $shipRouting, $userStats, $config, $sectorProperties,$portProperties, $systemProperties, $jumpNode, $sectorPropertiesObject, $portPropertiesObject, $jumpNodeObject;
+		global $userID, $shipProperties, $shipRouting, $userStats, $config, $sectorProperties,$portProperties, $systemProperties, $jumpNode, $sectorPropertiesObject, $portPropertiesObject, $jumpNodeObject;
+
+        $shipPosition = PlayerModelProvider::getInstance()->get('ShipPosition');
 
 		if (shipProperties::sCheckMalfunction ( $shipProperties )) {
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'error', '{T:shipMalfunctionEmp}');

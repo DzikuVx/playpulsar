@@ -9,7 +9,9 @@ class newsAgencyRegistry extends simpleRegistry {
 
 	static public function sRender() {
 
-		global $userID, $shipPosition;
+		global $userID;
+
+        $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
 
 		$registry = new newsAgencyRegistry ( $userID );
 

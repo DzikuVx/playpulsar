@@ -2,7 +2,9 @@
 
 namespace Gameplay\Panel;
 use Gameplay\Model\ShipPosition;
+use Gameplay\PlayerModelProvider;
 use Interfaces\Singleton;
+use TranslateController;
 
 //FIXME separate view from model!!
 
@@ -84,8 +86,9 @@ class ActiveScanner extends SystemMap implements Singleton {
 	}
 
 	static public function sEngage() {
-		global $userProperties, $userID, $shipProperties, $shipPosition, $shipRouting;
+		global $userProperties, $userID, $shipProperties, $shipRouting;
 
+        $shipPosition = PlayerModelProvider::getInstance()->get('ShipPosition');
 		$activeScanner 	= new ActiveScanner($userProperties->Language, $userID);
 
 		if (\shipProperties::sCheckMalfunction ( $shipProperties )) {

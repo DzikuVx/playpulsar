@@ -318,12 +318,15 @@ class shipWeapons {
 
 		if (! $error) {
 			$this->changed = true;
-			if ($tEnabled == '0')
-			$tNewState = '1';
-			if ($tEnabled == '1')
-			$tNewState = '0';
+
+            if ($tEnabled == '0') {
+			    $tNewState = '1';
+            } else {
+			    $tNewState = '0';
+            }
+
 			$tQuery = "UPDATE shipweapons SET Enabled='$tNewState' WHERE ShipWeaponID='$ID'";
-			$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
+			\Database\Controller::getInstance()->execute ( $tQuery );
 			return true;
 		} else {
 			return false;
@@ -336,8 +339,6 @@ class shipWeapons {
 	 */
 	public function getOperationalCount() {
 
-		$retVal = 0;
-
 		$tQuery = "SELECT
 			COUNT(*) AS ILE
 		FROM
@@ -348,10 +349,11 @@ class shipWeapons {
 			Damaged='0' AND
 			(Ammo IS NULL OR Ammo > 0)
 		";
-		$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
-		$retVal = \Database\Controller::getInstance()->fetch($tQuery)->ILE;
 
-		return $retVal;
+        $oDb = \Database\Controller::getInstance();
+
+		$tQuery = $oDb->execute ( $tQuery );
+		return $oDb->fetch($tQuery)->ILE;
 	}
 
 	/**
@@ -520,13 +522,13 @@ class shipWeapons {
 	}
 
     /**
-     * @param $shipWeaponID
+     * @param int $shipWeaponID
      * @return bool
      * @throws securityException
      */
     static public function sMoveUp($shipWeaponID) {
 
-		global $t, $error, $shipWeapons;
+		global $error, $shipWeapons;
 
 		$tData = $shipWeapons->getSingle ( $shipWeaponID );
 
@@ -555,20 +557,19 @@ class shipWeapons {
 	}
 
     /**
-     * @param $shipWeaponID
+     * @param int $shipWeaponID
      * @return bool
      * @throws securityException
      */
     static public function sMoveDown($shipWeaponID) {
 
-		global $t, $error, $shipWeapons;
+		global $error, $shipWeapons;
 
-		$tData = $shipWeapons->getSingle ( $shipWeaponID );
+		$tData = $shipWeapons->getSingle($shipWeaponID);
 
 		/*
 		 * Warunki bezpieczeństwa
 		 */
-
 		if (empty ( $tData )) {
 			throw new securityException ( );
 		}
@@ -589,14 +590,15 @@ class shipWeapons {
 		return true;
 	}
 
-	/**
-	 * Sprzedaż uzbrojenia statku
-	 *
-	 * @param int $weaponID
-	 */
-	static public function sSell($weaponID) {
+    /**
+     * @param int $weaponID
+     * @throws securityException
+     */
+    static public function sSell($weaponID) {
 
-		global $userID, $userStats, $shipProperties, $shipPosition, $portProperties, $shipWeapons, $error;
+		global $userID, $userStats, $shipProperties, $portProperties, $shipWeapons, $error;
+
+        $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
 
 		static::sUpdateCount ( $shipProperties, $userID );
 
@@ -642,8 +644,9 @@ class shipWeapons {
 
 	static public function sSellFromCargo($weaponID) {
 
-		global $shipCargo, $userID, $userStats, $shipProperties, $shipPosition, $portProperties, $shipWeapons;
+		global $shipCargo, $userID, $userStats, $shipProperties, $portProperties;
 
+        $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
 
 		if ($shipPosition->Docked == 'no') {
 			throw new securityException ( );
@@ -682,16 +685,17 @@ class shipWeapons {
 		\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:weaponSold}' . $tPrice . '$' );
 	}
 
-	/**
-	 * Przeładowanie
-	 *
-	 * @param int $shipWeaponID
-	 */
-	static public function sReload($shipWeaponID) {
+    /**
+     * @param int $shipWeaponID
+     * @throws securityException
+     */
+    static public function sReload($shipWeaponID) {
 
-		global $shipProperties, $error, $shipWeapons, $shipPosition, $portProperties, $userStats;
+		global $error, $shipWeapons, $portProperties, $userStats;
 
-		$tData = $shipWeapons->getSingle ( $shipWeaponID );
+        $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
+
+		$tData = $shipWeapons->getSingle($shipWeaponID);
 
 		/*
 		 * Warunki bezpieczeństwa
@@ -708,15 +712,15 @@ class shipWeapons {
 		$tReloadPrice = weapon::sGetReloadPrice ( $tData->WeaponID, $tData->Ammo );
 
 		if ($userStats->Cash < $tReloadPrice) {
-			throw new securityException ( );
+			throw new securityException();
 		}
 
 		if (empty ( $tData->MaxAmmo )) {
-			throw new securityException ( );
+			throw new securityException();
 		}
 
 		if ($tData->Ammo == $tData->MaxAmmo) {
-			throw new securityException ( );
+			throw new securityException();
 		}
 
 		/**
@@ -736,14 +740,15 @@ class shipWeapons {
 
 	}
 
-	/**
-	 * naprawa pojedynczej broni
-	 *
-	 * @param int $shipWeaponID
-	 */
-	static public function sRepair($shipWeaponID) {
+    /**
+     * @param int $shipWeaponID
+     * @throws securityException
+     */
+    static public function sRepair($shipWeaponID) {
 
-		global $shipProperties, $error, $shipWeapons, $shipPosition, $portProperties, $userStats;
+		global $error, $shipWeapons, $portProperties, $userStats;
+
+        $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
 
 		$tData = $shipWeapons->getSingle ( $shipWeaponID );
 
@@ -773,14 +778,15 @@ class shipWeapons {
 
 	}
 
-	/**
-	 * kupno uzbrojenia statku
-	 *
-	 * @param int $weaponID
-	 */
-	static public function sBuy($weaponID) {
+    /**
+     * @param int $weaponID
+     * @throws securityException
+     */
+    static public function sBuy($weaponID) {
 
-		global $userID, $action, $userStats, $shipProperties, $shipPosition, $portProperties, $shipWeapons, $error;
+		global $userID, $action, $userStats, $shipProperties, $portProperties, $shipWeapons;
+
+        $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
 
 		static::sUpdateCount ( $shipProperties, $userID );
 

@@ -47,7 +47,12 @@ try {
 		exit();
 	}
 
-	$shipPosition = new \Gameplay\Model\ShipPosition($userID);
+    /*
+     * Register models for current player
+     */
+    $oPlayerModelProvider = \Gameplay\PlayerModelProvider::getInstance();
+
+    $shipPosition = $oPlayerModelProvider->register('ShipPosition', new \Gameplay\Model\ShipPosition($userID));
 
 	/*
 	 * Inicjacja walki
@@ -1062,7 +1067,7 @@ try {
 
 	$timek2 = microtime ();
 	$arr_time = explode ( " ", $timek1 );
-	$timek1 = $arr_time [1] + $arr_time [0];
+	$timek1 = $arr_time [1] + $stdClassarr_time [0];
 	$arr_time = explode ( " ", $timek2 );
 	$timek2 = $arr_time [1] + $arr_time [0];
 	$czas_gen = round ( $timek2 - $timek1, 4 );

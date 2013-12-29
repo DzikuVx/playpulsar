@@ -33,7 +33,9 @@ class shipProperties extends baseItem {
      * @param string $return
      */
     static public function sRenderRepairButtons($template, $return = 'hangar') {
-		global $shipProperties, $shipPosition, $config, $userStats;
+		global $shipProperties, $config, $userStats;
+
+        $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
 
 		if ($shipPosition->Docked == 'yes') {
 			if ($shipProperties->Shield < $shipProperties->ShieldMax && $userStats->Cash > ($config ['repairCost'] ['shield'] * ($shipProperties->ShieldMax < $shipProperties->Shield))) {
@@ -71,7 +73,9 @@ class shipProperties extends baseItem {
      */
     static public function sStationRepair() {
 
-		global $action, $value, $config, $portProperties, $shipPosition, $shipProperties, $subaction, $userStats;
+		global $action, $value, $config, $portProperties, $shipProperties, $subaction, $userStats;
+
+        $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
 
 		/*
 		 * Warunki
@@ -578,7 +582,8 @@ class shipProperties extends baseItem {
 	 *
 	 * @param int $userID
 	 */
-	static public function sUpdateRating($userID) {
+	static public function sUpdateRating(/** @noinspection PhpUnusedParameterInspection */
+        $userID) {
 		global $shipWeapons, $shipProperties;
 		$shipWeapons->computeOffensiveRating ( $shipProperties );
 		self::computeDefensiveRating ( $shipProperties );
@@ -633,7 +638,9 @@ class shipProperties extends baseItem {
      */
     static public function sBuy($shipID) {
 
-		global $shipPropertiesObject, $shipCargo, $shipWeapons, $userProperties, $action, $userStats, $shipProperties, $shipPosition, $portProperties, $shipEquipment;
+		global $shipPropertiesObject, $shipCargo, $shipWeapons, $userProperties, $action, $userStats, $shipProperties, $portProperties, $shipEquipment;
+
+        $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
 
 		if ($shipPosition->Docked == 'no') {
 			throw new securityException ( );

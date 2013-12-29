@@ -13,11 +13,13 @@ class shipWeaponsRegistry extends simpleRegistry {
 	 */
 	static public function sRender() {
 
-		global $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id;
+		global $userID, $portProperties, $action, $subaction, $value, $id;
+
+        $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
 
 		$registry = new shipWeaponsRegistry ( $userID );
 
-		\Gameplay\Panel\Action::getInstance()->add($registry->get ( $shipPosition, $portProperties, $action, $subaction, $value, $id ));
+		\Gameplay\Panel\Action::getInstance()->add($registry->get($shipPosition, $portProperties));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		\Gameplay\Panel\PortAction::getInstance()->clear();
@@ -29,13 +31,9 @@ class shipWeaponsRegistry extends simpleRegistry {
 	 *
 	 * @param \Gameplay\Model\ShipPosition $shipPosition
 	 * @param stdClass $portProperties
-	 * @param string $action
-	 * @param string $subaction
-	 * @param string $value
-	 * @param string $id
 	 * @return string
 	 */
-	public function get(\Gameplay\Model\ShipPosition $shipPosition, $portProperties, $action, $subaction, $value, $id) {
+	public function get(\Gameplay\Model\ShipPosition $shipPosition, $portProperties) {
 
 		global $shipWeapons, $colorTable, $userStats;
 

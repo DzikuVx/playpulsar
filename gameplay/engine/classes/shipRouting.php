@@ -26,10 +26,11 @@ class shipRouting extends baseItem {
 	/**
 	 * Funkcja sprawdzająca, czy statek przybył na miejsce
 	 *
-	 * @param stdClass $position
+	 * @param \Gameplay\Model\ShipPosition $position
 	 * @param stdClass $routing
+     * @return bool
 	 */
-	static public function checkArrive($position, $routing) {
+	static public function checkArrive(\Gameplay\Model\ShipPosition $position, $routing) {
 		if ($position->System == $routing->System && $position->X == $routing->X && $position->Y == $routing->Y) {
 			self::reset ( $routing );
 			return true;

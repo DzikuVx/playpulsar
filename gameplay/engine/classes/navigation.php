@@ -7,12 +7,10 @@
  */
 class navigation {
 
-	/**
-	 * Dodanie obecnego sektora do ulubionych
-	 *
-	 */
 	static public function sAddCurrentToFavourities() {
-		global $shipPosition, $userProperties;
+		global $userProperties;
+
+        $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
 
 		/*
 		 * Próba update
@@ -51,7 +49,9 @@ class navigation {
 	 */
 	static public function sPlotReset() {
 
-		global $shipRouting, $shipPosition, $shipProperties;
+		global $shipRouting, $shipProperties;
+
+        $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
 
 		$shipRouting->System = null;
 		$shipRouting->X = null;
@@ -67,11 +67,13 @@ class navigation {
 	 */
 	static public function sNextWaypoint() {
 
-		global $shipPosition, $shipRouting, $action, $subaction;
+		global $shipRouting, $action, $subaction;
+
+        $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
+
 		/**
 		 * Pobierz współrzędne docelowe
 		 */
-
 		$tCoords = new \stdClass();
 
 		if ($shipPosition->System == $shipRouting->System) {

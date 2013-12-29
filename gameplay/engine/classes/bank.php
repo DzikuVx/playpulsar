@@ -1,4 +1,6 @@
 <?php
+use Gameplay\PlayerModelProvider;
+
 class bank {
 
 	//@todo transfer gotówki do innych graczy
@@ -10,7 +12,9 @@ class bank {
 	 */
 	static public function sWithdraw($value) {
 
-		global $userStats, $portProperties, $shipPosition, $action, $shipProperties;
+		global $userStats, $portProperties, $action;
+
+        $shipPosition = PlayerModelProvider::getInstance()->get('ShipPosition');
 
 		$value = \Database\Controller::getInstance()->quote($value);
 
@@ -49,8 +53,9 @@ class bank {
 	 */
 	static public function sDeposit($value) {
 
-		global $userStats, $portProperties, $shipPosition, $action, $shipProperties;
+		global $userStats, $portProperties, $action;
 
+        $shipPosition = PlayerModelProvider::getInstance()->get('ShipPosition');
 		$value = \Database\Controller::getInstance()->quote($value);
 
 		if (!is_numeric($value)) {
