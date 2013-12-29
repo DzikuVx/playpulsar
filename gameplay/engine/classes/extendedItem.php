@@ -1,29 +1,56 @@
 <?php
 
 abstract class extendedItem {
-	protected $ID = null;
 
-	protected $cache = null;
+    /**
+     * @var mixed
+     */
+    protected $ID = null;
+
+    /**
+     * @var phpCache\Apc
+     */
+    protected $cache = null;
 
 	/**
 	 * @var stdClass
 	 */
 	protected $originalData = null;
 
-	protected $tableName = "";
-	protected $tableID = "";
+    /**
+     * @var string
+     */
+    protected $tableName = "";
+
+    /**
+     * @var mixed
+     */
+    protected $tableID = "";
 
     /**
      * @var array
      */
     protected $tableUseFields = array();
 
-	protected $cacheExpire = 3600;
+    /**
+     * @var int
+     */
+    protected $cacheExpire = 3600;
 
-	protected $useCache = true;
+    /**
+     * @var bool
+     */
+    protected $useCache = true;
 
-	protected $dbID = null;
-	protected $cacheID = null;
+    /**
+     * @var mixed
+     */
+    protected $dbID = null;
+
+    /**
+     * @var string
+     */
+    protected $cacheID = null;
 
     static public function sFlushCache($id) {
         $oObject = new static($id);
@@ -336,9 +363,8 @@ abstract class extendedItem {
 	 * @param bool $useCache
 	 * @return mixed
 	 */
-	static public function quickLoad($ID, /** @noinspection PhpUnusedParameterInspection */
-                                     $useCache = true) {
-		$item = new static ($ID );
+	static public function quickLoad($ID, $useCache = true) {
+		$item = new static ($ID, $useCache);
 		return $item;
 	}
 
@@ -350,7 +376,7 @@ abstract class extendedItem {
 
         $item = new static();
         /** @noinspection PhpUndefinedMethodInspection */
-        $retVal = $item->insert ( $data );
+        $retVal = $item->insert($data);
 
 		return $retVal;
 	}
