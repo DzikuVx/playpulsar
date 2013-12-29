@@ -286,7 +286,7 @@ abstract class baseItem {
 	}
 
 	/**
-	 * @param $object
+	 * @param mixed $object
 	 * @param boolean $useCache
 	 * @param boolean $useSession
 	 * @return stdClass

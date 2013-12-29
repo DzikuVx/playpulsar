@@ -23,14 +23,12 @@ class systemProperties extends extendedItem {
 	public $Galaxy;
 	public $MapAvaible;
 
-
-	/**
-	 * Pobranie losowego portu w systemie, innego niż podana pozycja
-	 *
-	 * @param stdClass $shipPosition
-	 * @return srdClass
-	 */
-	static function randomPort($shipPosition) {
+    /**
+     * Get random port in system, different that current position
+     * @param \Gameplay\Model\ShipPosition $shipPosition
+     * @return stdClass
+     */
+    static function randomPort(\Gameplay\Model\ShipPosition $shipPosition) {
 
 		$retVal = new stdClass();
 

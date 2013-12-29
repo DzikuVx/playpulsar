@@ -330,14 +330,15 @@ abstract class Standard {
     public function reload($newID) {
 
         if (!empty($this->entryId)) {
-            $this->synchronize (  );
+            $this->synchronize();
         }
 
-        $this->entryId = $newID;
-        $this->cacheID = $this->parseCacheID($newID);
-        $this->dbID    = $this->parseDbID($newID);
+        $this->entryId  = $newID;
+        $this->cacheID  = $this->parseCacheID($newID);
+        $this->dbID     = $this->parseDbID($newID);
+        $this->cacheKey = new \phpCache\CacheKey($this->tableName, $this->cacheID);
 
-        $this->load( );
+        $this->load();
     }
 
     /**

@@ -285,7 +285,7 @@ class Player extends BaseItem {
 		$userPropertiesObject = new \userProperties();
 		$userProperties = $userPropertiesObject->load($params['id'],true, true);
 
-		$shipPosition = new \shipPosition($params['id']);
+		$shipPosition = new \Gameplay\Model\ShipPosition($params['id']);
 
 		$shipPropertiesObject = new \shipProperties();
 		$shipProperties = $shipPropertiesObject->load($params['id'],true, true);

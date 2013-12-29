@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Klasa routingu wewnątrz systemu
- *
- * @version $Rev: 453 $
- * @package Engine
- */
 class systemRouting {
 	protected $routeTable = null;
 	protected $destination = null;
@@ -292,7 +286,7 @@ class systemRouting {
 	/**
 	 * Konstruktor
 	 *
-	 * @param dataBase $db
+	 * @param \Database\MySQLiWrapper $db
 	 * @param stdClass $destination
 	 */
 	function __construct($db, $destination = null) {

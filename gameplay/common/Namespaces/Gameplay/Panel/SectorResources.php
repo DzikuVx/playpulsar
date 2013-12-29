@@ -2,6 +2,7 @@
 
 namespace Gameplay\Panel;
 
+use Gameplay\Model\ShipPosition;
 use Interfaces\Singleton;
 
 use TranslateController as Translate;
@@ -31,7 +32,13 @@ class SectorResources extends Renderable implements Singleton {
 		self::$instance = new self($language, $localUserID);
 	}
 
-	function render($shipPosition, $shipProperties, $sectorProperties) {
+    /**
+     * @param ShipPosition $shipPosition
+     * @param \stdClass $shipProperties
+     * @param \stdClass $sectorProperties
+     * @return bool
+     */
+    function render(ShipPosition $shipPosition, $shipProperties, $sectorProperties) {
 
 		global $itemPickCost;
 

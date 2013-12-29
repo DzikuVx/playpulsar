@@ -1,11 +1,5 @@
 <?php
-/**
- * Klasa parametrów sektora
- * Używana tabela: sectors, sectortypes
- * Parametr wejściowy: shipPositions
- * @version $Rev: 455 $
- * @package Engine
- */
+
 class sectorProperties extends baseItem {
 	protected $tableName = "sectors";
 	protected $tableID = "SectorID";
@@ -13,7 +7,12 @@ class sectorProperties extends baseItem {
 	protected $defaultCacheExpire = 21600;
 	protected $useMemcached = true;
 
-	static public function sResetResources($shipPosition, $sectorProperties, $enableItemReset = true) {
+    /**
+     * @param \Gameplay\Model\ShipPosition $shipPosition
+     * @param stdClass $sectorProperties
+     * @param bool $enableItemReset
+     */
+    static public function sResetResources(\Gameplay\Model\ShipPosition $shipPosition, $sectorProperties, $enableItemReset = true) {
 
 		global $actualTime, $config, $itemCastProbablity, $itemCastMaxProbablity;
 

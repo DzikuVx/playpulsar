@@ -20,11 +20,11 @@ class sectorCargo {
 	}
 
 	/**
-	 * @param stdClass $position
+	 * @param \Gameplay\Model\ShipPosition $position
 	 * @param \phpCache\Apc $cache
 	 */
     //FIXME $cache is depreciated, resolve
-	public function __construct($position, $cache = null) {
+	public function __construct(\Gameplay\Model\ShipPosition $position, $cache = null) {
 
 		$this->position = $position;
 

@@ -37,11 +37,13 @@ class remoteSectorInfo extends \Gameplay\Panel\Sector {
 		self::$instance = new self($language, $localUserID);
 	}
 
-	/**
-	 * (non-PHPdoc)
-	 * @see Gameplay\Panel.Sector::render()
-	 */
-	public function render($sectorProperties, $systemProperties, $shipPosition = null) {
+    /**
+     * @param stdClass $sectorProperties
+     * @param stdClass $systemProperties
+     * @param \Gameplay\Model\ShipPosition $shipPosition
+     * @return $this|bool
+     */
+    public function render($sectorProperties, $systemProperties, \Gameplay\Model\ShipPosition $shipPosition = null) {
 
 		global $userProperties;
 

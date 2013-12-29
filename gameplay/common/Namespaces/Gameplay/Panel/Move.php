@@ -2,6 +2,7 @@
 
 namespace Gameplay\Panel;
 
+use Gameplay\Model\ShipPosition;
 use Interfaces\Singleton;
 
 use \TranslateController as Translate;
@@ -30,16 +31,15 @@ class Move extends Renderable implements Singleton {
 		self::$instance = new self($language, $localUserID);
 	}
 
-	/**
-	 * Komórka ruchu statku
-	 *
-	 * @param stdClass $systemProperties
-	 * @param stdClass $shipPosition
-	 * @return boolean;
-	 */
-	public function render($systemProperties, $shipPosition, $portProperties, $shipRouting, $shipProperties) {
-
-		global $icons;
+    /**
+     * @param \stdClass $systemProperties
+     * @param ShipPosition $shipPosition
+     * @param \stdClass $portProperties
+     * @param \stdClass $shipRouting
+     * @param \stdClass $shipProperties
+     * @return bool
+     */
+    public function render($systemProperties, ShipPosition $shipPosition, $portProperties, $shipRouting, $shipProperties) {
 
 		$this->rendered = true;
 		$this->retVal .= "<center>";

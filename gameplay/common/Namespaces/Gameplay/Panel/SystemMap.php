@@ -2,6 +2,7 @@
 
 namespace Gameplay\Panel;
 
+use Gameplay\Model\ShipPosition;
 use Interfaces\Singleton;
 
 //FIXME spearate view (Panel) from rendering
@@ -13,33 +14,33 @@ class SystemMap extends MiniMap implements Singleton{
 	protected $useBorder = true;
 	protected $onClick = "Playpulsar.gameplay.sectorInfo";
 
-	public function __construct($userID, $system, $shipPosition = null, $getShips = false, $getStacks = false) {
+    /**
+     * @param string $userID
+     * @param int $system
+     * @param ShipPosition $shipPosition
+     * @param bool $getShips
+     * @param bool $getStacks
+     */
+    public function __construct($userID, $system, ShipPosition $shipPosition = null, $getShips = false, $getStacks = false) {
 		$this->load ( $userID, $system, $shipPosition, $getShips, $getStacks );
 	}
 
-	/**
-	 * (non-PHPdoc)
-	 * @see miniMap::getShips()
-	 */
 	protected function getShips() {
 
 	}
 
-	/**
-	 * (non-PHPdoc)
-	 * @see miniMap::getCacheProperty()
-	 */
 	protected function getCacheProperty() {
 		return $this->system->SystemID;
 	}
 
-	/**
-	 * Selektor systemów do których user ma mapy
-	 * @param array $attr
-	 * @param boolean $displayEmpty
-	 * @param boolean $displayName
-	 */
-	static public function sRenderAvaibleSystemsSelect($currentSystem, $attr = null, $displayEmpty = true, $displayName = false) {
+    /**
+     * @param $currentSystem
+     * @param null $attr
+     * @param bool $displayEmpty
+     * @param bool $displayName
+     * @return string
+     */
+    static public function sRenderAvaibleSystemsSelect($currentSystem, $attr = null, $displayEmpty = true, $displayName = false) {
 		global $userID, $shipRouting;
 
 		if (!isset($attr['class'])) {
@@ -100,7 +101,6 @@ class SystemMap extends MiniMap implements Singleton{
 
 	public function renderHeader() {
 
-		global $userID;
 		$retVal = "<h1>{T:system}: " . $this->system->Name . "</h1>";
 
 		$retVal .= '<div style="float: left; margin-right: 1em;">';

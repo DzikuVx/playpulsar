@@ -59,7 +59,7 @@ class combat {
 	/**
 	 * Enter description here...
 	 *
-	 * @var shipPosition
+	 * @var \Gameplay\Model\ShipPosition
 	 */
 	protected $shipPosition = null;
 
@@ -923,7 +923,7 @@ class combat {
 
 		$this->weaponsFireResults = array ();
 
-		$this->shipPosition = new shipPosition ( $this->userID );
+		$this->shipPosition = new \Gameplay\Model\ShipPosition($this->userID);
 
 		/*
 		 * Załaduj statki biorące udział w walce
@@ -1064,9 +1064,8 @@ class combat {
 		$defenderPropertiesObject = new shipProperties ( );
 		$defenderProperties = $defenderPropertiesObject->load ( $defenderID, true, true );
 
-		$attackerPosition = new shipPosition ($attackerID, true );
-
-		$defenderPosition = new shipPosition ($defenderID, true );
+		$attackerPosition = new \Gameplay\Model\ShipPosition($attackerID);
+		$defenderPosition = new \Gameplay\Model\ShipPosition($defenderID);
 
 		$attackerAllianceObject = new userAlliance ( );
 		$attackerAlliance = $attackerAllianceObject->load ( $attackerID, true, true );
@@ -1520,11 +1519,14 @@ class combat {
 		return floor ( $retVal );
 	}
 
-	/**
-	 * Kontroler przyzywania NPC
-	 * @param shipPosition $position
-	 */
-	static public function sProtectiveNpcController($position, $defenderID, $initProcedure = false) {
+    /**
+     * Protective NPC summon controller
+     * @param \Gameplay\Model\ShipPosition $position
+     * @param int $defenderID
+     * @param bool $initProcedure
+     * @return bool
+     */
+    static public function sProtectiveNpcController(\Gameplay\Model\ShipPosition $position, $defenderID, $initProcedure = false) {
 
 		$tAllianceObject = new userAlliance ( );
 		$defenderAlliance = $tAllianceObject->load ( $defenderID, true, true )->AllianceID;

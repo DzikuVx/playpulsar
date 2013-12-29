@@ -2,13 +2,17 @@
 
 namespace Gameplay\Panel;
 
+use Gameplay\Model\ShipPosition;
 use Interfaces\Singleton;
 //TODO MiniMap as a function should be independend from MiniMap as Panel. Move Rendering to separate class
 class MiniMap extends BaseTable implements Singleton {
 	protected $sector;
 	protected $system;
 
-	protected $shipPosition;
+    /**
+     * @var ShipPosition
+     */
+    protected $shipPosition;
 
 	protected $X;
 	protected $Y;
@@ -40,7 +44,14 @@ class MiniMap extends BaseTable implements Singleton {
 		self::$instance = new self($userID, $system, $shipPosition, $getShips, $getStacks);
 	}
 
-	protected function __construct($userID, $system, $shipPosition = null, $getShips = false, $getStacks = false) {
+    /**
+     * @param string $userID
+     * @param int $system
+     * @param ShipPosition $shipPosition
+     * @param bool $getShips
+     * @param bool $getStacks
+     */
+    protected function __construct($userID, $system, ShipPosition $shipPosition = null, $getShips = false, $getStacks = false) {
 		$this->load ( $userID, $system, $shipPosition, $getShips, $getStacks );
 	}
 
@@ -50,7 +61,15 @@ class MiniMap extends BaseTable implements Singleton {
 		return $retVal;
 	}
 
-	function load($userID, $system, $shipPosition = null, $getShips = false, $getStacks = false) {
+    /**
+     * @param int $userID
+     * @param int $system
+     * @param ShipPosition $shipPosition
+     * @param bool $getShips
+     * @param bool $getStacks
+     * @return bool
+     */
+    function load($userID, $system, ShipPosition $shipPosition = null, $getShips = false, $getStacks = false) {
 		$this->shipPosition = $shipPosition;
 		if (is_numeric ( $system )) {
 			$this->system = \systemProperties::quickLoad ( $system );

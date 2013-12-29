@@ -9,17 +9,17 @@ class ftlDrive {
 		return ceil($shipProperties->PowerMax / 2);
 	}
 
-	/**
-	 * Zużycie antymaterii przez napęd
-	 * @param stdClass $shipRouting
-	 * @param shipPosition $shipPosition
-	 */
-	static private function sGetAmUsage($shipRouting, $shipPosition) {
+    /**
+     * @param stdClass $shipRouting
+     * @param \Gameplay\Model\ShipPosition $shipPosition
+     * @return int
+     */
+    static private function sGetAmUsage($shipRouting, \Gameplay\Model\ShipPosition $shipPosition) {
 
-		$galaxyRoute = new galaxyRouting ( \Database\Controller::getInstance(), $shipRouting );
+		$galaxyRoute = new galaxyRouting (\Database\Controller::getInstance(), $shipRouting );
 		$tDistance = $galaxyRoute->getDistance($shipPosition);
 
-		$retVal = 20+($tDistance * 20);
+		$retVal = 20 + ($tDistance * 20);
 
 		return $retVal;
 	}

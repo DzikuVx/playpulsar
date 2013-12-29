@@ -27,7 +27,7 @@ class shipWeaponsRegistry extends simpleRegistry {
 	/**
 	 * Wyrenderowanie rejestru uzbrojenia
 	 *
-	 * @param stdClass $shipPosition
+	 * @param \Gameplay\Model\ShipPosition $shipPosition
 	 * @param stdClass $portProperties
 	 * @param string $action
 	 * @param string $subaction
@@ -35,13 +35,13 @@ class shipWeaponsRegistry extends simpleRegistry {
 	 * @param string $id
 	 * @return string
 	 */
-	public function get($shipPosition, $portProperties, $action, $subaction, $value, $id) {
+	public function get(\Gameplay\Model\ShipPosition $shipPosition, $portProperties, $action, $subaction, $value, $id) {
 
-		global $shipWeapons, $colorTable, $shipProperties, $userStats;
+		global $shipWeapons, $colorTable, $userStats;
 
 		$retVal = '';
 
-		$retVal .= "<h1>" . TranslateController::getDefault()->get ( 'weapons' ) . "</h1>";
+		$retVal .= "<h1>{T:weapons}</h1>";
 
 		$retVal .= "<table class=\"table table-striped table-condensed\">";
 

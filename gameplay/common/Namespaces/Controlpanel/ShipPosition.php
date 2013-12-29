@@ -2,24 +2,38 @@
 
 namespace Controlpanel;
 
-class ShipPosition extends \shipPosition{
-	
-	public function edit($user, $params) {
+class ShipPosition extends \Gameplay\Model\ShipPosition{
+
+    /**
+     * @param \user $user
+     * @param $params
+     * @return string
+     */
+    public function edit(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 		$retVal = '';
 
-		$this->ID = $params['id'];
+		$this->entryId  = $params['id'];
 		$this->useCache = false;
-		$this->cacheID = $this->parseCacheID($params['id']);
-		$this->dbID = $this->parseDbID($params['id']);
-		
-		$this->load($params['id'], true, true);
+		$this->cacheID  = $this->parseCacheID($params['id']);
+		$this->dbID     = $this->parseDbID($params['id']);
+		$this->cacheKey = new \phpCache\CacheKey($this->tableName, $this->cacheID);
+
+		$this->load();
 
 		$retVal .= BaseItem::sRenderEditForm($this, $this, $params['id']);
 
 		return $retVal;
 	}
 
-	public function editExe($user, $params) {
+    /**
+     * @param \user $user
+     * @param array $params
+     * @return string
+     * @throws \customException
+     */
+    public function editExe(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 		$retVal = '';
 
 		if (empty($_SESSION['returnUser'])) {
@@ -28,9 +42,10 @@ class ShipPosition extends \shipPosition{
 
 		$tQuery = BaseItem::sMakeUpdateQuery($this->tableName, $this->tableID, $this->tableUseFields, $params);
 
-		\Database\Controller::getInstance()->execute($tQuery);
+		$this->db->execute($tQuery);
 
-        \shipPosition::sFlushCache($params['id']);
+        ShipPosition::sFlushCache($params['id']);
+
 		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
 
 		return $retVal;

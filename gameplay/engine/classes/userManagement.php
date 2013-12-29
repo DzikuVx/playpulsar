@@ -21,6 +21,7 @@ class userManagement {
 		$params = $_POST;
 		\Database\Controller::getInstance()->quoteAll($params);
 
+        $tUsers = new stdClass();
 		$tUsers->Password = user::sPasswordHash($params ['Login'], $params ['Password'] );
 		$tUsers->Login = $params ['Login'];
 		$tUsers->Email = $params ['Email'];
@@ -42,7 +43,7 @@ class userManagement {
 		/*
 		 * Wstaw pozycję użytkownika
 		 */
-
+        $position = new stdClass();
 		$position->System = additional::randFormList ( $config ['userDefault'] ['system'] );
 		$position->X = 0;
 		$position->Y = 0;
@@ -53,14 +54,15 @@ class userManagement {
 		 */
 		$tPosition = systemProperties::randomPort ( $position );
 
+        $tItem = new stdClass();
 		$tItem->UserID = $userID;
 		$tItem->System = $position->System;
 		$tItem->X = $tPosition->X;
 		$tItem->Y = $tPosition->Y;
 		$tItem->Docked = 'yes';
 		unset ( $tPosition );
-		shipPosition::quickInsert ( $tItem );
-		unset ( $tItem );
+
+		\Gameplay\Model\ShipPosition::quickInsert ( $tItem );
 
 		/*
 		 * Pobierz domyślny statek
@@ -69,4 +71,3 @@ class userManagement {
 	}
 
 }
-?>

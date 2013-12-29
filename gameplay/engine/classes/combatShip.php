@@ -69,20 +69,18 @@ class combatShip {
 	public $userStats = null;
 
 	/**
-	 * shipPosition
-	 *
-	 * @var shipPosition
+	 * @var \Gameplay\Model\ShipPosition
 	 */
 	public $shipPosition = null;
 
 	public $shipSize = 1;
 
-	/**
-	 * Konstruktor publiczny
-	 *
-	 * @param int $userID
-	 */
-	public function __construct($userID, $Language, $shipPosition = null) {
+    /**
+     * @param int $userID
+     * @param string $Language
+     * @param \Gameplay\Model\ShipPosition $shipPosition
+     */
+    public function __construct($userID, $Language, \Gameplay\Model\ShipPosition $shipPosition = null) {
 		$this->userID = $userID;
 		$this->Language = $Language;
 		$this->weaponFireResult = array ();
@@ -104,13 +102,10 @@ class combatShip {
 		$this->shipEquipment = new shipEquipment ( $this->userID, $this->Language );
 		$this->shipCargo = new shipCargo ( $this->userID, $this->Language );
 
-		if (! empty ( $shipPosition )) {
+		if (!empty ($shipPosition)) {
 			$this->shipPosition = $shipPosition;
 		} else {
-			/*
-			 * Ładowanie shipPosition
-			 */
-			$this->shipPosition = new shipPosition ( $this->userID);
+			$this->shipPosition = new \Gameplay\Model\ShipPosition($this->userID);
 		}
 
 		/*

@@ -32,7 +32,16 @@ class shipEquipmentRegistry extends simpleRegistry {
 
 	}
 
-	public function get($shipPosition, $portProperties, $action, $subaction, $value, $id) {
+    /**
+     * @param \Gameplay\Model\ShipPosition $shipPosition
+     * @param stdClass $portProperties
+     * @param string $action
+     * @param string $subaction
+     * @param string $value
+     * @param string $id
+     * @return string
+     */
+    public function get(\Gameplay\Model\ShipPosition $shipPosition, $portProperties, $action, $subaction, $value, $id) {
 
 		global $shipEquipment, $colorTable, $userStats;
 

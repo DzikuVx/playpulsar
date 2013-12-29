@@ -2,6 +2,7 @@
 
 namespace Gameplay\Panel;
 
+use Gameplay\Model\ShipPosition;
 use Interfaces\Singleton;
 use \TranslateController as Translate;
 
@@ -31,15 +32,13 @@ class Port extends Renderable implements Singleton {
 	}
 
 	/**
-	 * Wyrenderowanie panelu
-	 *
-	 * @param stdClass $shipPosition
-	 * @param stdClass $portProperties
-	 * @param stdClass $shipProperties
-	 * @param stdClass $jumpNode
-	 * @return boolean
+	 * @param ShipPosition $shipPosition
+	 * @param \stdClass $portProperties
+	 * @param \stdClass $shipProperties
+	 * @param \stdClass $jumpNode
+	 * @return bool
 	 */
-	public function render($shipPosition, $portProperties, $shipProperties, $jumpNode) {
+	public function render(ShipPosition $shipPosition, $portProperties, $shipProperties, $jumpNode) {
 		global $config;
 		$this->rendered = true;
 		$this->retVal = "";

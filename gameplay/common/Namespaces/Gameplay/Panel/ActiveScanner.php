@@ -1,6 +1,7 @@
 <?php
 
 namespace Gameplay\Panel;
+use Gameplay\Model\ShipPosition;
 use Interfaces\Singleton;
 
 //FIXME separate view from model!!
@@ -27,20 +28,18 @@ class ActiveScanner extends SystemMap implements Singleton {
 	}
 
 	/**
-	 * @param shipPosition $shipPosition
+	 * @param ShipPosition $shipPosition
 	 */
-	public function setShipPosition($shipPosition) {
+	public function setShipPosition(ShipPosition $shipPosition) {
 		$this->shipPosition = $shipPosition;
-
 		$this->system = \systemProperties::quickLoad ( $this->shipPosition->System );
-
 	}
 
-	/**
-	 * (non-PHPdoc)
-	 * @see miniMap::render()
-	 */
-	public function render() {
+    /**
+     * @return bool|MiniMap
+     * @throws \securityException
+     */
+    public function render() {
 
 		if (empty($this->shipPosition)) {
 			throw new \securityException();
@@ -65,25 +64,27 @@ class ActiveScanner extends SystemMap implements Singleton {
 	/**
 	 * Zużycie energii przez skaner
 	 */
-	static private function sGetPowerUsage($shipProperties) {
+	static private function sGetPowerUsage(/** @noinspection PhpUnusedParameterInspection */
+        $shipProperties) {
 		global $config;
 
 		return $config['activeScanner']['powerUsage'];
 	}
 
-	/**
-	 * Zużycie antymaterii przez skaner
-	 * @param stdClass $shipRouting
-	 * @param shipPosition $shipPosition
-	 */
-	static private function sGetAmUsage($shipRouting, $shipPosition) {
+    /**
+     * @param \stdClass $shipRouting
+     * @param ShipPosition $shipPosition
+     * @return mixed
+     */
+    static private function sGetAmUsage(/** @noinspection PhpUnusedParameterInspection */
+        $shipRouting, ShipPosition $shipPosition) {
 		global $config;
 
 		return $config['activeScanner']['amUsage'];
 	}
 
 	static public function sEngage() {
-		global $userProperties, $userID, $shipProperties, $shipPosition, $shipRouting, $userStats, $config, $sectorProperties,$portProperties, $systemProperties, $jumpNode, $sectorPropertiesObject, $portPropertiesObject, $jumpNodeObject;
+		global $userProperties, $userID, $shipProperties, $shipPosition, $shipRouting;
 
 		$activeScanner 	= new ActiveScanner($userProperties->Language, $userID);
 
@@ -136,13 +137,7 @@ class ActiveScanner extends SystemMap implements Singleton {
 		throw new \Gameplay\Exception\Overlay();
 	}
 
-	/**
-	 * (non-PHPdoc)
-	 * @see miniMap::getShips()
-	 */
-	protected function getShips() {
-
-		global $shipProperties;
+    protected function getShips() {
 
 		$tQuery = "SELECT
 		sp.UserID,

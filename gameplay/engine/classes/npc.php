@@ -172,9 +172,9 @@ class npc extends baseItem {
 			$npcCargo->removeAll ( $npcShipProperties );
 
 			/*
-			 * Wylosuj jego nowy system i pozycję
+			 * Get new random system and sector
 			 */
-			$npcPosition = new shipPosition ($npcID, false);
+			$npcPosition = new \Gameplay\Model\ShipPosition($npcID, false);
 
 			if ($npcType->Systems == "all") {
 				$npcPosition->System = galaxy::sGetRandomSystem ();
@@ -190,7 +190,7 @@ class npc extends baseItem {
 			$npcPosition->synchronize ();
 
 			/*
-			 * Ustaw doświadczenie, kasę
+			 * Set experience and cash
 			 */
 			$npcUserStatsObject = new userStats ( );
 			$npcUserStats = $npcUserStatsObject->load ( $npcID, true, true );
@@ -252,8 +252,7 @@ class npc extends baseItem {
 			}
 
 			if ($npcType->Moveable == "yes") {
-				$npcPosition->UserID = $npcID;
-				self::initMoveTable ( $npcUserProperties->NPCTypeID, $npcPosition );
+				self::initMoveTable ($npcID, $npcUserProperties->NPCTypeID, $npcPosition );
 			}
 
 			$npcShipProperties->RookieTurns = 0;
@@ -289,18 +288,17 @@ class npc extends baseItem {
 		return $retVal;
 	}
 
-	/**
-	 * Inicjacja tablicy npcmove
-	 *
-	 * @param int $ID - typNPC
-	 * @param stdClass $shipPosition - aktualna pozycja NPC
-	 */
-	static function initMoveTable($typeID, $position) {
+    /**
+     * @param int $npcId
+     * @param int $typeID
+     * @param \Gameplay\Model\ShipPosition $position
+     */
+    static function initMoveTable($npcId, $typeID, \Gameplay\Model\ShipPosition $position) {
 
-		$item = static::quickLoad ( $typeID );
+		$item = static::quickLoad($typeID);
 
-		$moveCount = rand ( $item->MoveCountMin, $item->MoveCountMax );
-		$moveTime = rand ( $item->MoveTimeMin, $item->MoveTimeMax ) + time ();
+		$moveCount = rand($item->MoveCountMin, $item->MoveCountMax);
+		$moveTime  = rand($item->MoveTimeMin, $item->MoveTimeMax) + time ();
 
 		if ($item->Dock == "yes") {
 			$tPos = systemProperties::randomPort ( $position );
@@ -308,7 +306,7 @@ class npc extends baseItem {
 			$tPos = systemProperties::randomPosition ( $position->System );
 		}
 
-		\Database\Controller::getInstance()->execute ( "DELETE FROM npcmove WHERE UserID = '{$position->UserID}'" );
+		\Database\Controller::getInstance()->execute ( "DELETE FROM npcmove WHERE UserID = '{$npcId}'" );
 
 		$t2Query = "INSERT INTO npcmove (
         UserID,    
@@ -325,7 +323,7 @@ class npc extends baseItem {
         DstY,
         Dock
 	    ) VALUES (
-	      '{$position->UserID}',
+	      '{$npcId}',
 	      'Src-Dst' ,
         '$moveTime',
         '$moveCount',
@@ -346,10 +344,10 @@ class npc extends baseItem {
     /**
      * @param int $userID
      * @param int $actualTime
-     * @param shipPosition $shipPosition
+     * @param \Gameplay\Model\ShipPosition $shipPosition
      * @return bool
      */
-    static public function sMove($userID, $actualTime, $shipPosition) {
+    static public function sMove($userID, $actualTime, \Gameplay\Model\ShipPosition $shipPosition) {
 
 		global $config;
 
@@ -514,7 +512,7 @@ class npc extends baseItem {
                 mysqli_stmt_bind_param($sPreparedPosition, 'iisi', $tR1->CurrentX, $tR1->CurrentY, $tR1->CurrentDocked, $tR1->NpcID);
 				mysqli_stmt_execute($sPreparedPosition);
 
-                shipPosition::sFlushCache($tR1->NpcID);
+                \Gameplay\Model\ShipPosition::sFlushCache($tR1->NpcID);
 			}
 
 			//Dokonaj resetu tych NPC którym skończył się czas i nie zostali zniszczeni
@@ -609,12 +607,13 @@ class npc extends baseItem {
 	}
 
 	/**
-	 * Wstawienie do bazy danych kontaktu pomiędzy graczem i NPC
+	 * Insert contact information between player and NPC
 	 * @param int $userID
 	 * @param int $npcID
-	 * @param stdClass $shipPosition
+	 * @param \Gameplay\Model\ShipPosition $shipPosition
+     * @return bool
 	 */
-	static public function sInsertContact($userID, $npcID, $shipPosition) {
+	static public function sInsertContact($userID, $npcID, \Gameplay\Model\ShipPosition $shipPosition) {
 
 		global $actualTime;
 

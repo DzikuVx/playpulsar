@@ -27,7 +27,7 @@ class portProperties extends baseItem {
 	/**
 	 * Panel portu
 	 * @param int $userID
-	 * @param stdClass $shipPosition
+	 * @param \Gameplay\Model\ShipPosition $shipPosition
 	 * @param stdClass $portProperties
 	 * @param string $action
 	 * @param string $subaction
@@ -35,9 +35,7 @@ class portProperties extends baseItem {
 	 * @param string $id
 	 * @return string
 	 */
-	static public function sPopulatePanel($userID, $shipPosition, $portProperties, $action, $subaction, $value, $id) {
-
-		global $userProperties, $shipProperties, $itemJettisonCost, $config, $userStats, $userAlliance;
+	static public function sPopulatePanel($userID, \Gameplay\Model\ShipPosition $shipPosition, $portProperties, $action, $subaction, $value, $id) {
 
 		if ($shipPosition->Docked == 'no') {
 			return false;

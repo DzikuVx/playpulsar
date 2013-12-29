@@ -47,16 +47,15 @@ try {
 		exit();
 	}
 
-	//Inicjalizacja pozycji statku
-	$shipPosition = new shipPosition($userID);
+	$shipPosition = new \Gameplay\Model\ShipPosition($userID);
 
 	/*
 	 * Inicjacja walki
-	*/
+	 */
 
 	/*
 	 * Wyczyść stare combatlock
-	*/
+	 */
 	combat::sCombatLockGarbageCollection ();
 
 	/**

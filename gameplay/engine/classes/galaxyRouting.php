@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Klasa routingu pomiędzy systemami
- * @version $Rev: 453 $
- * @package Engine
- *
- */
 class galaxyRouting extends systemRouting {
 	protected $tNodes;
 
@@ -31,15 +25,17 @@ class galaxyRouting extends systemRouting {
 		return $retVal;
 	}
 
-	/**
-	 * Pobranie dystansu (ilości systemów) na drodze do celu
-	 * @param stdClass $current
-	 * @return int
-	 */
-	public function getDistance($current) {
-		if ($this->routeTable == null)
-		return false;
-			
+    /**
+     * Get distance between current and remote location (number of systems)
+     * @param \Gameplay\Model\ShipPosition $current
+     * @return bool|int
+     */
+    public function getDistance(\Gameplay\Model\ShipPosition $current) {
+
+        if ($this->routeTable == null) {
+		    return false;
+        }
+
 		/*
 		 * Czy jest route do systemu docelowego
 		 */

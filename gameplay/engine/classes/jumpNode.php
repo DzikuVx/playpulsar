@@ -31,7 +31,7 @@ class jumpNode extends baseItem {
 	/**
 	 * Pobranie parametrów
 	 *
-	 * @param int/stdClass $ID - NodeID lub shipPosition
+	 * @param int|\Gameplay\Model\ShipPosition $ID
 	 * @return boolean
 	 */
 	function get($ID) {
@@ -87,12 +87,11 @@ class jumpNode extends baseItem {
 	}
 
 	/**
-	 * Zwraca współrzędne docelowe wrót skoku
-	 *
-	 * @param stdClass $position - pozycja statku
+	 * @param \Gameplay\Model\ShipPosition $position - pozycja statku
 	 * @param stdClass $jumpNode - jeśli null, użyty zostanie dataObject obiektu
+     * @return stdClass
 	 */
-	public function getDestination($position, $jumpNode = null) {
+	public function getDestination(\Gameplay\Model\ShipPosition $position, $jumpNode = null) {
 
 		$retVal = new stdClass();
 		

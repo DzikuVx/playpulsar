@@ -2,6 +2,8 @@
 
 namespace Controlpanel;
 
+use Gameplay\Model\ShipPosition;
+
 class NpcTypes extends GameplayItem{
 
 	protected $detailTitle = 'NPC Type Data';
@@ -150,6 +152,8 @@ class NpcTypes extends GameplayItem{
 	 */
 	static private function sCreate($typeID = null) {
 
+        //FIXME replace getInstance with single variable
+
 		set_time_limit(3600);
 
 		$out = "";
@@ -219,7 +223,8 @@ class NpcTypes extends GameplayItem{
 				/*
 				 * Wylosuj system dla gracza
 				*/
-				$position = new \stdClass();
+				$position = new ShipPosition();
+
 				if ($row1->Systems == "all") {
 					$position->System = \galaxy::sGetRandomSystem ();
 				} else {
@@ -227,7 +232,8 @@ class NpcTypes extends GameplayItem{
 				}
 
 				$tPosition = \systemProperties::randomPosition ( $position->System );
-				$position->X = $tPosition->X;
+
+                $position->X = $tPosition->X;
 				$position->Y = $tPosition->Y;
 				$position->Docked = 'no';
 				unset ( $tPosition );
@@ -306,15 +312,15 @@ class NpcTypes extends GameplayItem{
 				*/
 				if ($row1->AllianceID != "null") {
 					$tQuery2 = "INSERT INTO
-        alliancemembers(
-          UserID,
-          AllianceID
-          )
-        VALUES(
-          '$npcID',
-          " . $row1->AllianceID . "
-        )
-    	";
+                        alliancemembers(
+                          UserID,
+                          AllianceID
+                          )
+                        VALUES(
+                          '$npcID',
+                          " . $row1->AllianceID . "
+                        )
+                        ";
 					\Database\Controller::getInstance()->execute ( $tQuery2 );
 				}
 				/*
@@ -322,32 +328,32 @@ class NpcTypes extends GameplayItem{
 				*/
 				$tExperience = \additional::randomizeValue ( \userStats::computeExperience($row1->Level), 10, 1000 );
 				$tQuery2 = "INSERT INTO
-        userstats(
-          UserID,
-          Cash,
-          Experience,
-          Level
-          )
-        VALUES(
-          '$npcID',
-          '" . \additional::randomizeValue ( $row1->Cash, 20, 1000 ) . "',
-          '" . $tExperience . "',
-          '" . \userStats::computeLevel ( $tExperience ) . "'
-        )
-    ";
+                    userstats(
+                      UserID,
+                      Cash,
+                      Experience,
+                      Level
+                      )
+                    VALUES(
+                      '$npcID',
+                      '" . \additional::randomizeValue ( $row1->Cash, 20, 1000 ) . "',
+                      '" . $tExperience . "',
+                      '" . \userStats::computeLevel ( $tExperience ) . "'
+                    )
+                ";
 				\Database\Controller::getInstance()->execute ( $tQuery2 );
 
 				/*
 				 * Wstaw tablelę usertimes
 				*/
 				$tQuery2 = "INSERT INTO
-        usertimes(
-          UserID
-          )
-        VALUES(
-          '$npcID'
-        )
-    ";
+                    usertimes(
+                      UserID
+                      )
+                    VALUES(
+                      '$npcID'
+                    )
+                ";
 				\Database\Controller::getInstance()->execute ( $tQuery2 );
 
 				/*
@@ -473,8 +479,7 @@ class NpcTypes extends GameplayItem{
 				 * Zainicjuj tablicę ruchu
 				 */
 				if ($row1->Moveable == "yes") {
-					$position->UserID = $npcID;
-					\npc::initMoveTable ( $row1->NPCTypeID, $position );
+					\npc::initMoveTable ($npcID, $row1->NPCTypeID, $position );
 				}
 
 				$shipPropertiesObject->synchronize ( $shipProperties, true, true );

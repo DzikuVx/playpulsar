@@ -2,6 +2,7 @@
 
 namespace Gameplay\Panel;
 
+use Gameplay\Model\ShipPosition;
 use Interfaces\Singleton;
 
 /**
@@ -31,7 +32,10 @@ class NewsAgency extends Renderable implements Singleton {
 
 	protected $panelTag = "NewsAgency";
 
-	public function render($shipPosition) {
+    /**
+     * @param ShipPosition $shipPosition
+     */
+    public function render(ShipPosition $shipPosition) {
 		global $userProperties;
 
 		$oCacheKey = new \phpCache\CacheKey('newsAgency::render', $shipPosition->System . '|' . $userProperties->Language);

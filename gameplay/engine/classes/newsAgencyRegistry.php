@@ -23,10 +23,10 @@ class newsAgencyRegistry extends simpleRegistry {
 	/**
 	 * Pobranie rejestru
 	 *
-	 * @param stdClass $shipPosition
+	 * @param \Gameplay\Model\ShipPosition $shipPosition
 	 * @return string
 	 */
-	public function get($shipPosition) {
+	public function get(\Gameplay\Model\ShipPosition $shipPosition) {
 
 		global $userProperties;
 
