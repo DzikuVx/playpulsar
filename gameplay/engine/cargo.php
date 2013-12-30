@@ -267,11 +267,8 @@ if ($action == "gather") {
 		*/
 		$sectorCargo->update($subaction, $id, ($sectorAmount-$toGather));
 
-		//Zwiększ zawartość ładowni
 		$shipCargo->incAmount ( $id, $subaction, $toGather );
-
-		//Zwiększyć kaskę usera
-		\Gameplay\Model\UserStatistics::incExperience ( $userStats, $productExp * $toGather );
+        $userStats->incExperience($productExp * $toGather);
 
 		$shipProperties->Turns -= $turnsRequired;
 
@@ -524,8 +521,7 @@ if ($action == "itemSell") {
 
 	//Zwiększyć kaskę usera
 	$userStats->Cash += $productData->Price * $value;
-
-	\Gameplay\Model\UserStatistics::incExperience ( $userStats, $productData->Experience * $value );
+    $userStats->incExperience($productData->Experience * $value);
 
 	\Gameplay\Model\ShipProperties::updateUsedCargo ( $shipProperties );
 
@@ -582,8 +578,7 @@ if ($action == "productSell") {
 
 	//Zwiększyć kaskę usera
 	$userStats->Cash += $productPrice * $value;
-
-	\Gameplay\Model\UserStatistics::incExperience ( $userStats, $productExperience * $value );
+    $userStats->incExperience($productExperience * $value);
 
 	\Gameplay\Model\ShipProperties::updateUsedCargo ( $shipProperties );
 
@@ -649,8 +644,8 @@ if ($action == "productBuy") {
 
 	//Zmniejsz kasę usera
 	$userStats->Cash -= $productPrice * $value;
+    $userStats->incExperience ($productExperience * $value);
 
-	\Gameplay\Model\UserStatistics::incExperience ( $userStats, $productExperience * $value );
 	\Gameplay\Model\ShipProperties::updateUsedCargo ( $shipProperties );
 
 	//Update portu po zakończeniu handlu

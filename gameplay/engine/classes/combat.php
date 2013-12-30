@@ -146,7 +146,7 @@ class combat {
 		/**
 		 * Uszkodzenia emp statku
 		 */
-		if (\Gameplay\Model\ShipProperties::sCheckMalfunction ( $this->player->shipProperties )) {
+		if ($this->player->shipProperties->checkMalfunction()) {
 			array_push ( $this->player->weaponFireResult, new weaponFireResult ( 'player', $this->player->userProperties->Name, $tTarget->userProperties->Name, $tWeapon->WeaponID, 'empDamage' ) );
 			return false;
 		}
@@ -290,8 +290,8 @@ class combat {
 
 				$plusExp = self::sComputeExperienceIncome($this->player->userStats, $tTarget->userStats);
 
-				\Gameplay\Model\UserStatistics::incExperience ( $this->player->userStats, $plusExp );
-				\Gameplay\Model\UserStatistics::incCash ( $this->player->userStats, floor ( $tTarget->userStats->Cash / 2 ) );
+                $this->player->userStats->incExperience($plusExp);
+                $this->player->userStats->incCash(floor($tTarget->userStats->Cash / 2));
 
 				/**
 				 * Wstaw wpis do newsagency
@@ -1073,7 +1073,7 @@ class combat {
 			throw new securityException ( TranslateController::getDefault()->get('Rookie protected') );
 		}
 
-		if (\Gameplay\Model\ShipProperties::sCheckMalfunction ( $attackerProperties )) {
+		if ($attackerProperties->checkMalfunction()) {
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'error', '{T:shipMalfunctionEmp}');
 			return false;
 		}

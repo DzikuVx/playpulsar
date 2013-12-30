@@ -95,7 +95,7 @@ class ActiveScanner extends SystemMap implements Singleton {
         $shipProperties = PlayerModelProvider::getInstance()->get('ShipProperties');
 		$activeScanner 	= new ActiveScanner($userProperties->Language, $userID);
 
-		if (ShipProperties::sCheckMalfunction($shipProperties)) {
+		if ($shipProperties->checkMalfunction()) {
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'error', '{T:shipMalfunctionEmp}');
 			return false;
 		}

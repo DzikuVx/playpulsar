@@ -33,7 +33,7 @@ class ftlDrive {
         $shipPosition     = PlayerModelProvider::getInstance()->get('ShipPosition');
         $systemProperties = PlayerModelProvider::getInstance()->get('SystemProperties');
 
-		if (\Gameplay\Model\ShipProperties::sCheckMalfunction ( $shipProperties )) {
+		if ($shipProperties->checkMalfunction()) {
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'error', '{T:shipMalfunctionEmp}');
 			return false;
 		}
@@ -100,7 +100,7 @@ class ftlDrive {
 			}
 		}
 
-		\Gameplay\Model\UserStatistics::incExperience ( $userStats, $config ['general'] ['expForWarpJump'] );
+        $userStats->incExperience($config ['general'] ['expForWarpJump']);
 
 		//Odświerz informacje o sektorze
 		$sectorProperties = $sectorPropertiesObject->reload ( $shipPosition, $sectorProperties, true, true );

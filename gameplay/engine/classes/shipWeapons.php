@@ -633,8 +633,7 @@ class shipWeapons {
 			}
 
 			$shipWeapons->remove ( $weaponID, $shipProperties );
-
-			\Gameplay\Model\UserStatistics::incCash ( $userStats, $tPrice );
+            $userStats->incCash($tPrice);
 
 			$portProperties->Cash -= $tPrice;
 			if ($portProperties->Cash < 0) {
@@ -673,8 +672,7 @@ class shipWeapons {
 		$tPrice = floor ( $tData->Price / 2 );
 
 		$shipCargo->decAmount($weaponID, 'weapon', 1);
-
-		\Gameplay\Model\UserStatistics::incCash ( $userStats, $tPrice );
+        $userStats->incCash($tPrice);
 
 		$portProperties->Cash -= $tPrice;
 		if ($portProperties->Cash < 0) {
@@ -736,7 +734,7 @@ class shipWeapons {
 
 			$shipWeapons->reload ( $shipWeaponID, $tData->MaxAmmo );
 
-			\Gameplay\Model\UserStatistics::decCash($userStats, $tReloadPrice);
+            $userStats->decCash($tReloadPrice);
 			$portProperties->Cash += $tReloadPrice;
 
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:weaponReloadedFor}' . $tReloadPrice . '$' );
@@ -774,7 +772,7 @@ class shipWeapons {
 		if (! $error) {
 			$shipWeapons->repair ( $shipWeaponID );
 
-			\Gameplay\Model\UserStatistics::decCash($userStats, $tRepairPrice);
+            $userStats->decCash($tRepairPrice);
 			$portProperties->Cash += $tRepairPrice;
 
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:weaponRepairedFor}' . $tRepairPrice . '$' );
@@ -821,14 +819,13 @@ class shipWeapons {
 			throw new securityException ( );
 		}
 
-		$shipWeapons->insert ( $tWeapon, $shipProperties );
-		\Gameplay\Model\UserStatistics::decCash( $userStats, $tWeapon->Price );
-		Gameplay\Model\UserStatistics::decFame ( $userStats, $tWeapon->Fame );
+		$shipWeapons->insert($tWeapon, $shipProperties);
+        $userStats->decCash($tWeapon->Price);
+        $userStats->decFame($tWeapon->Fame);
 		$portProperties->Cash += $tWeapon->Price;
 
 		\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:weaponBought}' . $tWeapon->Price . '$' );
 		$action = "portHangar";
 		$shipWeapons->computeOffensiveRating ( $shipProperties );
 	}
-
 }

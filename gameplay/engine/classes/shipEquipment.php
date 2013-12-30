@@ -335,10 +335,9 @@ class shipEquipment {
 		}
 
 		if (! $error) {
-
-			$shipEquipment->insert ( $tEquipment, $shipProperties );
-			\Gameplay\Model\UserStatistics::decCash($userStats, $tEquipment->Price);
-			\Gameplay\Model\UserStatistics::decFame($userStats, $tEquipment->Fame);
+			$shipEquipment->insert($tEquipment, $shipProperties);
+            $userStats->decCash($tEquipment->Price);
+            $userStats->decFame($tEquipment->Fame);
 			$portProperties->Cash += $tEquipment->Price;
 
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:equipmentBought}' . $tEquipment->Price . '$' );
@@ -370,10 +369,8 @@ class shipEquipment {
 		}
 
 		if (! $error) {
-
 			$shipEquipment->repair ( $equipmentID );
-
-			\Gameplay\Model\UserStatistics::decCash ( $userStats, $tRepairPrice );
+            $userStats->decCash($tRepairPrice);
 			$portProperties->Cash += $tRepairPrice;
 
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:equipmentRepaired}' . $tRepairPrice . '$' );
@@ -408,8 +405,7 @@ class shipEquipment {
 		$tPrice = floor ( $tData->Price / 2 );
 
 		$shipCargo->decAmount($weaponID, 'equipment', 1);
-
-		\Gameplay\Model\UserStatistics::incCash ( $userStats, $tPrice );
+        $userStats->incCash($tPrice);
 
 		$portProperties->Cash -= $tPrice;
 		if ($portProperties->Cash < 0) {
@@ -459,7 +455,7 @@ class shipEquipment {
 
 			$shipEquipment->remove ( $equipmentID, $shipProperties );
 
-			\Gameplay\Model\UserStatistics::incCash ( $userStats, $tPrice );
+            $userStats->incCash($tPrice);
 
 			$portProperties->Cash -= $tPrice;
 			if ($portProperties->Cash < 0) {

@@ -2,7 +2,6 @@
 
 namespace Gameplay\Model;
 
-//FIXME replace static methods with dynamic, statics are obsolete
 class UserStatistics extends Standard {
     protected $tableName = 'userstats';
     protected $tableID = 'UserID';
@@ -89,52 +88,48 @@ class UserStatistics extends Standard {
     }
 
     /**
-     * @param UserStatistics $userStats
      * @param int $amount
      */
-    static public function incCash(UserStatistics $userStats, $amount) {
-        $userStats->Cash += $amount;
+    public function incCash($amount) {
+        $this->Cash += $amount;
     }
 
     /**
-     * @param UserStatistics $userStats
      * @param int $amount
      */
-    static public function decCash(UserStatistics $userStats, $amount) {
-        $userStats->Cash -= $amount;
-        if ($userStats->Cash < 0) {
-            $userStats->Cash = 0;
+    public function decCash($amount) {
+        $this->Cash -= $amount;
+        if ($this->Cash < 0) {
+            $this->Cash = 0;
         }
     }
 
     /**
-     * @param UserStatistics $userStats
      * @param int $amount
      */
-    static public function decFame(UserStatistics $userStats, $amount) {
-        $userStats->Fame -= $amount;
-        if ($userStats->Fame < 0) {
-            $userStats->Fame = 0;
+    public function decFame($amount) {
+        $this->Fame -= $amount;
+        if ($this->Fame < 0) {
+            $this->Fame = 0;
         }
     }
 
     /**
-     * @param UserStatistics $userStats
      * @param int $amount
      */
-    static function incExperience(UserStatistics $userStats, $amount) {
-        $tLevel = self::computeLevel ( $userStats->Experience + $amount );
-        $userStats->Experience += $amount;
+    public function incExperience($amount) {
+        $tLevel = self::computeLevel($this->Experience + $amount);
+        $this->Experience += $amount;
 
-        if ($userStats->Level < $tLevel) {
-            $userStats->Fame += 1;
+        if ($this->Level < $tLevel) {
+            $this->Fame += 1;
 
             /*
              * Wyczyść trochę cache
              */
-            if (!empty($userStats->UserID)) {
+            if (!empty($this->UserID)) {
 
-                $tAlliance = \userAlliance::quickLoad($userStats->UserID);
+                $tAlliance = \userAlliance::quickLoad($this->UserID);
 
                 if (!empty($tAlliance->AllianceID)) {
                     \phpCache\Factory::getInstance()->create()->clearModule(new \phpCache\CacheKey('allianceMembersRegistry::get::'.$tAlliance->AllianceID));
@@ -143,25 +138,22 @@ class UserStatistics extends Standard {
 
         }
 
-        $userStats->Level = $tLevel;
+        $this->Level = $tLevel;
     }
 
     /**
-     * @param UserStatistics $userStats
      * @param int $amount
      */
-    static function decExperience(UserStatistics $userStats, $amount) {
-        $userStats->Experience -= $amount;
-        $userStats->Level = self::computeLevel ( $userStats->Experience );
+    public function decExperience($amount) {
+        $this->Experience -= $amount;
+        $this->Level = self::computeLevel($this->Experience);
     }
 
     /**
-     * @param UserStatistics $userStats
      * @param int $amount
      */
-    static function setExperience(UserStatistics $userStats, $amount) {
-        $userStats->Experience = $amount;
-        $userStats->Level = self::computeLevel ( $userStats->Experience );
+    public function setExperience($amount) {
+        $this->Experience = $amount;
+        $this->Level = self::computeLevel($this->Experience);
     }
-
 }

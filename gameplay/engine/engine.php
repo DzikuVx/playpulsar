@@ -710,7 +710,7 @@ try {
 			throw new securityException ( );
 		}
 
-		if (\Gameplay\Model\ShipProperties::sCheckMalfunction ( $shipProperties )) {
+		if ($shipProperties->checkMalfunction()) {
 			throw new securityException (TranslateController::getDefault()->get('shipMalfunctionEmp') );
 		}
 
@@ -725,7 +725,7 @@ try {
 				$shipProperties->RookieTurns = 0;
 			}
 
-			\Gameplay\Model\UserStatistics::incExperience ( $userStats, $config ['general'] ['expForMove'] );
+            $userStats->incExperience($config ['general'] ['expForMove']);
 
 			sectorProperties::sResetResources ( $shipPosition, $sectorProperties );
 			portProperties::sReset ( $portProperties );
@@ -745,7 +745,7 @@ try {
 
 	if ($action == "shipUnDock") {
 
-		if (\Gameplay\Model\ShipProperties::sCheckMalfunction ( $shipProperties )) {
+		if ($shipProperties->checkMalfunction()) {
 			$error = true;
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'error', '{T:shipMalfunctionEmp}');
 		}
@@ -774,7 +774,7 @@ try {
 				}
 			}
 
-			\Gameplay\Model\UserStatistics::incExperience ( $userStats, $config ['general'] ['expForMove'] );
+            $userStats->incExperience($config ['general'] ['expForMove']);
 
 			sectorProperties::sResetResources ( $shipPosition, $sectorProperties );
 			portProperties::sReset ( $portProperties );
@@ -789,7 +789,7 @@ try {
 
 	if ($action == "shipNodeJump") {
 
-		if (\Gameplay\Model\ShipProperties::sCheckMalfunction ( $shipProperties )) {
+		if ($shipProperties->checkMalfunction()) {
 			$error = true;
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'error', '{T:shipMalfunctionEmp}');
 		}
@@ -832,9 +832,8 @@ try {
 				$shipProperties->RookieTurns = 0;
 			}
 
-			\Gameplay\Model\UserStatistics::incExperience ( $userStats, $config ['general'] ['expForMove'] );
+            $userStats->incExperience($config ['general'] ['expForMove']);
 
-			//Odświerz informacje o sektorze
 			$sectorProperties = $sectorPropertiesObject->reload ( $shipPosition, $sectorProperties, true, true );
 			$portProperties = $portPropertiesObject->reload ( $shipPosition, $portProperties, true, true );
 
@@ -861,7 +860,7 @@ try {
 	}
 
 	if ($action == "shipMove") {
-		if (\Gameplay\Model\ShipProperties::sCheckMalfunction ( $shipProperties )) {
+		if ($shipProperties->checkMalfunction()) {
 			$error = true;
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'error', '{T:shipMalfunctionEmp}');
 		}
@@ -916,9 +915,8 @@ try {
 
 			$shipPosition->synchronize();
 
-			\Gameplay\Model\UserStatistics::incExperience ( $userStats, $config ['general'] ['expForMove'] );
+            $userStats->incExperience($config ['general'] ['expForMove']);
 
-			//Odświerz informacje o sektorze
 			$sectorProperties = $sectorPropertiesObject->reload ( $shipPosition, $sectorProperties, true, true );
 			$jumpNode = $jumpNodeObject->load ( $shipPosition, true, true );
 			$portProperties = $portPropertiesObject->reload ( $shipPosition, $portProperties, true, true );

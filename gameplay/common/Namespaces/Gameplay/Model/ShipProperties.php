@@ -337,11 +337,10 @@ class ShipProperties extends Standard {
     /**
      * Sprawdzenie, czy statek nie jest uszkodzony przez EMP
      *
-     * @param ShipProperties $shipProperties
      * @return boolean
      */
-    static public function sCheckMalfunction(ShipProperties $shipProperties) {
-        return \additional::checkRand ( $shipProperties->Emp, $shipProperties->EmpMax );
+    public function checkMalfunction() {
+        return \additional::checkRand($this->Emp, $this->EmpMax);
     }
 
     /**
@@ -814,8 +813,8 @@ class ShipProperties extends Standard {
         $shipProperties->ShipID = $shipID;
         $shipProperties->synchronize();
 
-        UserStatistics::decCash ( $userStats, $tShip->Price - $currentShipValue );
-        UserStatistics::decFame ( $userStats, $tShip->Fame );
+        $userStats->decCash($tShip->Price - $currentShipValue);
+        $userStats->decFame($tShip->Fame);
         $portProperties->Cash += $tShip->Price;
         $shipEquipment->removeAll ( $shipProperties );
         $shipWeapons->removeAll ( $shipProperties );
