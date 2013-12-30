@@ -442,13 +442,13 @@ class NpcTypes extends GameplayItem{
 				/**
 				 * Uaktualnij wartości maksymalne okrętu
 				 */
-				ShipProperties::computeMaxValues($shipProperties);
+                $shipProperties->computeMaxValues();
 
 				/**
 				 * Ustaw aktualne maksymalne jako aktualne
 				 */
-				ShipProperties::setFromFull($shipProperties);
-				ShipProperties::computeDefensiveRating($shipProperties);
+                $shipProperties->setFromFull();
+                $shipProperties->computeDefensiveRating();
 
 				/*
 				 * Jeśli NPC ma itemy ładowniach

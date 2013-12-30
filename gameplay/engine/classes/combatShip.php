@@ -98,10 +98,7 @@ class combatShip {
 			$this->shipPosition = new \Gameplay\Model\ShipPosition($this->userID);
 		}
 
-		/*
-		 * Ponownie przelicz parametry
-		 */
-		\Gameplay\Model\ShipProperties::computeMaxValues ( $this->shipProperties );
+        $this->shipProperties->computeMaxValues();
 
 		//@todo to trzeba jakoś zrefaktoryzować
 		$this->shipSize = ship::quickLoad($this->shipProperties->ShipID)->Size;
@@ -228,10 +225,10 @@ class combatShip {
 			$sectorCargo->insert ( 'product', 11, ($this->shipProperties->ArmorMax / 3));
 			$sectorCargo->insert ( 'product', 13, ($this->shipProperties->ArmorMax / 3));
 
-            \Gameplay\Model\ShipProperties::computeMaxValues($this->shipProperties);
+            $this->shipProperties->computeMaxValues();
 			$this->shipProperties->Armor = 1;
 			$this->shipWeapons->computeOffensiveRating($this->shipProperties);
-            \Gameplay\Model\ShipProperties::computeDefensiveRating($this->shipProperties);
+            $this->shipProperties->computeDefensiveRating();
 
 			/*
 			 * Dezaktywuj moje combatlocki

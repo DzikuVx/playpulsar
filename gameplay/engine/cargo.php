@@ -52,7 +52,7 @@ if ($action == "equipFromCargo") {
 		$shipEquipment->insert ( $tItem, $shipProperties );
 	}
 
-	\Gameplay\Model\ShipProperties::computeMaxValues($shipProperties);
+    $shipProperties->computeMaxValues();
     \Gameplay\Model\ShipProperties::updateUsedCargo($shipProperties);
 
 	/**

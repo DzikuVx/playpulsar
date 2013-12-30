@@ -2,7 +2,6 @@
 
 namespace Gameplay\Model;
 
-//FIXME replace static methods with dynamic, statics are obsolete
 class ShipProperties extends Standard {
 
     protected $tableName = "userships";
@@ -366,13 +365,8 @@ class ShipProperties extends Standard {
         return \additional::checkRand ( $percentage, 100 );
     }
 
-    /**
-     * @param ShipProperties $shipProperties
-     */
-    static function computeDefensiveRating(ShipProperties $shipProperties) {
-        if (!empty($shipProperties)) {
-            $shipProperties->DefRating = floor ( ($shipProperties->Shield + $shipProperties->Armor) / 100 );
-        }
+    public function computeDefensiveRating() {
+        $this->DefRating = floor ( ($this->Shield + $this->Armor) / 100 );
     }
 
     /**
@@ -385,15 +379,11 @@ class ShipProperties extends Standard {
         $shipProperties->Cargo = $item->getUsage();
     }
 
-    /**
-     * Ustawienie wartości maksymalnych jako aktualne
-     * @param ShipProperties $shipProperties
-     */
-    static function setFromFull(ShipProperties $shipProperties) {
-        $shipProperties->Shield = $shipProperties->ShieldMax;
-        $shipProperties->Armor = $shipProperties->ArmorMax;
-        $shipProperties->Power = $shipProperties->PowerMax;
-        $shipProperties->Emp = 0;
+    public function setFromFull() {
+        $this->Shield = $this->ShieldMax;
+        $this->Armor = $this->ArmorMax;
+        $this->Power = $this->PowerMax;
+        $this->Emp = 0;
     }
 
     /**
@@ -404,7 +394,7 @@ class ShipProperties extends Standard {
 
         $shipProperties = new ShipProperties($userID);
 
-        self::computeMaxValues($shipProperties);
+        $shipProperties->computeMaxValues();
         \shipWeapons::sUpdateCount($shipProperties, $userID);
         \shipEquipment::sUpdateCount($shipProperties, $userID);
         $shipProperties->synchronize();
@@ -416,91 +406,81 @@ class ShipProperties extends Standard {
      * @param int $userID
      */
     static public function sRecomputeValues(ShipProperties $shipProperties, $userID) {
-        self::computeMaxValues($shipProperties);
+        $shipProperties->computeMaxValues();
         \shipWeapons::sUpdateCount($shipProperties, $userID);
         \shipEquipment::sUpdateCount($shipProperties, $userID);
     }
 
-    /**
-     * @param ShipProperties $shipProperties
-     */
-    static function computeMaxValues(ShipProperties $shipProperties) {
+    public function computeMaxValues() {
 
-        $tShip = \ship::quickLoad ( $shipProperties->ShipID );
+        $tShip = \ship::quickLoad($this->ShipID);
 
-        $shipProperties->ShieldMax = $tShip->Shield;
-        $shipProperties->ArmorMax = $tShip->Armor;
-        $shipProperties->PowerMax = $tShip->Power;
-        $shipProperties->Speed = $tShip->Speed;
-        $shipProperties->Maneuver = $tShip->Maneuver;
-        $shipProperties->CargoMax = $tShip->Cargo;
-        $shipProperties->MaxEquipment = $tShip->Space;
-        $shipProperties->MaxWeapons = $tShip->Weapons;
-        $shipProperties->Scan = $tShip->Scan;
-        $shipProperties->Cloak = $tShip->Cloak;
-        $shipProperties->Gather = $tShip->Gather;
-        $shipProperties->ArmorStrength = $tShip->ArmorStrength;
-        $shipProperties->ArmorPiercing = $tShip->ArmorPiercing;
-        $shipProperties->ShieldRegeneration = $tShip->ShieldRegeneration;
-        $shipProperties->ArmorRegeneration = $tShip->ArmorRegeneration;
-        $shipProperties->PowerRegeneration = $tShip->PowerRegeneration;
-        $shipProperties->ShieldRepair = $tShip->ShieldRepair;
-        $shipProperties->ArmorRepair = $tShip->ArmorRepair;
-        $shipProperties->PowerRepair = $tShip->PowerRepair;
-        $shipProperties->EmpMax = $tShip->Emp;
-        $shipProperties->Targetting = $tShip->Targetting;
-        $shipProperties->CanWarpJump = $tShip->CanWarpJump;
-        $shipProperties->CanActiveScan = $tShip->CanActiveScan;
+        $this->ShieldMax = $tShip->Shield;
+        $this->ArmorMax = $tShip->Armor;
+        $this->PowerMax = $tShip->Power;
+        $this->Speed = $tShip->Speed;
+        $this->Maneuver = $tShip->Maneuver;
+        $this->CargoMax = $tShip->Cargo;
+        $this->MaxEquipment = $tShip->Space;
+        $this->MaxWeapons = $tShip->Weapons;
+        $this->Scan = $tShip->Scan;
+        $this->Cloak = $tShip->Cloak;
+        $this->Gather = $tShip->Gather;
+        $this->ArmorStrength = $tShip->ArmorStrength;
+        $this->ArmorPiercing = $tShip->ArmorPiercing;
+        $this->ShieldRegeneration = $tShip->ShieldRegeneration;
+        $this->ArmorRegeneration = $tShip->ArmorRegeneration;
+        $this->PowerRegeneration = $tShip->PowerRegeneration;
+        $this->ShieldRepair = $tShip->ShieldRepair;
+        $this->ArmorRepair = $tShip->ArmorRepair;
+        $this->PowerRepair = $tShip->PowerRepair;
+        $this->EmpMax = $tShip->Emp;
+        $this->Targetting = $tShip->Targetting;
+        $this->CanWarpJump = $tShip->CanWarpJump;
+        $this->CanActiveScan = $tShip->CanActiveScan;
 
-        unset ( $tShip );
-
-        $equipmentList = new \shipEquipment($shipProperties->getEntryId());
+        $equipmentList = new \shipEquipment($this->getEntryId());
 
         $tResult = $equipmentList->get ( "working" );
         while ( $resultRow = \Database\Controller::getInstance()->fetch ( $tResult ) ) {
-            $shipProperties->ShieldMax += $resultRow->Shield;
-            $shipProperties->ArmorMax += $resultRow->Armor;
-            $shipProperties->PowerMax += $resultRow->Power;
-            $shipProperties->EmpMax += $resultRow->Emp;
-            $shipProperties->Speed += $resultRow->Speed;
-            $shipProperties->Maneuver += $resultRow->Maneuver;
-            $shipProperties->CargoMax += $resultRow->Cargo;
-            $shipProperties->MaxEquipment += $resultRow->Space;
-            $shipProperties->MaxWeapons += $resultRow->Weapons;
-            $shipProperties->Scan += $resultRow->Scan;
-            $shipProperties->Cloak += $resultRow->Cloak;
-            $shipProperties->Gather += $resultRow->Gather;
-            $shipProperties->ArmorStrength += $resultRow->ArmorStrength;
-            $shipProperties->ArmorPiercing += $resultRow->ArmorPiercing;
-            $shipProperties->ShieldRegeneration += $resultRow->ShieldRegeneration;
-            $shipProperties->ArmorRegeneration += $resultRow->ArmorRegeneration;
-            $shipProperties->PowerRegeneration += $resultRow->PowerRegeneration;
-            $shipProperties->ShieldRepair += $resultRow->ShieldRepair;
-            $shipProperties->ArmorRepair += $resultRow->ArmorRepair;
-            $shipProperties->PowerRepair += $resultRow->PowerRepair;
-            $shipProperties->Targetting += $resultRow->Targetting;
-            $shipProperties->CanWarpJump += $resultRow->CanWarpJump;
-            $shipProperties->CanActiveScan += $resultRow->CanActiveScan;
+            $this->ShieldMax += $resultRow->Shield;
+            $this->ArmorMax += $resultRow->Armor;
+            $this->PowerMax += $resultRow->Power;
+            $this->EmpMax += $resultRow->Emp;
+            $this->Speed += $resultRow->Speed;
+            $this->Maneuver += $resultRow->Maneuver;
+            $this->CargoMax += $resultRow->Cargo;
+            $this->MaxEquipment += $resultRow->Space;
+            $this->MaxWeapons += $resultRow->Weapons;
+            $this->Scan += $resultRow->Scan;
+            $this->Cloak += $resultRow->Cloak;
+            $this->Gather += $resultRow->Gather;
+            $this->ArmorStrength += $resultRow->ArmorStrength;
+            $this->ArmorPiercing += $resultRow->ArmorPiercing;
+            $this->ShieldRegeneration += $resultRow->ShieldRegeneration;
+            $this->ArmorRegeneration += $resultRow->ArmorRegeneration;
+            $this->PowerRegeneration += $resultRow->PowerRegeneration;
+            $this->ShieldRepair += $resultRow->ShieldRepair;
+            $this->ArmorRepair += $resultRow->ArmorRepair;
+            $this->PowerRepair += $resultRow->PowerRepair;
+            $this->Targetting += $resultRow->Targetting;
+            $this->CanWarpJump += $resultRow->CanWarpJump;
+            $this->CanActiveScan += $resultRow->CanActiveScan;
         }
 
-        self::sCutProperties ( $shipProperties );
+        $this->cutProperties();
     }
 
-    /**
-     * @param ShipProperties $shipProperties
-     */
-    static public function sCutProperties(ShipProperties $shipProperties) {
-
-        if ($shipProperties->Shield > $shipProperties->ShieldMax) {
-            $shipProperties->Shield = $shipProperties->ShieldMax;
+    public function cutProperties() {
+        if ($this->Shield > $this->ShieldMax) {
+            $this->Shield = $this->ShieldMax;
         }
-        if ($shipProperties->Armor > $shipProperties->ArmorMax) {
-            $shipProperties->Armor = $shipProperties->ArmorMax;
+        if ($this->Armor > $this->ArmorMax) {
+            $this->Armor = $this->ArmorMax;
         }
-        if ($shipProperties->Power > $shipProperties->PowerMax) {
-            $shipProperties->Power = $shipProperties->PowerMax;
+        if ($this->Power > $this->PowerMax) {
+            $this->Power = $this->PowerMax;
         }
-
     }
 
     /**
@@ -635,7 +615,7 @@ class ShipProperties extends Standard {
             }
 
             if ($repaired) {
-                self::computeDefensiveRating ( $this );
+                $this->computeDefensiveRating();
             }
             $userFastTimes->LastRepair = time();
 
@@ -725,8 +705,8 @@ class ShipProperties extends Standard {
     static public function sUpdateRating(/** @noinspection PhpUnusedParameterInspection */
         $userID) {
         global $shipWeapons, $shipProperties;
-        $shipWeapons->computeOffensiveRating ( $shipProperties );
-        self::computeDefensiveRating ( $shipProperties );
+        $shipWeapons->computeOffensiveRating($shipProperties);
+        $shipProperties->computeDefensiveRating();
     }
 
     /**
@@ -816,14 +796,14 @@ class ShipProperties extends Standard {
         $userStats->decCash($tShip->Price - $currentShipValue);
         $userStats->decFame($tShip->Fame);
         $portProperties->Cash += $tShip->Price;
-        $shipEquipment->removeAll ( $shipProperties );
-        $shipWeapons->removeAll ( $shipProperties );
-        $shipCargo->removeAll ( $shipProperties );
+        $shipEquipment->removeAll($shipProperties);
+        $shipWeapons->removeAll($shipProperties);
+        $shipCargo->removeAll($shipProperties);
 
-        self::computeMaxValues ( $shipProperties );
-        self::setFromFull ( $shipProperties );
+        $shipProperties->computeMaxValues();
+        $shipProperties->setFromFull();
         $shipWeapons->computeOffensiveRating ( $shipProperties );
-        self::computeDefensiveRating ( $shipProperties );
+        $shipProperties->computeDefensiveRating();
 
         $action = "portHangar";
 

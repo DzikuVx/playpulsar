@@ -156,14 +156,13 @@ class user {
 		/**
 		 * Uaktualnij wartości maksymalne okrętu
 		 */
-		\Gameplay\Model\ShipProperties::computeMaxValues($shipProperties);
+        $shipProperties->computeMaxValues();
 
 		/**
 		 * Ustaw aktualne maksymalne jako aktualne
 		 */
-        \Gameplay\Model\ShipProperties::setFromFull($shipProperties);
-        \Gameplay\Model\ShipProperties::computeDefensiveRating($shipProperties);
-
+        $shipProperties->setFromFull();
+        $shipProperties->computeDefensiveRating();
 		$shipProperties->synchronize();
 	}
 
@@ -527,14 +526,13 @@ class user {
 		/**
 		 * Uaktualnij wartości maksymalne okrętu
 		 */
-		\Gameplay\Model\ShipProperties::computeMaxValues ( $shipProperties );
+        $shipProperties->computeMaxValues();
 
 		/**
 		 * Ustaw aktualne maksymalne jako aktualne
 		 */
-		\Gameplay\Model\ShipProperties::setFromFull ( $shipProperties );
-		\Gameplay\Model\ShipProperties::computeDefensiveRating ( $shipProperties );
-
+        $shipProperties->setFromFull();
+        $shipProperties->computeDefensiveRating();
 		$shipProperties->synchronize();
 	}
 

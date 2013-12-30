@@ -218,13 +218,13 @@ class npc extends baseItem {
 
 			$npcWeapons->computeOffensiveRating ( $npcShipProperties );
 
-			\Gameplay\Model\ShipProperties::computeMaxValues ( $npcShipProperties );
+            $npcShipProperties->computeMaxValues();
 
 			/**
 			 * Ustaw aktualne maksymalne jako aktualne
 			 */
-            \Gameplay\Model\ShipProperties::setFromFull ( $npcShipProperties );
-            \Gameplay\Model\ShipProperties::computeDefensiveRating ( $npcShipProperties );
+            $npcShipProperties->setFromFull();
+            $npcShipProperties->computeDefensiveRating();
 
 			if ($npcType->HaveItems == 'yes') {
 				$tItems = item::getRand ( additional::rand ( 0, 5 ) );

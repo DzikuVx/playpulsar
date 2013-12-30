@@ -76,7 +76,7 @@ class shipEquipment {
 		global $shipProperties;
 
 		if ($this->changed) {
-			\Gameplay\Model\ShipProperties::computeDefensiveRating ( $shipProperties );
+            $shipProperties->computeDefensiveRating();
 		}
 	}
 
@@ -341,7 +341,7 @@ class shipEquipment {
 			$portProperties->Cash += $tEquipment->Price;
 
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:equipmentBought}' . $tEquipment->Price . '$' );
-            \Gameplay\Model\ShipProperties::computeMaxValues ( $shipProperties );
+            $shipProperties->computeMaxValues();
 			$action = "portHangar";
 		}
 	}
@@ -374,7 +374,7 @@ class shipEquipment {
 			$portProperties->Cash += $tRepairPrice;
 
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:equipmentRepaired}' . $tRepairPrice . '$' );
-            \Gameplay\Model\ShipProperties::computeMaxValues ( $shipProperties );
+            $shipProperties->computeMaxValues();
 			shipEquipmentRegistry::sRender ();
 		}
 	}
@@ -463,7 +463,7 @@ class shipEquipment {
 			}
 
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:equipmentSold}' . $tPrice . '$' );
-            \Gameplay\Model\ShipProperties::computeMaxValues ( $shipProperties );
+            $shipProperties->computeMaxValues();
 			shipEquipmentRegistry::sRender ();
 		}
 	}
