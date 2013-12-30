@@ -2,6 +2,8 @@
 
 namespace Gameplay\Model;
 
+use Gameplay\Exception\Model;
+
 abstract class Standard {
 
     /**
@@ -89,23 +91,24 @@ abstract class Standard {
 
         $this->entryId  = $entryId;
         $this->useCache = $useCache;
-        $this->cacheID  = $this->parseCacheID($this->entryId);
-        $this->dbID     = $this->parseDbID($this->entryId);
-        $this->cacheKey = new \phpCache\CacheKey($this->tableName, $this->cacheID);
 
         if (!empty($this->entryId)) {
+            $this->cacheID  = $this->parseCacheID($this->entryId);
+            $this->dbID     = $this->parseDbID($this->entryId);
+            $this->cacheKey = new \phpCache\CacheKey($this->tableName, $this->cacheID);
+
             $this->load();
         }
     }
 
     /**
      * @return bool
-     * @throws Exception
+     * @throws Model
      */
     protected function fromCache() {
 
         if (empty($this->cacheID)) {
-            throw new Exception('Cache ID empty, load failed');
+            throw new Model('Cache ID empty, load failed');
         }
 
         if ($this->cache->check($this->cacheKey)) {
@@ -168,32 +171,28 @@ abstract class Standard {
 
     /**
      * @return string
+     * @throws \Gameplay\Exception\Model
      */
     protected function formatUpdateQuery() {
 
         $retVal = "UPDATE " . $this->tableName . " SET ";
 
         $tStr = "";
-        foreach ( $this as $key => $value ) {
-
-            if (in_array ( $key, $this->tableUseFields ) && $value != $this->originalData->{$key}) {
+        foreach($this as $key => $value) {
+            if (in_array( $key, $this->tableUseFields) && $value != $this->originalData->{$key}) {
 
                 if ($value != null) {
                     $tStr .= "," . $key . "='" . \Database\Controller::getInstance()->quote($value) . "'";
                 } else {
                     $tStr .= "," . $key . "=null ";
                 }
-
             }
-
         }
 
         if ($tStr [0] == ",")
             $tStr = substr ( $tStr, 1 );
 
         $retVal .= $tStr;
-
-        unset ( $tStr );
 
         $retVal .= " WHERE {$this->tableID}='" . \Database\Controller::getInstance()->quote($this->dbID) . "' LIMIT 1";
 
@@ -279,12 +278,12 @@ abstract class Standard {
     }
 
     /**
-     * Set data to database
+     * @throws \Gameplay\Exception\Model
      */
     protected function set() {
 
         if (empty($this->dbID)) {
-            throw new Exception('Object not initialized properly');
+            throw new Model('Object not initialized properly');
         }
 
         $this->db->execute($this->formatUpdateQuery());
@@ -344,12 +343,12 @@ abstract class Standard {
     /**
      * Method load entry from database
      * @return bool
-     * @throws Exception
+     * @throws Model
      */
     protected function get() {
 
         if (empty($this->dbID)) {
-            throw new Exception('Object not initialized properly');
+            throw new Model('Object not initialized properly');
         }
 
         $tResult = $this->db->execute ("

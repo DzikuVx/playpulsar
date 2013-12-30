@@ -49,62 +49,63 @@ class SectorShips extends Renderable implements Singleton {
 
 		global $config, $userStats, $userAlliance;
 
+        $oDb = \Database\Controller::getInstance();
+
 		$this->rendered = true;
 
 		$this->retVal = '';
 		$nameField = "Name" . $this->language;
 
 		$tQuery = "SELECT
-		userships.UserID AS UserID,
-		userships.RookieTurns AS RookieTurns,
-		users.Name AS PlayerName,
-		users.Type AS UserType,
-		userstats.Level AS Level,
-		specializations.$nameField AS SpecializationName,
-		shiptypes.$nameField AS ShipTypeName,
-		userships.OffRating AS OffRating,
-		userships.DefRating AS DefRating,
-		userships.Cloak AS Cloak,
-		alliances.Name As AllianceName,
-		alliances.AllianceID As AllianceID,
-		npctypes.Behavior,
-		usertimes.LastAction
-		FROM
-		shippositions JOIN userships ON userships.UserID=shippositions.UserID
-		JOIN shiptypes ON shiptypes.ShipID = userships.ShipID
-		JOIN users ON users.UserID = shippositions.UserID
-		JOIN userstats ON userstats.UserID=shippositions.UserID
-		LEFT JOIN specializations ON specializations.SpecializationID = userships.SpecializationID
-		LEFT JOIN alliancemembers ON alliancemembers.UserID=shippositions.UserID
-		LEFT JOIN alliances ON alliances.AllianceID = alliancemembers.AllianceID
-		LEFT JOIN npctypes ON npctypes.NPCTypeID=users.NPCTypeID
-		LEFT JOIN usertimes ON usertimes.UserID=users.UserID
-		WHERE
-		shippositions.System={$shipPosition->System} AND
-		shippositions.X={$shipPosition->X} AND
-		shippositions.Y={$shipPosition->Y} AND
-		shippositions.Docked='{$shipPosition->Docked}' AND
-		shippositions.UserID != '$userID' AND
-		userstats.Experience > 0
-		";
-		$tQuery = Database::getInstance()->execute ( $tQuery );
-		if (Database::getInstance()->count ( $tQuery ) > 0) {
-			$this->retVal .= "<h1>" . Translate::getDefault()->get ( 'ships' ) . "</h1>";
+                userships.UserID AS UserID,
+                userships.RookieTurns AS RookieTurns,
+                users.Name AS PlayerName,
+                users.Type AS UserType,
+                userstats.Level AS Level,
+                specializations.$nameField AS SpecializationName,
+                shiptypes.$nameField AS ShipTypeName,
+                userships.OffRating AS OffRating,
+                userships.DefRating AS DefRating,
+                userships.Cloak AS Cloak,
+                alliances.Name As AllianceName,
+                alliances.AllianceID As AllianceID,
+                npctypes.Behavior,
+                usertimes.LastAction
+            FROM
+                shippositions JOIN userships ON userships.UserID=shippositions.UserID
+                JOIN shiptypes ON shiptypes.ShipID = userships.ShipID
+                JOIN users ON users.UserID = shippositions.UserID
+                JOIN userstats ON userstats.UserID=shippositions.UserID
+                LEFT JOIN specializations ON specializations.SpecializationID = userships.SpecializationID
+                LEFT JOIN alliancemembers ON alliancemembers.UserID=shippositions.UserID
+                LEFT JOIN alliances ON alliances.AllianceID = alliancemembers.AllianceID
+                LEFT JOIN npctypes ON npctypes.NPCTypeID=users.NPCTypeID
+                LEFT JOIN usertimes ON usertimes.UserID=users.UserID
+            WHERE
+                shippositions.System={$shipPosition->System} AND
+                shippositions.X={$shipPosition->X} AND
+                shippositions.Y={$shipPosition->Y} AND
+                shippositions.Docked='{$shipPosition->Docked}' AND
+                shippositions.UserID != '$userID' AND
+                userstats.Experience > 0";
+		$tQuery = $oDb->execute ( $tQuery );
+		if ($oDb->count ( $tQuery ) > 0) {
+			$this->retVal .= "<h1>{T:ships}</h1>";
 		}
 
 		$shipDisplayed = false;
 
-		while ( $tR1 = Database::getInstance()->fetch ( $tQuery ) ) {
+		while($tR1 = $oDb->fetch ( $tQuery ) ) {
 
 			/*
-			 * To jest dodatkowy warunek: gracze z tego samego sojuszu zawsze się widzą
+			 * players from the same alliance sees each other every time
 			*/
 			if (empty($userAlliance->AllianceID) || $userAlliance->AllianceID != $tR1->AllianceName) {
 
 				/**
 				 * sprawdz widzialność
 				 */
-				if ($shipPosition->Docked == 'no' && ! ShipProperties::sGetVisibility ( $shipProperties, $userStats, $tR1, $tR1, $sectorProperties )) {
+				if ($shipPosition->Docked == 'no' && ! ShipProperties::sGetVisibility($shipProperties, $userStats, new ShipProperties($tR1->UserID), $tR1, $sectorProperties)) {
 					continue;
 				}
 			}
@@ -193,5 +194,4 @@ class SectorShips extends Renderable implements Singleton {
 
 		return true;
 	}
-
 }

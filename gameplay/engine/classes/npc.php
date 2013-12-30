@@ -60,12 +60,12 @@ class npc extends baseItem {
 
 	}
 
-	/**
-	 * Pobranie listy NPC typu protective znajdujących się określonej pozycji
-	 * @param stdClass $position
-	 * @return array
-	 */
-	static public function sGetProtectiveAtPosition($position, $defenderAlliance) {
+    /**
+     * @param $position
+     * @param $defenderAlliance
+     * @return array
+     */
+    static public function sGetProtectiveAtPosition($position, $defenderAlliance) {
 
 		global $config;
 		
@@ -266,7 +266,7 @@ class npc extends baseItem {
 		}
 
 		$npcShipProperties->synchronize();
-		$npcUserProperties->synchronize();
+        $npcUserPropertiesObject->synchronize($npcUserProperties, true, true );
 	}
 
 	/**
@@ -554,7 +554,7 @@ class npc extends baseItem {
 					$dstX = rand ( 1, $systemProperties->Width );
 					$dstY = rand ( 1, $systemProperties->Height );
 				} else {
-					$tPos = new stdClass();
+					$tPos = new \Gameplay\Model\ShipPosition();
 					$tPos->System = $tR1->PositionSystem;
 					$tPos->X = $tR1->PositionX;
 					$tPos->Y = $tR1->PositionY;

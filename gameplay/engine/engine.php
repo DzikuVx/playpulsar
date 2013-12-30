@@ -235,7 +235,7 @@ try {
 	/*
 	 * Autonaprawa statku
 	*/
-	$shipProperties->autoRepair ( $shipProperties, $userFastTimes );
+	$shipProperties->autoRepair($userFastTimes);
 	$shipProperties->generateTurns ( $shipProperties, $userTimes );
 
 	//Wyzeruj odpowiednie pozycje....

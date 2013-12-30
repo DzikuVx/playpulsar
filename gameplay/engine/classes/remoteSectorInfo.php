@@ -53,7 +53,7 @@ class remoteSectorInfo extends \Gameplay\Panel\Sector {
 
 		$this->retVal .= '<div style="clear: both;"></div>';
 
-		$item = new portProperties ( );
+		$item = new portProperties();
 		$portProperties = $item->load ( $shipPosition, true, true );
 		unset($item);
 
@@ -64,7 +64,7 @@ class remoteSectorInfo extends \Gameplay\Panel\Sector {
 
 		if ($portProperties->PortID != null || ! empty ( $jumpNode )) {
 
-			$shipProperties = new stdClass();
+			$shipProperties = new \Gameplay\Model\ShipProperties();
 			$shipProperties->RookieTurns = 1;
 
 			\Gameplay\Panel\Port::initiateInstance($userProperties->Language);

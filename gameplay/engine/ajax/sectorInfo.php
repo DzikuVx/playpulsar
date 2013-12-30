@@ -6,8 +6,7 @@ require_once 'ajaxHeader.php';
 
 $retVal = "";
 
-$shipPosition = new stdClass();
-
+$shipPosition = new \Gameplay\Model\ShipPosition();
 $shipPosition->System = $_REQUEST['System'];
 $shipPosition->X = $_REQUEST['X'];
 $shipPosition->Y = $_REQUEST['Y'];

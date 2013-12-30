@@ -301,7 +301,7 @@ Playpulsar.notifications = (function () {
 			text : notification.text,
 			type : notification.type
 		});
-	}
+	};
 	
 	return self;
 })();
@@ -311,12 +311,35 @@ Playpulsar.gameplay = (function () {
 	var self = {};
 	
 	self.AuthCode = 0;
-	
-	self.sectorInfo = function(System, X, Y) {
 
-		$('#remoteSectorInfo').css('top', mouseY + "px");
-		$('#remoteSectorInfo').css('left', mouseX + "px");
-		$('#remoteSectorInfo').css('width', 320 + "px");
+    /**
+     * @param {int} System
+     * @param {int} X
+     * @param {int} Y
+     * @returns {boolean}
+     */
+    self.plot = function(System, X, Y) {
+        $('#plotSystem').val(System);
+        $('#plotX').val(X);
+        $('#plotY').val(Y);
+
+        Playpulsar.gameplay.execute('plotSet');
+        Panel.Factory.createPanel('Overlay').hide();
+
+        $('#remoteSectorInfo').hide();
+
+        return true;
+    };
+
+    /**
+     * @param {int} System
+     * @param {int} X
+     * @param {int} Y
+     */
+	self.sectorInfo = function(System, X, Y) {
+        var $remoteSectorInfo = $('#remoteSectorInfo');
+
+        $remoteSectorInfo.css('top', mouseY + "px").css('left', mouseX + "px").css('width', 320 + "px");
 
 		//TODO refactor
 		$.post('engine/ajax/sectorInfo.php', {
@@ -324,14 +347,20 @@ Playpulsar.gameplay = (function () {
 			X: X,
 			Y: Y
 		}, function(data) {
-			$('#remoteSectorInfo').html(data).show();
+            $remoteSectorInfo.html(data).show();
 		});
 	};
 	
 	self.systemMap = function(systemID) {
 		self.execute('systemMap', systemID);
-	}
-	
+	};
+
+    /**
+     * @param {string} action
+     * @param {string=} subaction
+     * @param {string=} value
+     * @param {string=} id
+     */
 	self.execute = function(action, subaction, value, id) {
 		
 		/*

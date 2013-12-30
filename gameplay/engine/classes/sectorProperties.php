@@ -80,23 +80,16 @@ class sectorProperties extends baseItem {
 		}
 	}
 
-	/**
-	 * konstruktor statyczny
-	 *
-	 * @param int $ID
-	 * @return stdClass
-	 */
 	static public function quickLoad($ID, $useCache = true) {
 		$item = new sectorProperties ( );
 		$retVal = $item->load ( $ID, $useCache, $useCache );
-		unset($item);
 		return $retVal;
 	}
 
 	/**
 	 * Generuje unikalny ID sektora na postawie pozycji
 	 *
-	 * @param strClass $position
+	 * @param stdClass $position
 	 * @return string
 	 */
 	function createUniqueSectorID($position) {
