@@ -290,8 +290,8 @@ class combat {
 
 				$plusExp = self::sComputeExperienceIncome($this->player->userStats, $tTarget->userStats);
 
-				userStats::incExperience ( $this->player->userStats, $plusExp );
-				userStats::incCash ( $this->player->userStats, floor ( $tTarget->userStats->Cash / 2 ) );
+				\Gameplay\Model\UserStatistics::incExperience ( $this->player->userStats, $plusExp );
+				\Gameplay\Model\UserStatistics::incCash ( $this->player->userStats, floor ( $tTarget->userStats->Cash / 2 ) );
 
 				/**
 				 * Wstaw wpis do newsagency
@@ -316,11 +316,11 @@ class combat {
 
 	/**
 	 * Obliczenie ilość EXP jaki gracz dostanie za wygraną walkę
-	 * @param stdClass $myUserStats
-	 * @param stdClass $enemyUserStats
+	 * @param \Gameplay\Model\UserStatistics $myUserStats
+	 * @param \Gameplay\Model\UserStatistics $enemyUserStats
 	 * @return int
 	 */
-	static public function sComputeExperienceIncome($myUserStats, $enemyUserStats) {
+	static public function sComputeExperienceIncome(\Gameplay\Model\UserStatistics $myUserStats, \Gameplay\Model\UserStatistics $enemyUserStats) {
 
 		/*
 		 * Nowość: 30,000 za każdy level
@@ -332,10 +332,10 @@ class combat {
 
 	/**
 	 * Ilość exp jaką gracz traci za przegraną walkę
-	 * @param stdClass $userStats
+	 * @param \Gameplay\Model\UserStatistics $userStats
 	 * @return int
 	 */
-	static public function sComputeExperienceLoss($userStats) {
+	static public function sComputeExperienceLoss(\Gameplay\Model\UserStatistics $userStats) {
 
 		$retVal = floor($userStats->Experience / 10);
 

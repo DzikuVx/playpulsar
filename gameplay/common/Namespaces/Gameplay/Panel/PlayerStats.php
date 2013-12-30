@@ -3,6 +3,7 @@
 namespace Gameplay\Panel;
 
 use Gameplay\Model\ShipProperties;
+use Gameplay\Model\UserStatistics;
 use Interfaces\Singleton;
 
 use \TranslateController as Translate;
@@ -37,10 +38,10 @@ class PlayerStats extends Renderable implements Singleton {
 	protected $panelTag = "PlayerStats";
 
     /**
-     * @param \stdClass $userStats
+     * @param UserStatistics $userStats
      * @param ShipProperties $shipProperties
      */
-    public function render($userStats, ShipProperties $shipProperties) {
+    public function render(UserStatistics $userStats, ShipProperties $shipProperties) {
 
 		$this->rendered = true;
 
@@ -51,17 +52,17 @@ class PlayerStats extends Renderable implements Singleton {
 
 		$this->retVal .= "<div class='columnData'>";
 		$this->retVal .= "<div>";
-		$this->retVal .= "<strong>".Translate::getDefault()->get ( 'level' ) . ":</strong> " . $userStats->Level;
+		$this->retVal .= "<strong>{T:level}:</strong> " . $userStats->Level;
 		$this->retVal .= "</div>";
 		$this->retVal .= "<div>";
-		$this->retVal .= "<strong>".Translate::getDefault()->get ( 'experience' ) . ":</strong> " . number_format ( $userStats->Experience, 0, "", " " );
+		$this->retVal .= "<strong>{T:experience}:</strong> " . number_format ( $userStats->Experience, 0, "", " " );
 		$this->retVal .= "</div>";
 
 		$this->retVal .= "<div>";
-		$this->retVal .= "<strong>".Translate::getDefault()->get ( 'cash' ) . ":</strong> " . number_format ( $userStats->Cash, 0, "", " " ) . "$";
+		$this->retVal .= "<strong>{T:cash}:</strong> " . number_format ( $userStats->Cash, 0, "", " " ) . "$";
 		$this->retVal .= "</div>";
 		$this->retVal .= "<div>";
-		$this->retVal .= "<strong>".Translate::getDefault()->get ( 'Fame' ) . ":</strong> " . number_format ( $userStats->Fame, 0, "", " " );
+		$this->retVal .= "<strong>{T:Fame}:</strong> " . number_format ( $userStats->Fame, 0, "", " " );
 		$this->retVal .= "</div>";
 
 		$this->retVal .= "</div>";
@@ -69,8 +70,8 @@ class PlayerStats extends Renderable implements Singleton {
 
 		$this->retVal .= "<div class='column25 center'>";
 
-		$iExpForCurrent = \userStats::computeExperience($userStats->Level);
-		$iExpForNext = \userStats::computeExperience($userStats->Level + 1);
+		$iExpForCurrent = UserStatistics::computeExperience($userStats->Level);
+		$iExpForNext    = UserStatistics::computeExperience($userStats->Level + 1);
 
 		$iDiff = $iExpForNext-$iExpForCurrent;
 		$iCurrent = $userStats->Experience - $iExpForCurrent;
@@ -96,5 +97,4 @@ class PlayerStats extends Renderable implements Singleton {
 
 		date_default_timezone_set ( "Europe/Warsaw" );
 	}
-
 }

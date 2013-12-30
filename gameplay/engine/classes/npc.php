@@ -190,15 +190,13 @@ class npc extends baseItem {
 			/*
 			 * Set experience and cash
 			 */
-			$npcUserStatsObject = new userStats ( );
-			$npcUserStats = $npcUserStatsObject->load ( $npcID, true, true );
+            $npcUserStats = new \Gameplay\Model\UserStatistics($npcID);
 
 			$npcUserStats->Cash = additional::randomizeValue ( $npcType->Cash, 20, 1000 );
-			$npcUserStats->Experience = additional::randomizeValue ( userStats::computeExperience($npcType->Level), 10, 1000 );
-			$npcUserStats->Level = userStats::computeLevel ( $npcUserStats->Experience );
+			$npcUserStats->Experience = additional::randomizeValue ( \Gameplay\Model\UserStatistics::computeExperience($npcType->Level), 10, 1000 );
+			$npcUserStats->Level = \Gameplay\Model\UserStatistics::computeLevel ( $npcUserStats->Experience );
 
-			$npcUserStatsObject->synchronize ( $npcUserStats, true, true);
-			unset($npcUserStatsObject);
+			$npcUserStats->synchronize();
 
 			/*
 			 * ustaw nowy statek

@@ -5,6 +5,7 @@ namespace Controlpanel;
 use Gameplay\Model\ShipPosition;
 use Gameplay\Model\ShipProperties;
 use Gameplay\Model\SystemProperties;
+use Gameplay\Model\UserStatistics;
 
 class NpcTypes extends GameplayItem{
 
@@ -335,7 +336,7 @@ class NpcTypes extends GameplayItem{
 				/*
 				 * Wstaw tablelę userstats
 				*/
-				$tExperience = \additional::randomizeValue ( \userStats::computeExperience($row1->Level), 10, 1000 );
+				$tExperience = \additional::randomizeValue ( UserStatistics::computeExperience($row1->Level), 10, 1000 );
 				$tQuery2 = "INSERT INTO
                     userstats(
                       UserID,
@@ -347,7 +348,7 @@ class NpcTypes extends GameplayItem{
                       '$npcID',
                       '" . \additional::randomizeValue ( $row1->Cash, 20, 1000 ) . "',
                       '" . $tExperience . "',
-                      '" . \userStats::computeLevel ( $tExperience ) . "'
+                      '" . UserStatistics::computeLevel ( $tExperience ) . "'
                     )
                 ";
 				\Database\Controller::getInstance()->execute ( $tQuery2 );

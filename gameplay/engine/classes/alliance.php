@@ -356,7 +356,7 @@ class alliance extends baseItem {
 		 */
 		allianceRights::sGiveAll($userID, $userAlliance->AllianceID);
 
-		userStats::decFame($userStats, $config ['alliance']['createFameCost']);
+		\Gameplay\Model\UserStatistics::decFame($userStats, $config ['alliance']['createFameCost']);
 
 		allianceRequest::sDeleteAll($userID);
         \phpCache\Factory::getInstance()->create()->clearModule(new \phpCache\CacheKey('allianceRequest::sGetCount'));

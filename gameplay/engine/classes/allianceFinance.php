@@ -40,17 +40,16 @@ class allianceFinance extends baseItem {
 			throw new securityException();
 		}
 
-		$tUserStatsObject = new userStats();
-		$tUserStats = $tUserStatsObject->load($id, true, true);
+        $tUserStats = new \Gameplay\Model\UserStatistics($id);
 
 		$tUserStats->Cash += $value;
 		$data->Cash -= $value;
 
-		$tUserStatsObject->synchronize($tUserStats, true, true);
+		$tUserStats->synchronize();
 		$item->synchronize($data, true, true);
 
         //TODO is this really nessesary? synchronize is setting cache right?
-        \userStats::sFlushCache($id);
+        \Gameplay\Model\UserStatistics::sFlushCache($id);
 
 		//todo czyszczenie cache dla wszystkich członków sojuszu
 

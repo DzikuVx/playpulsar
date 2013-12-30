@@ -56,13 +56,10 @@ class combatShip {
 	public $userPropertiesObject = null;
 	public $userProperties = null;
 
-	/**
-	 * userStats
-	 *
-	 * @var userStats
-	 */
-	public $userStatsObject = null;
-	public $userStats = null;
+    /**
+     * @var \Gameplay\Model\UserStatistics
+     */
+    public $userStats = null;
 
 	/**
 	 * @var \Gameplay\Model\ShipPosition
@@ -89,8 +86,7 @@ class combatShip {
 		$this->userPropertiesObject = new userProperties ( );
 		$this->userProperties = $this->userPropertiesObject->load ( $userID, true, true );
 
-		$this->userStatsObject = new userStats ( );
-		$this->userStats = $this->userStatsObject->load ( $userID, true, true );
+        $this->userStats = new \Gameplay\Model\UserStatistics($userID);
 
 		$this->shipWeapons = new shipWeapons ( $this->userID, $this->Language );
 		$this->shipEquipment = new shipEquipment ( $this->userID, $this->Language );
@@ -154,7 +150,7 @@ class combatShip {
 			/**
 			 * Utrata doświadczenia
 			 */
-			userStats::decExperience ( $this->userStats, combat::sComputeExperienceLoss($this->userStats) );
+			\Gameplay\Model\UserStatistics::decExperience($this->userStats, combat::sComputeExperienceLoss($this->userStats) );
 
 			$sectorCargo = new sectorCargo($this->shipPosition);
 
@@ -247,8 +243,7 @@ class combatShip {
 			$this->userFastTimes->synchronize();
 			$this->userTimes->synchronize();
 			$this->shipProperties->synchronize();
-			$this->userStatsObject->synchronize( $this->userStats, true, true );
-
+			$this->userStats->synchronize();
 		} catch ( Exception $e ) {
 			\phpCache\Factory::getInstance()->create()->clearAll();
             echo $e->getMessage ();

@@ -2,6 +2,7 @@
 
 namespace Gameplay\Model;
 
+//FIXME replace static methods with dynamic, statics are obsolete
 class ShipProperties extends Standard {
 
     protected $tableName = "userships";
@@ -345,13 +346,13 @@ class ShipProperties extends Standard {
 
     /**
      * @param ShipProperties $shipProperties
-     * @param \stdClass $userStats
+     * @param UserStatistics $userStats
      * @param ShipProperties $otherShipProperties
-     * @param \stdClass $otherUserStats
+     * @param UserStatistics $otherUserStats
      * @param \stdClass $sectorProperties
      * @return boolean
      */
-    static public function sGetVisibility(ShipProperties $shipProperties, $userStats, ShipProperties $otherShipProperties, $otherUserStats, $sectorProperties) {
+    static public function sGetVisibility(ShipProperties $shipProperties, UserStatistics $userStats, ShipProperties $otherShipProperties, UserStatistics $otherUserStats, $sectorProperties) {
 
         $percentage = $sectorProperties->Visibility + $userStats->Level - $otherUserStats->Level + $shipProperties->Scan - $otherShipProperties->Cloak;
 
@@ -813,8 +814,8 @@ class ShipProperties extends Standard {
         $shipProperties->ShipID = $shipID;
         $shipProperties->synchronize();
 
-        \userStats::decCash ( $userStats, $tShip->Price - $currentShipValue );
-        \userStats::decFame ( $userStats, $tShip->Fame );
+        UserStatistics::decCash ( $userStats, $tShip->Price - $currentShipValue );
+        UserStatistics::decFame ( $userStats, $tShip->Fame );
         $portProperties->Cash += $tShip->Price;
         $shipEquipment->removeAll ( $shipProperties );
         $shipWeapons->removeAll ( $shipProperties );

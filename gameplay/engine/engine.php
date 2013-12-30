@@ -142,9 +142,7 @@ try {
 		throw new combatException ( );
 	}
 
-	$userStatsObject = new userStats ( );
-	$userStats = $userStatsObject->load ( $userID, true, true );
-
+    $userStats     = $oPlayerModelProvider->register('UserStatistics', new \Gameplay\Model\UserStatistics($userID));
     $userTimes     = $oPlayerModelProvider->register('UserTimes', new \Gameplay\Model\UserTimes($userID));
     $userFastTimes = $oPlayerModelProvider->register('UserFastTimes', new \Gameplay\Model\UserFastTimes($userID));
 
@@ -309,7 +307,7 @@ try {
 			break;
 
 		case 'examineMe':
-			userStats::sExamineMe();
+			\Gameplay\Model\UserStatistics::sExamineMe();
 			break;
 
 		case 'allianceCashout':
@@ -727,7 +725,7 @@ try {
 				$shipProperties->RookieTurns = 0;
 			}
 
-			userStats::incExperience ( $userStats, $config ['general'] ['expForMove'] );
+			\Gameplay\Model\UserStatistics::incExperience ( $userStats, $config ['general'] ['expForMove'] );
 
 			sectorProperties::sResetResources ( $shipPosition, $sectorProperties );
 			portProperties::sReset ( $portProperties );
@@ -776,7 +774,7 @@ try {
 				}
 			}
 
-			userStats::incExperience ( $userStats, $config ['general'] ['expForMove'] );
+			\Gameplay\Model\UserStatistics::incExperience ( $userStats, $config ['general'] ['expForMove'] );
 
 			sectorProperties::sResetResources ( $shipPosition, $sectorProperties );
 			portProperties::sReset ( $portProperties );
@@ -834,7 +832,7 @@ try {
 				$shipProperties->RookieTurns = 0;
 			}
 
-			userStats::incExperience ( $userStats, $config ['general'] ['expForMove'] );
+			\Gameplay\Model\UserStatistics::incExperience ( $userStats, $config ['general'] ['expForMove'] );
 
 			//Odświerz informacje o sektorze
 			$sectorProperties = $sectorPropertiesObject->reload ( $shipPosition, $sectorProperties, true, true );
@@ -918,7 +916,7 @@ try {
 
 			$shipPosition->synchronize();
 
-			userStats::incExperience ( $userStats, $config ['general'] ['expForMove'] );
+			\Gameplay\Model\UserStatistics::incExperience ( $userStats, $config ['general'] ['expForMove'] );
 
 			//Odświerz informacje o sektorze
 			$sectorProperties = $sectorPropertiesObject->reload ( $shipPosition, $sectorProperties, true, true );
@@ -1010,13 +1008,13 @@ try {
 	 */
 	$shipPosition->synchronize ();
 	$userFastTimes->synchronize();
-	$userTimes->synchronize ();
+	$userTimes->synchronize();
     $shipProperties->synchronize();
+    $userStats->synchronize();
 
     $sectorPropertiesObject->synchronize ( $sectorProperties, true, true );
     $portPropertiesObject->synchronize ( $portProperties, true, true );
-	$userPropertiesObject->synchronize ( $userProperties, true, true );
-	$userStatsObject->synchronize ( $userStats, true, true );
+    $userPropertiesObject->synchronize ( $userProperties, true, true );
 	$shipRoutingObject->synchronize ( $shipRouting, true, true );
 	$userAllianceObject->synchronize($userAlliance, true, true);
 

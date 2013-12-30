@@ -100,7 +100,7 @@ class ftlDrive {
 			}
 		}
 
-		userStats::incExperience ( $userStats, $config ['general'] ['expForWarpJump'] );
+		\Gameplay\Model\UserStatistics::incExperience ( $userStats, $config ['general'] ['expForWarpJump'] );
 
 		//Odświerz informacje o sektorze
 		$sectorProperties = $sectorPropertiesObject->reload ( $shipPosition, $sectorProperties, true, true );

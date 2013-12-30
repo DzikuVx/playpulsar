@@ -634,7 +634,7 @@ class shipWeapons {
 
 			$shipWeapons->remove ( $weaponID, $shipProperties );
 
-			userStats::incCash ( $userStats, $tPrice );
+			\Gameplay\Model\UserStatistics::incCash ( $userStats, $tPrice );
 
 			$portProperties->Cash -= $tPrice;
 			if ($portProperties->Cash < 0) {
@@ -674,7 +674,7 @@ class shipWeapons {
 
 		$shipCargo->decAmount($weaponID, 'weapon', 1);
 
-		userStats::incCash ( $userStats, $tPrice );
+		\Gameplay\Model\UserStatistics::incCash ( $userStats, $tPrice );
 
 		$portProperties->Cash -= $tPrice;
 		if ($portProperties->Cash < 0) {
@@ -736,7 +736,7 @@ class shipWeapons {
 
 			$shipWeapons->reload ( $shipWeaponID, $tData->MaxAmmo );
 
-			userStats::decCash ( $userStats, $tReloadPrice );
+			\Gameplay\Model\UserStatistics::decCash($userStats, $tReloadPrice);
 			$portProperties->Cash += $tReloadPrice;
 
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:weaponReloadedFor}' . $tReloadPrice . '$' );
@@ -774,7 +774,7 @@ class shipWeapons {
 		if (! $error) {
 			$shipWeapons->repair ( $shipWeaponID );
 
-			userStats::decCash ( $userStats, $tRepairPrice );
+			\Gameplay\Model\UserStatistics::decCash($userStats, $tRepairPrice);
 			$portProperties->Cash += $tRepairPrice;
 
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:weaponRepairedFor}' . $tRepairPrice . '$' );
@@ -822,8 +822,8 @@ class shipWeapons {
 		}
 
 		$shipWeapons->insert ( $tWeapon, $shipProperties );
-		userStats::decCash ( $userStats, $tWeapon->Price );
-		userStats::decFame ( $userStats, $tWeapon->Fame );
+		\Gameplay\Model\UserStatistics::decCash( $userStats, $tWeapon->Price );
+		Gameplay\Model\UserStatistics::decFame ( $userStats, $tWeapon->Fame );
 		$portProperties->Cash += $tWeapon->Price;
 
 		\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:weaponBought}' . $tWeapon->Price . '$' );

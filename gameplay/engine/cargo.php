@@ -164,7 +164,7 @@ if ($action == "jettison") {
 			$item = new product ( );
 			$productData = $item->load ( $id, true, true );
 			$userStats->Experience -= $item->getExperienceForJettison() * $toJettison;
-			$userStats->Level = userStats::computeLevel ( $userStats->Experience );
+			$userStats->Level = \Gameplay\Model\UserStatistics::computeLevel ( $userStats->Experience );
 			unset($item);
 		}
 	}
@@ -271,7 +271,7 @@ if ($action == "gather") {
 		$shipCargo->incAmount ( $id, $subaction, $toGather );
 
 		//Zwiększyć kaskę usera
-		userStats::incExperience ( $userStats, $productExp * $toGather );
+		\Gameplay\Model\UserStatistics::incExperience ( $userStats, $productExp * $toGather );
 
 		$shipProperties->Turns -= $turnsRequired;
 
@@ -525,7 +525,7 @@ if ($action == "itemSell") {
 	//Zwiększyć kaskę usera
 	$userStats->Cash += $productData->Price * $value;
 
-	userStats::incExperience ( $userStats, $productData->Experience * $value );
+	\Gameplay\Model\UserStatistics::incExperience ( $userStats, $productData->Experience * $value );
 
 	\Gameplay\Model\ShipProperties::updateUsedCargo ( $shipProperties );
 
@@ -583,7 +583,7 @@ if ($action == "productSell") {
 	//Zwiększyć kaskę usera
 	$userStats->Cash += $productPrice * $value;
 
-	userStats::incExperience ( $userStats, $productExperience * $value );
+	\Gameplay\Model\UserStatistics::incExperience ( $userStats, $productExperience * $value );
 
 	\Gameplay\Model\ShipProperties::updateUsedCargo ( $shipProperties );
 
@@ -650,8 +650,7 @@ if ($action == "productBuy") {
 	//Zmniejsz kasę usera
 	$userStats->Cash -= $productPrice * $value;
 
-	userStats::incExperience ( $userStats, $productExperience * $value );
-
+	\Gameplay\Model\UserStatistics::incExperience ( $userStats, $productExperience * $value );
 	\Gameplay\Model\ShipProperties::updateUsedCargo ( $shipProperties );
 
 	//Update portu po zakończeniu handlu

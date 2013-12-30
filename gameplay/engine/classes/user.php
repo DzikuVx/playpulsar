@@ -108,7 +108,7 @@ class user {
           '$playerID',
           '" . $config ['userDefault'] ['cash'] . "',
           '" . $config ['userDefault'] ['experience'] . "',
-          '" . userStats::computeLevel ( $config ['userDefault'] ['experience'] ) . "'
+          '" . \Gameplay\Model\UserStatistics::computeLevel ( $config ['userDefault'] ['experience'] ) . "'
         )
     ";
 		\Database\Controller::getInstance()->execute ( $tQuery2 );
@@ -241,7 +241,7 @@ class user {
 		}
 
 		$userPropertiesObject->synchronize($userProperties, true, true);
-		userStats::sExamineMe();
+		\Gameplay\Model\UserStatistics::sExamineMe();
 		\Gameplay\Framework\ContentTransport::getInstance()->addNotification('success', '{T:opSuccess}');
 	}
 
@@ -479,7 +479,7 @@ class user {
                   '$playerID',
                   '" . $config ['userDefault'] ['cash'] . "',
                   '" . $config ['userDefault'] ['experience'] . "',
-                  '" . userStats::computeLevel ( $config ['userDefault'] ['experience'] ) . "'
+                  '" . \Gameplay\Model\UserStatistics::computeLevel ( $config ['userDefault'] ['experience'] ) . "'
                 )
             ";
 		\Database\Controller::getInstance()->execute ( $tQuery2 );

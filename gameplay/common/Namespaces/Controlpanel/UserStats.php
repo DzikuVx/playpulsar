@@ -2,16 +2,13 @@
 
 namespace Controlpanel;
 
-class UserStats extends \userStats {
+use Gameplay\Model\UserStatistics;
+
+class UserStats extends UserStatistics {
 
 	public function edit($user, $params) {
-		$retVal = '';
-
-		$data = $this->load($params['id'], true, true);
-
-		$retVal .= \Controlpanel\BaseItem::sRenderEditForm($this, $data, $params['id']);
-
-		return $retVal;
+		$this->reload($params['id']);
+		return \Controlpanel\BaseItem::sRenderEditForm($this, $this, $params['id']);
 	}
 
 	public function editExe($user, $params) {
@@ -23,7 +20,7 @@ class UserStats extends \userStats {
 		$tQuery = \Controlpanel\BaseItem::sMakeUpdateQuery($this->tableName, $this->tableID, $this->tableUseFields, $params);
 
 		\Database\Controller::getInstance()->execute($tQuery);
-        \userStats::sFlushCache($params['id']);
+        UserStatistics::sFlushCache($params['id']);
 		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
 	}
 

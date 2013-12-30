@@ -3,6 +3,7 @@
 namespace Controlpanel;
 use \Database\Controller as Database;
 use Gameplay\Model\ShipProperties;
+use Gameplay\Model\UserStatistics;
 use \General\Controls as Controls;
 
 class Player extends BaseItem {
@@ -243,7 +244,7 @@ class Player extends BaseItem {
 
 		Database::getInstance()->quoteAll($params);
 		Database::getInstance()->execute("UPDATE userstats SET Fame=Fame+'{$params['value']}' WHERE UserID='{$params['id']}'" );
-        \userStats::sFlushCache($params['id']);
+        UserStatistics::sFlushCache($params['id']);
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
 	}
 
@@ -289,8 +290,7 @@ class Player extends BaseItem {
 
 		$shipProperties = new ShipProperties($params['id']);
 
-		$userStatsObject = new \userStats();
-		$userStats = $userStatsObject->load($params['id'],true, true);
+        $userStats = new UserStatistics($params['id']);
 
 		//@todo prawa dostępu:
 		$template->add('playerStatsEditButton',Controls::bootstrapButton ( "Edit", "document.location='index.php?class=\Controlpanel\UserStats&method=edit&id={$params['id']}'",'btn-warning', 'icon-pencil'));

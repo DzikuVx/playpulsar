@@ -97,9 +97,7 @@ class allianceRights extends baseItem {
 			throw new securityException();
 		}
 
-		$item = new userStats ( );
-		$otheruserStats = $item->load ( $id, true, true );
-		unset($item);
+        $otheruserStats = new \Gameplay\Model\UserStatistics($id);
 
 		$item = new userProperties ( );
 		$otheruserParameters = $item->load ( $id, true, true );
