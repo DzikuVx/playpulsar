@@ -3,9 +3,10 @@ class shipEquipmentRegistry extends simpleRegistry {
 
 	static public function sRender() {
 
-		global $config, $userID, $shipProperties, $portProperties, $action, $subaction, $value, $id;
+		global $config, $userID, $shipProperties, $action, $subaction, $value, $id;
 
         $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
+        $portProperties = \Gameplay\PlayerModelProvider::getInstance()->get('PortEntity');
 
 		$repairTemplate = new \General\Templater ( dirname ( __FILE__ ) . '/../../templates/shipRepairTable.html' );
 		$repairTemplate->add ( $shipProperties );
@@ -36,14 +37,14 @@ class shipEquipmentRegistry extends simpleRegistry {
 
     /**
      * @param \Gameplay\Model\ShipPosition $shipPosition
-     * @param stdClass $portProperties
+     * @param \Gameplay\Model\PortEntity $portProperties
      * @param string $action
      * @param string $subaction
      * @param string $value
      * @param string $id
      * @return string
      */
-    public function get(\Gameplay\Model\ShipPosition $shipPosition, $portProperties, $action, $subaction, $value, $id) {
+    public function get(\Gameplay\Model\ShipPosition $shipPosition, \Gameplay\Model\PortEntity $portProperties, $action, $subaction, $value, $id) {
 
 		global $shipEquipment, $colorTable, $userStats;
 

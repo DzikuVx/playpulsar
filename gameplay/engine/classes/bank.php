@@ -6,15 +6,15 @@ class bank {
 	//@todo transfer gotówki do innych graczy
 
 	/**
-	 * Pobieranie kasy w banku
 	 * @param int $value
 	 * @throws securityException
 	 */
 	static public function sWithdraw($value) {
 
-		global $userStats, $portProperties, $action;
+		global $userStats, $action;
 
         $shipPosition = PlayerModelProvider::getInstance()->get('ShipPosition');
+        $portProperties = PlayerModelProvider::getInstance()->get('PortEntity');
 
 		$value = \Database\Controller::getInstance()->quote($value);
 
@@ -53,9 +53,10 @@ class bank {
 	 */
 	static public function sDeposit($value) {
 
-		global $userStats, $portProperties, $action;
+		global $userStats, $action;
 
         $shipPosition = PlayerModelProvider::getInstance()->get('ShipPosition');
+        $portProperties = PlayerModelProvider::getInstance()->get('PortEntity');
 		$value = \Database\Controller::getInstance()->quote($value);
 
 		if (!is_numeric($value)) {

@@ -146,7 +146,15 @@ class ShipProperties extends Standard {
 
     public $RookieTurns;
 
+    /**
+     * @var int
+     */
     public $SpecializationID;
+
+    /**
+     * @var string
+     */
+    public $SpecializationName;
 
     public $CanRepairWeapons;
 
@@ -237,10 +245,11 @@ class ShipProperties extends Standard {
      */
     static public function sStationRepair() {
 
-        global $action, $value, $config, $portProperties, $subaction, $userStats;
+        global $action, $value, $config, $subaction, $userStats;
 
         $shipPosition   = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
         $shipProperties = \Gameplay\PlayerModelProvider::getInstance()->get('ShipProperties');
+        $portProperties = \Gameplay\PlayerModelProvider::getInstance()->get('PortEntity');
 
         /*
          * Warunki
@@ -757,10 +766,11 @@ class ShipProperties extends Standard {
      */
     static public function sBuy($shipID) {
 
-        global $shipCargo, $shipWeapons, $userProperties, $action, $userStats, $portProperties, $shipEquipment;
+        global $shipCargo, $shipWeapons, $userProperties, $action, $userStats, $shipEquipment;
 
         $shipPosition   = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
         $shipProperties = \Gameplay\PlayerModelProvider::getInstance()->get('ShipProperties');
+        $portProperties = \Gameplay\PlayerModelProvider::getInstance()->get('PortEntity');
 
         if ($shipPosition->Docked == 'no') {
             throw new \securityException ( );

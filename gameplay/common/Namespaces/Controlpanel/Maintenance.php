@@ -1,6 +1,7 @@
 <?php
 
 namespace Controlpanel;
+use Gameplay\Model\PortEntity;
 use \General\Controls as Controls;
 use \General\Formater as Formater;
 use \Database\Controller as Database;
@@ -642,8 +643,8 @@ class Maintenance extends BaseItem {
 		$tQuery = Database::getInstance()->execute ( $tQuery );
 		while ( $tResult = Database::getInstance()->fetch ( $tQuery ) ) {
 
-			$tPort = \portProperties::quickLoad ( $tResult->PortID, false );
-			\portProperties::sReset ( $tPort );
+			$tPort = PortEntity::quickLoad ( $tResult->PortID, false );
+			PortEntity::sReset($tPort);
 			unset ( $tPort );
 
 		}

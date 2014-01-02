@@ -28,10 +28,11 @@ class ftlDrive {
 	}
 
 	static public function sEngage() {
-		global $userID, $shipProperties, $shipRouting, $userStats, $config, $sectorProperties, $portProperties, $jumpNode, $sectorPropertiesObject, $portPropertiesObject, $jumpNodeObject;
+		global $userID, $shipProperties, $shipRouting, $userStats, $config, $sectorProperties, $jumpNode, $sectorPropertiesObject, $jumpNodeObject;
 
         $shipPosition     = PlayerModelProvider::getInstance()->get('ShipPosition');
         $systemProperties = PlayerModelProvider::getInstance()->get('SystemProperties');
+        $portProperties = PlayerModelProvider::getInstance()->get('PortEntity');
 
 		if ($shipProperties->checkMalfunction()) {
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'error', '{T:shipMalfunctionEmp}');
@@ -103,17 +104,16 @@ class ftlDrive {
         $userStats->incExperience($config ['general'] ['expForWarpJump']);
 
 		//Odświerz informacje o sektorze
-		$sectorProperties = $sectorPropertiesObject->reload ( $shipPosition, $sectorProperties, true, true );
-		$portProperties = $portPropertiesObject->reload ( $shipPosition, $portProperties, true, true );
-		$systemProperties->reload( $shipPosition->System);
+		$sectorProperties = $sectorPropertiesObject->reload($shipPosition, $sectorProperties, true, true);
+		$portProperties->reload($shipPosition);
+		$systemProperties->reload($shipPosition->System);
 
 		$jumpNode = $jumpNodeObject->load ( $shipPosition, true, true );
 
-		sectorProperties::sResetResources ( $shipPosition, $sectorProperties );
-		portProperties::sReset ( $portProperties );
+		sectorProperties::sResetResources($shipPosition, $sectorProperties);
+		\Gameplay\Model\PortEntity::sReset($portProperties);
 
-		\Gameplay\Panel\Sector::getInstance()->render ( $sectorProperties, $systemProperties, $shipPosition );
-
+		\Gameplay\Panel\Sector::getInstance()->render($sectorProperties, $systemProperties, $shipPosition);
 		\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
 		\Gameplay\Panel\SectorResources::getInstance()->render ( $shipPosition, $shipProperties, $sectorProperties );
 		\Gameplay\Panel\Port::getInstance()->render ( $shipPosition, $portProperties, $shipProperties, $jumpNode );
@@ -127,7 +127,7 @@ class ftlDrive {
 		\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:Jump completed}');
 
 		\Gameplay\Panel\PortAction::getInstance()->clear ();
-
+        return true;
 	}
 
 }

@@ -601,9 +601,10 @@ class shipWeapons {
      */
     static public function sSell($weaponID) {
 
-		global $userID, $userStats, $shipProperties, $portProperties, $shipWeapons, $error;
+		global $userID, $userStats, $shipProperties, $shipWeapons, $error;
 
         $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
+        $portProperties = \Gameplay\PlayerModelProvider::getInstance()->get('PortEntity');
 
 		static::sUpdateCount ( $shipProperties, $userID );
 
@@ -648,9 +649,10 @@ class shipWeapons {
 
 	static public function sSellFromCargo($weaponID) {
 
-		global $shipCargo, $userID, $userStats, $shipProperties, $portProperties;
+		global $shipCargo, $userID, $userStats, $shipProperties;
 
         $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
+        $portProperties = \Gameplay\PlayerModelProvider::getInstance()->get('PortEntity');
 
 		if ($shipPosition->Docked == 'no') {
 			throw new securityException ( );
@@ -694,9 +696,10 @@ class shipWeapons {
      */
     static public function sReload($shipWeaponID) {
 
-		global $error, $shipWeapons, $portProperties, $userStats;
+		global $error, $shipWeapons, $userStats;
 
         $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
+        $portProperties = \Gameplay\PlayerModelProvider::getInstance()->get('PortEntity');
 
 		$tData = $shipWeapons->getSingle($shipWeaponID);
 
@@ -749,9 +752,10 @@ class shipWeapons {
      */
     static public function sRepair($shipWeaponID) {
 
-		global $error, $shipWeapons, $portProperties, $userStats;
+		global $error, $shipWeapons, $userStats;
 
         $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
+        $portProperties = \Gameplay\PlayerModelProvider::getInstance()->get('PortEntity');
 
 		$tData = $shipWeapons->getSingle ( $shipWeaponID );
 
@@ -787,9 +791,10 @@ class shipWeapons {
      */
     static public function sBuy($weaponID) {
 
-		global $userID, $action, $userStats, $shipProperties, $portProperties, $shipWeapons;
+		global $userID, $action, $userStats, $shipProperties, $shipWeapons;
 
         $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
+        $portProperties = \Gameplay\PlayerModelProvider::getInstance()->get('PortEntity');
 
 		static::sUpdateCount ( $shipProperties, $userID );
 

@@ -114,9 +114,10 @@ class allianceFinance extends baseItem {
 	}
 
 	static public function sDeposit() {
-		global $userStats, $portProperties, $action, $value, $userAlliance;
+		global $userStats, $action, $value, $userAlliance;
 
         $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
+        $portProperties = \Gameplay\PlayerModelProvider::getInstance()->get('PortEntity');
 		$value = \Database\Controller::getInstance()->quote($value);
 
 		if (!is_numeric($value)) {

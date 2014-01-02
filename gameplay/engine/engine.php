@@ -160,14 +160,13 @@ try {
 	/**
 	 * Inicjalizacja parametrów portu
 	 */
-	$portPropertiesObject 	= new portProperties ( );
-	$portProperties 		= $portPropertiesObject->load ( $shipPosition, true, true );
+    $portProperties = $oPlayerModelProvider->register('PortEntity', new \Gameplay\Model\PortEntity($shipPosition));
 
 	/*
 	 * Inicjalizacja JumpNode
 	*/
-	$jumpNodeObject = new jumpNode ( );
-	$jumpNode 		= $jumpNodeObject->load ( $shipPosition, true, true );
+	$jumpNodeObject = new jumpNode();
+	$jumpNode 		= $jumpNodeObject->load($shipPosition, true, true);
 
 	/**
 	 * Inicjalizaja parametrów systemu
@@ -693,7 +692,7 @@ try {
 	}
 
 	if ($action == "portBank" || $action == "portHangar" || $action == "portMarketplace" || $action == "portShipyard" || $action == "portBar" || $action == "portStorehouse") {
-		portProperties::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
+		\Gameplay\Model\PortEntity::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
 	}
 
 	include "cargo.php";
@@ -728,7 +727,7 @@ try {
             $userStats->incExperience($config ['general'] ['expForMove']);
 
 			sectorProperties::sResetResources ( $shipPosition, $sectorProperties );
-			portProperties::sReset ( $portProperties );
+			\Gameplay\Model\PortEntity::sReset ( $portProperties );
 
 			\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
 
@@ -737,7 +736,7 @@ try {
 			\Gameplay\Panel\Port::getInstance()->render ( $shipPosition, $portProperties, $shipProperties, $jumpNode );
 
 			$action = 'portMarketplace';
-			portProperties::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
+			\Gameplay\Model\PortEntity::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
 			\Gameplay\Panel\Action::getInstance()->clear ();
 			\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
 		}
@@ -777,8 +776,7 @@ try {
             $userStats->incExperience($config ['general'] ['expForMove']);
 
 			sectorProperties::sResetResources ( $shipPosition, $sectorProperties );
-			portProperties::sReset ( $portProperties );
-
+			\Gameplay\Model\PortEntity::sReset ( $portProperties );
 			\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
 			\Gameplay\Panel\Port::getInstance()->render ( $shipPosition, $portProperties, $shipProperties, $jumpNode );
 			\Gameplay\Panel\SectorResources::getInstance()->render ( $shipPosition, $shipProperties, $sectorProperties );
@@ -835,14 +833,14 @@ try {
             $userStats->incExperience($config ['general'] ['expForMove']);
 
 			$sectorProperties = $sectorPropertiesObject->reload ( $shipPosition, $sectorProperties, true, true );
-			$portProperties = $portPropertiesObject->reload ( $shipPosition, $portProperties, true, true );
+			$portProperties->reload($shipPosition);
 
 			$systemProperties->reload( $shipPosition->System);
 
 			$jumpNode = $jumpNodeObject->load ( $shipPosition, true, true );
 
 			sectorProperties::sResetResources ( $shipPosition, $sectorProperties );
-			portProperties::sReset ( $portProperties );
+			\Gameplay\Model\PortEntity::sReset ( $portProperties );
 
 			\Gameplay\Panel\Sector::getInstance()->render ( $sectorProperties, $systemProperties, $shipPosition );
 
@@ -919,12 +917,12 @@ try {
 
 			$sectorProperties = $sectorPropertiesObject->reload ( $shipPosition, $sectorProperties, true, true );
 			$jumpNode = $jumpNodeObject->load ( $shipPosition, true, true );
-			$portProperties = $portPropertiesObject->reload ( $shipPosition, $portProperties, true, true );
+			$portProperties->reload($shipPosition);
 
-			portProperties::sReset ( $portProperties );
+			\Gameplay\Model\PortEntity::sReset ( $portProperties );
 			sectorProperties::sResetResources ( $shipPosition, $sectorProperties );
 
-			\Gameplay\Panel\Sector::getInstance()->render ( $sectorProperties, $systemProperties, $shipPosition );
+			\Gameplay\Panel\Sector::getInstance()->render($sectorProperties, $systemProperties, $shipPosition);
 
 			\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
 			\Gameplay\Panel\SectorResources::getInstance()->render ( $shipPosition, $shipProperties, $sectorProperties );
@@ -939,25 +937,22 @@ try {
 
 	if ($action == "shipRefresh") {
 		sectorProperties::sResetResources ( $shipPosition, $sectorProperties, false );
-		portProperties::sReset ( $portProperties );
+		\Gameplay\Model\PortEntity::sReset ( $portProperties );
 		\Gameplay\Panel\SectorResources::getInstance()->render ( $shipPosition, $shipProperties, $sectorProperties );
 		\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
 		\Gameplay\Panel\Port::getInstance()->render ( $shipPosition, $portProperties, $shipProperties, $jumpNode );
-		portProperties::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
+		\Gameplay\Model\PortEntity::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
 	}
 
 	if ($action == "pageReload" || $action == 'shipAttack' || $action == 'refresh' || $action == 'fireWeapons' || $action == 'disengage') {
 		sectorProperties::sResetResources ( $shipPosition, $sectorProperties, false );
-		portProperties::sReset ( $portProperties );
-
+		\Gameplay\Model\PortEntity::sReset ( $portProperties );
 		\Gameplay\Panel\Sector::getInstance()->render ( $sectorProperties, $systemProperties, $shipPosition );
 		\Gameplay\Panel\Port::getInstance()->render ( $shipPosition, $portProperties, $shipProperties, $jumpNode );
-
 		\Gameplay\Panel\SectorResources::getInstance()->render ( $shipPosition, $shipProperties, $sectorProperties );
 		\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
 		\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
-
-		portProperties::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
+		\Gameplay\Model\PortEntity::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
 	}
 
 	/**
@@ -1009,9 +1004,9 @@ try {
 	$userTimes->synchronize();
     $shipProperties->synchronize();
     $userStats->synchronize();
+    $portProperties->synchronize();
 
     $sectorPropertiesObject->synchronize ( $sectorProperties, true, true );
-    $portPropertiesObject->synchronize ( $portProperties, true, true );
     $userPropertiesObject->synchronize ( $userProperties, true, true );
 	$shipRoutingObject->synchronize ( $shipRouting, true, true );
 	$userAllianceObject->synchronize($userAlliance, true, true);

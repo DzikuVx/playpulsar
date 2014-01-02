@@ -121,20 +121,20 @@ class product extends baseItem {
 	 * @param string $mode
 	 * @return int
 	 */
-	public function sGetAmountInPort($portID, $productID, $type, $mode) {
+	static public function sGetAmountInPort($portID, $productID, $type, $mode) {
 
 		//Sprawdz, czy port zawiera odpowiednia ilosc towaru ktory chcesz kupić
 		$out = 0;
 		$tQuery = "SELECT
-      Amount AS ile
-    FROM
-      portcargo
-    WHERE
-      PortID = '$portID' AND
-      CargoID = '$productID' AND
-      Type = '$type' AND
-      Mode = '$mode'
-    ";
+              Amount AS ile
+            FROM
+              portcargo
+            WHERE
+              PortID = '$portID' AND
+              CargoID = '$productID' AND
+              Type = '$type' AND
+              Mode = '$mode'
+            ";
 		$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
 		while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 			$out = $tR1->ile;

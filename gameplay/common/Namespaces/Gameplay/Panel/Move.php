@@ -2,6 +2,7 @@
 
 namespace Gameplay\Panel;
 
+use Gameplay\Model\PortEntity;
 use Gameplay\Model\ShipPosition;
 use Gameplay\Model\ShipProperties;
 use Gameplay\Model\SystemProperties;
@@ -36,12 +37,12 @@ class Move extends Renderable implements Singleton {
     /**
      * @param SystemProperties $systemProperties
      * @param ShipPosition $shipPosition
-     * @param \stdClass $portProperties
+     * @param PortEntity $portProperties
      * @param \stdClass $shipRouting
      * @param ShipProperties $shipProperties
      * @return bool
      */
-    public function render(SystemProperties $systemProperties, ShipPosition $shipPosition, $portProperties, $shipRouting, ShipProperties $shipProperties) {
+    public function render(SystemProperties $systemProperties, ShipPosition $shipPosition, PortEntity $portProperties, $shipRouting, ShipProperties $shipProperties) {
 
 		$this->rendered = true;
 		$this->retVal .= "<center>";

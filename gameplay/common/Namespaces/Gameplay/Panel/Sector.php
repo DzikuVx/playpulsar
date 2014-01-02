@@ -15,7 +15,7 @@ class Sector extends Renderable implements Singleton {
 	
 	/**
 	 * @throws \Exception
-	 * @return \Gameplay\Panel\ShortStats
+	 * @return Sector
 	 */
 	static public function getInstance() {
 	

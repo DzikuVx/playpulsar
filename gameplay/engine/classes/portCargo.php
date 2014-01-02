@@ -8,11 +8,25 @@
 class portCargo {
 	protected $language = 'pl';
 	protected $nameField = "";
-	protected $tableName = "portcargo";
-	protected $portProperties = null;
+
+    /**
+     * @var string
+     */
+    protected $tableName = "portcargo";
+
+    /**
+     * @var \Gameplay\Model\PortEntity
+     */
+    protected $portProperties = null;
+
 	protected $userID;
 
-	function __construct($userID, $portProperties, $language = 'pl') {
+    /**
+     * @param $userID
+     * @param \Gameplay\Model\PortEntity $portProperties
+     * @param string $language
+     */
+    function __construct($userID, \Gameplay\Model\PortEntity $portProperties, $language = 'pl') {
 		$this->language = $language;
 		$this->nameField = "Name" . strtoupper ( $this->language );
 		$this->portProperties = $portProperties;
@@ -22,7 +36,7 @@ class portCargo {
 	/**
 	 * lista przedmiotów jakie port kupuje
 	 *
-	 * @return object
+	 * @return resource
 	 */
 	public function getProductsBuy() {
 

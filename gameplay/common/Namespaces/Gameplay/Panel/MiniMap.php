@@ -29,7 +29,7 @@ class MiniMap extends BaseTable implements Singleton {
 
 	/**
 	 * @throws \Exception
-	 * @return \Gameplay\Panel\ShortStats
+	 * @return MiniMap
 	 */
 	static public function getInstance() {
 

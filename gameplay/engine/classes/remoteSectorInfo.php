@@ -53,9 +53,7 @@ class remoteSectorInfo extends \Gameplay\Panel\Sector {
 
 		$this->retVal .= '<div style="clear: both;"></div>';
 
-		$item = new portProperties();
-		$portProperties = $item->load ( $shipPosition, true, true );
-		unset($item);
+        $portProperties = new \Gameplay\Model\PortEntity($shipPosition);
 
 		$jumpNodeObject = new jumpNode ( );
 		$jumpNode = $jumpNodeObject->load ( $shipPosition, true, true );
@@ -92,7 +90,7 @@ class remoteSectorInfo extends \Gameplay\Panel\Sector {
 				$this->retVal .= "<h2 style=\"text-align: center;\">" . TranslateController::getDefault()->get ( 'buy' ) . "</h2>";
 
 				$tString = "";
-				while ( $tRow = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
+				while ( $tRow = \Database\Controller::getInstance()->fetch($tQuery)) {
 					$tString .= ", " . $tRow->Name;
 				}
 

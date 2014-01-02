@@ -300,9 +300,10 @@ class shipEquipment {
 	 */
 	static public function sBuy($equipmentID) {
 
-		global $action, $userStats, $shipProperties, $portProperties, $shipEquipment, $error;
+		global $action, $userStats, $shipProperties, $shipEquipment, $error;
 
         $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
+        $portProperties = \Gameplay\PlayerModelProvider::getInstance()->get('PortEntity');
 
 		if ($shipPosition->Docked == 'no') {
 			throw new securityException ( );
@@ -352,8 +353,9 @@ class shipEquipment {
      */
     static public function sStationRepair($equipmentID) {
 
-		global $userStats, $shipProperties, $portProperties, $shipEquipment, $error;
+		global $userStats, $shipProperties, $shipEquipment, $error;
 
+        $portProperties = \Gameplay\PlayerModelProvider::getInstance()->get('PortEntity');
         $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
 
 		if ($shipPosition->Docked == 'no') {
@@ -381,9 +383,10 @@ class shipEquipment {
 
 	static public function sSellFromCargo($weaponID) {
 
-		global $shipCargo, $userID, $userStats, $shipProperties, $portProperties;
+		global $shipCargo, $userID, $userStats, $shipProperties;
 
         $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
+        $portProperties = \Gameplay\PlayerModelProvider::getInstance()->get('PortEntity');
 
 		if ($shipPosition->Docked == 'no') {
 			throw new securityException ( );
@@ -427,9 +430,10 @@ class shipEquipment {
      */
     static public function sSell($equipmentID) {
 
-		global $userStats, $shipProperties, $portProperties, $shipEquipment, $error;
+		global $userStats, $shipProperties, $shipEquipment, $error;
 
         $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
+        $portProperties = \Gameplay\PlayerModelProvider::getInstance()->get('PortEntity');
 
 		if ($shipPosition->Docked == 'no') {
 			throw new securityException ( );

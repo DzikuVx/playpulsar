@@ -2,6 +2,7 @@
 
 namespace Gameplay\Panel;
 
+use Gameplay\Model\PortEntity;
 use Gameplay\Model\ShipPosition;
 use Gameplay\Model\ShipProperties;
 use Gameplay\Model\SystemProperties;
@@ -35,12 +36,12 @@ class Port extends Renderable implements Singleton {
 
 	/**
 	 * @param ShipPosition $shipPosition
-	 * @param \stdClass $portProperties
+	 * @param PortEntity $portProperties
 	 * @param ShipProperties $shipProperties
 	 * @param \stdClass $jumpNode
 	 * @return bool
 	 */
-	public function render(ShipPosition $shipPosition, $portProperties, ShipProperties $shipProperties, $jumpNode) {
+	public function render(ShipPosition $shipPosition, PortEntity $portProperties, ShipProperties $shipProperties, $jumpNode) {
 		global $config;
 		$this->rendered = true;
 		$this->retVal = "";
@@ -52,7 +53,7 @@ class Port extends Renderable implements Singleton {
 			$this->retVal .= "</div>";
 			$this->retVal .= "<div class='sectorInfoCell'>";
 			$this->retVal .= "<div class='portName'>" . $portProperties->Name . "</div>";
-			$this->retVal .= "<div style='padding-left: 1em; color: #c0c000;'>" . Translate::getDefault()->get ( 'level' ) . " " . \portProperties::computeLevel ( $portProperties->Experience ) . "</div>";
+			$this->retVal .= "<div style='padding-left: 1em; color: #c0c000;'>" . Translate::getDefault()->get ( 'level' ) . " " . PortEntity::computeLevel ( $portProperties->Experience ) . "</div>";
 
 			$this->retVal .= "<div style=\"text-align: center; margin-top: 30px;\">";
 			//Info o stanie Portu

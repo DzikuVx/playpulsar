@@ -64,10 +64,8 @@ $out .= TranslateController::getDefault()->get( 'movecost') . ": " . $tSector ['
 $out .= TranslateController::getDefault()->get( 'visibility') . ": " . $tSector ['Visibility'] . "%<br />";
 $out .= TranslateController::getDefault()->get( 'accuracy') . ": " . $tSector ['Accuracy'] . "%<br />";
 
-$item = new portProperties ( );
-$portProperties = $item->load ( $shipPosition, true, true );
-unset($item);
-if (! empty ( $portProperties )) {
+$portProperties = new \Gameplay\Model\PortEntity($shipPosition);
+if (!empty($portProperties->PortID)) {
 	$out .= "Port Type Name: " . $portProperties->PortTypeName . "<br />";
 }
 

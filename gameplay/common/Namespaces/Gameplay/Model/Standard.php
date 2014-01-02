@@ -81,6 +81,13 @@ abstract class Standard {
     }
 
     /**
+     * Clear cache for all PortEntities
+     */
+    public function flushCacheModule() {
+        $this->cache->clearModule(new \phpCache\CacheKey($this->tableName));
+    }
+
+    /**
      * @param mixed $entryId
      * @param bool $useCache
      */
@@ -253,7 +260,7 @@ abstract class Standard {
         $retVal = false;
 
         foreach ($this->tableUseFields as $tField) {
-            if ($this->{$tField} != $this->originalData->{$tField}) {
+            if ($this->originalData && property_exists($this->originalData, $tField) && $this->{$tField} != $this->originalData->{$tField}) {
                 $retVal = true;
                 break;
             }
@@ -314,8 +321,8 @@ abstract class Standard {
     protected function load() {
         if ($this->useCache) {
             if (!$this->fromCache()) {
-                $this->get( );
-                $this->toCache( );
+                $this->get();
+                $this->toCache();
             }
         } else {
             $this->get();

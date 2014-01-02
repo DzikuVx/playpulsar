@@ -13,11 +13,12 @@ class shipWeaponsRegistry extends simpleRegistry {
 	 */
 	static public function sRender() {
 
-		global $userID, $portProperties, $action, $subaction, $value, $id;
+		global $userID;
 
         $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
+        $portProperties = \Gameplay\PlayerModelProvider::getInstance()->get('PortEntity');
 
-		$registry = new shipWeaponsRegistry ( $userID );
+		$registry = new shipWeaponsRegistry($userID);
 
 		\Gameplay\Panel\Action::getInstance()->add($registry->get($shipPosition, $portProperties));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
@@ -30,10 +31,10 @@ class shipWeaponsRegistry extends simpleRegistry {
 	 * Wyrenderowanie rejestru uzbrojenia
 	 *
 	 * @param \Gameplay\Model\ShipPosition $shipPosition
-	 * @param stdClass $portProperties
+	 * @param \Gameplay\Model\PortEntity $portProperties
 	 * @return string
 	 */
-	public function get(\Gameplay\Model\ShipPosition $shipPosition, $portProperties) {
+	public function get(\Gameplay\Model\ShipPosition $shipPosition, \Gameplay\Model\PortEntity $portProperties) {
 
 		global $shipWeapons, $colorTable, $userStats;
 

@@ -2,23 +2,157 @@
 
 namespace Gameplay\Model;
 
-class PortEntity extends Standard {
+use Gameplay\Exception\Model;
+
+class PortEntity extends CustomGet {
     protected $tableName = "ports";
     protected $tableID = "PortID";
-    protected $tableUseFields = array ('ResetTime', 'Shield', 'Armor', 'DefRating', 'OffRating', 'Cash', 'Experience', 'Level', 'Raided', 'State', 'System' );
+    protected $tableUseFields = array ('ResetTime', 'Shield', 'Armor', 'DefRating', 'OffRating', 'Cash', 'Experience', 'Level', 'Raided', 'State', 'System', 'X', 'Y', 'PortTypeID');
+
+    /**
+     * @var int
+     */
+    public $ResetTime;
+
+    /**
+     * @var int
+     */
+    public $Shield;
+
+    /**
+     * @var int
+     */
+    public $Armor;
+
+    /**
+     * @var int
+     */
+    public $DefRating;
+
+    /**
+     * @var int
+     */
+    public $OffRating;
+
+    /**
+     * @var int
+     */
+    public $Cash;
+
+    /**
+     * @var int
+     */
+    public $Experience;
+
+    /**
+     * @var int
+     */
+    public $Level;
+
+    /**
+     * @var int
+     */
+    public $Raided;
+
+    /**
+     * @var string
+     */
+    public $State;
+
+    /**
+     * @var string
+     */
+    public $System;
+
+    /**
+     * @var int
+     */
+    public $X;
+
+    /**
+     * @var int
+     */
+    public $Y;
+
+    /**
+     * @var int
+     */
+    public $PortTypeID;
+
+    /**
+     * @var int
+     */
+    public $PortID;
+
+    /**
+     * @var string
+     */
+    public $Weapons;
+
+    /**
+     * @var string
+     */
+    public $Equipment;
+
+    public $Items;
+
+    public $Ships;
+
+    /**
+     * @var string
+     */
+    public $SpecialBuy;
+
+    /**
+     * @var string
+     */
+    public $SpecialSell;
+
+    /**
+     * @var string
+     */
+    public $Type;
+
+    /**
+     * @var string
+     */
+    public $NoBuy;
+
+    /**
+     * @var string
+     */
+    public $NoSell;
+
+    /**
+     * @var string
+     */
+    public $PortTypeName;
+
+    /**
+     * @var string
+     */
+    public $Image;
+
+    /**
+     * @var string
+     */
+    public $Name;
+
+    public $WeaponSize;
 
     /**
      * Panel portu
      * @param int $userID
      * @param \Gameplay\Model\ShipPosition $shipPosition
-     * @param stdClass $portProperties
+     * @param PortEntity $portProperties
      * @param string $action
      * @param string $subaction
      * @param string $value
      * @param string $id
      * @return string
      */
-    static public function sPopulatePanel($userID, \Gameplay\Model\ShipPosition $shipPosition, $portProperties, $action, $subaction, $value, $id) {
+    static public function sPopulatePanel(/** @noinspection PhpUnusedParameterInspection */
+        $userID, \Gameplay\Model\ShipPosition $shipPosition, PortEntity $portProperties, $action, $subaction, $value, $id) {
 
         if ($shipPosition->Docked == 'no') {
             return false;
@@ -96,31 +230,28 @@ class PortEntity extends Standard {
         $sRetVal .= "<div id=\"portContent\">";
         \Gameplay\Panel\PortAction::getInstance()->add($sRetVal);
 
-        if (file_exists ( "../engine/inc/" . $action . ".php" )) {
+        if (file_exists("../engine/inc/" . $action . ".php" )) {
+            /** @noinspection PhpIncludeInspection */
             include "../engine/inc/" . $action . ".php";
         }
 
         $sRetVal = "</div>";
         \Gameplay\Panel\PortAction::getInstance()->add($sRetVal);
 
-
         return true;
     }
 
+    //FIXME replace with dynamic method
     /**
-     * Sprawdzenie, czy stacja sprzedaje daną broń
-     *
-     * @param stdClass $portProperties
+     * @param PortEntity $portProperties
      * @param int $weaponID
      * @return boolean
      */
-    static public function sCheckWeapon($portProperties, $weaponID) {
+    static public function sCheckWeapon(PortEntity $portProperties, $weaponID) {
 
-        $retVal = false;
+        $tArray = explode(',', $portProperties->Weapons);
 
-        $tArray = explode ( ',', $portProperties->Weapons );
-
-        if (array_search ( $weaponID, $tArray ) === false) {
+        if (array_search($weaponID, $tArray) === false) {
             $retVal = false;
         } else {
             $retVal = true;
@@ -129,98 +260,98 @@ class PortEntity extends Standard {
         return $retVal;
     }
 
+    //TODO get rid of of this static method
+    /**
+     * @param int $ID
+     * @param bool $fromCache
+     * @return PortEntity
+     */
     static public function quickLoad($ID, $fromCache = true) {
-        $item = new portProperties ( );
-        if ($fromCache) {
-            $retVal = $item->load ( $ID, true, true );
-        } else {
-            $retVal = $item->load ( $ID, false, false );
-
-        }
-        unset($item);
-        return $retVal;
+        return new PortEntity($ID);
     }
 
     /**
-     * Pobranie parametrów portu
-     *
-     * @param int|stdClass $ID
+     * @throws Model
      * @return boolean
      */
-    function get($ID) {
+    function get() {
 
-        global $defaultPortProperties, $userProperties;
+        global $userProperties;
 
-        $this->dataObject = $this->toObject ( $defaultPortProperties );
+        $oDb = \Database\Controller::getInstance();
 
         $nameField = "Name" . strtoupper ( $userProperties->Language );
 
-        /*
-         * Decyzja co do typu odczytu portu: przez ID, czy przez pozycję
-        */
-        if (! is_numeric ( $ID )) {
+        if (!is_numeric($this->entryId)) {
             $whereCondition = "
-    	  ports.System = '{$ID->System}' AND
-        ports.X = '{$ID->X}' AND
-        ports.Y = '{$ID->Y}'
-    	";
+    	        ports.System = '{$this->entryId->System}' AND
+                ports.X = '{$this->entryId->X}' AND
+                ports.Y = '{$this->entryId->Y}' ";
         } else {
-            $whereCondition = " ports.PortID = '{$ID}' ";
+            $whereCondition = " ports.PortID = '{$this->dbID}' ";
         }
 
-        $tResult = \Database\Controller::getInstance()->execute ( "
-      SELECT
-        ports.PortID AS PortID,
-        ports.PortTypeID AS PortTypeID,
-        porttypes.$nameField AS PortTypeName,
-        ports.$nameField AS Name,
-        ports.ResetTime AS ResetTime,
-        porttypes.Type AS Type,
-        porttypes.Items AS Items,
-        porttypes.Weapons AS Weapons,
-        porttypes.Equipment AS Equipment,
-        porttypes.Ships AS Ships,
-        porttypes.Image AS Image,
-        ports.Shield AS Shield,
-        ports.Armor AS Armor,
-        ports.OffRating AS OffRating,
-        ports.DefRating AS DefRating,
-        ports.Cash AS Cash,
-        porttypes.SpecialBuy AS SpecialBuy,
-        porttypes.SpecialSell AS SpecialSell,
-        porttypes.NoBuy AS NoBuy,
-        porttypes.NoSell AS NoSell,
-        ports.Experience AS Experience,
-        ports.Level AS Level,
-        ports.State AS State,
-        ports.System
-      FROM
-        ports JOIN porttypes ON porttypes.PortTypeID = ports.PortTypeID
-      WHERE
-        " . $whereCondition . "
-      LIMIT 1" );
+        $tResult = $oDb->execute("
+          SELECT
+            ports.PortID AS PortID,
+            ports.PortTypeID AS PortTypeID,
+            porttypes.$nameField AS PortTypeName,
+            ports.$nameField AS Name,
+            ports.ResetTime AS ResetTime,
+            porttypes.Type AS Type,
+            porttypes.Items AS Items,
+            porttypes.Weapons AS Weapons,
+            porttypes.Equipment AS Equipment,
+            porttypes.Ships AS Ships,
+            porttypes.Image AS Image,
+            ports.Shield AS Shield,
+            ports.Armor AS Armor,
+            ports.OffRating AS OffRating,
+            ports.DefRating AS DefRating,
+            ports.Cash AS Cash,
+            ports.Raided AS Raided,
+            porttypes.SpecialBuy AS SpecialBuy,
+            porttypes.SpecialSell AS SpecialSell,
+            porttypes.NoBuy AS NoBuy,
+            porttypes.NoSell AS NoSell,
+            ports.Experience AS Experience,
+            ports.Level AS Level,
+            ports.State AS State,
+            ports.System,
+            ports.X,
+            ports.Y
+          FROM
+            ports JOIN porttypes ON porttypes.PortTypeID = ports.PortTypeID
+          WHERE
+            " . $whereCondition . "
+          LIMIT 1");
 
-        while ( $resultRow = \Database\Controller::getInstance()->fetch ( $tResult ) ) {
-            $this->dataObject = $resultRow;
+        while($resultRow = $oDb->fetch($tResult)) {
+            $this->loadData($resultRow, false);
         }
 
-        $this->ID = $this->parseCacheID ( $ID );
         return true;
     }
 
     /**
-     * Parsowanie ID dla poru
-     *
-     * @param int|stdClass $ID
+     * @param int|ShipPosition $ID
      * @return string
      */
     protected function parseCacheID($ID) {
 
-        if (! is_numeric ( $ID )) {
-            return md5 ( $ID->System . "/" . $ID->X . "/" . $ID->Y );
+        if (!is_numeric($ID)) {
+            return md5($ID->System . "/" . $ID->X . "/" . $ID->Y );
         } else {
             return "ID:" . $ID;
         }
+    }
+
+    /**
+     * @param int|\stdClass $ID
+     * @return int|string
+     */
+    protected function parseDbID($ID) {
+        return $this->PortID;
     }
 
     /**
@@ -239,25 +370,28 @@ class PortEntity extends Standard {
         return $f_out;
     }
 
-    static public function sCheckNewLevel($portProperties) {
+    //TODO replace with dynamic method
+    /**
+     * @param PortEntity $portProperties
+     */
+    static public function sCheckNewLevel(PortEntity $portProperties) {
         if ($portProperties->Cash < 0) {
             $portProperties->Cash = 0;
         }
 
         //Oblicz nowy level portu
-        if ($portProperties->Level != self::computeLevel ( $portProperties->Experience )) {
-            $portProperties->Level = self::computeLevel ( $portProperties->Experience );
-            self::sResetWeapons ( $portProperties );
-            self::sUpdateRating ( $portProperties );
+        if ($portProperties->Level != self::computeLevel($portProperties->Experience)) {
+            $portProperties->Level = self::computeLevel($portProperties->Experience);
+            self::sResetWeapons($portProperties);
+            self::sUpdateRating($portProperties);
         }
     }
 
     /**
-     * Reset uzbrojenia portu. Zrzucenie obecnych i wygenerowanie nowych
-     *
-     * @param stdClass $portProperties
+     * @param PortEntity $portProperties
+     * @throws \Database\Exception
      */
-    static private function sResetWeapons($portProperties) {
+    static private function sResetWeapons(PortEntity $portProperties) {
 
         //Oblicz liczbę broni każdego typu
         $weaponNumber = floor ( $portProperties->Level * 1.3 ) + 2;
@@ -292,16 +426,19 @@ class PortEntity extends Standard {
 
     }
 
+    //TODO get rid of this method, replace with dynamic
     /**
      * Reset portu
      *
-     * @param stdClass $portProperties
+     * @param PortEntity $portProperties
      * @param boolean $force - wymuszenie resetu nawet w przypadku, gdy nie upłynął czas
      * @return boolean
      */
-    static public function sReset($portProperties, $force = false) {
+    static public function sReset(PortEntity $portProperties, $force = false) {
 
         global $actualTime, $config;
+
+        $oDb = \Database\Controller::getInstance();
 
         if ($portProperties->PortID != null && ($actualTime - $portProperties->ResetTime > $config ['timeThresholds'] ['portReset'] || $force)) {
 
@@ -309,7 +446,7 @@ class PortEntity extends Standard {
 
                 $portCargoHalfAmount = floor ( $config ['port'] ['maxCargoAmount'] / 2 );
 
-                \Database\Controller::getInstance()->disableAutocommit();
+                $oDb->disableAutocommit();
 
                 $sPreparedInsert = mysqli_prepare(\Database\Controller::getInstance()->getHandle(), "INSERT INTO portcargo(PortID, CargoID, Amount, Type, Mode, UserID)VALUES (?,?,?,'product',?,null)");
                 $sPreparedUpdate = mysqli_prepare(\Database\Controller::getInstance()->getHandle(), "UPDATE portcargo SET Amount = ?, Mode = ? WHERE PortID = ? AND CargoID = ? AND Type='product' AND portcargo.UserID IS NULL");
@@ -326,8 +463,8 @@ class PortEntity extends Standard {
                   WHERE
                     products.Active = 'yes'
                   ";
-                $tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
-                while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
+                $tQuery = $oDb->execute($tQuery);
+                while($tR1 = $oDb->fetch ( $tQuery ) ) {
                     $entryExists = true;
                     if ($tR1->Amount == null) {
                         $tR1->Amount = 0;
@@ -348,12 +485,12 @@ class PortEntity extends Standard {
                             case 'buy' :
                                 if ($tR1->Amount > $portCargoHalfAmount) {
                                     //Jesli port jest zapełniony tym towarem, odwróć kolejność w 50%
-                                    if (additional::checkRand ( 5, 10 )) {
+                                    if (\additional::checkRand ( 5, 10 )) {
                                         $switchDirection = true;
                                     }
                                 } else {
                                     //Jeśli nie jest zapełniony, odwróć w 5%
-                                    if (additional::checkRand ( 1, 20 )) {
+                                    if (\additional::checkRand ( 1, 20 )) {
                                         $switchDirection = true;
                                     }
                                 }
@@ -361,12 +498,12 @@ class PortEntity extends Standard {
                             case 'sell' :
                                 if ($tR1->Amount < $portCargoHalfAmount) {
                                     //Jesli port jest zapełniony tym towarem, odwróć kolejność w 50%
-                                    if (additional::checkRand ( 5, 10 )) {
+                                    if (\additional::checkRand ( 5, 10 )) {
                                         $switchDirection = true;
                                     }
                                 } else {
                                     //Jeśli nie jest zapełniony, odwróć w 5%
-                                    if (additional::checkRand ( 1, 20 )) {
+                                    if (\additional::checkRand ( 1, 20 )) {
                                         $switchDirection = true;
                                     }
                                 }
@@ -463,8 +600,8 @@ class PortEntity extends Standard {
                 //Wpisz czas resetu portu
                 $portProperties->ResetTime = $actualTime;
 
-                \Database\Controller::getInstance()->commit();
-                \Database\Controller::getInstance()->enableAutocommit();
+                $oDb->commit();
+                $oDb->enableAutocommit();
 
                 /*
                  * Generowanie map
@@ -473,7 +610,7 @@ class PortEntity extends Standard {
                 /*
                  * usuń wszystkie mapy z tego portu
                 */
-                \Database\Controller::getInstance()->execute("DELETE FROM portcargo WHERE PortID='{$portProperties->PortID}' AND UserID IS NULL AND Type='map'");
+                $oDb->execute("DELETE FROM portcargo WHERE PortID='{$portProperties->PortID}' AND UserID IS NULL AND Type='map'");
 
                 /*
                  * Wygeneruj nowe
@@ -481,27 +618,41 @@ class PortEntity extends Standard {
                 if (!empty($config ['port'] ['mapCreateCount'])) {
                     $tMapCount = rand(1, $config ['port'] ['mapCreateCount']);
                     for ($tIndex = 0; $tIndex < $tMapCount; $tIndex++) {
-                        \Database\Controller::getInstance()->execute("INSERT INTO portcargo(PortID, CargoID, Amount, Type, Mode, UserID)VALUES ('{$portProperties->PortID}','".galaxy::sGetRandomWithoutMap(\Gameplay\Model\SystemProperties::getGalaxy($portProperties->System))."','1','map','buy',null)");
+                        $oDb->execute("INSERT INTO portcargo(PortID, CargoID, Amount, Type, Mode, UserID)VALUES ('{$portProperties->PortID}','" . \galaxy::sGetRandomWithoutMap(SystemProperties::getGalaxy($portProperties->System))."','1','map','buy',null)");
                     }
 
                 }
 
-            }catch (Exception $e) {
-                \Database\Controller::getInstance()->rollback();
-                \Database\Controller::getInstance()->enableAutocommit();
+            } catch (Exception $e) {
+                $oDb->rollback();
+                $oDb->enableAutocommit();
                 \psDebug::cThrow(null, $e, array('display'=>false));
             }
         }
         return true;
     }
 
+    //FIXME replace with dynamic method
     /**
-     * Update ratingu portu
-     *
-     * @param stdClass $portProperties
+     * @param PortEntity $portProperties
      */
-    static private function sUpdateRating($portProperties) {
-        //@todo: obliczanie ratingu portu
+    static private function sUpdateRating(PortEntity $portProperties) {
+        //todo: obliczanie ratingu portu
+    }
+
+    protected function set() {
+
+        if (empty($this->PortID)) {
+            return;
+        }
+
+        $this->dbID = $this->PortID;
+
+        if (empty($this->dbID)) {
+            throw new Model('Object not initialized properly');
+        }
+
+        $this->db->execute($this->formatUpdateQuery());
     }
 
 }
