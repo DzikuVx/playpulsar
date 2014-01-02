@@ -92,6 +92,8 @@ if ($action == "equipFromCargo") {
 	 */
 
 	$action = "cargoManagement";
+
+    \Gameplay\Framework\ContentTransport::getInstance()->addNotification('success', '{T:opSuccess}');
 }
 
 if ($action == "cargoManagement") {
@@ -131,13 +133,12 @@ if ($action == "buyStorageRoom") {
 	$portProperties->Cash += $config ['port'] ['storageSpacePrice'];
 
 	\Gameplay\Model\PortEntity::sReset($portProperties);
-
 	\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
-
 	\Gameplay\Panel\SectorResources::getInstance()->hide ();
 	$action = "portStorehouse";
 	\Gameplay\Model\PortEntity::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
 	\Gameplay\Panel\PortAction::getInstance()->clear ();
+    \Gameplay\Framework\ContentTransport::getInstance()->addNotification('success', '{T:opSuccess}');
 }
 
 /*
@@ -205,6 +206,7 @@ if ($action == "jettison") {
 	\Gameplay\Model\PortEntity::sReset ( $portProperties );
 	shipCargo::management ( $userID );
 	\Gameplay\Panel\PortAction::getInstance()->clear();
+    \Gameplay\Framework\ContentTransport::getInstance()->addNotification('success', '{T:opSuccess}');
 }
 
 /*
@@ -319,7 +321,8 @@ if ($action == "gather") {
 		\Gameplay\Model\PortEntity::sReset ( $portProperties );
 		\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
 		\Gameplay\Panel\SectorResources::getInstance()->render ( $shipPosition, $shipProperties, $sectorProperties );
-		\Gameplay\Panel\PortAction::getInstance()->clear ();
+		\Gameplay\Panel\PortAction::getInstance()->clear();
+        \Gameplay\Framework\ContentTransport::getInstance()->addNotification('success', '{T:opSuccess}');
 	}
 }
 
@@ -413,7 +416,8 @@ if ($action == 'toCargohold') {
 
 		sectorProperties::sResetResources ( $shipPosition, $sectorProperties );
 		\Gameplay\Model\PortEntity::sReset ( $portProperties );
-		\Gameplay\Panel\PortAction::getInstance()->clear ();
+		\Gameplay\Panel\PortAction::getInstance()->clear();
+        \Gameplay\Framework\ContentTransport::getInstance()->addNotification('success', '{T:opSuccess}');
 	}
 }
 
@@ -517,7 +521,7 @@ if ($action == 'toStorehouse') {
 
 		sectorProperties::sResetResources ( $shipPosition, $sectorProperties );
 		\Gameplay\Model\PortEntity::sReset ( $portProperties );
-
+        \Gameplay\Framework\ContentTransport::getInstance()->addNotification('success', '{T:opSuccess}');
 	}
 }
 
@@ -574,6 +578,7 @@ if ($action == "itemSell") {
 	$action = "portMarketplace";
 	\Gameplay\Model\PortEntity::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
 	\Gameplay\Panel\PortAction::getInstance()->clear ();
+    \Gameplay\Framework\ContentTransport::getInstance()->addNotification('success', '{T:opSuccess}');
 }
 
 //---------------------------------------------------------------------------------------------------
@@ -597,8 +602,6 @@ if ($action == "productSell") {
 	}
 
 	//Oblicz cenę towaru
-
-
 	$item = new product ( );
 	$productData = $item->load ( $id, true, true );
 	$productPrice = $item->getPrice ( $portAmount );
@@ -631,6 +634,7 @@ if ($action == "productSell") {
 	$action = "portMarketplace";
 	\Gameplay\Model\PortEntity::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
 	\Gameplay\Panel\PortAction::getInstance()->clear ();
+    \Gameplay\Framework\ContentTransport::getInstance()->addNotification('success', '{T:opSuccess}');
 }
 
 //---------------------------------------------------------------------------------------------------
@@ -696,6 +700,7 @@ if ($action == "productBuy") {
 	$action = "portMarketplace";
 	\Gameplay\Model\PortEntity::sPopulatePanel ($userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
 	\Gameplay\Panel\PortAction::getInstance()->clear ();
+    \Gameplay\Framework\ContentTransport::getInstance()->addNotification('success', '{T:opSuccess}');
 }
 
 /**
@@ -735,4 +740,5 @@ if ($action == "mapBuy") {
 	\Gameplay\Model\PortEntity::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
 	\Gameplay\Panel\Navigation::getInstance()->render($shipPosition, $shipRouting, $shipProperties);
 	\Gameplay\Panel\PortAction::getInstance()->clear ();
+    \Gameplay\Framework\ContentTransport::getInstance()->addNotification('success', '{T:opSuccess}');
 }

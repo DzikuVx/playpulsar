@@ -691,11 +691,11 @@ try {
 
 	}
 
-	if ($action == "portBank" || $action == "portHangar" || $action == "portMarketplace" || $action == "portShipyard" || $action == "portBar" || $action == "portStorehouse") {
-		\Gameplay\Model\PortEntity::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
-	}
+    include "cargo.php";
 
-	include "cargo.php";
+	if ($action == "portBank" || $action == "portHangar" || $action == "portMarketplace" || $action == "portShipyard" || $action == "portBar" || $action == "portStorehouse") {
+		\Gameplay\Model\PortEntity::sPopulatePanel($userID, $shipPosition, $portProperties, $action, $subaction, $value, $id);
+	}
 
 	if ($action == "shipDock") {
 
