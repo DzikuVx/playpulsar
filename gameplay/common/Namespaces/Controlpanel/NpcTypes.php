@@ -4,6 +4,7 @@ namespace Controlpanel;
 
 use Gameplay\Model\ShipPosition;
 use Gameplay\Model\ShipProperties;
+use Gameplay\Model\ShipType;
 use Gameplay\Model\SystemProperties;
 use Gameplay\Model\UserStatistics;
 
@@ -523,7 +524,7 @@ class NpcTypes extends GameplayItem{
 
 		$template->add('Data',\General\Controls::sBuilTable($tData,2));
 
-		$tShipData = \ship::quickLoad($tData->ShipID);
+		$tShipData = new ShipType($tData->ShipID);
 
 		$tMaxStats = new \stdClass();
 		$tMaxStats->Shield = $tShipData->Shield;

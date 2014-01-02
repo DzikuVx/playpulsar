@@ -100,14 +100,13 @@ class combatShip {
 
         $this->shipProperties->computeMaxValues();
 
-		//@todo to trzeba jakoś zrefaktoryzować
-		$this->shipSize = ship::quickLoad($this->shipProperties->ShipID)->Size;
+        $oShip = new \Gameplay\Model\ShipType($this->shipProperties->ShipID);
+		$this->shipSize = $oShip->Size;
 
 		/*
 		 * Dokonaj naprawy
 		 */
 		$this->shipProperties->autoRepair($this->userFastTimes);
-
 	}
 
 	public function __destruct() {

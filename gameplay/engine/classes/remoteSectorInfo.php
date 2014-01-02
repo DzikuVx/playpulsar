@@ -141,7 +141,7 @@ class remoteSectorInfo extends \Gameplay\Panel\Sector {
 
 			$tString = '';
 			foreach ($tArray as $tItem) {
-				$tData = ship::quickLoad($tItem);
+				$tData = new \Gameplay\Model\ShipType($tItem);
 				if ($userProperties->Language == 'pl') {
 					$tString .= ', '.$tData->NamePL;
 				}else {

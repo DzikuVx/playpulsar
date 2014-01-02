@@ -422,7 +422,7 @@ class ShipProperties extends Standard {
 
     public function computeMaxValues() {
 
-        $tShip = \ship::quickLoad($this->ShipID);
+        $tShip = new ShipType($this->ShipID);
 
         $this->ShieldMax = $tShip->Shield;
         $this->ArmorMax = $tShip->Armor;
@@ -728,7 +728,7 @@ class ShipProperties extends Standard {
 
         $oDb            = \Database\Controller::getInstance();
         $shipProperties = new ShipProperties($userID);
-        $oShip          = \ship::quickLoad($shipProperties->ShipID);
+        $oShip          = new ShipType($shipProperties->ShipID);
 
         $retVal = $oShip->Price;
 
@@ -780,7 +780,7 @@ class ShipProperties extends Standard {
             throw new \securityException ( );
         }
 
-        $tShip = \ship::quickLoad ( $shipID );
+        $tShip = new ShipType($shipID);
 
         $currentShipValue = floor( self::sGetValue( $userProperties->UserID ) / 2 );
 

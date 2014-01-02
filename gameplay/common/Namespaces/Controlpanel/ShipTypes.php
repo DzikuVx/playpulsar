@@ -2,7 +2,7 @@
 
 namespace Controlpanel;
 
-class ShipTypes extends GameplayItem{
+class ShipTypes extends GameplayItem {
 
 	protected $detailTitle = 'Ship Data';
 	protected $editTitle = '';
@@ -35,7 +35,10 @@ class ShipTypes extends GameplayItem{
 	
 		$tQuery = BaseItem::sMakeUpdateQuery('shiptypes', 'ShipID', $tFields, $params);
 		\Database\Controller::getInstance()->execute($tQuery);
-        \ship::sFlushCache($params['id']);
+
+        $oShip = new \Gameplay\Model\ShipType($params['id']);
+        $oShip->clearCache();
+
 		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
 		
 		return $retVal;
