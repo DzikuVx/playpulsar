@@ -242,7 +242,7 @@ class sectorCargo {
 			$tQuery = "DELETE FROM sectorcargo WHERE Type='{$type}' AND System='{$this->position->System}' AND X='{$this->position->X}' AND Y='{$this->position->Y}'";
 		}
 
-		$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
+		\Database\Controller::getInstance()->execute($tQuery);
 
 		$this->clearCache($type);
 

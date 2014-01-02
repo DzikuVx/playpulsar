@@ -209,8 +209,8 @@ $config ['sector'] ['resourceDivider'] = 20;
 /**
  * item casting settings
  */
-$itemCastProbablity = 2; //1-1000
-$itemCastMaxProbablity = 1000;
+$itemCastProbability = 2; //1-1000
+$itemCastMaxProbability = 1000;
 
 $icons ['MoveUp'] = $config['general']['cdn']."gfx/moveup2.png";
 $icons ['MoveDown'] = $config['general']['cdn']."gfx/movedown2.png";

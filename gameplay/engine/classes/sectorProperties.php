@@ -14,12 +14,12 @@ class sectorProperties extends baseItem {
      */
     static public function sResetResources(\Gameplay\Model\ShipPosition $shipPosition, $sectorProperties, $enableItemReset = true) {
 
-		global $actualTime, $config, $itemCastProbablity, $itemCastMaxProbablity;
+		global $actualTime, $config, $itemCastProbability, $itemCastMaxProbability;
 
 		/*
 		 * Castowanie itemów w sektorze
 		*/
-		if ($enableItemReset && additional::checkRand ( $itemCastProbablity, $itemCastMaxProbablity )) {
+		if ($enableItemReset && additional::checkRand ( $itemCastProbability, $itemCastMaxProbability )) {
 			/*
 			 * Wylosuj itema
 			*/
