@@ -45,7 +45,7 @@ class remoteSectorInfo extends \Gameplay\Panel\Sector {
      */
     public function render(\Gameplay\Model\SectorEntity $sectorProperties, \Gameplay\Model\SystemProperties $systemProperties, \Gameplay\Model\ShipPosition $shipPosition = null) {
 
-		global $userProperties;
+        $userProperties = \Gameplay\PlayerModelProvider::getInstance()->get('UserEntity');
 
 		parent::render($sectorProperties, $systemProperties, $shipPosition);
 

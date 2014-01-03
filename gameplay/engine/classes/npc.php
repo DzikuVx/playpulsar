@@ -144,9 +144,7 @@ class npc extends baseItem {
 	static public function sResetNpc($npcID) {
 
         $npcShipProperties = new \Gameplay\Model\ShipProperties($npcID);
-
-		$npcUserPropertiesObject = new userProperties ( );
-		$npcUserProperties = $npcUserPropertiesObject->load ( $npcID, true, true );
+        $npcUserProperties = new \Gameplay\Model\UserEntity($npcID);
 
 		if ($npcShipProperties->RookieTurns != 0) {
 

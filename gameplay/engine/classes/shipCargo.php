@@ -10,8 +10,9 @@ class shipCargo {
 
 	static public function management($userID) {
 
-		global $itemJettisonCost, $shipCargo, $shipProperties, $userProperties;
+		global $itemJettisonCost, $shipCargo, $shipProperties;
 
+        $userProperties = \Gameplay\PlayerModelProvider::getInstance()->get('UserEntity');
         $portProperties = \Gameplay\PlayerModelProvider::getInstance()->get('PortEntity');
         $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
 

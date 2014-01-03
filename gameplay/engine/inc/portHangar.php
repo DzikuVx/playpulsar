@@ -1,6 +1,8 @@
 <?php
 
-global $userProperties, $config, $shipProperties, $userID, $userStats;
+global $config, $shipProperties, $userID, $userStats;
+
+$userProperties = \Gameplay\PlayerModelProvider::getInstance()->get('UserEntity');
 
 /*
  * Wykonaj przeliczenie max wartości okrętu

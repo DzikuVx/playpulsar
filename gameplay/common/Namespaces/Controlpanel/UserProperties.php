@@ -2,21 +2,16 @@
 
 namespace Controlpanel;
 
-class UserProperties extends \userProperties{
+use Gameplay\Model\UserEntity;
+
+class UserProperties extends UserEntity {
 	
 	public function edit($user, $params) {
-		$retVal = '';
-
-		$data = $this->load($params['id'], true, true);
-
-		$retVal .= BaseItem::sRenderEditForm($this, $data, $params['id']);
-
-		return $retVal;
+        $this->reload($params['id']);
+        return BaseItem::sRenderEditForm($this, $this, $params['id']);
 	}
 
 	public function editExe($user, $params) {
-		$retVal = '';
-
 
 		if (empty($_SESSION['returnUser'])) {
 			throw new \customException('Security error');

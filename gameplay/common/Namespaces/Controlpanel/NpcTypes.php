@@ -6,6 +6,7 @@ use Gameplay\Model\ShipPosition;
 use Gameplay\Model\ShipProperties;
 use Gameplay\Model\ShipType;
 use Gameplay\Model\SystemProperties;
+use Gameplay\Model\UserEntity;
 use Gameplay\Model\UserStatistics;
 
 class NpcTypes extends GameplayItem{
@@ -84,9 +85,11 @@ class NpcTypes extends GameplayItem{
 			
 		set_time_limit(3600);
 
+        $oDb = \Database\Controller::getInstance();
+
 		$tQuery2 = "SELECT UserID FROM users WHERE NPCTypeID='{$id}'";
-		$tQuery2 = \Database\Controller::getInstance()->execute ( $tQuery2 );
-		while ( $row2 = \Database\Controller::getInstance()->fetch ( $tQuery2 ) ) {
+		$tQuery2 = $oDb->execute ( $tQuery2 );
+		while( $row2 = $oDb->fetch ( $tQuery2 ) ) {
 			Player::sDrop($row2->UserID);
 		}
 
@@ -199,12 +202,9 @@ class NpcTypes extends GameplayItem{
 
 		$userParameters ['Language'] = 'pl';
 
-		$userProperties = new \stdClass();
-		$userProperties->Language = 'pl';
-
 		/*
 		 * Zrzuć wszystkich NPC
-		*/
+     	 */
 		if (empty($typeID)) {
 			self::sDropAll();
 			$tCondition = '';
@@ -258,9 +258,9 @@ class NpcTypes extends GameplayItem{
 				/*
 				 * Dokonaj wstawienia do tabeli users
 				*/
-				$tUsers = new \stdClass();
-				$tUsers->Password = \user::sPasswordHash( uniqid () , uniqid () );
-				$tUsers->Login = uniqid ();
+				$tUsers = new UserEntity();
+				$tUsers->Password = \user::sPasswordHash(uniqid(), uniqid());
+				$tUsers->Login = uniqid();
 				$tUsers->Email = ' ';
 				$tUsers->Name = $npcName;
 				$tUsers->UserLocked = 'no';
@@ -274,26 +274,26 @@ class NpcTypes extends GameplayItem{
 
 				\Database\Controller::getInstance()->quoteAll($tUsers);
 
-				$npcID = \userProperties::quickInsert ( $tUsers );
+                $npcID = $tUsers->insert();
 
 				/*
 				 * Wstaw pozycję statku
 				*/
 				$tQuery2 = "INSERT INTO
-		    shippositions(
-		      UserID,
-		      System,
-		      X,
-		      Y,
-		      Docked)
-		    VALUES(
-		      '$npcID',
-		      '{$position->System}',
-		      '{$position->X}',
-		      '{$position->Y}',
-		      'no'
-		    )
-		";
+                        shippositions(
+                          UserID,
+                          System,
+                          X,
+                          Y,
+                          Docked)
+                        VALUES(
+                          '$npcID',
+                          '{$position->System}',
+                          '{$position->X}',
+                          '{$position->Y}',
+                          'no'
+                        )
+                    ";
 				\Database\Controller::getInstance()->execute ( $tQuery2 );
 
 				/*
@@ -436,7 +436,6 @@ class NpcTypes extends GameplayItem{
 				 */
 				$shipWeapons = new \shipWeapons ( $npcID, 'pl' );
 				$shipWeapons->computeOffensiveRating ( $shipProperties );
-				unset($shipWeapons);
 
 				$shipEquipment = new \shipEquipment ( $npcID, 'pl' );
 

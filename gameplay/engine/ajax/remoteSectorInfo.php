@@ -21,7 +21,7 @@ $shipPosition->Docked = null;
 if (empty($language))
 $language = 'en';
 
-$userProperties = new stdClass();
+$userProperties = new \Gameplay\Model\UserEntity();
 $userProperties->Language = $language;
 
 TranslateController::setDefaultLanguage($userProperties->Language);

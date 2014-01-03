@@ -2,8 +2,9 @@
 
 use General\Formater;
 
-global $userID, $userProperties, $shipProperties, $shipPosition, $config;
+global $userID, $shipProperties, $shipPosition, $config;
 
+$userProperties = \Gameplay\PlayerModelProvider::getInstance()->get('UserEntity');
 $portProperties = \Gameplay\PlayerModelProvider::getInstance()->get('PortEntity');
 
 $sRetVal = "<h1>{T:storehouse}</h1>";

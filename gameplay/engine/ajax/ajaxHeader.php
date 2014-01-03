@@ -7,6 +7,7 @@
  */
 
 
+/** @noinspection PhpIncludeInspection */
 require_once '../../common.php';
 
 if (empty( $_SESSION ['userID'])) {
@@ -16,8 +17,7 @@ if (empty( $_SESSION ['userID'])) {
 
 $userID = $_SESSION ['userID'];
 
-$userPropertiesObject = new userProperties ( );
-$userProperties = $userPropertiesObject->load ( $userID, true, true );
+$userProperties = new \Gameplay\Model\UserEntity($userID);
 
 TranslateController::setDefaultLanguage($userProperties->Language);
 $t = TranslateController::getDefault();

@@ -634,11 +634,10 @@ class ShipProperties extends Standard {
     }
 
     function get() {
-
-        global $userProperties;
+        $userProperties = \Gameplay\PlayerModelProvider::getInstance()->get('UserEntity');
 
         if (empty($userProperties)) {
-            $userProperties = new \stdClass();
+            $userProperties = new UserEntity();
         }
 
         if (empty($userProperties->Language)) {
@@ -771,6 +770,7 @@ class ShipProperties extends Standard {
         $shipPosition   = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
         $shipProperties = \Gameplay\PlayerModelProvider::getInstance()->get('ShipProperties');
         $portProperties = \Gameplay\PlayerModelProvider::getInstance()->get('PortEntity');
+        $userProperties = \Gameplay\PlayerModelProvider::getInstance()->get('UserEntity');
 
         if ($shipPosition->Docked == 'no') {
             throw new \securityException ( );

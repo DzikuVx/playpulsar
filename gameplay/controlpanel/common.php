@@ -22,8 +22,11 @@ if (! isset ( $_REQUEST ['method'] )) {
 	$_REQUEST ['method'] = 'browse';
 }
 
+/** @noinspection PhpIncludeInspection */
 require_once '../common/Namespaces/phpCache/Factory.php';
+/** @noinspection PhpIncludeInspection */
 require_once '../common/Namespaces/SSMQ/SSMQ.php';
+/** @noinspection PhpIncludeInspection */
 require_once '../common/Namespaces/General/Autoloader.php';
 \General\Autoloader::register();
 
@@ -32,8 +35,11 @@ require_once '../common/Namespaces/General/Autoloader.php';
  */
 session_start ();
 
+/** @noinspection PhpIncludeInspection */
 require_once '../deployment.php';
+/** @noinspection PhpIncludeInspection */
 require_once '../db.ini.php';
+/** @noinspection PhpIncludeInspection */
 require_once '../config.inc.php';
 require_once 'config.inc.php';
 
@@ -42,5 +48,5 @@ psDebug::create ();
 TranslateController::setDefaultLanguage('en');
 $t = TranslateController::getDefault();
 
-$userProperties = new stdClass();
+$userProperties = new \Gameplay\Model\UserEntity();
 $userProperties->Language = 'en';

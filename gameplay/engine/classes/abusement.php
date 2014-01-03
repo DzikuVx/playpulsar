@@ -46,7 +46,7 @@ class abusement extends baseItem {
 
 		$template  = new \General\Templater('../templates/newAbusement.html');
 
-		$tData = userProperties::quickLoad($id);
+        $tData = new \Gameplay\Model\UserEntity($id);
 
 		$template->add('playerName', $tData->Name);
 		$template->add('FormName', TranslateController::getDefault()->get('Report abusement'));

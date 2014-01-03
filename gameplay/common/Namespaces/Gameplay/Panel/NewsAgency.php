@@ -23,8 +23,7 @@ class NewsAgency extends Renderable implements Singleton {
 		if (empty(self::$instance)) {
 			$className = __CLASS__;
 
-			global $userProperties;
-
+            $userProperties = \Gameplay\PlayerModelProvider::getInstance()->get('UserEntity');
 			self::$instance = new $className($userProperties->Language);
 		}
 		return self::$instance;
@@ -36,7 +35,7 @@ class NewsAgency extends Renderable implements Singleton {
      * @param ShipPosition $shipPosition
      */
     public function render(ShipPosition $shipPosition) {
-		global $userProperties;
+        $userProperties = \Gameplay\PlayerModelProvider::getInstance()->get('UserEntity');
 
 		$oCacheKey = new \phpCache\CacheKey('newsAgency::render', $shipPosition->System . '|' . $userProperties->Language);
         $oCache    = \phpCache\Factory::getInstance()->create();

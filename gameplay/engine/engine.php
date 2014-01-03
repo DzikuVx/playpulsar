@@ -28,15 +28,16 @@ $value = $oController->getParameter('value');
 
 try {
 
-	if (!empty($config ['debug'] ['gameplayDebugOutput'])) {
+    /*
+     * Register models for current player
+    */
+    $oPlayerModelProvider = \Gameplay\PlayerModelProvider::getInstance();
+
+    if (!empty($config ['debug'] ['gameplayDebugOutput'])) {
 		\Gameplay\Panel\Debug::getInstance()->add('Request action', $action);
 	}
 
-	/**
-	 * Inicjalizacja tabeli users
-	 */
-	$userPropertiesObject 	= new userProperties ( );
-	$userProperties 		= $userPropertiesObject->load ( $userID, true, true );
+    $userProperties = $oPlayerModelProvider->register('UserEntity', new \Gameplay\Model\UserEntity($userID));
 
 	/**
 	 * Inicjalizacja klasy translacji
@@ -49,11 +50,6 @@ try {
 		echo '<xml><actionPanel>'.\General\Controls::displayConfirmDialog(TranslateController::getDefault()->get('Announcement'), TranslateController::getDefault()->get('Gameplay disabled')).'</actionPanel></xml>';
 		exit();
 	}
-
-    /*
-     * Register models for current player
-     */
-    $oPlayerModelProvider = \Gameplay\PlayerModelProvider::getInstance();
 
     $shipPosition = $oPlayerModelProvider->register('ShipPosition', new \Gameplay\Model\ShipPosition($userID));
 
@@ -998,9 +994,9 @@ try {
     $userStats->synchronize();
     $portProperties->synchronize();
     $sectorProperties->synchronize();
+    $userProperties->synchronize();
 
-    $userPropertiesObject->synchronize ( $userProperties, true, true );
-	$shipRoutingObject->synchronize ( $shipRouting, true, true );
+	$shipRoutingObject->synchronize($shipRouting, true, true);
 	$userAllianceObject->synchronize($userAlliance, true, true);
 
 // 	$out .= announcementPanel::getInstance()->out ();

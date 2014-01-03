@@ -4,6 +4,7 @@ namespace Gameplay\Model;
 
 use Gameplay\Exception\Model;
 use Gameplay\Framework\ContentTransport;
+use Gameplay\PlayerModelProvider;
 
 class PortEntity extends CustomGet {
     protected $tableName = "ports";
@@ -276,8 +277,7 @@ class PortEntity extends CustomGet {
      * @return boolean
      */
     function get() {
-
-        global $userProperties;
+        $userProperties = PlayerModelProvider::getInstance()->get('UserEntity');
 
         $oDb = \Database\Controller::getInstance();
 

@@ -6,7 +6,7 @@ class buddyList extends baseItem {
 	protected $defaultCacheExpire = 120;
 
 	static public function sAcceptExe($id) {
-		global $userAlliance, $userID;
+		global $userID;
 
 		/*
 		 * Warunki bezpieczeństwa
@@ -32,7 +32,7 @@ class buddyList extends baseItem {
 		self::sInsert($id, $userID, 'yes');
 		self::sInsert($userID, $id, 'yes');
 
-		$tSecondPlayer = userProperties::quickLoad($userID);
+		$tSecondPlayer = new \Gameplay\Model\UserEntity($userID);
 		$t2 = new translation($tSecondPlayer->Language, dirname ( __FILE__ ) . '/../translations.php');
 		$tString = $t2->get('buddyRequestAccepted');
 		$tString = str_replace('{name}',$tSecondPlayer->Name, $tString);
@@ -49,7 +49,7 @@ class buddyList extends baseItem {
 	}
 
 	static public function sAccept($id) {
-		global $userAlliance, $userID;
+		global $userID;
 
 		/*
 		 * Warunki bezpieczeństwa
@@ -68,8 +68,8 @@ class buddyList extends baseItem {
 
 		$tString = TranslateController::getDefault()->get('wantAcceptBuddy');
 
-		$tName = userProperties::quickLoad($id)->Name;
-		$tString = str_replace('{name}',$tName, $tString);
+        $oUser = new \Gameplay\Model\UserEntity($id);
+        $tString = str_replace('{name}',$oUser->Name, $tString);
 
 		\Gameplay\Panel\Action::getInstance()->add(\General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"Playpulsar.gameplay.execute('buddyAcceptExecute',null,null,'{$id}')","Playpulsar.gameplay.execute('showBuddy')"));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
@@ -78,7 +78,7 @@ class buddyList extends baseItem {
 	}
 
 	static public function sDeclineDialog($id) {
-		global $userAlliance, $userID;
+		global $userID;
 
 		/*
 		 * Warunki bezpieczeństwa
@@ -97,8 +97,8 @@ class buddyList extends baseItem {
 
 		$tString = TranslateController::getDefault()->get('wantDeclineBuddy');
 
-		$tName = userProperties::quickLoad($id)->Name;
-		$tString = str_replace('{name}',$tName, $tString);
+        $oUser = new \Gameplay\Model\UserEntity($id);
+		$tString = str_replace('{name}',$oUser->Name, $tString);
 
 		\Gameplay\Panel\Action::getInstance()->add(\General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"Playpulsar.gameplay.execute('buddyDecline',null,null,'{$id}')","Playpulsar.gameplay.execute('showBuddy')"));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
@@ -131,7 +131,7 @@ class buddyList extends baseItem {
 
 	static public function sRenderList() {
 
-		global $userID, $userAlliance;
+		global $userID;
 
 		/*
 		 * Wyrenderowanie sojuszu
@@ -196,7 +196,9 @@ class buddyList extends baseItem {
 	 * @throws securityException
 	 */
 	static public function sSendRequest($id) {
-		global $userID, $userProperties;
+		global $userID;
+
+        $userProperties = \Gameplay\PlayerModelProvider::getInstance()->get('UserEntity');
 
 		if (!is_numeric($id)) {
 			throw new securityException();
@@ -214,7 +216,7 @@ class buddyList extends baseItem {
 		/**
 		 * Wyślij wiadomość
 		 */
-		$tSecondPlayer = userProperties::quickLoad($id);
+        $tSecondPlayer = new \Gameplay\Model\UserEntity($id);
 		$t2 = new translation($tSecondPlayer->Language, dirname ( __FILE__ ) . '/../translations.php');
 		$tString = $t2->get('newBuddyRequestSend');
 		$tString = str_replace('{name}',$userProperties->Name, $tString);
@@ -233,6 +235,7 @@ class buddyList extends baseItem {
 	 * @param int $userID
 	 * @param int $secondUserID
 	 * @throws securityException
+     * @return bool
 	 */
 	static private function sRemove($userID, $secondUserID) {
 
@@ -254,6 +257,7 @@ class buddyList extends baseItem {
 	 * @param int $secondUserID
 	 * @param string $accepted
 	 * @throws securityException
+     * @return int
 	 */
 	static private function sInsert($userID, $secondUserID, $accepted) {
 
@@ -266,9 +270,7 @@ class buddyList extends baseItem {
 			throw new securityException();
 		}
 
-		if ($accepted == 'yes') {
-			$accepted == 'yes';
-		}else {
+		if ($accepted != 'yes') {
 			$accepted = 'no';
 		}
 
@@ -282,7 +284,4 @@ class buddyList extends baseItem {
 
 		return $retVal;
 	}
-
-
 }
-?>

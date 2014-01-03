@@ -89,8 +89,9 @@ class ActiveScanner extends SystemMap implements Singleton {
 	}
 
 	static public function sEngage() {
-		global $userProperties, $userID, $shipRouting;
+		global $userID, $shipRouting;
 
+        $userProperties = PlayerModelProvider::getInstance()->get('UserEntity');
         $shipPosition   = PlayerModelProvider::getInstance()->get('ShipPosition');
         $shipProperties = PlayerModelProvider::getInstance()->get('ShipProperties');
 		$activeScanner 	= new ActiveScanner($userProperties->Language, $userID);

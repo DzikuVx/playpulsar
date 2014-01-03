@@ -1,6 +1,8 @@
 <?php
 
-global $shipProperties, $userID, $userProperties, $userStats;
+global $shipProperties, $userID, $userStats;
+
+$userProperties = \Gameplay\PlayerModelProvider::getInstance()->get('UserEntity');
 
 \Gameplay\Model\ShipProperties::sRecomputeValues($shipProperties, $userID);
 

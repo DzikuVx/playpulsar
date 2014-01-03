@@ -99,7 +99,7 @@ class allianceFinance extends baseItem {
 		$template  = new \General\Templater('../templates/allianceCashout.html');
 
 		$tAlliance = alliance::quickLoad($userAlliance->AllianceID);
-		$tUser = userProperties::quickLoad($id);
+        $tUser = new \Gameplay\Model\UserEntity($id);
 
 		$template->add('FormName', TranslateController::getDefault()->get('allianceCashout'));
 		$template->add('playerName', $tUser->Name);

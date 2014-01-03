@@ -367,18 +367,4 @@ abstract class extendedItem {
 		$item = new static ($ID, $useCache);
 		return $item;
 	}
-
-    /**
-     * @param $data
-     * @return mixed
-     */
-    static public function quickInsert($data) {
-
-        $item = new static();
-        /** @noinspection PhpUndefinedMethodInspection */
-        $retVal = $item->insert($data);
-
-		return $retVal;
-	}
-
 }

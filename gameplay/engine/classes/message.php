@@ -226,9 +226,7 @@ class message extends baseItem {
 
 		$sRetVal .= "<table class=\"table table-striped table-condensed\">";
 
-		$item = new userProperties ( );
-		$otheruserParameters = $item->load ( $receiver, true, true );
-		unset($item);
+		$otheruserParameters = new \Gameplay\Model\UserEntity($receiver);
 
 		$sRetVal .= "<tr>";
 		$sRetVal .= "<th style=\"width: 20em;\">{T:receiver}</th>";

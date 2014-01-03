@@ -17,7 +17,9 @@ class allianceRequest extends baseItem {
 	 * @throws securityException
 	 */
 	static public function sNewExecute($allianceID, $xml) {
-		global $userAlliance, $userID, $t, $userProperties;
+		global $userAlliance, $userID, $t;
+
+        $userProperties = \Gameplay\PlayerModelProvider::getInstance()->get('UserEntity');
 
 		if (!empty($userAlliance->AllianceID)) {
 			throw new securityException();
@@ -49,7 +51,7 @@ class allianceRequest extends baseItem {
 		 */
 		$tMembers = allianceRights::sGetMembersWithRight($allianceID, 'accept');
 		foreach ($tMembers as $tMember) {
-			$tSecondPlayer = userProperties::quickLoad($tMember);
+            $tSecondPlayer = new \Gameplay\Model\UserEntity($tMember);
 			$t = new translation($tSecondPlayer->Language, dirname ( __FILE__ ) . '/../translations.php');
 			$tString = TranslateController::getDefault()->get('allianceNewAppliance');
 			$tString = str_replace('{name}',$userProperties->Name, $tString);
@@ -72,7 +74,9 @@ class allianceRequest extends baseItem {
 	 * @throws securityException
 	 */
 	static public function sNew($allianceID) {
-		global $userAlliance, $userID, $t, $userProperties;
+		global $userAlliance, $userID;
+
+        $userProperties = \Gameplay\PlayerModelProvider::getInstance()->get('UserEntity');
 
 		if (!empty($userAlliance->AllianceID)) {
 			throw new securityException();
@@ -123,7 +127,7 @@ class allianceRequest extends baseItem {
 
 		if (\Database\Controller::getInstance()->fetch($tQuery)->ILE == 0) {
 			$retVal = false;
-		}else {
+		} else {
 			$retVal = true;
 		}
 
@@ -268,8 +272,8 @@ class allianceRequest extends baseItem {
 
 		$tString = TranslateController::getDefault()->get('wantAcceptPlayer');
 
-		$tName = userProperties::quickLoad($apprenticeID)->Name;
-		$tString = str_replace('{name}',$tName, $tString);
+        $oUser = new \Gameplay\Model\UserEntity($apprenticeID);
+		$tString = str_replace('{name}',$oUser->Name, $tString);
 
 		\Gameplay\Panel\Action::getInstance()->add(\General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"Playpulsar.gameplay.execute('allianceAcceptExecute',null,null,'{$apprenticeID}')","Playpulsar.gameplay.execute('allianceAppliances')"));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
@@ -331,20 +335,13 @@ class allianceRequest extends baseItem {
 		 */
 		allianceRights::sGiveNone($apprenticeID, $userAlliance->AllianceID);
 
-		/*
-		 * Wyślij wiadomość
-		 */
-		$tSecondPlayer = userProperties::quickLoad($apprenticeID);
+        $tSecondPlayer = new \Gameplay\Model\UserEntity($apprenticeID);
 		$t = new translation($tSecondPlayer->Language, dirname ( __FILE__ ) . '/../translations.php');
-		$tString = TranslateController::getDefault()->get('allianceApplianceAccepted');
+		$tString = $t->get('allianceApplianceAccepted');
 		$tString = str_replace('{name}',$userAlliance->Name, $tString);
 		message::sInsert(null, $apprenticeID, $tString);
 
-		/*
-		 * Wyrenderuj listę innych podań
-		 */
 		self::sRender();
-
 	}
 
 	/**
@@ -383,8 +380,8 @@ class allianceRequest extends baseItem {
 
 		$tString = TranslateController::getDefault()->get('wantDeclinePlayer');
 
-		$tName = userProperties::quickLoad($apprenticeID)->Name;
-		$tString = str_replace('{name}',$tName, $tString);
+        $oUser = new \Gameplay\Model\UserEntity($apprenticeID);
+		$tString = str_replace('{name}',$oUser->Name, $tString);
 
 		\Gameplay\Panel\Action::getInstance()->add(\General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"Playpulsar.gameplay.execute('allianceDeclineExecute',null,null,'{$apprenticeID}')","Playpulsar.gameplay.execute('allianceAppliances')"));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
@@ -428,7 +425,6 @@ class allianceRequest extends baseItem {
 
 		self::sDelete($apprenticeID, $userAlliance->AllianceID);
 
-		$tSecondPlayer = userProperties::quickLoad($apprenticeID);
 		$tString = TranslateController::getDefault()->get('allianceApplianceDeclined');
 		$tString = str_replace('{name}',$userAlliance->Name, $tString);
 		message::sInsert(null, $apprenticeID, $tString);

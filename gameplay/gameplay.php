@@ -6,7 +6,7 @@ if (empty( $_SESSION ['userID'] )) {
 	exit ();
 }
 
-$userProperties = userProperties::quickLoad($_SESSION ['userID']);
+$userProperties = new \Gameplay\Model\UserEntity($_SESSION['userID']);
 
 TranslateController::setDefaultLanguage($userProperties->Language);
 $t = TranslateController::getDefault();

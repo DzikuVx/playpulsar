@@ -124,8 +124,8 @@ class alliance extends baseItem {
 
 		$tString = TranslateController::getDefault()->get('wantKickPlayer');
 
-		$tName = userProperties::quickLoad($kickedID)->Name;
-		$tString = str_replace('{name}',$tName, $tString);
+        $oUser = new \Gameplay\Model\UserEntity($kickedID);
+		$tString = str_replace('{name}',$oUser->Name, $tString);
 
 		\Gameplay\Panel\Action::getInstance()->add(\General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), $tString,"Playpulsar.gameplay.execute('allianceKickExecute',null,null,'{$kickedID}')","Playpulsar.gameplay.execute('allianceDetail',null,null,'{$userAlliance->AllianceID}')"));
 
@@ -177,10 +177,8 @@ class alliance extends baseItem {
         \phpCache\Factory::getInstance()->create()->clearModule(new \phpCache\CacheKey('alliance::getRegistry'));
         \phpCache\Factory::getInstance()->create()->clearModule(new \phpCache\CacheKey('allianceMembersRegistry::get'));
 
-		/*
-		 * Wyślij wiadomość
-		 */
-		$tSecondPlayer = userProperties::quickLoad($kickedID);
+        $tSecondPlayer = new \Gameplay\Model\UserEntity($kickedID);
+
 		$t = new translation($tSecondPlayer->Language, dirname ( __FILE__ ) . '/../translations.php');
 		$tString = TranslateController::getDefault()->get('youBeenKickedFromAlliance');
 		$tString = str_replace('{name}',$userAlliance->Name, $tString);

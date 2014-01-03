@@ -2,7 +2,9 @@
 
 namespace Controlpanel;
 use \Database\Controller as Database;
+use Gameplay\Model\ShipPosition;
 use Gameplay\Model\ShipProperties;
+use Gameplay\Model\UserEntity;
 use Gameplay\Model\UserStatistics;
 use \General\Controls as Controls;
 
@@ -98,7 +100,9 @@ class Player extends BaseItem {
 		Database::getInstance()->quoteAll($params);
 		Database::getInstance()->execute("UPDATE users SET UserLocked='yes' WHERE UserID='{$params['id']}'" );
 
-        \userProperties::sFlushCache($params['id']);
+        $oUser = new \Gameplay\Model\UserEntity($params['id']);
+        $oUser->clearCache();
+
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
 	}
 
@@ -116,8 +120,10 @@ class Player extends BaseItem {
 		Database::getInstance()->quoteAll($params);
 		Database::getInstance()->execute("UPDATE users SET UserLocked='no' WHERE UserID='{$params['id']}'" );
 
-        \userProperties::sFlushCache($params['id']);
-		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
+        $oUser = new \Gameplay\Model\UserEntity($params['id']);
+        $oUser->clearCache();
+
+        \General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
 	}
 
 	/**
@@ -157,8 +163,9 @@ class Player extends BaseItem {
 
 		Database::getInstance()->quoteAll($params);
 		Database::getInstance()->execute("UPDATE users SET UserActivated='yes' WHERE UserID='{$params['id']}'" );
-        \userProperties::sFlushCache($params['id']);
-		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
+        $oUser = new \Gameplay\Model\UserEntity($params['id']);
+        $oUser->clearCache();
+        \General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
 	}
 
 	/**
@@ -283,13 +290,9 @@ class Player extends BaseItem {
 
 		$template = new \General\Templater('templates/playerDetail.html');
 
-		$userPropertiesObject = new \userProperties();
-		$userProperties = $userPropertiesObject->load($params['id'],true, true);
-
-		$shipPosition = new \Gameplay\Model\ShipPosition($params['id']);
-
+        $userProperties = new UserEntity($params['id']);
+        $shipPosition = new ShipPosition();
 		$shipProperties = new ShipProperties($params['id']);
-
         $userStats = new UserStatistics($params['id']);
 
 		//@todo prawa dostępu:

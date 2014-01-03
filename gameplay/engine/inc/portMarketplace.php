@@ -1,6 +1,8 @@
 <?php
 
-global $userProperties, $shipProperties, $userStats, $config, $userID;
+global $shipProperties, $userStats, $config, $userID;
+
+$userProperties = \Gameplay\PlayerModelProvider::getInstance()->get('UserEntity');
 
 $sRetVal = "<h1>{T:marketplace}</h1>";
 

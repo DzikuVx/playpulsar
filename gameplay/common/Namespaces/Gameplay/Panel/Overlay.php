@@ -14,14 +14,13 @@ class Overlay extends Simple implements Singleton {
 
 	/**
 	 * @throws \Exception
-	 * @return \Gameplay\Panel\Overlay
+	 * @return Overlay
 	 */
 	static public function getInstance() {
 		if (empty(self::$instance)) {
 			$className = __CLASS__;
 
-			global $userProperties;
-
+            $userProperties = \Gameplay\PlayerModelProvider::getInstance()->get('UserEntity');
 			self::$instance = new $className($userProperties->Language);
 		}
 		return self::$instance;

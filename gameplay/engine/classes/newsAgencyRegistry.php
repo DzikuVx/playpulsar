@@ -30,7 +30,7 @@ class newsAgencyRegistry extends simpleRegistry {
 	 */
 	public function get(\Gameplay\Model\ShipPosition $shipPosition) {
 
-		global $userProperties;
+        $userProperties = \Gameplay\PlayerModelProvider::getInstance()->get('UserEntity');
 
 		$oCacheKey = new \phpCache\CacheKey('newsAgency::get', $shipPosition->System . '|' . $userProperties->Language);
         $oCache    = \phpCache\Factory::getInstance()->create();

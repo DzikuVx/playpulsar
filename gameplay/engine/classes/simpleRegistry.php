@@ -53,14 +53,10 @@ abstract class simpleRegistry {
 		$this->userID = $userID;
 
 		if (empty ( $language )) {
-			global $userProperties;
+            $userProperties = \Gameplay\PlayerModelProvider::getInstance()->get('UserEntity');
 			$this->language = $userProperties->Language;
 		} else {
 			$this->language = $language;
 		}
-
 	}
-
 }
-
-?>

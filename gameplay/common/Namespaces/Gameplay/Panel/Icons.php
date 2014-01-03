@@ -42,7 +42,7 @@ class Icons extends Renderable implements Singleton {
 		if (empty(self::$instance)) {
 			$className = __CLASS__;
 
-			global $userProperties;
+            $userProperties = \Gameplay\PlayerModelProvider::getInstance()->get('UserEntity');
 
 			self::$instance = new $className($userProperties->Language);
 		}

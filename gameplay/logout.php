@@ -3,9 +3,9 @@
 require_once 'common.php';
 
 if (!empty($_SESSION ['userID'])) {
-	$userProperties = userProperties::quickLoad($_SESSION ['userID']);
+    $userProperties = new \Gameplay\Model\UserEntity($_SESSION ['userID']);
 }else {
-	$userProperties = new stdClass();
+	$userProperties = new \Gameplay\Model\UserEntity();
 	$userProperties->Language = 'en';
 }
 

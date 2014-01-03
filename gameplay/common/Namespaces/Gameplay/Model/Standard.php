@@ -72,7 +72,10 @@ abstract class Standard {
         $oObject->clearCache();
     }
 
-    protected function insert() {
+    /**
+     * @return int
+     */
+    public function insert() {
 
         $tQuery = $this->formatInsertQuery();
         $this->db->execute($tQuery);
@@ -408,16 +411,6 @@ abstract class Standard {
     static public function quickLoad($ID, $useCache = true) {
         $item = new static ($ID, $useCache);
         return $item;
-    }
-
-    /**
-     * @param $data
-     * @return mixed
-     */
-    static public function quickInsert($data) {
-        $item = new static();
-        /** @noinspection PhpUndefinedMethodInspection */
-        return $item->insert($data);
     }
 
     /**

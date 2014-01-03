@@ -8,8 +8,8 @@
 class navigation {
 
 	static public function sAddCurrentToFavourities() {
-		global $userProperties;
 
+        $userProperties = \Gameplay\PlayerModelProvider::getInstance()->get('UserEntity');
         $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
 
 		/*
@@ -32,10 +32,8 @@ class navigation {
 	 * @param string $sector
 	 */
 	static public function sDeleteFavSector($sector) {
-
 		$tArray = explode ( '/', $sector );
-
-		global $userProperties;
+        $userProperties = \Gameplay\PlayerModelProvider::getInstance()->get('UserEntity');
 
 		$tQuery = "DELETE FROM favouritesectors WHERE UserID='{$userProperties->UserID}' AND System='{$tArray[0]}' AND X='{$tArray[1]}' AND Y='{$tArray[2]}'";
 		\Database\Controller::getInstance()->execute ( $tQuery );

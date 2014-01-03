@@ -38,7 +38,7 @@ class newsAgencyMessage {
 	/**
 	 * Przez kogo
 	 *
-	 * @var unknown_type
+	 * @var int
 	 */
 	protected $byUserID = null;
 
@@ -61,17 +61,7 @@ class newsAgencyMessage {
 
 	public $doSave = true;
 
-	/**
-	 * Konstruktor
-	 *
-	 * @param int $type
-	 * @param int $userID
-	 * @param int $byUserID
-	 * @param int $System
-	 * @param int $X
-	 * @param int $Y
-	 */
-	public function __construct($type, $userProperties = null, $byUserProperties = null, $position = null) {
+    public function __construct($type, \Gameplay\Model\UserEntity $userProperties = null, \Gameplay\Model\UserEntity $byUserProperties = null, \Gameplay\Model\ShipPosition $position = null) {
 
 		$this->type = $type;
 

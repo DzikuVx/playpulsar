@@ -34,20 +34,18 @@ class user {
 		\Database\Controller::getInstance()->execute ( "DELETE FROM alliancefinance WHERE UserID='{$playerID}' OR ForUserID='{$playerID}'" );
 		\Database\Controller::getInstance()->execute ( "DELETE FROM newsagency WHERE UserID='{$playerID}' OR ByUserID='{$playerID}'" );
 
-		$tUserParams = userProperties::quickLoad($playerID, false);
+		$tUserParams = new \Gameplay\Model\UserEntity($playerID, false);
 
 		/*
 		 * System
 		*/
-		$position = new stdClass();
+		$position = new \Gameplay\Model\ShipPosition();
 		$position->System = additional::randFormList ( $config ['userDefault'] ['system'] );
 
 		$tPosition = \Gameplay\Model\SystemProperties::randomPort ( $position );
 		$position->X = $tPosition->X;
 		$position->Y = $tPosition->Y;
 		$position->Docked = 'yes';
-		unset ( $tPosition );
-
 
 		/*
 		 * Wstaw pozycję statku
@@ -205,8 +203,7 @@ class user {
 	 * @throws securityException
 	 */
 	static public function sEditOwnExe($xml) {
-
-		global $userProperties, $userID, $userPropertiesObject;
+        $userProperties = \Gameplay\PlayerModelProvider::getInstance()->get('UserEntity');
 
 		$pA = xml::sGetValue($xml,'<passwordA>','</passwordA>' );
 		$pB = xml::sGetValue($xml,'<passwordB>','</passwordB>' );
@@ -239,14 +236,13 @@ class user {
 			$userProperties->Language = 'en';
 		}
 
-		$userPropertiesObject->synchronize($userProperties, true, true);
+        $userProperties->synchronize();
 		\Gameplay\Model\UserStatistics::sExamineMe();
 		\Gameplay\Framework\ContentTransport::getInstance()->addNotification('success', '{T:opSuccess}');
 	}
 
 	static public function sEditOwnDialog() {
-
-		global $userID, $userProperties;
+        $userProperties = \Gameplay\PlayerModelProvider::getInstance()->get('UserEntity');
 
 		$template = new \General\Templater('../templates/userDataForm.html');
 
@@ -255,7 +251,7 @@ class user {
 
 		if (!empty($userProperties->FacebookID)) {
 			$tValue = '-';
-		}else {
+		} else {
 			$tValue = $userProperties->Login;
 		}
 
@@ -286,7 +282,7 @@ class user {
 	/**
 	 * Wstawienie equipu dla użytkownika
 	 * @param int $playerID
-	 * @param array/string $equipmentSet tablica equipementID lub string oddzielony przecinkami
+	 * @param array|string $equipmentSet tablica equipementID lub string oddzielony przecinkami
 	 * @return int liczba equipu
 	 */
 	static public function sInsertEquipmentSet($playerID, $equipmentSet = '') {
@@ -397,17 +393,17 @@ class user {
 	/**
 	 * wstawienie wpisów do tabel
 	 * @param array $params
-	 * @param stdClass $tUsers
+	 * @param \Gameplay\Model\UserEntity $tUsers
 	 * @since 2011-03-20
 	 */
-	static private final function sInsert($params, $tUsers) {
+	static private final function sInsert($params, \Gameplay\Model\UserEntity $tUsers) {
 
 		global $config;
 
 		/*
 		 * Dokonaj wstawienia do tabeli users
 		*/
-		$playerID = userProperties::quickInsert ( $tUsers );
+		$playerID = $tUsers->insert();
 
 		/*
 		 * System
@@ -537,7 +533,6 @@ class user {
 	}
 
 	/**
-	 * Utworzenie konta na podstawie facebooka
 	 * @param string $name
 	 * @param array $fbMe
 	 * @throws Exception
@@ -546,13 +541,7 @@ class user {
 	 */
 	static public function sCreateAccountFromFb($name, $fbMe) {
 
-		global $config;
-
 		try {
-
-			$template = new \General\Templater ( 'templates/general.html' );
-
-			$retVal = '';
 
 			/*
 			 * Wstaw gracza
@@ -562,8 +551,7 @@ class user {
 
 			$params['name'] = $name;
 
-			$tUsers = new stdClass();
-
+			$tUsers = new \Gameplay\Model\UserEntity();
 			$tUsers->Password = self::sPasswordHash(uniqid(), uniqid());
 			$tUsers->Login = uniqid();
 			$tUsers->Email = $fbMe ['email'];
@@ -595,7 +583,7 @@ class user {
 		return $retVal;
 	}
 
-	static public function sRenderFbForm($template, $fbMe) {
+	static public function sRenderFbForm(\General\Templater $template, $fbMe) {
 		$formTemplate = new \General\Templater('templates/fbAccountForm.html');
 		$formTemplate->add('fbName', $fbMe['name']);
 		$template->add('title',TranslateController::getDefault()->get('fbNewAccount'));
@@ -652,13 +640,15 @@ class user {
 
 		global $config;
 
-		$fb=new Facebook(array(
+		$fb = new Facebook(array(
           'appId'  => $config['facebook']['appId'],
           'secret' => $config['facebook']['secret'],
           'cookie' => $config['facebook']['cookie']
 		));
 
 		$user = $fb->getUser();
+
+        $fbMe = null;
 
 		if ($user) {
 			try {
@@ -688,8 +678,6 @@ class user {
 	 * @return string
 	 */
 	static function sLoginListener(&$params) {
-
-		global $config;
 
 		$retVal = '';
 
@@ -755,38 +743,37 @@ class user {
 		return ( string ) $template;
 	}
 
-	/**
-	 * Rejestracja, wykonanie
-	 *
-	 * @param array $params
-	 * @return string
-	 */
-	public function registerExecute($params) {
+    /**
+     * @param array $params
+     * @return string
+     * @throws Exception
+     */
+    public function registerExecute($params) {
 
-		try {
+        $template = new \General\Templater ( 'templates/general.html' );
 
-			$template = new \General\Templater ( 'templates/general.html' );
+        $oDb = \Database\Controller::getInstance();
 
-			\Database\Controller::getInstance()->quoteAll($params);
+        try {
+            $oDb->quoteAll($params);
 
-			$retVal = '';
-
-			/*
-			 * Sprawdź, czy login nie jest już wykorzystywany
-			*/
-			$tQuery = "SELECT COUNT(*) AS ILE FROM users WHERE Login='{$params['login']}'";
-			$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
-			while ( $tResult = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
-				$tUserCount = $tResult->ILE;
-			}
+            /*
+             * Sprawdź, czy login nie jest już wykorzystywany
+            */
+            $tUserCount = 0;
+            $tQuery = "SELECT COUNT(*) AS ILE FROM users WHERE Login='{$params['login']}'";
+            $tQuery = $oDb->execute ( $tQuery );
+            while ( $tResult = $oDb->fetch ( $tQuery ) ) {
+                $tUserCount = $tResult->ILE;
+            }
 
 			if ($tUserCount != 0) {
 				throw new customException ( TranslateController::getDefault()->get ( 'loginAlreadyUsed' ) );
 			}
 
 			$tQuery = "SELECT COUNT(*) AS ILE FROM users WHERE Email='{$params['email']}'";
-			$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
-			while ( $tResult = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
+			$tQuery = $oDb->execute ( $tQuery );
+			while ( $tResult = $oDb->fetch ( $tQuery ) ) {
 				$tUserCount = $tResult->ILE;
 			}
 
@@ -795,14 +782,9 @@ class user {
 			}
 
 			/*
-			 * Wstaw gracza
-			*/
-			global $config;
-
-			/*
 			 * Dokonaj wstawienia do tabeli users
 			*/
-			$tUsers = new stdClass();
+			$tUsers = new \Gameplay\Model\UserEntity();
 			$tUsers->Password = self::sPasswordHash($params ['login'], $params ['passwordA']);
 			$tUsers->Login = $params ['login'];
 			$tUsers->Email = $params ['email'];
@@ -826,8 +808,8 @@ class user {
 			self::sInsert($params, $tUsers);
 
 		} catch ( customException $e ) {
-			$template->reset ();
-			$template->add ( 'text', $e->getMessage () );
+			$template->reset();
+			$template->add('text', $e->getMessage());
 		} catch ( Exception $e ) {
 			throw new Exception ( $e->getMessage (), $e->getCode () );
 		}
