@@ -13,7 +13,7 @@ $shipPosition->Y = $_REQUEST['Y'];
 $shipPosition->Docked = null;
 
 $systemProperties = \Gameplay\Model\SystemProperties::quickLoad ( $shipPosition->System );
-$sectorProperties = sectorProperties::quickLoad ( $shipPosition );
+$sectorProperties = new \Gameplay\Model\SectorEntity($shipPosition);
 
 remoteSectorInfo::initiateInstance($userProperties->Language);
 remoteSectorInfo::getInstance()->render ( $sectorProperties, $systemProperties, $shipPosition );

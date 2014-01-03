@@ -2,6 +2,7 @@
 
 namespace Gameplay\Panel;
 
+use Gameplay\Model\SectorEntity;
 use Gameplay\Model\ShipPosition;
 use Gameplay\Model\ShipProperties;
 use Gameplay\Model\SystemProperties;
@@ -42,13 +43,13 @@ class SectorShips extends Renderable implements Singleton
 
     /**
      * @param int $userID
-     * @param \stdClass $sectorProperties
+     * @param SectorEntity $sectorProperties
      * @param SystemProperties $systemProperties
      * @param ShipPosition $shipPosition
      * @param ShipProperties $shipProperties
      * @return bool
      */
-    public function render($userID, $sectorProperties, /** @noinspection PhpUnusedParameterInspection */
+    public function render($userID, SectorEntity $sectorProperties, /** @noinspection PhpUnusedParameterInspection */
                            SystemProperties $systemProperties, ShipPosition $shipPosition, ShipProperties $shipProperties)
     {
 

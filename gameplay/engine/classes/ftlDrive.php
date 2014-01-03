@@ -104,13 +104,13 @@ class ftlDrive {
         $userStats->incExperience($config ['general'] ['expForWarpJump']);
 
 		//Odświerz informacje o sektorze
-		$sectorProperties = $sectorPropertiesObject->reload($shipPosition, $sectorProperties, true, true);
+        $sectorProperties->reload($shipPosition);
 		$portProperties->reload($shipPosition);
 		$systemProperties->reload($shipPosition->System);
 
 		$jumpNode = $jumpNodeObject->load ( $shipPosition, true, true );
 
-		sectorProperties::sResetResources($shipPosition, $sectorProperties);
+		\Gameplay\Model\SectorEntity::sResetResources($shipPosition, $sectorProperties);
 		\Gameplay\Model\PortEntity::sReset($portProperties);
 
 		\Gameplay\Panel\Sector::getInstance()->render($sectorProperties, $systemProperties, $shipPosition);

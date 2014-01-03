@@ -3,6 +3,7 @@
 namespace Gameplay\Model;
 
 use Gameplay\Exception\Model;
+use Gameplay\Framework\ContentTransport;
 
 class PortEntity extends CustomGet {
     protected $tableName = "ports";

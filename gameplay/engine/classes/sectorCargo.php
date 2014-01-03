@@ -8,7 +8,11 @@
 class sectorCargo {
 
 	private $position = null;
-	private $sectorProperties = null;
+
+    /**
+     * @var \Gameplay\Model\SectorEntity
+     */
+    private $sectorProperties = null;
 	private $cache = null;
 	private $cacheValid = 3600;
 
@@ -16,7 +20,7 @@ class sectorCargo {
 	 * Pobranie właściwości sektora
 	 */
 	private function loadSector() {
-		$this->sectorProperties = sectorProperties::quickLoad($this->position);
+		$this->sectorProperties = new \Gameplay\Model\SectorEntity($this->position);
 	}
 
 	/**
@@ -157,6 +161,7 @@ class sectorCargo {
 	 * @param string $type
 	 * @param int $id
 	 * @param int $amount
+     * @return bool
 	 */
 	public function insert($type, $id, $amount) {
 
@@ -183,7 +188,7 @@ class sectorCargo {
 				$tQuery = "INSERT INTO sectorcargo(System, X, Y, CargoID, Amount, Type) VALUES('{$this->position->System}','{$this->position->X}','{$this->position->Y}', '$id', '$newState', '$type')";
 			}
 		}
-		$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
+		\Database\Controller::getInstance()->execute ( $tQuery );
 
 		$this->clearCache($type);
 
@@ -195,6 +200,7 @@ class sectorCargo {
 	 * @param string $type
 	 * @param int $id
 	 * @param int $amount
+     * @return bool
 	 */
 	public function update($type, $id, $amount) {
 
@@ -221,7 +227,7 @@ class sectorCargo {
 				$tQuery = "INSERT INTO sectorcargo(System, X, Y, CargoID, Amount, Type) VALUES('{$this->position->System}','{$this->position->X}','{$this->position->Y}', '$id', '$newState', '$type')";
 			}
 		}
-		$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
+		\Database\Controller::getInstance()->execute ( $tQuery );
 
 		//@todo ujednolicić insert i update, większość kodu jest identyczna
 		//@todo nadmiarowy ruch przy czyszczeniu. Trzeba przemyśleć
@@ -233,6 +239,7 @@ class sectorCargo {
 	/**
 	 * usunięcie całego cargo w danym miejscu
 	 * @param string $type
+     * @return bool
 	 */
 	public function drop($type) {
 

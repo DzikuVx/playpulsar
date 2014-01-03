@@ -38,16 +38,16 @@ class remoteSectorInfo extends \Gameplay\Panel\Sector {
 	}
 
     /**
-     * @param stdClass $sectorProperties
+     * @param \Gameplay\Model\SectorEntity $sectorProperties
      * @param \Gameplay\Model\SystemProperties $systemProperties
      * @param \Gameplay\Model\ShipPosition $shipPosition
      * @return $this|bool
      */
-    public function render($sectorProperties, \Gameplay\Model\SystemProperties $systemProperties, \Gameplay\Model\ShipPosition $shipPosition = null) {
+    public function render(\Gameplay\Model\SectorEntity $sectorProperties, \Gameplay\Model\SystemProperties $systemProperties, \Gameplay\Model\ShipPosition $shipPosition = null) {
 
 		global $userProperties;
 
-		parent::render ( $sectorProperties, $systemProperties, $shipPosition );
+		parent::render($sectorProperties, $systemProperties, $shipPosition);
 
 		$this->retVal = '<button onclick="$(this).parent().hide();" class="close" title="{T:close}"><i class="icon-white icon-remove"></i></button>'.$this->retVal;
 

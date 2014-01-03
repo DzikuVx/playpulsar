@@ -151,16 +151,8 @@ try {
 		throw new securityException('Authorization Code Error');
 	}
 
-	/**
-	 * Inicjalizacja parametrów sektora
-	 */
-	$sectorPropertiesObject = new sectorProperties ( );
-	$sectorProperties 		= $sectorPropertiesObject->load ( $shipPosition, true, true );
-
-	/**
-	 * Inicjalizacja parametrów portu
-	 */
-    $portProperties = $oPlayerModelProvider->register('PortEntity', new \Gameplay\Model\PortEntity($shipPosition));
+    $sectorProperties = $oPlayerModelProvider->register('SectorEntity', new \Gameplay\Model\SectorEntity($shipPosition));
+    $portProperties   = $oPlayerModelProvider->register('PortEntity', new \Gameplay\Model\PortEntity($shipPosition));
 
 	/*
 	 * Inicjalizacja JumpNode
@@ -726,7 +718,7 @@ try {
 
             $userStats->incExperience($config ['general'] ['expForMove']);
 
-			sectorProperties::sResetResources ( $shipPosition, $sectorProperties );
+			\Gameplay\Model\SectorEntity::sResetResources ( $shipPosition, $sectorProperties );
 			\Gameplay\Model\PortEntity::sReset ( $portProperties );
 
 			\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
@@ -775,7 +767,7 @@ try {
 
             $userStats->incExperience($config ['general'] ['expForMove']);
 
-			sectorProperties::sResetResources ( $shipPosition, $sectorProperties );
+			\Gameplay\Model\SectorEntity::sResetResources ( $shipPosition, $sectorProperties );
 			\Gameplay\Model\PortEntity::sReset ( $portProperties );
 			\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
 			\Gameplay\Panel\Port::getInstance()->render ( $shipPosition, $portProperties, $shipProperties, $jumpNode );
@@ -839,9 +831,8 @@ try {
 
 			$jumpNode = $jumpNodeObject->load ( $shipPosition, true, true );
 
-			sectorProperties::sResetResources ( $shipPosition, $sectorProperties );
+			\Gameplay\Model\SectorEntity::sResetResources ( $shipPosition, $sectorProperties );
 			\Gameplay\Model\PortEntity::sReset ( $portProperties );
-
 			\Gameplay\Panel\Sector::getInstance()->render ( $sectorProperties, $systemProperties, $shipPosition );
 
 			\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
@@ -900,33 +891,31 @@ try {
 		}
 
 		if (! $error) {
-			$shipPosition->X = $newX;
-			$shipPosition->Y = $newY;
-			$shipProperties->Turns -= $sectorProperties->MoveCost;
-			if ($shipProperties->Turns < 0)
-			$shipProperties->Turns = 0;
-			if ($shipProperties->RookieTurns > 0) {
-				$shipProperties->RookieTurns -= $sectorProperties->MoveCost;
-				if ($shipProperties->RookieTurns < 0)
-				$shipProperties->RookieTurns = 0;
-			}
+            $shipPosition->X = $newX;
+            $shipPosition->Y = $newY;
+            $shipProperties->Turns -= $sectorProperties->MoveCost;
+            if ($shipProperties->Turns < 0)
+            $shipProperties->Turns = 0;
+            if ($shipProperties->RookieTurns > 0) {
+                $shipProperties->RookieTurns -= $sectorProperties->MoveCost;
+                if ($shipProperties->RookieTurns < 0)
+                $shipProperties->RookieTurns = 0;
+            }
 
-			$shipPosition->synchronize();
+            $shipPosition->synchronize();
 
             $userStats->incExperience($config ['general'] ['expForMove']);
 
-			$sectorProperties = $sectorPropertiesObject->reload ( $shipPosition, $sectorProperties, true, true );
-			$jumpNode = $jumpNodeObject->load ( $shipPosition, true, true );
-			$portProperties->reload($shipPosition);
+            $sectorProperties->reload($shipPosition);
+            $jumpNode = $jumpNodeObject->load ( $shipPosition, true, true );
+            $portProperties->reload($shipPosition);
 
-			\Gameplay\Model\PortEntity::sReset ( $portProperties );
-			sectorProperties::sResetResources ( $shipPosition, $sectorProperties );
-
+            \Gameplay\Model\PortEntity::sReset($portProperties);
+			\Gameplay\Model\SectorEntity::sResetResources($shipPosition, $sectorProperties);
 			\Gameplay\Panel\Sector::getInstance()->render($sectorProperties, $systemProperties, $shipPosition);
-
 			\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
 			\Gameplay\Panel\SectorResources::getInstance()->render ( $shipPosition, $shipProperties, $sectorProperties );
-			\Gameplay\Panel\Port::getInstance()->render ( $shipPosition, $portProperties, $shipProperties, $jumpNode );
+			\Gameplay\Panel\Port::getInstance()->render($shipPosition, $portProperties, $shipProperties, $jumpNode );
 
 			if (shipRouting::checkArrive ( $shipPosition, $shipRouting )) {
 				\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:infoArrived}');
@@ -936,7 +925,7 @@ try {
 	}
 
 	if ($action == "shipRefresh") {
-		sectorProperties::sResetResources ( $shipPosition, $sectorProperties, false );
+		\Gameplay\Model\SectorEntity::sResetResources ( $shipPosition, $sectorProperties, false );
 		\Gameplay\Model\PortEntity::sReset ( $portProperties );
 		\Gameplay\Panel\SectorResources::getInstance()->render ( $shipPosition, $shipProperties, $sectorProperties );
 		\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
@@ -945,7 +934,7 @@ try {
 	}
 
 	if ($action == "pageReload" || $action == 'shipAttack' || $action == 'refresh' || $action == 'fireWeapons' || $action == 'disengage') {
-		sectorProperties::sResetResources ( $shipPosition, $sectorProperties, false );
+		\Gameplay\Model\SectorEntity::sResetResources ( $shipPosition, $sectorProperties, false );
 		\Gameplay\Model\PortEntity::sReset ( $portProperties );
 		\Gameplay\Panel\Sector::getInstance()->render ( $sectorProperties, $systemProperties, $shipPosition );
 		\Gameplay\Panel\Port::getInstance()->render ( $shipPosition, $portProperties, $shipProperties, $jumpNode );
@@ -1005,8 +994,8 @@ try {
     $shipProperties->synchronize();
     $userStats->synchronize();
     $portProperties->synchronize();
+    $sectorProperties->synchronize();
 
-    $sectorPropertiesObject->synchronize ( $sectorProperties, true, true );
     $userPropertiesObject->synchronize ( $userProperties, true, true );
 	$shipRoutingObject->synchronize ( $shipRouting, true, true );
 	$userAllianceObject->synchronize($userAlliance, true, true);

@@ -2,6 +2,7 @@
 
 namespace Gameplay\Panel;
 
+use Gameplay\Model\SectorEntity;
 use Gameplay\Model\ShipPosition;
 use Gameplay\Model\SystemProperties;
 use Interfaces\Singleton;
@@ -35,12 +36,12 @@ class Sector extends Renderable implements Singleton {
 	/**
 	 * Render
 	 *
-	 * @param \stdClass $sectorProperties
+	 * @param SectorEntity $sectorProperties
 	 * @param SystemProperties $systemProperties
 	 * @param ShipPosition $shipPosition
 	 * @return bool
 	 */
-	public function render($sectorProperties, SystemProperties $systemProperties, ShipPosition $shipPosition = null) {
+	public function render(SectorEntity $sectorProperties, SystemProperties $systemProperties, ShipPosition $shipPosition = null) {
 
 		global $config;
 
@@ -57,9 +58,9 @@ class Sector extends Renderable implements Singleton {
 		if ($shipPosition != null) {
 			$this->retVal .= "<div class='systemPosition'>[X/Y]: " . $shipPosition->X . "/" . $shipPosition->Y . "</div>";
 		}
-		$this->retVal .= "<div class=\"sectorOther\">" . Translate::getDefault()->get ( 'movecost' ) . ": " . $sectorProperties->MoveCost . "</div>";
-		$this->retVal .= "<div class=\"sectorOther\">" . Translate::getDefault()->get ( 'visibility' ) . ": " . $sectorProperties->Visibility . "%</div>";
-		$this->retVal .= "<div class=\"sectorOther\">" . Translate::getDefault()->get ( 'accuracy' ) . ": " . $sectorProperties->Accuracy . "%</div>";
+		$this->retVal .= "<div class=\"sectorOther\">{T:movecost}: " . $sectorProperties->MoveCost . "</div>";
+		$this->retVal .= "<div class=\"sectorOther\">{T:visibility}: " . $sectorProperties->Visibility . "%</div>";
+		$this->retVal .= "<div class=\"sectorOther\">{T:accuracy}: " . $sectorProperties->Accuracy . "%</div>";
 		$this->retVal .= "</div>";
 
 		return true;

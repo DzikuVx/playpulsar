@@ -356,10 +356,10 @@ class ShipProperties extends Standard {
      * @param UserStatistics $userStats
      * @param ShipProperties $otherShipProperties
      * @param UserStatistics $otherUserStats
-     * @param \stdClass $sectorProperties
+     * @param SectorEntity $sectorProperties
      * @return boolean
      */
-    static public function sGetVisibility(ShipProperties $shipProperties, UserStatistics $userStats, ShipProperties $otherShipProperties, UserStatistics $otherUserStats, $sectorProperties) {
+    static public function sGetVisibility(ShipProperties $shipProperties, UserStatistics $userStats, ShipProperties $otherShipProperties, UserStatistics $otherUserStats, SectorEntity $sectorProperties) {
 
         $percentage = $sectorProperties->Visibility + $userStats->Level - $otherUserStats->Level + $shipProperties->Scan - $otherShipProperties->Cloak;
 

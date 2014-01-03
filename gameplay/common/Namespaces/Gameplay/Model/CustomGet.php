@@ -6,13 +6,17 @@ use Gameplay\Exception\Model;
 
 class CustomGet extends Standard {
 
+    /**
+     * @return string
+     * @throws \Gameplay\Exception\Model
+     */
     protected function serializeData() {
 
         $retVal = new \stdClass();
 
         if (!empty($this->originalData)) {
             foreach ($this->originalData as $tField => $mValue) {
-                if (isset($this->{$tField})) {
+                if (property_exists($this, $tField)) {
                     $retVal->{$tField} = $this->{$tField};
                 } else {
                     throw new Model('Trying to synchronize ' . $tField . ' while class field not exists');
@@ -22,7 +26,6 @@ class CustomGet extends Standard {
 
         return serialize($retVal);
     }
-
 
     /**
      * @param \stdClass $data

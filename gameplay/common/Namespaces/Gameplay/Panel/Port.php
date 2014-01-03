@@ -17,7 +17,7 @@ class Port extends Renderable implements Singleton {
 
 	/**
 	 * @throws \Exception
-	 * @return \Gameplay\Panel\ShortStats
+	 * @return Port
 	 */
 	static public function getInstance() {
 

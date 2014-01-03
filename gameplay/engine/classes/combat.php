@@ -57,19 +57,10 @@ class combat {
 	 */
 	protected $shipPosition = null;
 
-	/**
-	 * Parametry sektora
-	 *
-	 * @var stdClass
-	 */
-	protected $sectorProperties = null;
-
-	/**
-	 * Enter description here...
-	 *
-	 * @var sectorProperties
-	 */
-	protected $sectorPropertiesObject = null;
+    /**
+     * @var \Gameplay\Model\SectorEntity
+     */
+    protected $sectorProperties = null;
 
 	protected $authCode;
 
@@ -872,10 +863,10 @@ class combat {
 	 *
 	 * @param combatShip $tPlayer
 	 * @param array $tEnemies
-	 * @param stdClass $sectorProperties
+	 * @param \Gameplay\Model\SectorEntity $sectorProperties
 	 * @return boolean
 	 */
-	static public function sCheckDisengage($tPlayer, $tEnemies, $sectorProperties) {
+	static public function sCheckDisengage($tPlayer, $tEnemies, \Gameplay\Model\SectorEntity $sectorProperties) {
 		$retVal = false;
 
 		$avgSpeed = self::sGetAverageSpeed ( $tEnemies );
@@ -926,11 +917,8 @@ class combat {
 
 		$tAllianceObject = new userAlliance ( );
 		$this->playerAlliance = $tAllianceObject->load ( $userID, true, true )->AllianceID;
-		unset($tAllianceObject);
 
-		$this->sectorPropertiesObject = new sectorProperties ( );
-		$this->sectorProperties = $this->sectorPropertiesObject->load ( $this->shipPosition, true, true );
-
+		$this->sectorProperties = new \Gameplay\Model\SectorEntity($this->shipPosition);
 	}
 
 	/**
@@ -1248,15 +1236,14 @@ class combat {
 		return additional::checkRand ( $config ['combat'] ['weaponDamageProbability'], 100 );
 	}
 
-	/**
-	 * Wzór na celnośc broni
-	 *
-	 * @param stdClass $tWeapon
-	 * @param combatShip $firingShip
-	 * @param combatShip $targetShip
-	 * @return int
-	 */
-	protected static function computeWeaponAccuracy($tWeapon, combatShip $firingShip, combatShip $targetShip, $sectorProperties) {
+    /**
+     * @param stdClass $tWeapon
+     * @param combatShip $firingShip
+     * @param combatShip $targetShip
+     * @param \Gameplay\Model\SectorEntity $sectorProperties
+     * @return int
+     */
+    protected static function computeWeaponAccuracy($tWeapon, combatShip $firingShip, combatShip $targetShip, \Gameplay\Model\SectorEntity $sectorProperties) {
 
 		$tManu = $targetShip->shipProperties->Maneuver;
 

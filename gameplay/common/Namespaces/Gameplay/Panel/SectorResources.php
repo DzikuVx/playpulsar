@@ -2,11 +2,10 @@
 
 namespace Gameplay\Panel;
 
+use Gameplay\Model\SectorEntity;
 use Gameplay\Model\ShipPosition;
 use Gameplay\Model\ShipProperties;
 use Interfaces\Singleton;
-
-use TranslateController as Translate;
 
 class SectorResources extends Renderable implements Singleton {
 
@@ -36,10 +35,11 @@ class SectorResources extends Renderable implements Singleton {
     /**
      * @param ShipPosition $shipPosition
      * @param ShipProperties $shipProperties
-     * @param \stdClass $sectorProperties
+     * @param SectorEntity $sectorProperties
      * @return bool
      */
-    function render(ShipPosition $shipPosition, ShipProperties $shipProperties, $sectorProperties) {
+    function render(ShipPosition $shipPosition, ShipProperties $shipProperties, /** @noinspection PhpUnusedParameterInspection */
+                    SectorEntity $sectorProperties) {
 
 		global $itemPickCost;
 
@@ -63,7 +63,6 @@ class SectorResources extends Renderable implements Singleton {
 			if ($tR1->Amount < 1) {
 				continue;
 			}
-
 
 			$tContent .= "<div class='well resource'>";
 
