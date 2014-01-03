@@ -29,4 +29,18 @@ class ShipPosition extends Standard {
      */
     public $Docked;
 
+    /**
+     * Manually set coordinates
+     * @param int $System
+     * @param int $X
+     * @param int $Y
+     * @param string $Docked
+     */
+    public function setCoordinates($System, $X, $Y, $Docked = 'no') {
+        $this->System = $System;
+        $this->X      = $X;
+        $this->Y      = $Y;
+        $this->Docked = $Docked;
+    }
+
 }

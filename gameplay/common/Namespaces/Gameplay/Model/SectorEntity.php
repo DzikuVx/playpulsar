@@ -2,6 +2,8 @@
 
 namespace Gameplay\Model;
 
+use Gameplay\Exception\Model;
+
 class SectorEntity extends CustomGet {
 	protected $tableName = "sectors";
 	protected $tableID = "SectorID";
@@ -54,74 +56,75 @@ class SectorEntity extends CustomGet {
     public $Resources;
 
     /**
-     * @param ShipPosition $shipPosition
-     * @param SectorEntity $sectorProperties
-     * @param bool $enableItemReset
+     * @var int
      */
-    static public function sResetResources(ShipPosition $shipPosition, SectorEntity $sectorProperties, $enableItemReset = true) {
+    public $System;
 
-		global $actualTime, $config, $itemCastProbability, $itemCastMaxProbability;
+    /**
+     * @var int
+     */
+    public $X;
 
-		/*
-		 * Castowanie itemów w sektorze
-		*/
-		if ($enableItemReset && \additional::checkRand ( $itemCastProbability, $itemCastMaxProbability )) {
-			/*
-			 * Wylosuj itema
-			*/
+    /**
+     * @var int
+     */
+    public $Y;
 
-			if (empty($sectorCargo)) {
-				$sectorCargo = new \sectorCargo($shipPosition);
-			}
+    public function resetResources($enableItemReset = true) {
 
-			$itemID = null;
-			$tQuery = "SELECT ItemID FROM itemtypes ORDER BY RAND() LIMIT 1";
-			$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
-			while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
-				$itemID = $tR1->ItemID;
-			}
-			if (!empty($itemID)) {
-				$sectorCargo->insert('item', $itemID, 1);
-			}
-		}
+        global $actualTime, $config, $itemCastProbability, $itemCastMaxProbability;
 
-		//Sprawdzenie, czy ten sektor ma jakieś zasoby
-		if (($sectorProperties->Name != 'deepspace') && ($sectorProperties->ResetTime < $actualTime) && ($sectorProperties->Resources != "")) {
+        $shipPosition = new ShipPosition();
+        $shipPosition->setCoordinates($this->System, $this->X, $this->Y);
 
-			if (empty($sectorCargo)) {
-				$sectorCargo = new \sectorCargo($shipPosition);
-			}
+        if ($enableItemReset && \additional::checkRand ( $itemCastProbability, $itemCastMaxProbability )) {
 
-			$resourcesArray = explode ( ",", $sectorProperties->Resources );
-			reset ( $resourcesArray );
-			for($tIndex = 0; $tIndex < count ( $resourcesArray ); $tIndex ++) {
+            if (empty($sectorCargo)) {
+                $sectorCargo = new \sectorCargo($shipPosition);
+            }
 
-				$Amount = $sectorCargo->getAmount('product', $resourcesArray[$tIndex]);
+            $itemID = null;
 
-				$tObject = \product::quickLoad ( $resourcesArray [$tIndex] );
-				$creationDivider = $tObject->CreationDivider;
+            $oDb = \Database\Controller::getInstance();
 
-				$newState = floor ( $Amount + (($config ['sector'] ['maxResources'] - $Amount) / ($config ['sector'] ['resourceDivider'] * $creationDivider)) + (rand ( - 10, 10 ) * 10) + rand ( - 9, 9 ) );
-				if ($newState < 0) {
-					$newState = 0;
-				}
-				if ($newState > $config ['sector'] ['maxResources']) {
-					$newState = $config ['sector'] ['maxResources'];
-				}
+            $tQuery = "SELECT ItemID FROM itemtypes ORDER BY RAND() LIMIT 1";
+            $tQuery = $oDb->execute ($tQuery);
+            while($tR1 = $oDb->fetch($tQuery)) {
+                $itemID = $tR1->ItemID;
+            }
+            if (!empty($itemID)) {
+                $sectorCargo->insert('item', $itemID, 1);
+            }
+        }
 
-				/*
-				 * Wprowadź nowy stan
-				*/
-				$sectorCargo->update('product', $resourcesArray[$tIndex], $newState );
-				$sectorProperties->ResetTime = $actualTime + $config ['timeThresholds'] ['sectorReset'];
-			}
-		}
-	}
+        if (($this->Name != 'deepspace') && ($this->ResetTime < $actualTime) && ($this->Resources != "")) {
 
-    //FIXME replace with dynamic method
-	static public function quickLoad($ID, $useCache = true) {
-		return new SectorEntity($ID);
-	}
+            if (empty($sectorCargo)) {
+                $sectorCargo = new \sectorCargo($shipPosition);
+            }
+
+            $resourcesArray = explode ( ",", $this->Resources );
+            reset($resourcesArray);
+            for($tIndex = 0; $tIndex < count ( $resourcesArray ); $tIndex ++) {
+
+                $Amount = $sectorCargo->getAmount('product', $resourcesArray[$tIndex]);
+
+                $tObject = \product::quickLoad ( $resourcesArray [$tIndex] );
+                $creationDivider = $tObject->CreationDivider;
+
+                $newState = floor ( $Amount + (($config ['sector'] ['maxResources'] - $Amount) / ($config ['sector'] ['resourceDivider'] * $creationDivider)) + (rand ( - 10, 10 ) * 10) + rand ( - 9, 9 ) );
+                if ($newState < 0) {
+                    $newState = 0;
+                }
+                if ($newState > $config ['sector'] ['maxResources']) {
+                    $newState = $config ['sector'] ['maxResources'];
+                }
+
+                $sectorCargo->update('product', $resourcesArray[$tIndex], $newState );
+                $this->ResetTime = $actualTime + $config ['timeThresholds'] ['sectorReset'];
+            }
+        }
+    }
 
 	function get() {
 
@@ -133,6 +136,10 @@ class SectorEntity extends CustomGet {
         foreach($defaultSectorProperties as $sKey => $sValue) {
             $oData->{$sKey} = $sValue;
         }
+
+        $oData->System = $this->entryId->System;
+        $oData->X      = $this->entryId->X;
+        $oData->Y      = $this->entryId->Y;
 
 		$tResult = $oDb->execute ( "
               SELECT

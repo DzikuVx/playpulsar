@@ -28,11 +28,11 @@ class ftlDrive {
 	}
 
 	static public function sEngage() {
-		global $userID, $shipProperties, $shipRouting, $userStats, $config, $sectorProperties, $jumpNode, $sectorPropertiesObject, $jumpNodeObject;
+		global $userID, $shipProperties, $shipRouting, $userStats, $config, $sectorProperties, $jumpNode, $jumpNodeObject;
 
         $shipPosition     = PlayerModelProvider::getInstance()->get('ShipPosition');
         $systemProperties = PlayerModelProvider::getInstance()->get('SystemProperties');
-        $portProperties = PlayerModelProvider::getInstance()->get('PortEntity');
+        $portProperties   = PlayerModelProvider::getInstance()->get('PortEntity');
 
 		if ($shipProperties->checkMalfunction()) {
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'error', '{T:shipMalfunctionEmp}');
@@ -110,7 +110,7 @@ class ftlDrive {
 
 		$jumpNode = $jumpNodeObject->load ( $shipPosition, true, true );
 
-		\Gameplay\Model\SectorEntity::sResetResources($shipPosition, $sectorProperties);
+        $sectorProperties->resetResources();
 		\Gameplay\Model\PortEntity::sReset($portProperties);
 
 		\Gameplay\Panel\Sector::getInstance()->render($sectorProperties, $systemProperties, $shipPosition);

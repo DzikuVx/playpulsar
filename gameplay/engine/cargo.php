@@ -202,7 +202,7 @@ if ($action == "jettison") {
 		}
 	}
 
-	\Gameplay\Model\SectorEntity::sResetResources( $shipPosition, $sectorProperties );
+    $sectorProperties->resetResources();
 	\Gameplay\Model\PortEntity::sReset ( $portProperties );
 	shipCargo::management ( $userID );
 	\Gameplay\Panel\PortAction::getInstance()->clear();
@@ -317,7 +317,7 @@ if ($action == "gather") {
 
         \Gameplay\Model\ShipProperties::updateUsedCargo($shipProperties);
 
-		\Gameplay\Model\SectorEntity::sResetResources ( $shipPosition, $sectorProperties );
+        $sectorProperties->resetResources();
 		\Gameplay\Model\PortEntity::sReset ( $portProperties );
 		\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
 		\Gameplay\Panel\SectorResources::getInstance()->render ( $shipPosition, $shipProperties, $sectorProperties );
@@ -414,7 +414,7 @@ if ($action == 'toCargohold') {
 
 		\Gameplay\Model\PortEntity::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
 
-		\Gameplay\Model\SectorEntity::sResetResources ( $shipPosition, $sectorProperties );
+        $sectorProperties->resetResources();
 		\Gameplay\Model\PortEntity::sReset ( $portProperties );
 		\Gameplay\Panel\PortAction::getInstance()->clear();
         \Gameplay\Framework\ContentTransport::getInstance()->addNotification('success', '{T:opSuccess}');
@@ -519,7 +519,7 @@ if ($action == 'toStorehouse') {
 
 		shipCargo::management ( $userID );
 
-		\Gameplay\Model\SectorEntity::sResetResources ( $shipPosition, $sectorProperties );
+        $sectorProperties->resetResources();
 		\Gameplay\Model\PortEntity::sReset ( $portProperties );
         \Gameplay\Framework\ContentTransport::getInstance()->addNotification('success', '{T:opSuccess}');
 	}
