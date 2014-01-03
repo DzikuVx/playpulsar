@@ -1,6 +1,8 @@
 <?php
 
 namespace Gameplay\Framework;
+use Gameplay\Panel\Action;
+use Gameplay\Panel\Renderable;
 
 /**
  * Content transport class responsible for transporting backend
@@ -62,7 +64,7 @@ class ContentTransport implements \Interfaces\Singleton {
 
 	/**
 	 * add panel object for transport
-	 * @param \Gameplay\Panel\Renderable $oPanel
+	 * @param mixed $oPanel
 	 * @return ContentTransport
 	 */
 	public function addPanel($oPanel) {

@@ -1,10 +1,10 @@
 <?php
 
 use Gameplay\Exception\Overlay;
-
 use Gameplay\Framework\Controller as GameplayController;
 use Gameplay\Framework\ContentTransport;
 
+/** @noinspection PhpIncludeInspection */
 require_once '../common.php';
 
 $timek1 = microtime ();
@@ -12,19 +12,19 @@ $timek1 = microtime ();
 $out = "";
 $error = false;
 
+$oContentTransport = ContentTransport::getInstance();
+$oController = GameplayController::getInstance();
+
+$oController->registerParameters($_REQUEST);
+
+$userID = $_SESSION ['userID'];
+
+$action = $oController->getParameter('action');
+$subaction = $oController->getParameter('subaction');
+$id = $oController->getParameter('id');
+$value = $oController->getParameter('value');
+
 try {
-
-	$oContentTransport 	= ContentTransport::getInstance();
-	$oController 		= GameplayController::getInstance();
-
-	$oController->registerParameters($_REQUEST);
-
-	$userID = $_SESSION ['userID'];
-
-	$action 	= $oController->getParameter('action');
-	$subaction 	= $oController->getParameter('subaction');
-	$id 		= $oController->getParameter('id');
-	$value 		= $oController->getParameter('value');
 
 	if (!empty($config ['debug'] ['gameplayDebugOutput'])) {
 		\Gameplay\Panel\Debug::getInstance()->add('Request action', $action);
@@ -42,6 +42,7 @@ try {
 	TranslateController::setDefaultLanguage($userProperties->Language);
 	$t = TranslateController::getDefault();
 
+    //FIXME this will not work!!
 	if (empty($config ['general'] ['enableGameplay']) && empty($_SESSION['cpLoggedUserID'])) {
 		echo '<xml><actionPanel>'.\General\Controls::displayConfirmDialog(TranslateController::getDefault()->get('Announcement'), TranslateController::getDefault()->get('Gameplay disabled')).'</actionPanel></xml>';
 		exit();
@@ -839,9 +840,9 @@ try {
 			\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
 			\Gameplay\Panel\SectorResources::getInstance()->render ( $shipPosition, $shipProperties, $sectorProperties );
 			\Gameplay\Panel\Port::getInstance()->render ( $shipPosition, $portProperties, $shipProperties, $jumpNode );
-			\Gameplay\Panel\Port::getInstance()->load ( $userID, $shipPosition->System, $shipPosition );
+            \Gameplay\Panel\MiniMap::initiateInstance($userID, $shipPosition->System, $shipPosition);
 
-			if (shipRouting::checkArrive ( $shipPosition, $shipRouting )) {
+			if (shipRouting::checkArrive($shipPosition, $shipRouting)) {
 				\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
 				\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:infoArrived}');
 			}
@@ -859,11 +860,13 @@ try {
 			throw new securityException ( );
 		}
 
-		//Sprawdzenie, czy statek może się ruszyć
 		if ($shipProperties->Turns < $sectorProperties->MoveCost) {
 			$error = true;
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'warning', '{T:notEnoughTurns}');
 		}
+
+        $newX = $shipPosition->X;
+        $newY = $shipPosition->Y;
 
 		switch ($subaction) {
 			case "up" :
@@ -1031,8 +1034,9 @@ try {
 
 } catch ( combatException $e ) {
 
-	$Combat = new combat ( $userID, $userProperties->Language );
-	$Combat->execute ( $action );
+    /** @noinspection PhpUndefinedVariableInspection */
+    $Combat = new combat($userID, $userProperties->Language);
+	$Combat->execute($action);
 
 	\Gameplay\Panel\Overlay::getInstance()->setParams(array('closer' => false));
 	\Gameplay\Panel\Overlay::getInstance()->clear();
@@ -1040,7 +1044,7 @@ try {
 
 	$timek2 = microtime ();
 	$arr_time = explode ( " ", $timek1 );
-	$timek1 = $arr_time [1] + $stdClassarr_time [0];
+	$timek1 = $arr_time [1] + $arr_time [0];
 	$arr_time = explode ( " ", $timek2 );
 	$timek2 = $arr_time [1] + $arr_time [0];
 	$czas_gen = round ( $timek2 - $timek1, 4 );
@@ -1058,7 +1062,7 @@ try {
 } catch ( securityException $e ) {
 
 	if (empty($oContentTransport)) {
-		$oContentTransport 	= ContentTransport::getInstance();
+		$oContentTransport	= ContentTransport::getInstance();
 	}
 
 	/**
@@ -1100,7 +1104,7 @@ try {
 		$oContentTransport 	= ContentTransport::getInstance();
 	}
 
-	$oContentTransport->addNotification('error', '{T:An error occured, try again or contact game administrators}');
+	$oContentTransport->addNotification('error', '{T:An error occurred, try again or contact game administrators}');
 
     \phpCache\Factory::getInstance()->create()->clearAll();
 

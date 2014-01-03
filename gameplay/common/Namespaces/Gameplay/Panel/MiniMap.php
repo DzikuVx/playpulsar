@@ -42,7 +42,14 @@ class MiniMap extends BaseTable implements Singleton {
 
 	}
 
-	static public function initiateInstance($userID, $system, $shipPosition = null, $getShips = false, $getStacks = false) {
+    /**
+     * @param int $userID
+     * @param int $system
+     * @param ShipPosition $shipPosition
+     * @param bool $getShips
+     * @param bool $getStacks
+     */
+    static public function initiateInstance($userID, $system, ShipPosition $shipPosition = null, $getShips = false, $getStacks = false) {
 		self::$instance = new self($userID, $system, $shipPosition, $getShips, $getStacks);
 	}
 
