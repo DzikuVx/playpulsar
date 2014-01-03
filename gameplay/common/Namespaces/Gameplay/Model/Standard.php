@@ -330,6 +330,29 @@ abstract class Standard {
     }
 
     /**
+     * Method clears all data stored within object
+     */
+    public function clear() {
+
+        if (!empty($this->originalData)) {
+            foreach($this->originalData as $sKey => $mValue) {
+                if (property_exists($this, $sKey)) {
+                    $this->{$sKey} = null;
+                }
+            }
+        }
+
+        if (!empty($this->tableUseFields)) {
+            foreach($this->tableUseFields as $sKey) {
+                if (property_exists($this, $sKey)) {
+                    $this->{$sKey} = null;
+                }
+            }
+        }
+
+    }
+
+    /**
      * Method reloads entry with new entryId
      * @param int $newID
      */
@@ -338,6 +361,8 @@ abstract class Standard {
         if (!empty($this->entryId)) {
             $this->synchronize();
         }
+
+        $this->clear();
 
         $this->entryId  = $newID;
         $this->cacheID  = $this->parseCacheID($newID);
