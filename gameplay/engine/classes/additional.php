@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Dodatkowe operacje
- * 
- * @version $Rev: 454 $
- * @package Engine
- */
 class additional {
 	
 	/**

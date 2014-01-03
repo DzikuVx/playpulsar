@@ -7,7 +7,9 @@ use Gameplay\Framework\ContentTransport;
 /** @noinspection PhpIncludeInspection */
 require_once '../common.php';
 
-$timek1 = microtime ();
+const TIME_MEASUREMENT_GAMEPLAY = 'Gameplay';
+
+\General\TimeMeasurement::start(TIME_MEASUREMENT_GAMEPLAY);
 
 $out = "";
 $error = false;
@@ -964,23 +966,20 @@ try {
 	\Gameplay\Panel\Move::getInstance()->render($systemProperties, $shipPosition, $portProperties, $shipRouting, $shipProperties);
 	\Gameplay\Panel\MiniMap::getInstance()->render();
 
-	\Gameplay\Model\UserTimes::genAuthCode ($userTimes, $userFastTimes);
+    \Gameplay\Model\UserTimes::genAuthCode($userTimes, $userFastTimes);
 
 	$oContentTransport->addVariable('AuthCode', $userFastTimes->AuthCode);
 
-	$timek2 = microtime ();
-	$arr_time = explode ( " ", $timek1 );
-	$timek1 = $arr_time [1] + $arr_time [0];
-	$arr_time = explode ( " ", $timek2 );
-	$timek2 = $arr_time [1] + $arr_time [0];
-	$czas_gen = round ( $timek2 - $timek1, 4 );
+    \General\TimeMeasurement::stop(TIME_MEASUREMENT_GAMEPLAY);
+
+    $fMeasuredTime = \General\TimeMeasurement::get(TIME_MEASUREMENT_GAMEPLAY);
 
 	if (!empty($config ['debug'] ['gameplayDebugOutput'])) {
-		\Gameplay\Panel\Debug::getInstance()->add('Execution time', $czas_gen);
+		\Gameplay\Panel\Debug::getInstance()->add('Execution time', $fMeasuredTime);
 	}
 
 	if (!empty($config ['debug'] ['script'])) {
-		psScriptDebug::sSaveExecution($action, $subaction, $czas_gen);
+		psScriptDebug::sSaveExecution($action, $subaction, $fMeasuredTime);
 	}
 
 	/*
@@ -1042,15 +1041,10 @@ try {
 	\Gameplay\Panel\Overlay::getInstance()->clear();
 	\Gameplay\Panel\Overlay::getInstance()->add((string) $Combat);
 
-	$timek2 = microtime ();
-	$arr_time = explode ( " ", $timek1 );
-	$timek1 = $arr_time [1] + $arr_time [0];
-	$arr_time = explode ( " ", $timek2 );
-	$timek2 = $arr_time [1] + $arr_time [0];
-	$czas_gen = round ( $timek2 - $timek1, 4 );
+    \General\TimeMeasurement::stop(TIME_MEASUREMENT_GAMEPLAY);
 
 	if (!empty($config ['debug'] ['script'])) {
-		psScriptDebug::sSaveExecution($action, $subaction, $czas_gen);
+		psScriptDebug::sSaveExecution($action, $subaction, \General\TimeMeasurement::get(TIME_MEASUREMENT_GAMEPLAY));
 	}
 
 	$oContentTransport->addVariable('AuthCode', $Combat->getAuthCode());
