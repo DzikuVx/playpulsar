@@ -225,7 +225,7 @@ class npc extends baseItem {
             $npcShipProperties->computeDefensiveRating();
 
 			if ($npcType->HaveItems == 'yes') {
-				$tItems = item::getRand ( additional::rand ( 0, 5 ) );
+				$tItems = \Gameplay\Model\ItemType::getRand ( additional::rand ( 0, 5 ) );
 
 				foreach ( $tItems as $value ) {
 					$npcCargo->setAmount ( $value, 'item', additional::rand ( 1, 2 ) );

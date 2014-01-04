@@ -2,6 +2,7 @@
 
 namespace Controlpanel;
 
+use Gameplay\Model\ItemType;
 use Gameplay\Model\ProductType;
 use Gameplay\Model\ShipPosition;
 use Gameplay\Model\ShipProperties;
@@ -455,7 +456,7 @@ class NpcTypes extends GameplayItem{
 				 * Jeśli NPC ma itemy ładowniach
 				*/
 				if ($row1->HaveItems == 'yes') {
-					$tItems = \item::getRand ( \additional::rand ( 0, 5 ) );
+					$tItems = ItemType::getRand ( \additional::rand ( 0, 5 ) );
 					$tCargo = new \shipCargo ( $npcID, 'pl' );
 
 					foreach ( $tItems as $value ) {

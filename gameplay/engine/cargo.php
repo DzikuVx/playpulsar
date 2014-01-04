@@ -272,25 +272,30 @@ if ($action == "gather") {
 		$productExp = 0;
 		$productSize = $productData->Size;
 
-		if ($toGather > $sectorAmount)
-		$toGather = $sectorAmount;
+		if ($toGather > $sectorAmount) {
+		    $toGather = $sectorAmount;
+        }
 		$canGather = floor ( $shipProperties->Turns / $turnsRequired );
-		if ($toGather > $canGather)
-		$toGather = $canGather;
+		if ($toGather > $canGather) {
+		    $toGather = $canGather;
+        }
 	}
 
 	if ($subaction == 'item') {
-		$item = new item ( );
-		$productData = $item->load ( $id, true, true );
+        $productData = new \Gameplay\Model\ItemType($id);
 		$productExp = $productData->Experience;
 		$productSize = $productData->Size;
 
 		//Oblicz ile jesteś w stanie zebrać
-		if ($toGather > $sectorAmount)
-		$toGather = $sectorAmount;
-		$canGather = floor ( $shipProperties->Turns / $turnsRequired );
-		if ($toGather > $canGather)
-		$toGather = $canGather;
+		if ($toGather > $sectorAmount) {
+		    $toGather = $sectorAmount;
+        }
+
+        $canGather = floor ( $shipProperties->Turns / $turnsRequired );
+
+        if ($toGather > $canGather) {
+		    $toGather = $canGather;
+        }
 	}
 
 	if (! $error) {
@@ -374,9 +379,7 @@ if ($action == 'toCargohold') {
 	}
 
 	if ($subaction == 'item') {
-		$item = new item ( );
-		$productData = $item->load ( $id, true, true );
-		unset($item);
+        $productData = new \Gameplay\Model\ItemType($id);
 		$productSize = $productData->Size;
 	}
 
@@ -471,9 +474,7 @@ if ($action == 'toStorehouse') {
 	}
 
 	if ($subaction == 'item') {
-		$item = new item ( );
-		$productData = $item->load ( $id, true, true );
-		unset($item);
+        $productData = new \Gameplay\Model\ItemType($id);
 		if (empty($productData->Size)) {
 			throw new securityException();
 		}
@@ -545,10 +546,7 @@ if ($action == "itemSell") {
 		throw new securityException ( );
 	}
 
-	//Oblicz cenę towaru
-	$item = new item ( );
-	$productData = $item->load ( $id, true, true );
-	unset($item);
+    $productData = new \Gameplay\Model\ItemType($id);
 
 	$shipCargo->setAmount ( $id, 'item', $cargoAmount - $value );
 

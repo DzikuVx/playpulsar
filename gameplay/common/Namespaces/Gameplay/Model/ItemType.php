@@ -1,17 +1,22 @@
 <?php
-/**
- * Specjalne itemy
- *
- * @version $Rev: 454 $
- * @package Engine
- */
-class item extends baseItem {
+
+namespace Gameplay\Model;
+
+class ItemType extends Standard {
 	protected $tableName = "itemtypes";
 	protected $tableID = "ItemID";
-	protected $tableUseFields = null;
-	protected $defaultCacheExpire = 86400;
-	protected $useMemcached = true;
-	
+	protected $tableUseFields = array('ItemID', 'Active', 'Symbol', 'NameEN', 'NamePL', 'Price', 'Experience', 'Size');
+	protected $cacheExpire = 86400;
+
+    public $ItemID;
+    public $Active;
+    public $Symbol;
+    public $NameEN;
+    public $NamePL;
+    public $Price;
+    public $Experience;
+    public $Size;
+
 	/**
 	 * Zwraca tablicę n losowych itemów
 	 *
