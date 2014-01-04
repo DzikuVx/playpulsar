@@ -10,6 +10,7 @@ use Gameplay\Model\ShipType;
 use Gameplay\Model\SystemProperties;
 use Gameplay\Model\UserEntity;
 use Gameplay\Model\UserStatistics;
+use Gameplay\Model\WeaponType;
 
 class NpcTypes extends GameplayItem{
 
@@ -382,8 +383,7 @@ class NpcTypes extends GameplayItem{
 					$weaponsCount = 0;
 					\Database\Controller::getInstance()->disableAutocommit();
 					foreach ( $tWeapons as $value ) {
-
-						$weapon = \weapon::quickLoad ( $value );
+                        $weapon = new WeaponType($value);
 
 						$sequence ++;
 
@@ -542,7 +542,8 @@ class NpcTypes extends GameplayItem{
 		$tString = '<ul>';
 		$tArray = explode(',', $tData->Weapons);
 		foreach ($tArray as $tWeaponID) {
-			$tString .= '<li>'.\weapon::quickLoad($tWeaponID)->NameEN.'</li>';
+            $oWeapon = new WeaponType($tWeaponID);
+			$tString .= '<li>' . $oWeapon->NameEN . '</li>';
 		}
 		$tString .= '</ul>';
 		$template->add('WeaponsList', $tString);

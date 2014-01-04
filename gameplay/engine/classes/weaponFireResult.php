@@ -91,18 +91,6 @@ class weaponFireResult {
 		return unserialize ( $data );
 	}
 
-	/**
-	 * Konstruktor publiczny
-	 *
-	 * @param string $firingShipName
-	 * @param string $targetShipName
-	 * @param int $weaponID
-	 * @param string $type
-	 * @param int $shdDamage
-	 * @param int $armDamage
-	 * @param int $powDamage
-	 * @param int $empDamage
-	 */
 	public function __construct($content, $firingShipName, $targetShipName, $weaponID, $type, $shdDamage = null, $armDamage = null, $powDamage = null, $empDamage = null) {
 		$this->weaponID = $weaponID;
 		$this->content = $content;
@@ -116,15 +104,15 @@ class weaponFireResult {
 		$this->timeStamp = time();
 	}
 
-	/**
-	 * Zapisanie raportów walki do bazy danych
-	 *
-	 * @param int $userID - którego dotyczczy
-	 * @param int $byUserID - kto strzelił
-	 * @param string $Type - defensive/offensive
-	 * @return boolean
-	 */
-	public function save($userID, $byUserID, $type = 'defensive', $preparedQuery) {
+    /**
+     * @param $userID
+     * @param $byUserID
+     * @param string $type
+     * @param $preparedQuery
+     * @return bool
+     * @throws Database\Exception
+     */
+    public function save($userID, $byUserID, $type = 'defensive', $preparedQuery) {
 
 		$time = time();
 		$content = self::sEncodeSaveModel ( $this );
@@ -139,27 +127,27 @@ class weaponFireResult {
 		return true;
 	}
 
-	/**
-	 * Wyrenderowanie
-	 *
-	 * @param translation $t
-	 * @param string $language
-	 * @return string
-	 */
-	public function render($translate, $language = 'pl') {
+    /**
+     * @param Translate $translate
+     * @param string $language
+     * @return string
+     */
+    public function render(Translate $translate, $language = 'pl') {
+
+        if (empty($this->weaponID)) {
+            return '';
+        }
 
 		$retVal = '';
-		if (! empty ( $this->weaponID )) {
-			$tWeapon = weapon::quickLoad ( $this->weaponID );
+        $tWeapon = new \Gameplay\Model\WeaponType($this->weaponID);
 
-			if ($language == 'pl') {
-				$tWeapon->Name = $tWeapon->NamePL;
-				$tWeapon->ClassName = $tWeapon->ClassNamePL;
-			} else {
-				$tWeapon->Name = $tWeapon->NameEN;
-				$tWeapon->ClassName = $tWeapon->ClassNameEN;
-			}
-		}
+        if ($language == 'pl') {
+            $tWeapon->Name = $tWeapon->NamePL;
+            $tWeapon->ClassName = $tWeapon->ClassNamePL;
+        } else {
+            $tWeapon->Name = $tWeapon->NameEN;
+            $tWeapon->ClassName = $tWeapon->ClassNameEN;
+        }
 
 		$tTimeDiff = time()-$this->timeStamp;
 

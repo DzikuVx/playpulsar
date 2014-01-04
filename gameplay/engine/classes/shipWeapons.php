@@ -91,13 +91,11 @@ class shipWeapons {
 	}
 
 	/**
-	 * Wstawienie uzborojenia do statku
-	 *
-	 * @param stdClass $weapon
+	 * @param \Gameplay\Model\WeaponType $weapon
 	 * @param \Gameplay\Model\ShipProperties $shipProperties
 	 * @return boolean
 	 */
-	public function insert($weapon, \Gameplay\Model\ShipProperties $shipProperties) {
+	public function insert(\Gameplay\Model\WeaponType $weapon, \Gameplay\Model\ShipProperties $shipProperties) {
 
 		if ($shipProperties->CurrentWeapons >= $shipProperties->MaxWeapons) {
 		    return false;
@@ -669,7 +667,7 @@ class shipWeapons {
 		/**
 		 * Pobierz parametry
 		 */
-		$tData = weapon::quickLoad( $weaponID );
+        $tData = new \Gameplay\Model\WeaponType($weaponID);
 
 		$tPrice = floor ( $tData->Price / 2 );
 
@@ -715,7 +713,7 @@ class shipWeapons {
 			throw new securityException ( );
 		}
 
-		$tReloadPrice = weapon::sGetReloadPrice ( $tData->WeaponID, $tData->Ammo );
+		$tReloadPrice = \Gameplay\Model\WeaponType::sGetReloadPrice($tData->WeaponID, $tData->Ammo);
 
 		if ($userStats->Cash < $tReloadPrice) {
 			throw new securityException();
@@ -767,7 +765,7 @@ class shipWeapons {
 			throw new securityException ( );
 		}
 
-		$tRepairPrice = weapon::sGetRepairPrice ( $tData->WeaponID );
+		$tRepairPrice = \Gameplay\Model\WeaponType::sGetRepairPrice($tData->WeaponID);
 
 		if ($userStats->Cash < $tRepairPrice) {
 			throw new securityException ( );
@@ -806,7 +804,7 @@ class shipWeapons {
 			throw new securityException ( );
 		}
 
-		$tWeapon = weapon::quickLoad ( $weaponID );
+        $tWeapon = new \Gameplay\Model\WeaponType($weaponID);
 
 		if ($userStats->Cash < $tWeapon->Price) {
 			throw new securityException ( );

@@ -344,30 +344,29 @@ class user {
 
 			\Database\Controller::getInstance()->disableAutocommit();
 
-			foreach ( $tWeapons as $value ) {
-
-				$weapon = weapon::quickLoad ( $value );
+			foreach($tWeapons as $value) {
+                $weapon = new \Gameplay\Model\WeaponType($value);
 
 				if ($weapon->Ammo == null) {
 					$weapon->Ammo = "null";
 				} else {
 					$weapon->Ammo = "'" . $weapon->Ammo . "'";
 				}
-				//@todo dodać prepared query
+				//FIXME dodać prepared query
 				$sequence ++;
 				$tQuery2 = "INSERT INTO
-           shipweapons(
-             UserID,
-             WeaponID,
-             Ammo,
-             Sequence)
-          VALUES(
-             '$playerID',
-             '$value',
-             " . $weapon->Ammo . ",
-             '$sequence'
-          )
-        ";
+                       shipweapons(
+                         UserID,
+                         WeaponID,
+                         Ammo,
+                         Sequence)
+                      VALUES(
+                         '$playerID',
+                         '$value',
+                         " . $weapon->Ammo . ",
+                         '$sequence'
+                      )
+                    ";
 				\Database\Controller::getInstance()->execute ( $tQuery2 );
 				$weaponsCount ++;
 			}

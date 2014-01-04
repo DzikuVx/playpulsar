@@ -42,7 +42,7 @@ if ($action == "equipFromCargo") {
 	$onBoard = false;
 
 	if ($subaction == "weapon") {
-		$tItem = weapon::quickLoad ( $id );
+        $tItem = new \Gameplay\Model\WeaponType($id);
 
 		if ($shipProperties->WeaponSize < $tItem->Size ) {
 			throw new securityException();
@@ -246,23 +246,25 @@ if ($action == "gather") {
 			$toGather = $sectorAmount;
 		}
 		$canGather = $shipProperties->Turns * $shipProperties->Gather;
-		if ($toGather > $canGather)
-		$toGather = $canGather;
+		if ($toGather > $canGather) {
+		    $toGather = $canGather;
+        }
 		$turnsRequired = ceil ( $toGather / $shipProperties->Gather );
 	}
 
 	if ($subaction == 'weapon') {
-		$item = new weapon ( );
-		$productData = $item->load ( $id, true, true );
-		unset($item);
+        $productData = new \Gameplay\Model\WeaponType($id);
 		$productSize = $productData->Size;
 		$productExp = 0;
 
-		if ($toGather > $sectorAmount)
-		$toGather = $sectorAmount;
+		if ($toGather > $sectorAmount) {
+		    $toGather = $sectorAmount;
+        }
+
 		$canGather = floor ( $shipProperties->Turns / $turnsRequired );
-		if ($toGather > $canGather)
-		$toGather = $canGather;
+		if ($toGather > $canGather) {
+		    $toGather = $canGather;
+        }
 	}
 
 	if ($subaction == 'equipment') {
@@ -363,11 +365,8 @@ if ($action == 'toCargohold') {
 	}
 
 	if ($subaction == 'weapon') {
-		$item = new weapon ( );
-		$productData = $item->load ( $id, true, true );
-		unset($item);
+        $productData = new \Gameplay\Model\WeaponType($id);
 		$productSize = $productData->Size;
-
 	}
 
 	if ($subaction == 'equipment') {
@@ -454,9 +453,7 @@ if ($action == 'toStorehouse') {
 	}
 
 	if ($subaction == 'weapon') {
-		$item = new weapon ( );
-		$productData = $item->load ( $id, true, true );
-		unset($item);
+        $productData = new \Gameplay\Model\WeaponType($id);
 		if (empty($productData->Size)) {
 			throw new securityException();
 		}

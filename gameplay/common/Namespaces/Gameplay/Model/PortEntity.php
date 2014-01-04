@@ -278,8 +278,6 @@ class PortEntity extends CustomGet {
     function get() {
         $userProperties = PlayerModelProvider::getInstance()->get('UserEntity');
 
-        $oDb = \Database\Controller::getInstance();
-
         $nameField = "Name" . strtoupper ( $userProperties->Language );
 
         if (!is_numeric($this->entryId)) {
@@ -291,7 +289,7 @@ class PortEntity extends CustomGet {
             $whereCondition = " ports.PortID = '{$this->dbID}' ";
         }
 
-        $tResult = $oDb->execute("
+        $tResult = $this->db->execute("
           SELECT
             ports.PortID AS PortID,
             ports.PortTypeID AS PortTypeID,
@@ -326,7 +324,7 @@ class PortEntity extends CustomGet {
             " . $whereCondition . "
           LIMIT 1");
 
-        while($resultRow = $oDb->fetch($tResult)) {
+        while($resultRow = $this->db->fetch($tResult)) {
             $this->loadData($resultRow, false);
         }
 

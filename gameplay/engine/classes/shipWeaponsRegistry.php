@@ -101,7 +101,7 @@ class shipWeaponsRegistry extends simpleRegistry {
 			    */
 				if ($shipPosition->Docked == 'yes') {
 
-					$tRepairPrice = weapon::sGetRepairPrice ( $tR1->WeaponID );
+					$tRepairPrice = \Gameplay\Model\WeaponType::sGetRepairPrice($tR1->WeaponID);
 					if ($userStats->Cash > $tRepairPrice) {
 						$tString .= \General\Controls::renderImgButton ( 'repair', "Playpulsar.gameplay.execute('weaponRepair','',null,{$tR1->ShipWeaponID},null);", TranslateController::getDefault()->get ( 'Repair for' ) . $tRepairPrice . '$' );
 					}
@@ -113,7 +113,7 @@ class shipWeaponsRegistry extends simpleRegistry {
 
 			}
 
-			$tReloadPrice = weapon::sGetReloadPrice ( $tR1->WeaponID, $tR1->Ammo );
+			$tReloadPrice = \Gameplay\Model\WeaponType::sGetReloadPrice($tR1->WeaponID, $tR1->Ammo);
 			if ($shipPosition->Docked == 'yes' && $portProperties->Type == 'station' && $tR1->MaxAmmo > 0 && $tR1->Ammo != $tR1->MaxAmmo && $userStats->Cash > $tReloadPrice) {
 				$tString .= \General\Controls::renderImgButton ( 'reload', "Playpulsar.gameplay.execute('weaponReload',null,null,{$tR1->ShipWeaponID},null);", TranslateController::getDefault()->get ( 'Reload for' ) . ' ' . $tReloadPrice . '$' );
 			}

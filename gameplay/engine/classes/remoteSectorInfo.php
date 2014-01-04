@@ -107,7 +107,7 @@ class remoteSectorInfo extends \Gameplay\Panel\Sector {
 
 			$tString = '';
 			foreach ($tArray as $tItem) {
-				$tData = weapon::quickLoad($tItem);
+                $tData = new \Gameplay\Model\WeaponType($tItem);
 				if ($userProperties->Language == 'pl') {
 					$tString .= ', '.$tData->NamePL;
 				}else {

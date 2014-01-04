@@ -14,7 +14,6 @@ class WeaponTypes extends GameplayItem{
 	protected $tableIdField = 'WeaponID';
 
 	public function edit($user, $params) {
-		$retVal = '';
 
 		$tData = $this->getDataObject($params['id']);
 
@@ -35,11 +34,12 @@ class WeaponTypes extends GameplayItem{
 	}
 
     /**
-     * @param \user$user
+     * @param \user $user
      * @param array $params
      * @throws \customException
      */
-    public function editExe($user, $params) {
+    public function editExe(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 
 		if (empty($_SESSION['returnUser'])) {
 			throw new \customException('Security error');
@@ -56,7 +56,8 @@ class WeaponTypes extends GameplayItem{
 
 		$tQuery = BaseItem::sMakeUpdateQuery('weapontypes', 'WeaponID', $tFields, $params);
 		\Database\Controller::getInstance()->execute($tQuery);
-        \weapon::sFlushCache($params['id']);
+        $oWeapon = new \Gameplay\Model\WeaponType($params['id']);
+        $oWeapon->clearCache();
 		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
 	}
 
