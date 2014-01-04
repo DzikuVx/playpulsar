@@ -7,6 +7,7 @@ use Gameplay\Model\ProductType;
 use Gameplay\Model\ShipPosition;
 use Gameplay\Model\ShipProperties;
 use Gameplay\Model\ShipType;
+use Gameplay\Model\ShipWeapons;
 use Gameplay\Model\SystemProperties;
 use Gameplay\Model\UserEntity;
 use Gameplay\Model\UserStatistics;
@@ -436,8 +437,8 @@ class NpcTypes extends GameplayItem{
 				/**
 				 * Przelicz OFF RATING
 				 */
-				$shipWeapons = new \shipWeapons ( $npcID, 'pl' );
-				$shipWeapons->computeOffensiveRating ( $shipProperties );
+				$shipWeapons = new ShipWeapons($npcID, 'pl');
+				$shipWeapons->computeOffensiveRating($shipProperties);
 
 				$shipEquipment = new \shipEquipment ( $npcID, 'pl' );
 

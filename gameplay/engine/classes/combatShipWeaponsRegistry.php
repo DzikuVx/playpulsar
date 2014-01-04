@@ -8,7 +8,7 @@
 class combatShipWeaponsRegistry extends simpleRegistry {
 	
 	//@todo poprawić deklarację
-	public function get($shipWeapons, $translate) {
+	public function get(\Gameplay\Model\ShipWeapons $shipWeapons, Translate $translate) {
 		
 		global $colorTable;
 		

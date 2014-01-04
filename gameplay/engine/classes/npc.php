@@ -156,7 +156,7 @@ class npc extends baseItem {
 			/*
 			 * Zainicjuj obiekty
 			 */
-			$npcWeapons = new shipWeapons ( $npcID, 'en' );
+			$npcWeapons = new \Gameplay\Model\ShipWeapons($npcID, 'en');
 			$npcEquipment = new shipEquipment ( $npcID, 'en' );
 			$npcCargo = new shipCargo ( $npcID, 'en' );
 

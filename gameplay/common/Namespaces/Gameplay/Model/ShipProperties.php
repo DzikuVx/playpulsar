@@ -2,6 +2,8 @@
 
 namespace Gameplay\Model;
 
+use Gameplay\PlayerModelProvider;
+
 class ShipProperties extends Standard {
 
     protected $tableName = "userships";
@@ -404,7 +406,7 @@ class ShipProperties extends Standard {
         $shipProperties = new ShipProperties($userID);
 
         $shipProperties->computeMaxValues();
-        \shipWeapons::sUpdateCount($shipProperties, $userID);
+        $shipProperties->updateWeaponsCount();
         \shipEquipment::sUpdateCount($shipProperties, $userID);
         $shipProperties->synchronize();
         self::sFlushCache($userID);
@@ -416,8 +418,16 @@ class ShipProperties extends Standard {
      */
     static public function sRecomputeValues(ShipProperties $shipProperties, $userID) {
         $shipProperties->computeMaxValues();
-        \shipWeapons::sUpdateCount($shipProperties, $userID);
+        $shipProperties->updateWeaponsCount();
         \shipEquipment::sUpdateCount($shipProperties, $userID);
+    }
+
+    public function updateWeaponsCount() {
+        $tQuery = "SELECT COUNT(*) AS ile FROM shipweapons WHERE UserID='{$this->entryId}'";
+        $tQuery = $this->db->execute ( $tQuery );
+        while ( $tResult = $this->db->fetch ( $tQuery ) ) {
+            $this->CurrentWeapons = $tResult->ile;
+        }
     }
 
     public function computeMaxValues() {
@@ -712,7 +722,10 @@ class ShipProperties extends Standard {
      */
     static public function sUpdateRating(/** @noinspection PhpUnusedParameterInspection */
         $userID) {
-        global $shipWeapons, $shipProperties;
+
+        $shipWeapons = PlayerModelProvider::getInstance()->get('ShipWeapons');
+        $shipProperties = PlayerModelProvider::getInstance()->get('ShipProperties');
+
         $shipWeapons->computeOffensiveRating($shipProperties);
         $shipProperties->computeDefensiveRating();
     }
@@ -767,10 +780,11 @@ class ShipProperties extends Standard {
 
         global $shipCargo, $shipWeapons, $userProperties, $action, $userStats, $shipEquipment;
 
-        $shipPosition   = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
-        $shipProperties = \Gameplay\PlayerModelProvider::getInstance()->get('ShipProperties');
-        $portProperties = \Gameplay\PlayerModelProvider::getInstance()->get('PortEntity');
-        $userProperties = \Gameplay\PlayerModelProvider::getInstance()->get('UserEntity');
+        $shipPosition   = PlayerModelProvider::getInstance()->get('ShipPosition');
+        $shipProperties = PlayerModelProvider::getInstance()->get('ShipProperties');
+        $portProperties = PlayerModelProvider::getInstance()->get('PortEntity');
+        $userProperties = PlayerModelProvider::getInstance()->get('UserEntity');
+        $shipWeapons    = PlayerModelProvider::getInstance()->get('ShipWeapons');
 
         if ($shipPosition->Docked == 'no') {
             throw new \securityException ( );

@@ -4,6 +4,7 @@ namespace Controlpanel;
 use \Database\Controller as Database;
 use Gameplay\Model\ShipPosition;
 use Gameplay\Model\ShipProperties;
+use Gameplay\Model\ShipWeapons;
 use Gameplay\Model\UserEntity;
 use Gameplay\Model\UserStatistics;
 use \General\Controls as Controls;
@@ -325,7 +326,7 @@ class Player extends BaseItem {
 		/*
 		 * Lista do tworzenia NPCów
 		 */
-		$tWeapons = new \shipWeapons($params['id']);
+		$tWeapons = new ShipWeapons($params['id']);
 		$tData = $tWeapons->get('all');
 		$tArray = array();
 		while ($tResult = Database::getInstance()->fetch($tData)) {

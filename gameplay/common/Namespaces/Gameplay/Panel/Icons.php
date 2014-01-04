@@ -2,6 +2,7 @@
 
 namespace Gameplay\Panel;
 
+use Gameplay\Model\ShipWeapons;
 use Interfaces\Singleton;
 
 class Icons extends Renderable implements Singleton {
@@ -23,7 +24,7 @@ class Icons extends Renderable implements Singleton {
 			$this->retVal .= \General\Controls::renderImgButton('warningA', "Playpulsar.gameplay.execute('equiapmentManagement');", '{T:Damaged equipment}');
 		}
 
-		if (\shipWeapons::sGetDamagedCount( $this->userID ) > 0) {
+		if (ShipWeapons::sGetDamagedCount( $this->userID ) > 0) {
 			$this->retVal .= \General\Controls::renderImgButton('warningB', "Playpulsar.gameplay.execute('weaponsManagement');", '{T:Damaged weapons}');
 		}
 

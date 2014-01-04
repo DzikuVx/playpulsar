@@ -18,9 +18,7 @@ class combatShip {
     public $shipProperties = null;
 
 	/**
-	 * uzbrojenie okrętu
-	 *
-	 * @var shipWeapons
+	 * @var \Gameplay\Model\ShipWeapons
 	 */
 	public $shipWeapons = null;
 
@@ -82,7 +80,7 @@ class combatShip {
         $this->userProperties = new \Gameplay\Model\UserEntity($userID);
         $this->userStats = new \Gameplay\Model\UserStatistics($userID);
 
-		$this->shipWeapons = new shipWeapons ( $this->userID, $this->Language );
+		$this->shipWeapons = new \Gameplay\Model\ShipWeapons($this->userID, $this->Language);
 		$this->shipEquipment = new shipEquipment ( $this->userID, $this->Language );
 		$this->shipCargo = new shipCargo ( $this->userID, $this->Language );
 

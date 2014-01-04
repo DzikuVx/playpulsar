@@ -217,8 +217,9 @@ try {
 
 
 	$shipCargo 		= new shipCargo ( $userID, $userProperties->Language );
-	$shipWeapons 	= new shipWeapons ( $userID, $userProperties->Language );
 	$shipEquipment 	= new shipEquipment ( $userID, $userProperties->Language );
+
+    $shipWeapons = $oPlayerModelProvider->register('ShipWeapons', new \Gameplay\Model\ShipWeapons($userID, $userProperties->Language));
 
 	/*
 	 * Autonaprawa statku
@@ -543,31 +544,31 @@ try {
 			break;
 
 		case 'sellWeapon' :
-			shipWeapons::sSell ( $id );
+			\Gameplay\Actions\ShipWeapons::sSell ( $id );
 			break;
 
 		case 'sellWeaponFromCargo' :
-			shipWeapons::sSellFromCargo ( $id );
+			\Gameplay\Actions\ShipWeapons::sSellFromCargo ( $id );
 			break;
 
 		case 'buyWeapon' :
-			shipWeapons::sBuy ( $id );
+			\Gameplay\Actions\ShipWeapons::sBuy($id);
 			break;
 
 		case 'weaponReload' :
-			shipWeapons::sReload ( $id );
+			\Gameplay\Actions\ShipWeapons::sReload ( $id );
 			break;
 
 		case 'weaponRepair' :
-			shipWeapons::sRepair ( $id );
+			\Gameplay\Actions\ShipWeapons::sRepair($id);
 			break;
 
 		case 'weaponMoveUp' :
-			shipWeapons::sMoveUp ( $id );
+			\Gameplay\Actions\ShipWeapons::sMoveUp ( $id );
 			break;
 
 		case 'weaponMoveDown' :
-			shipWeapons::sMoveDown ( $id );
+			\Gameplay\Actions\ShipWeapons::sMoveDown ( $id );
 			break;
 
 		case 'buyEquipment' :

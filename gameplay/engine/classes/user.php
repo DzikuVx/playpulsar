@@ -147,9 +147,8 @@ class user {
 		/**
 		 * Przelicz OFF RATING
 		 */
-		$shipWeapons = new shipWeapons ( $playerID, $tUserParams->Language );
+		$shipWeapons = new \Gameplay\Model\ShipWeapons($playerID, $tUserParams->Language);
 		$shipWeapons->computeOffensiveRating ( $shipProperties );
-		unset($shipWeapons);
 
 		/**
 		 * Uaktualnij wartości maksymalne okrętu
@@ -514,9 +513,8 @@ class user {
 		/**
 		 * Przelicz OFF RATING
 		 */
-		$shipWeapons = new shipWeapons ( $playerID, $params ['language'] );
+		$shipWeapons = new \Gameplay\Model\ShipWeapons( $playerID, $params ['language'] );
 		$shipWeapons->computeOffensiveRating($shipProperties);
-		unset($shipWeapons);
 
 		/**
 		 * Uaktualnij wartości maksymalne okrętu

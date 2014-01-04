@@ -3,6 +3,7 @@
 namespace Gameplay\Panel;
 
 use Gameplay\Model\ShipProperties;
+use Gameplay\Model\ShipWeapons;
 use Interfaces\Singleton;
 
 use \TranslateController as Translate;
@@ -36,10 +37,10 @@ class ShortStats extends Renderable implements Singleton {
 	 * 
 	 * Panel render
 	 * @param ShipProperties $shipProperties
-	 * @param \shipWeapons $shipWeapons
+	 * @param ShipWeapons $shipWeapons
 	 * @param \shipEquipment $shipEquipment
 	 */
-	public function render(ShipProperties $shipProperties, \shipWeapons $shipWeapons, \shipEquipment $shipEquipment) {
+	public function render(ShipProperties $shipProperties, ShipWeapons $shipWeapons, \shipEquipment $shipEquipment) {
 
 		$this->rendered = true;
  

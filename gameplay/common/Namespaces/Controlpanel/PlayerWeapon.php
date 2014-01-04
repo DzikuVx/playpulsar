@@ -3,6 +3,7 @@
 namespace Controlpanel;
 
 use Gameplay\Model\ShipProperties;
+use Gameplay\Model\ShipWeapons;
 use Gameplay\Model\WeaponType;
 
 class PlayerWeapon extends \weapon{
@@ -80,7 +81,7 @@ class PlayerWeapon extends \weapon{
 
         ShipProperties::sFlushCache($_SESSION['returnUser']);
 
-		$shipWeapons = new \shipWeapons($_SESSION['returnUser']);
+		$shipWeapons = new ShipWeapons($_SESSION['returnUser']);
 
         $weapon = new WeaponType($params['value']);
 		$shipProperties = new ShipProperties($_SESSION['returnUser']);
