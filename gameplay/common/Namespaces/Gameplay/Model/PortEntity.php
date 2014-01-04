@@ -3,7 +3,6 @@
 namespace Gameplay\Model;
 
 use Gameplay\Exception\Model;
-use Gameplay\Framework\ContentTransport;
 use Gameplay\PlayerModelProvider;
 
 class PortEntity extends CustomGet {

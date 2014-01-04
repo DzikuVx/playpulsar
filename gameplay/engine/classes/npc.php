@@ -235,7 +235,7 @@ class npc extends baseItem {
 
 			if ($npcType->HaveCargo == 'yes') {
 				$tValue = additional::rand ( 1, 3 );
-				$tItems = product::getRand ( $tValue );
+				$tItems = \Gameplay\Model\ProductType::getRand ( $tValue );
 
 				$tValue = floor ( $npcShipProperties->CargoMax / $tValue );
 

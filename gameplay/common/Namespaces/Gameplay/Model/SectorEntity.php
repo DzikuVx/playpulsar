@@ -109,7 +109,7 @@ class SectorEntity extends CustomGet {
 
                 $Amount = $sectorCargo->getAmount('product', $resourcesArray[$tIndex]);
 
-                $tObject = \product::quickLoad ( $resourcesArray [$tIndex] );
+                $tObject = new ProductType($resourcesArray[$tIndex]);
                 $creationDivider = $tObject->CreationDivider;
 
                 $newState = floor ( $Amount + (($config ['sector'] ['maxResources'] - $Amount) / ($config ['sector'] ['resourceDivider'] * $creationDivider)) + (rand ( - 10, 10 ) * 10) + rand ( - 9, 9 ) );

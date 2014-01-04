@@ -2,6 +2,7 @@
 
 namespace Controlpanel;
 
+use Gameplay\Model\ProductType;
 use Gameplay\Model\ShipPosition;
 use Gameplay\Model\ShipProperties;
 use Gameplay\Model\ShipType;
@@ -466,7 +467,7 @@ class NpcTypes extends GameplayItem{
 
 				if ($row1->HaveCargo == 'yes') {
 					$tValue = \additional::rand ( 1, 3 );
-					$tItems = \product::getRand ( $tValue );
+					$tItems = ProductType::getRand ( $tValue );
 					$tCargo = new \shipCargo ( $npcID, 'pl' );
 
 					$tValue = floor ( $shipProperties->CargoMax / $tValue );

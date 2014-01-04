@@ -194,11 +194,9 @@ if ($action == "jettison") {
 
 		//Jesli wyrzucałem towar, zmniejsz expa o max wartość
 		if ($subaction == 'product') {
-			$item = new product ( );
-			$productData = $item->load ( $id, true, true );
-			$userStats->Experience -= $item->getExperienceForJettison() * $toJettison;
+            $productData = new \Gameplay\Model\ProductType($id);
+			$userStats->Experience -= $productData->getExperienceForJettison() * $toJettison;
 			$userStats->Level = \Gameplay\Model\UserStatistics::computeLevel ( $userStats->Experience );
-			unset($item);
 		}
 	}
 
@@ -234,11 +232,10 @@ if ($action == "gather") {
 	}
 
 	if ($subaction == 'product') {
-		$item = new product ( );
-		$productData = $item->load ( $id, true, true );
+        $productData = new \Gameplay\Model\ProductType($id);
+
 		$productSize = $productData->Size;
-		$productExp = $item->getExperienceForGather($sectorAmount);
-		unset($item);
+		$productExp = $productData->getExperienceForGather($sectorAmount);
 
 		if (empty($shipProperties->Gather)) {
 			throw new securityException();
@@ -356,9 +353,7 @@ if ($action == 'toCargohold') {
 	}
 
 	if ($subaction == 'product') {
-		$item = new product ( );
-		$productData = $item->load ( $id, true, true );
-		unset($item);
+        $productData = new \Gameplay\Model\ProductType($id);
 		$productSize = $productData->Size;
 	}
 
@@ -448,9 +443,7 @@ if ($action == 'toStorehouse') {
 	}
 
 	if ($subaction == 'product') {
-		$item = new product ( );
-		$productData = $item->load ( $id, true, true );
-		unset($item);
+        $productData = new \Gameplay\Model\ProductType($id);
 		if (empty($productData->Size)) {
 			throw new securityException();
 		}
@@ -586,7 +579,7 @@ if ($action == "itemSell") {
 //---------------------------------------------------------------------------------------------------
 if ($action == "productSell") {
 
-	$portAmount = product::sGetAmountInPort ( $portProperties->PortID, $id, 'product', 'sell' );
+	$portAmount = \Gameplay\Model\ProductType::sGetAmountInPort ( $portProperties->PortID, $id, 'product', 'sell' );
 	$cargoAmount = $shipCargo->getProductAmount ( $id );
 
 	if ($value < 1) {
@@ -602,11 +595,9 @@ if ($action == "productSell") {
 	}
 
 	//Oblicz cenę towaru
-	$item = new product ( );
-	$productData = $item->load ( $id, true, true );
-	$productPrice = $item->getPrice ( $portAmount );
-	$productExperience = $item->getExperienceForSell( $portAmount );
-	unset($item);
+    $productData = new \Gameplay\Model\ProductType($id);
+	$productPrice = $productData->getPrice ( $portAmount );
+	$productExperience = $productData->getExperienceForSell( $portAmount );
 
 	//Zmniejsz wartość magazynu portu
 	$tQuery = "UPDATE portcargo SET Amount=Amount+'$value' WHERE PortID='{$portProperties->PortID}' AND CargoID='$id' AND Type='product' AND portcargo.UserID IS NULL";
@@ -642,7 +633,7 @@ if ($action == "productSell") {
 //---------------------------------------------------------------------------------------------------
 if ($action == "productBuy") {
 
-	$portAmount = product::sGetAmountInPort ( $portProperties->PortID, $id, 'product', 'sell' );
+	$portAmount = \Gameplay\Model\ProductType::sGetAmountInPort ( $portProperties->PortID, $id, 'product', 'sell' );
 
 	if (! is_numeric ( $value )) {
 		throw new securityException ( );
@@ -656,11 +647,9 @@ if ($action == "productBuy") {
 		throw new securityException ( );
 	}
 
-	$item = new product ( );
-	$productData = $item->load ( $id, true, true );
-	$productPrice = $item->getPrice ( $portAmount );
-	$productExperience = $item->getExperienceForBuy ( $portAmount );
-	unset($item);
+    $productData = new \Gameplay\Model\ProductType($id);
+	$productPrice = $productData->getPrice ( $portAmount );
+	$productExperience = $productData->getExperienceForBuy ( $portAmount );
 
 	//Sprawdz dostepnosc srodkow do zakupu
 	if ($userStats->Cash < ($productPrice * $value)) {
@@ -708,7 +697,7 @@ if ($action == "productBuy") {
  */
 if ($action == "mapBuy") {
 
-	$portAmount = product::sGetAmountInPort ( $portProperties->PortID, $id, 'map', 'buy' );
+	$portAmount = \Gameplay\Model\ProductType::sGetAmountInPort ( $portProperties->PortID, $id, 'map', 'buy' );
 
 	$value = 1;
 

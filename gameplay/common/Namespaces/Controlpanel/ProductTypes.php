@@ -2,7 +2,7 @@
 
 namespace Controlpanel;
 
-class ProductTypes extends GameplayItem{
+class ProductTypes extends GameplayItem {
 
 	protected $detailTitle = 'Goods Data';
 	protected $editTitle = '';
@@ -29,7 +29,10 @@ class ProductTypes extends GameplayItem{
 
 		$tQuery = BaseItem::sMakeUpdateQuery('products', 'ProductID', $tFields, $params);
 		\Database\Controller::getInstance()->execute($tQuery);
-        \product::sFlushCache($params['id']);
+
+        $oProduct = new \Gameplay\Model\ProductType($params['id']);
+        $oProduct->clearCache();
+
 		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
 	}
 

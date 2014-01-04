@@ -25,7 +25,7 @@ while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 
 	if ($tR1->Amount == null)
 	$tR1->Amount = 0;
-	$productPrice = product::computePrice ( $tR1->Amount, $tR1->PriceMin, $tR1->PriceMax );
+	$productPrice = \Gameplay\Model\ProductType::computePrice ( $tR1->Amount, $tR1->PriceMin, $tR1->PriceMax );
 	$buyAmount = floor ( ($shipProperties->CargoMax - $shipProperties->Cargo) / $tR1->Size );
 	if ($buyAmount > $tR1->Amount)
 	$buyAmount = $tR1->Amount;
@@ -67,12 +67,13 @@ $tQuery = $portCargo->getProductsBuy ();
 while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 	if ($tR1->Amount == null)
 	$tR1->Amount = 0;
-	if ($tR1->ShipAmount == null)
-	$tR1->ShipAmount = 0;
+	if ($tR1->ShipAmount == null) {
+	    $tR1->ShipAmount = 0;
+    }
 	$sRetVal .= "<tr>";
 	$sRetVal .= "<td>" . $tR1->Name . "</td>";
 	$sRetVal .= "<td>" . number_format ( $tR1->Amount, 0 ) . "</td>";
-	$sRetVal .= "<td>" . number_format ( product::computePrice ( $tR1->Amount, $tR1->PriceMin, $tR1->PriceMax ), 0 ) . "</td>";
+	$sRetVal .= "<td>" . number_format ( \Gameplay\Model\ProductType::computePrice ( $tR1->Amount, $tR1->PriceMin, $tR1->PriceMax ), 0 ) . "</td>";
 
 	$sRetVal .= "<td>";
 	if ($tR1->ShipAmount == 0) {
