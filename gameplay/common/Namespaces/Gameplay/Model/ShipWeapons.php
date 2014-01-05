@@ -18,6 +18,10 @@ class ShipWeapons {
      */
     protected $tableName = "shipweapons";
 
+    /**
+     * name of table field determining entity owner
+     * @var string
+     */
     protected $ownerIdFieldName = 'UserID';
 
     protected $entityIdFieldName = 'ShipWeaponID';
