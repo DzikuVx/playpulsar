@@ -20,7 +20,7 @@ class ShipEquipments {
 
         $shipPosition = PlayerModelProvider::getInstance()->get('ShipPosition');
         $portProperties = PlayerModelProvider::getInstance()->get('PortEntity');
-        $shipEquipment = PlayerModelProvider::getInstance()->getInstance('ShipEquipments');
+        $shipEquipment = PlayerModelProvider::getInstance()->get('ShipEquipments');
 
         if ($shipPosition->Docked == 'no') {
             throw new \securityException ( );
@@ -70,12 +70,14 @@ class ShipEquipments {
      */
     static public function sStationRepair($equipmentID) {
 
-        global $userStats, $shipProperties, $error;
+        global $error;
 
         $oProvider = PlayerModelProvider::getInstance();
         $portProperties = $oProvider->get('PortEntity');
         $shipPosition = $oProvider->get('ShipPosition');
         $shipEquipment = $oProvider->get('ShipEquipments');
+        $shipProperties = $oProvider->get('ShipProperties');
+        $userStats = $oProvider->get('UserStatistics');
 
         if ($shipPosition->Docked == 'no') {
             throw new \securityException ( );
