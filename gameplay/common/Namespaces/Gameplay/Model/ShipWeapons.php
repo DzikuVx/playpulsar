@@ -5,12 +5,27 @@ namespace Gameplay\Model;
 use Database\MySQLiWrapper;
 
 class ShipWeapons {
-	protected $userID = null;
+    /**
+     * identifier of entity (owner) of weapons
+     * @var int
+     */
+    protected $entityId = null;
 	protected $language = 'pl';
 	protected $nameField = "";
-	protected $tableName = "shipweapons";
-	protected $addCondition = "";
-	protected $changed = false;
+
+    /**
+     * @var string
+     */
+    protected $tableName = "shipweapons";
+
+    protected $ownerIdFieldName = 'UserID';
+
+    protected $entityIdFieldName = 'ShipWeaponID';
+
+    /**
+     * @var bool
+     */
+    protected $changed = false;
 
     /**
      * @var MySQLiWrapper
@@ -18,13 +33,13 @@ class ShipWeapons {
     protected $db;
 
     /**
-     * @param $userID
+     * @param $entityId
      * @param string $language
      * @param MySQLiWrapper $db
      */
-    function __construct($userID, $language = 'pl', MySQLiWrapper $db = null) {
+    function __construct($entityId, $language = 'pl', MySQLiWrapper $db = null) {
         $this->language = $language;
-        $this->userID = $userID;
+        $this->entityId = $entityId;
         $this->nameField = "Name" . strtoupper($this->language);
 
         if (!empty($db)) {
@@ -32,16 +47,16 @@ class ShipWeapons {
         } else {
             $this->db = \Database\Controller::getInstance();
         }
-
     }
 
-    //FIXME replace with dynamic
-	static public function sGetDamagedCount($userID) {
-
-		$tQuery = "SELECT COUNT(*) AS ILE FROM shipweapons WHERE UserID='{$userID}' AND Enabled IS NOT NULL AND Damaged='1'";
-		$tQuery = \Database\Controller::getInstance()->execute($tQuery);
-		return \Database\Controller::getInstance()->fetch($tQuery)->ILE;
-
+    /**
+     * Returns number of damaged weapons
+     * @return mixed
+     */
+    public function getDamagedCount() {
+		$tQuery = "SELECT COUNT(*) AS ILE FROM {$this->tableName} WHERE {$this->ownerIdFieldName}='{$this->entityId}' AND Enabled IS NOT NULL AND Damaged='1'";
+		$tQuery = $this->db->execute($tQuery);
+		return $this->db->fetch($tQuery)->ILE;
 	}
 
 	/**
@@ -49,7 +64,7 @@ class ShipWeapons {
 	 */
 	public function damageRandom() {
 
-		$tQuery = "UPDATE shipweapons SET Damaged='1' WHERE UserID='{$this->userID}' AND Damaged='0' ORDER BY Rand() LIMIT 1";
+		$tQuery = "UPDATE {$this->tableName} SET Damaged='1' WHERE {$this->ownerIdFieldName}='{$this->entityId}' AND Damaged='0' ORDER BY Rand() LIMIT 1";
 		$this->db->execute($tQuery);
 
 		if ($this->db->getAffectedRows() == 0) {
@@ -63,9 +78,9 @@ class ShipWeapons {
 	/**
 	 * Przeliczenie OffRating Statku
 	 *
-	 * @param \Gameplay\Model\ShipProperties $shipProperties
+	 * @param ShipProperties $shipProperties
 	 */
-	public function computeOffensiveRating(\Gameplay\Model\ShipProperties $shipProperties) {
+	public function computeOffensiveRating(ShipProperties $shipProperties) {
 
 		$tQuery = "SELECT
 		    SUM(
@@ -75,18 +90,16 @@ class ShipWeapons {
 		    wt.ArmorMax) / 8
 		    ) AS ILE
 		  FROM
-		    shipweapons AS sw JOIN weapontypes AS wt ON wt.WeaponID = sw.WeaponID
+		    {$this->tableName} AS sw JOIN weapontypes AS wt ON wt.WeaponID = sw.WeaponID
 		  WHERE
-		    UserID = '{$this->userID}'
-		";
-
+		    {$this->ownerIdFieldName} = '{$this->entityId}'";
 		$tQuery = $this->db->execute ( $tQuery );
 		while ( $resultRow = $this->db->fetch ( $tQuery ) ) {
 			$shipProperties->OffRating = round ( $resultRow->ILE );
 		}
 	}
 
-	public function __destruct() {
+	public function synchronize() {
 		global $shipProperties;
 		if ($this->changed) {
 			$this->computeOffensiveRating($shipProperties);
@@ -100,7 +113,7 @@ class ShipWeapons {
 	 */
 	private function getMaxSequence() {
 
-		$tQuery = "SELECT MAX(Sequence) AS ILE FROM shipweapons WHERE UserID='{$this->userID}'";
+		$tQuery = "SELECT MAX(Sequence) AS ILE FROM {$this->tableName} WHERE {$this->ownerIdFieldName}='{$this->entityId}'";
 		$tQuery = $this->db->execute ( $tQuery );
 		$retVal = $this->db->fetch ( $tQuery )->ILE;
 
@@ -130,7 +143,7 @@ class ShipWeapons {
 
 		$tSequence = $this->getMaxSequence() + 1;
 
-		$tQuery = "INSERT INTO shipweapons(UserID, WeaponID, Ammo, Sequence) VALUES('{$this->userID}','{$weapon->WeaponID}',$tString,'{$tSequence}')";
+		$tQuery = "INSERT INTO {$this->tableName}({$this->ownerIdFieldName}, WeaponID, Ammo, Sequence) VALUES('{$this->entityId}','{$weapon->WeaponID}',$tString,'{$tSequence}')";
 		$this->db->execute ( $tQuery );
 		$shipProperties->CurrentWeapons += 1;
 
@@ -148,7 +161,7 @@ class ShipWeapons {
 	 */
 	public function reload($shipWeaponID, $ammo) {
 
-		$tQuery = "UPDATE shipweapons SET Ammo='$ammo' WHERE ShipWeaponID='{$shipWeaponID}' AND UserID='{$this->userID}' LIMIT 1";
+		$tQuery = "UPDATE {$this->tableName} SET Ammo='$ammo' WHERE {$this->entityIdFieldName}='{$shipWeaponID}' AND {$this->ownerIdFieldName}='{$this->entityId}' LIMIT 1";
 		$this->db->execute ( $tQuery );
 
 		$this->changed = true;
@@ -163,10 +176,7 @@ class ShipWeapons {
      */
     public function remove($ID, ShipProperties $shipProperties) {
 
-		$tQuery = "DELETE FROM
-                shipweapons
-            WHERE
-                ShipWeaponID='{$ID}' AND UserID='$this->userID}'";
+		$tQuery = "DELETE FROM {$this->tableName} WHERE {$this->entityIdFieldName}='{$ID}' AND {$this->ownerIdFieldName}='$this->entityId}'";
 		$this->db->execute($tQuery);
 
 		$shipProperties->CurrentWeapons -= 1;
@@ -180,7 +190,7 @@ class ShipWeapons {
      */
     public function removeAll(ShipProperties $shipProperties) {
 
-		$tQuery = "DELETE FROM shipweapons WHERE UserID='{$this->userID}'";
+		$tQuery = "DELETE FROM {$this->tableName} WHERE {$this->ownerIdFieldName}='{$this->entityId}'";
 		$this->db->execute($tQuery);
 		$shipProperties->CurrentWeapons = 0;
 		$this->changed = true;
@@ -194,21 +204,18 @@ class ShipWeapons {
 	 */
 	public function damageAll() {
 
-		$tQuery = "UPDATE shipweapons SET Damaged='1' WHERE UserID='{$this->userID}'";
+		$tQuery = "UPDATE {$this->tableName} SET Damaged='1' WHERE {$this->ownerIdFieldName}='{$this->entityId}'";
 		$this->db->execute($tQuery);
 		$this->changed = true;
 		return true;
 	}
 
 	/**
-	 * Wyłączenie uzbrojenia
-	 *
 	 * @param int $ID
 	 * @return boolean
 	 */
 	public function disable($ID) {
-
-		$tQuery = "UPDATE shipweapons SET Enabled = '0' WHERE ShipWeaponID='{$ID}' LIMIT 1";
+		$tQuery = "UPDATE {$this->tableName} SET Enabled = '0' WHERE {$this->entityIdFieldName}='{$ID}' LIMIT 1";
 		$this->db->execute($tQuery);
 		$this->changed = true;
 		return true;
@@ -222,7 +229,7 @@ class ShipWeapons {
 	 */
 	public function enable($ID) {
 
-		$tQuery = "UPDATE shipweapons SET Enabled = '1' WHERE ShipWeaponID='{$ID}' LIMIT 1";
+		$tQuery = "UPDATE {$this->tableName} SET Enabled = '1' WHERE {$this->entityIdFieldName}='{$ID}' LIMIT 1";
 		$this->db->execute($tQuery);
 		$this->changed = true;
 		return true;
@@ -236,8 +243,8 @@ class ShipWeapons {
 	 */
 	public function damage($ID) {
 
-		$tQuery = "UPDATE shipweapons SET Damaged = '1' WHERE ShipWeaponID='{$ID}' LIMIT 1";
-		$this->db->execute ( $tQuery );
+		$tQuery = "UPDATE {$this->tableName} SET Damaged = '1' WHERE {$this->entityIdFieldName}='{$ID}' LIMIT 1";
+		$this->db->execute($tQuery);
 		$this->changed = true;
 		return true;
 	}
@@ -250,14 +257,14 @@ class ShipWeapons {
 	 */
 	public function repair($ID) {
 
-		$tQuery = "UPDATE shipweapons SET Damaged = '0' WHERE ShipWeaponID='{$ID}' LIMIT 1";
+		$tQuery = "UPDATE {$this->tableName} SET Damaged = '0' WHERE {$this->entityIdFieldName}='{$ID}' LIMIT 1";
 		$this->db->execute ( $tQuery );
 		$this->changed = true;
 		return true;
 	}
 
 	public function repairAll() {
-		$tQuery = "UPDATE shipweapons SET Damaged = '0' WHERE UserID='{$this->userID}'";
+		$tQuery = "UPDATE {$this->tableName} SET Damaged = '0' WHERE {$this->ownerIdFieldName}='{$this->entityId}'";
 		$this->db->execute ( $tQuery );
 		$this->changed = true;
 		return true;
@@ -270,20 +277,20 @@ class ShipWeapons {
      */
     public function switchState($ID) {
 
-		if ($this->userID == null) {
+		if ($this->entityId == null) {
 		    throw new \securityException();
         }
 
 		$tId = null;
 		$tEnabled = null;
-		$tQuery = "SELECT UserID, Enabled FROM shipweapons WHERE ShipWeaponID='$ID'";
+		$tQuery = "SELECT {$this->ownerIdFieldName}, Enabled FROM {$this->tableName} WHERE {$this->entityIdFieldName}='$ID'";
 		$tQuery = $this->db->execute($tQuery);
 		while($tR1 = $this->db->fetch($tQuery)) {
-			$tId = $tR1->UserID;
+			$tId = $tR1->{$this->ownerIdFieldName};
 			$tEnabled = $tR1->Enabled;
 		}
 
-		if ($tId != $this->userID) {
+		if ($tId != $this->entityId) {
 		    throw new \securityException();
         }
 
@@ -295,7 +302,7 @@ class ShipWeapons {
             $tNewState = '0';
         }
 
-        $tQuery = "UPDATE shipweapons SET Enabled='{$tNewState}' WHERE ShipWeaponID={$ID}";
+        $tQuery = "UPDATE {$this->tableName} SET Enabled='{$tNewState}' WHERE {$this->entityIdFieldName}={$ID}";
         $this->db->execute ( $tQuery );
         return true;
 	}
@@ -305,7 +312,7 @@ class ShipWeapons {
 	 * return int
 	 */
 	public function getOperationalCount() {
-		$tQuery = "SELECT COUNT(*) AS ILE FROM shipweapons WHERE UserID='{$this->userID}' AND Enabled='1' AND Damaged='0' AND (Ammo IS NULL OR Ammo > 0)";
+		$tQuery = "SELECT COUNT(*) AS ILE FROM {$this->tableName} WHERE {$this->ownerIdFieldName}='{$this->entityId}' AND Enabled='1' AND Damaged='0' AND (Ammo IS NULL OR Ammo > 0)";
 		$tQuery = $this->db->execute($tQuery);
 		return $this->db->fetch($tQuery)->ILE;
 	}
@@ -318,7 +325,7 @@ class ShipWeapons {
 	function get($mode = "enabled", $ID = null) {
 
 		if ($ID == null) {
-		    $ID = $this->userID;
+		    $ID = $this->entityId;
         }
 
 		switch ($mode) {
@@ -327,12 +334,12 @@ class ShipWeapons {
 				break;
 
 			case "fireable" :
-				$addQuery = "AND shipweapons.Enabled = '1' AND shipweapons.Damaged = '0'";
+				$addQuery = "AND {$this->tableName}.Enabled = '1' AND {$this->tableName}.Damaged = '0'";
 				break;
 
 			default :
 			case "enabled" :
-				$addQuery = "AND shipweapons.Enabled = '1'";
+				$addQuery = "AND {$this->tableName}.Enabled = '1'";
 				break;
 		}
 
@@ -340,17 +347,17 @@ class ShipWeapons {
                 weapontypes.*,
                 weapontypes.{$this->nameField} AS Name,
                 weapontypes.Ammo AS MaxAmmo,
-                shipweapons.Ammo AS Ammo,
-                shipweapons.Enabled AS Enabled,
-                shipweapons.Sequence AS Sequence,
-                shipweapons.ShipWeaponID,
-                shipweapons.Damaged
+                {$this->tableName}.Ammo AS Ammo,
+                {$this->tableName}.Enabled AS Enabled,
+                {$this->tableName}.Sequence AS Sequence,
+                {$this->tableName}.{$this->entityIdFieldName},
+                {$this->tableName}.Damaged
             FROM
-                shipweapons LEFT JOIN weapontypes ON weapontypes.WeaponID = shipweapons.WeaponID
+                {$this->tableName} LEFT JOIN weapontypes ON weapontypes.WeaponID = {$this->tableName}.WeaponID
             WHERE
-                shipweapons.UserID='{$ID}' {$addQuery}
+                {$this->tableName}.{$this->ownerIdFieldName}='{$ID}' {$addQuery}
             ORDER BY
-                shipweapons.Sequence ASC";
+                {$this->tableName}.Sequence ASC";
 		return $this->db->execute($tQuery);
 	}
 
@@ -368,16 +375,16 @@ class ShipWeapons {
             weapontypes.*,
             weapontypes.{$this->nameField} AS Name,
             weapontypes.Ammo AS MaxAmmo,
-            shipweapons.Ammo AS Ammo,
-            shipweapons.Enabled AS Enabled,
-            shipweapons.Sequence AS Sequence,
-            shipweapons.ShipWeaponID,
-            shipweapons.Damaged
+            {$this->tableName}.Ammo AS Ammo,
+            {$this->tableName}.Enabled AS Enabled,
+            {$this->tableName}.Sequence AS Sequence,
+            {$this->tableName}.{$this->entityIdFieldName},
+            {$this->tableName}.Damaged
           FROM
-            shipweapons LEFT JOIN weapontypes ON weapontypes.WeaponID = shipweapons.WeaponID
+            {$this->tableName} LEFT JOIN weapontypes ON weapontypes.WeaponID = shipweapons.WeaponID
           WHERE
-            shipweapons.ShipWeaponID='{$weaponID}' AND
-            shipweapons.UserID='{$this->userID}'
+            {$this->tableName}.{$this->entityIdFieldName}='{$weaponID}' AND
+            {$this->tableName}.{$this->ownerIdFieldName}='{$this->entityId}'
           LIMIT 1";
 		$tQuery = $this->db->execute ( $tQuery );
 		while ($tResult = $this->db->fetch ( $tQuery ) ) {
@@ -387,7 +394,6 @@ class ShipWeapons {
 	}
 
 	/**
-	 * Sprawdzenie, czy statek posiada broń o takim ID
 	 *
 	 * @param int $ID
 	 * @return boolean
@@ -396,7 +402,7 @@ class ShipWeapons {
 
 		$retVal = false;
 
-		$tQuery = "SELECT * FROM shipweapons WHERE UserID='{$this->userID}' AND ShipWeaponID='{$ID}' LIMIT 1";
+		$tQuery = "SELECT * FROM {$this->tableName} WHERE {$this->ownerIdFieldName}='{$this->entityId}' AND {$this->entityIdFieldName}='{$ID}' LIMIT 1";
 		$tQuery = $this->db->execute ( $tQuery );
 		while ( $tResult = $this->db->fetch ( $tQuery ) ) {
 			if (! empty ( $tResult )) {
@@ -417,12 +423,12 @@ class ShipWeapons {
 
         $retVal = new \stdClass();
 		$retVal->Sequence = null;
-		$retVal->ShipWeaponID = null;
+		$retVal->{$this->entityIdFieldName} = null;
 
-		$tQuery = "SELECT ShipWeaponID, Sequence FROM shipweapons WHERE UserID='{$this->userID}' AND Sequence<'{$currentSequence}' ORDER BY Sequence DESC LIMIT 1";
+		$tQuery = "SELECT {$this->entityIdFieldName}, Sequence FROM {$this->tableName} WHERE {$this->ownerIdFieldName}='{$this->entityId}' AND Sequence<'{$currentSequence}' ORDER BY Sequence DESC LIMIT 1";
 		$tQuery = $this->db->execute ( $tQuery );
 		while ( $tResult = $this->db->fetch ( $tQuery ) ) {
-			$retVal->ShipWeaponID = $tResult->ShipWeaponID;
+			$retVal->{$this->entityIdFieldName} = $tResult->{$this->entityIdFieldName};
 			$retVal->Sequence = $tResult->Sequence;
 		}
 
@@ -439,12 +445,12 @@ class ShipWeapons {
 
         $retVal = new \stdClass();
 		$retVal->Sequence = null;
-		$retVal->ShipWeaponID = null;
+		$retVal->{$this->entityIdFieldName} = null;
 
-		$tQuery = "SELECT ShipWeaponID, Sequence FROM shipweapons WHERE UserID='{$this->userID}' AND Sequence>'{$currentSequence}' ORDER BY Sequence ASC LIMIT 1";
+		$tQuery = "SELECT {$this->entityIdFieldName}, Sequence FROM {$this->tableName} WHERE {$this->ownerIdFieldName}='{$this->entityId}' AND Sequence>'{$currentSequence}' ORDER BY Sequence ASC LIMIT 1";
 		$tQuery = $this->db->execute ( $tQuery );
 		while ( $tResult = $this->db->fetch ( $tQuery ) ) {
-			$retVal->ShipWeaponID = $tResult->ShipWeaponID;
+			$retVal->{$this->entityIdFieldName} = $tResult->{$this->entityIdFieldName};
 			$retVal->Sequence = $tResult->Sequence;
 		}
 
@@ -456,7 +462,7 @@ class ShipWeapons {
 	 * @param int $sequence
 	 */
 	public function setSequence($shipWeaponID, $sequence) {
-		$tQuery = "UPDATE shipweapons SET Sequence='{$sequence}' WHERE ShipWeaponID='{$shipWeaponID}' AND UserID='{$this->userID}'";
+		$tQuery = "UPDATE {$this->tableName} SET Sequence='{$sequence}' WHERE {$this->entityIdFieldName}='{$shipWeaponID}' AND {$this->ownerIdFieldName}='{$this->entityId}'";
         $this->db->execute ( $tQuery );
 	}
 }

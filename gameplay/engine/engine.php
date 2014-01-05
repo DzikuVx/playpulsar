@@ -988,6 +988,9 @@ try {
 	/**
 	 * Zapisz obiekty do bazy danych i ew. cache
 	 */
+
+    $shipWeapons->synchronize();
+
 	$shipPosition->synchronize ();
 	$userFastTimes->synchronize();
 	$userTimes->synchronize();
