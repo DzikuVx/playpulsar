@@ -41,7 +41,7 @@ class ShipWeapons {
      * @param string $language
      * @param MySQLiWrapper $db
      */
-    function __construct($entityId, $language = 'pl', MySQLiWrapper $db = null) {
+    public function __construct($entityId, $language = 'pl', MySQLiWrapper $db = null) {
         $this->language = $language;
         $this->entityId = $entityId;
         $this->nameField = "Name" . strtoupper($this->language);

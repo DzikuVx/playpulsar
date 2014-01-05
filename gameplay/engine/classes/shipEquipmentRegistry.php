@@ -38,15 +38,13 @@ class shipEquipmentRegistry extends simpleRegistry {
     /**
      * @param \Gameplay\Model\ShipPosition $shipPosition
      * @param \Gameplay\Model\PortEntity $portProperties
-     * @param string $action
-     * @param string $subaction
-     * @param string $value
-     * @param string $id
      * @return string
      */
-    public function get(\Gameplay\Model\ShipPosition $shipPosition, \Gameplay\Model\PortEntity $portProperties, $action, $subaction, $value, $id) {
+    public function get(\Gameplay\Model\ShipPosition $shipPosition, \Gameplay\Model\PortEntity $portProperties) {
 
-		global $shipEquipment, $colorTable, $userStats;
+		global $colorTable, $userStats;
+
+        $shipEquipment = \Gameplay\PlayerModelProvider::getInstance()->get('ShipEquipments');
 
 		$retVal = '';
 

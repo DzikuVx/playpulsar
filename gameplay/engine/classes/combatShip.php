@@ -22,12 +22,10 @@ class combatShip {
 	 */
 	public $shipWeapons = null;
 
-	/**
-	 * Wyposażenie
-	 *
-	 * @var shipEquipment
-	 */
-	public $shipEquipment = null;
+    /**
+     * @var \Gameplay\Model\ShipEquipments
+     */
+    public $shipEquipment = null;
 
 	/**
 	 * Ładownia
@@ -81,8 +79,8 @@ class combatShip {
         $this->userStats = new \Gameplay\Model\UserStatistics($userID);
 
 		$this->shipWeapons = new \Gameplay\Model\ShipWeapons($this->userID, $this->Language);
-		$this->shipEquipment = new shipEquipment ( $this->userID, $this->Language );
-		$this->shipCargo = new shipCargo ( $this->userID, $this->Language );
+		$this->shipEquipment = new \Gameplay\Model\ShipEquipments($this->userID, $this->Language);
+		$this->shipCargo = new shipCargo($this->userID, $this->Language);
 
 		if (!empty ($shipPosition)) {
 			$this->shipPosition = $shipPosition;
@@ -138,7 +136,7 @@ class combatShip {
 			/**
 			 * Utrata doświadczenia
 			 */
-			\Gameplay\Model\UserStatistics::decExperience($this->userStats, combat::sComputeExperienceLoss($this->userStats) );
+            $this->userStats->decExperience(combat::sComputeExperienceLoss($this->userStats) );
 
 			$sectorCargo = new sectorCargo($this->shipPosition);
 

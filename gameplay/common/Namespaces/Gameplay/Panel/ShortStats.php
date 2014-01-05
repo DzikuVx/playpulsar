@@ -2,6 +2,7 @@
 
 namespace Gameplay\Panel;
 
+use Gameplay\Model\ShipEquipments;
 use Gameplay\Model\ShipProperties;
 use Gameplay\Model\ShipWeapons;
 use Interfaces\Singleton;
@@ -38,9 +39,9 @@ class ShortStats extends Renderable implements Singleton {
 	 * Panel render
 	 * @param ShipProperties $shipProperties
 	 * @param ShipWeapons $shipWeapons
-	 * @param \shipEquipment $shipEquipment
+	 * @param ShipEquipments $shipEquipment
 	 */
-	public function render(ShipProperties $shipProperties, ShipWeapons $shipWeapons, \shipEquipment $shipEquipment) {
+	public function render(ShipProperties $shipProperties, ShipWeapons $shipWeapons, ShipEquipments $shipEquipment) {
 
 		$this->rendered = true;
  

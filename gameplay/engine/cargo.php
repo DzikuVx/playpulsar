@@ -29,7 +29,7 @@ if (!isset($portProperties)) {
 }
 
 if (!isset($shipEquipment)) {
-    $shipEquipment = new stdClass();
+    $shipEquipment = new \Gameplay\Model\ShipEquipments($userID);
 }
 
 if ($action == "equipFromCargo") {

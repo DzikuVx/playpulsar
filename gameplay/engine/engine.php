@@ -215,14 +215,13 @@ try {
 	\Gameplay\Panel\PortAction::initiateInstance($userProperties->Language);
 	\Gameplay\Panel\MiniMap::initiateInstance($userID, $shipPosition->System, $shipPosition, true);
 
-
 	$shipCargo 		= new shipCargo ( $userID, $userProperties->Language );
-	$shipEquipment 	= new shipEquipment ( $userID, $userProperties->Language );
 
     $shipWeapons = $oPlayerModelProvider->register('ShipWeapons', new \Gameplay\Model\ShipWeapons($userID, $userProperties->Language));
+    $shipEquipment = $oPlayerModelProvider->register('ShipEquipments', new \Gameplay\Model\ShipEquipments($userID, $userProperties->Language));
 
 	/*
-	 * Autonaprawa statku
+	 * Ship auto repair
 	*/
 	$shipProperties->autoRepair($userFastTimes);
 	$shipProperties->generateTurns ( $shipProperties, $userTimes );
@@ -572,19 +571,19 @@ try {
 			break;
 
 		case 'buyEquipment' :
-			shipEquipment::sBuy ( $id );
+			\Gameplay\Actions\ShipEquipments::sBuy($id);
 			break;
 
 		case 'stationRepairEquipment' :
-			shipEquipment::sStationRepair ( $id );
+			\Gameplay\Actions\ShipEquipments::sStationRepair ( $id );
 			break;
 
 		case 'sellEquipment' :
-			shipEquipment::sSell ( $id );
+			\Gameplay\Actions\ShipEquipments::sSell ( $id );
 			break;
 
 		case 'sellEquipmentFromCargo' :
-			shipEquipment::sSellFromCargo ( $id );
+			\Gameplay\Actions\ShipEquipments::sSellFromCargo ( $id );
 			break;
 
 		case 'buyShip' :
@@ -613,13 +612,13 @@ try {
 			break;
 
 		case 'weaponsManagement' :
-			\Gameplay\Model\ShipProperties::sRecomputeValues($shipProperties, $userID);
+			\Gameplay\Model\ShipProperties::sRecomputeValues($shipProperties);
 			shipWeaponsRegistry::sRender ();
 			break;
 
 		case 'equiapmentManagement' :
-			\Gameplay\Model\ShipProperties::updateUsedCargo ( $shipProperties );
-			\Gameplay\Model\ShipProperties::sRecomputeValues($shipProperties, $userID);
+			\Gameplay\Model\ShipProperties::updateUsedCargo($shipProperties);
+			\Gameplay\Model\ShipProperties::sRecomputeValues($shipProperties);
 			shipEquipmentRegistry::sRender ();
 			break;
 
@@ -989,6 +988,7 @@ try {
 	 * Zapisz obiekty do bazy danych i ew. cache
 	 */
 
+    $shipEquipment->synchronize();
     $shipWeapons->synchronize();
 
 	$shipPosition->synchronize ();

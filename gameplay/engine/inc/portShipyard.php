@@ -4,7 +4,7 @@ global $shipProperties, $userID, $userStats;
 
 $userProperties = \Gameplay\PlayerModelProvider::getInstance()->get('UserEntity');
 
-\Gameplay\Model\ShipProperties::sRecomputeValues($shipProperties, $userID);
+\Gameplay\Model\ShipProperties::sRecomputeValues($shipProperties);
 
 $sRetVal = "<h1>{T:shipyard}</h1>";
 

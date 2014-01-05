@@ -2,6 +2,7 @@
 
 namespace Controlpanel;
 
+use Gameplay\Model\ShipEquipments;
 use Gameplay\Model\ShipProperties;
 
 class PlayerEquipment extends \equipment{
@@ -68,7 +69,7 @@ class PlayerEquipment extends \equipment{
 
         ShipProperties::sFlushCache($_SESSION['returnUser']);
 
-		$shipEquipment = new \shipEquipment($_SESSION['returnUser']);
+		$shipEquipment = new ShipEquipments($_SESSION['returnUser']);
 
 		$equipment = \equipment::quickLoad($params['value']);
 

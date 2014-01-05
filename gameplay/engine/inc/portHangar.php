@@ -7,7 +7,7 @@ $userProperties = \Gameplay\PlayerModelProvider::getInstance()->get('UserEntity'
 /*
  * Wykonaj przeliczenie max wartości okrętu
  */
-\Gameplay\Model\ShipProperties::sRecomputeValues($shipProperties, $userID);
+\Gameplay\Model\ShipProperties::sRecomputeValues($shipProperties);
 
 $sRetVal = "<h1>" . TranslateController::getDefault()->get ( 'hangar' ) . "</h1>";
 
@@ -83,7 +83,7 @@ if ($portProperties->Type == 'station') {
 	$sRetVal .= "<th style='width: 75px;'>&nbsp;</th>";
 	$sRetVal .= "</tr>";
 
-	global $shipEquipment;
+    $shipEquipment = \Gameplay\PlayerModelProvider::getInstance()->get('ShipEquipments');
 
 	if (!empty($portProperties->Equipment)) {
 		$tQuery = "SELECT

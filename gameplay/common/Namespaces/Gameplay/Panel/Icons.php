@@ -14,6 +14,7 @@ class Icons extends Renderable implements Singleton {
 	public function render() {
 
         $shipWeapons = PlayerModelProvider::getInstance()->get('ShipWeapons');
+        $shipEquipments = PlayerModelProvider::getInstance()->get('ShipEquipments');
 
 		$this->rendered = true;
 
@@ -23,7 +24,7 @@ class Icons extends Renderable implements Singleton {
 			$this->retVal .= \General\Controls::renderImgButton('message', "Playpulsar.gameplay.execute('showMessages');", '{T:messages}');
 		}
 
-		if (\shipEquipment::sGetDamagedCount( $this->userID ) > 0) {
+		if ($shipEquipments->getDamagedCount() > 0) {
 			$this->retVal .= \General\Controls::renderImgButton('warningA', "Playpulsar.gameplay.execute('equiapmentManagement');", '{T:Damaged equipment}');
 		}
 

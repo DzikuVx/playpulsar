@@ -407,19 +407,18 @@ class ShipProperties extends Standard {
 
         $shipProperties->computeMaxValues();
         $shipProperties->updateWeaponsCount();
-        \shipEquipment::sUpdateCount($shipProperties, $userID);
+        $shipProperties->updateEquipmentsCount();
         $shipProperties->synchronize();
         self::sFlushCache($userID);
     }
 
     /**
      * @param ShipProperties $shipProperties
-     * @param int $userID
      */
-    static public function sRecomputeValues(ShipProperties $shipProperties, $userID) {
+    static public function sRecomputeValues(ShipProperties $shipProperties) {
         $shipProperties->computeMaxValues();
         $shipProperties->updateWeaponsCount();
-        \shipEquipment::sUpdateCount($shipProperties, $userID);
+        $shipProperties->updateEquipmentsCount();
     }
 
     public function updateWeaponsCount() {
@@ -429,6 +428,15 @@ class ShipProperties extends Standard {
             $this->CurrentWeapons = $tResult->ile;
         }
     }
+
+    public function updateEquipmentsCount() {
+        $tQuery = "SELECT COUNT(*) AS ile FROM shipequipment WHERE UserID='{$this->entryId}'";
+        $tQuery = $this->db->execute ( $tQuery );
+        while ( $tResult = $this->db->fetch ( $tQuery ) ) {
+            $this->CurrentEquipment = $tResult->ile;
+        }
+    }
+
 
     public function computeMaxValues() {
 
@@ -458,7 +466,7 @@ class ShipProperties extends Standard {
         $this->CanWarpJump = $tShip->CanWarpJump;
         $this->CanActiveScan = $tShip->CanActiveScan;
 
-        $equipmentList = new \shipEquipment($this->getEntryId());
+        $equipmentList = new ShipEquipments($this->getEntryId());
 
         $tResult = $equipmentList->get ( "working" );
         while ( $resultRow = \Database\Controller::getInstance()->fetch ( $tResult ) ) {
@@ -778,13 +786,14 @@ class ShipProperties extends Standard {
      */
     static public function sBuy($shipID) {
 
-        global $shipCargo, $shipWeapons, $userProperties, $action, $userStats, $shipEquipment;
+        global $shipCargo, $userProperties, $action, $userStats;
 
         $shipPosition   = PlayerModelProvider::getInstance()->get('ShipPosition');
         $shipProperties = PlayerModelProvider::getInstance()->get('ShipProperties');
         $portProperties = PlayerModelProvider::getInstance()->get('PortEntity');
         $userProperties = PlayerModelProvider::getInstance()->get('UserEntity');
         $shipWeapons    = PlayerModelProvider::getInstance()->get('ShipWeapons');
+        $shipEquipment  = PlayerModelProvider::getInstance()->get('ShipEquipments');
 
         if ($shipPosition->Docked == 'no') {
             throw new \securityException ( );

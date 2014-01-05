@@ -4,6 +4,7 @@ namespace Controlpanel;
 
 use Gameplay\Model\ItemType;
 use Gameplay\Model\ProductType;
+use Gameplay\Model\ShipEquipments;
 use Gameplay\Model\ShipPosition;
 use Gameplay\Model\ShipProperties;
 use Gameplay\Model\ShipType;
@@ -429,7 +430,6 @@ class NpcTypes extends GameplayItem{
 				/*
 				 * Załadowanie danych okrętu
 				*/
-
 				$shipProperties = new ShipProperties($npcID);
 				$shipProperties->CurrentWeapons = $weaponsCount;
 				$shipProperties->CurrentEquipment = $equipmentCount;
@@ -440,7 +440,7 @@ class NpcTypes extends GameplayItem{
 				$shipWeapons = new ShipWeapons($npcID, 'pl');
 				$shipWeapons->computeOffensiveRating($shipProperties);
 
-				$shipEquipment = new \shipEquipment ( $npcID, 'pl' );
+				$shipEquipment = new ShipEquipments($npcID, 'pl');
 
 				/**
 				 * Uaktualnij wartości maksymalne okrętu

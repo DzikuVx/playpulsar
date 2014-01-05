@@ -95,10 +95,6 @@ class npc extends baseItem {
 		return $retVal;
 	}
 
-	/**
-	 * Sprowadzenia na pozycje NPC typu protective zgodnie z założonymi globalnie warunkami
-	 * @param stdClass $position
-	 */
 	static public function sSummonProtective($position, $defenderAlliance) {
 
 		global $config;
@@ -157,7 +153,7 @@ class npc extends baseItem {
 			 * Zainicjuj obiekty
 			 */
 			$npcWeapons = new \Gameplay\Model\ShipWeapons($npcID, 'en');
-			$npcEquipment = new shipEquipment ( $npcID, 'en' );
+			$npcEquipment = new \Gameplay\Model\ShipEquipments($npcID, 'en');
 			$npcCargo = new shipCargo ( $npcID, 'en' );
 
 			/*
@@ -262,7 +258,7 @@ class npc extends baseItem {
 		}
 
 		$npcShipProperties->synchronize();
-        $npcUserPropertiesObject->synchronize($npcUserProperties, true, true );
+        $npcUserProperties->synchronize();
 	}
 
 	/**

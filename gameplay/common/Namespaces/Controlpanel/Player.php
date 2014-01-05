@@ -2,6 +2,7 @@
 
 namespace Controlpanel;
 use \Database\Controller as Database;
+use Gameplay\Model\ShipEquipments;
 use Gameplay\Model\ShipPosition;
 use Gameplay\Model\ShipProperties;
 use Gameplay\Model\ShipWeapons;
@@ -337,7 +338,7 @@ class Player extends BaseItem {
 		unset($tData);
 		unset($tArray);
 		
-		$tEquipment = new \shipEquipment($params['id']);
+		$tEquipment = new ShipEquipments($params['id']);
 		$tData = $tEquipment->get('all');
 		$tArray = array();
 		while ($tResult = Database::getInstance()->fetch($tData)) {
