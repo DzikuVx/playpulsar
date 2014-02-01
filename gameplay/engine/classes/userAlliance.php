@@ -11,6 +11,7 @@ class userAlliance extends baseItem {
     /**
      * @param $ID
      * @return stdClass
+     * @deprecated
      */
     static public function quickLoad($ID) {
 		$item = new userAlliance ( );

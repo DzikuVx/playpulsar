@@ -1,16 +1,21 @@
 <?php
 
-/**
- * Klasa zbiorcza wszystkich parametrów statku biorącego udział w walce
- * @version $Rev: 456 $
- * @package Engine
- */
 class combatShip {
 
-	public $weaponFireResult = null;
+    /**
+     * @var weaponFireResult[]
+     */
+    public $weaponFireResult = null;
 
-	public $Language = 'en';
-	public $userID = null;
+    /**
+     * @var string
+     */
+    public $Language = 'en';
+
+    /**
+     * @var int
+     */
+    public $userID = null;
 
     /**
      * @var \Gameplay\Model\ShipProperties
@@ -59,7 +64,10 @@ class combatShip {
 	 */
 	public $shipPosition = null;
 
-	public $shipSize = 1;
+    /**
+     * @var int
+     */
+    public $shipSize = 1;
 
     /**
      * @param int $userID
@@ -69,7 +77,7 @@ class combatShip {
     public function __construct($userID, $Language, \Gameplay\Model\ShipPosition $shipPosition = null) {
 		$this->userID = $userID;
 		$this->Language = $Language;
-		$this->weaponFireResult = array ();
+		$this->weaponFireResult = array();
 
         $this->shipProperties = new \Gameplay\Model\ShipProperties($userID);
 

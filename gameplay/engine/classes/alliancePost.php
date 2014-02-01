@@ -10,7 +10,12 @@ class alliancePost extends baseItem {
 		\Database\Controller::getInstance()->execute("DELETE FROM allianceposts WHERE PostID='{$id}' LIMIT 1");
 	}
 
-	static public function quickLoad($ID) {
+    /**
+     * @param $ID
+     * @return stdClass
+     * @deprecated
+     */
+    static public function quickLoad($ID) {
 		$item = new self();
 		$retVal = $item->load ( $ID, true, true );
 		unset($item);

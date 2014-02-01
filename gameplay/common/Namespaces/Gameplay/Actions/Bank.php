@@ -1,13 +1,16 @@
 <?php
+
+namespace Gameplay\Actions;
+
 use Gameplay\PlayerModelProvider;
 
-class bank {
+class Bank {
 
 	//@todo transfer gotówki do innych graczy
 
 	/**
 	 * @param int $value
-	 * @throws securityException
+	 * @throws \securityException
 	 */
 	static public function sWithdraw($value) {
 
@@ -19,37 +22,36 @@ class bank {
 		$value = \Database\Controller::getInstance()->quote($value);
 
 		if (!is_numeric($value)) {
-			throw new securityException();
+			throw new \securityException();
 		}
 
 		if ($value < 0) {
-			throw new securityException();
+			throw new \securityException();
 		}
 
 		if ($value > $userStats->Bank) {
-			throw new securityException();
+			throw new \securityException();
 		}
 
 		if ($shipPosition->Docked != 'yes') {
-			throw new securityException();
+			throw new \securityException();
 		}
 
 		if ($portProperties->Type != 'station') {
-			throw new securityException();
+			throw new \securityException();
 		}
 
 		$userStats->Cash += $value;
 		$userStats->Bank -= $value;
 
-		\Gameplay\Framework\ContentTransport::getInstance()->addNotification('info', TranslateController::getDefault()->get('opSuccess'));
+		\Gameplay\Framework\ContentTransport::getInstance()->addNotification('info', \TranslateController::getDefault()->get('opSuccess'));
 		$action = 'portBank';
 
 	}
 
 	/**
-	 * Deponowanie kasy w banku
 	 * @param int $value
-	 * @throws securityException
+	 * @throws \securityException
 	 */
 	static public function sDeposit($value) {
 
@@ -60,31 +62,29 @@ class bank {
 		$value = \Database\Controller::getInstance()->quote($value);
 
 		if (!is_numeric($value)) {
-			throw new securityException();
+			throw new \securityException();
 		}
 
 		if ($value < 0) {
-			throw new securityException();
+			throw new \securityException();
 		}
 
 		if ($value > $userStats->Cash) {
-			throw new securityException();
+			throw new \securityException();
 		}
 
 		if ($shipPosition->Docked != 'yes') {
-			throw new securityException();
+			throw new \securityException();
 		}
 
 		if ($portProperties->Type != 'station') {
-			throw new securityException();
+			throw new \securityException();
 		}
 
 		$userStats->Cash -= $value;
 		$userStats->Bank += floor($value * 0.9);
 
-		\Gameplay\Framework\ContentTransport::getInstance()->addNotification('info', TranslateController::getDefault()->get('opSuccess'));
+		\Gameplay\Framework\ContentTransport::getInstance()->addNotification('info', \TranslateController::getDefault()->get('opSuccess'));
 		$action = 'portBank';
-
 	}
-
 }

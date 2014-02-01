@@ -12,11 +12,12 @@ class alliance extends baseItem {
 	protected $defaultCacheExpire = 3600;
 	protected $useMemcached = true;
 
-	/**
-	 * Konstruktor statyczny
-	 * @param $ID
-	 */
-	static public function quickLoad($ID) {
+    /**
+     * @param $ID
+     * @return stdClass
+     * @deprecated
+     */
+    static public function quickLoad($ID) {
 		$item = new self();
 		$retVal = $item->load ( $ID, true, true );
 
@@ -27,11 +28,6 @@ class alliance extends baseItem {
 		return $retVal;
 	}
 
-	/**
-	 * Sprawdzenie unikalności symbolu sojuszu
-	 * @param string $string
-	 * @param int $allianceID
-	 */
 	static private function sCheckUniqueSymbol($string, $allianceID = null) {
 
 		$retVal = true;
@@ -400,11 +396,6 @@ class alliance extends baseItem {
 		\Gameplay\Panel\PortAction::getInstance()->clear();
 	}
 
-	/**
-	 * Zapisanie zamian w danych sojuszu
-	 * @param string $values
-	 * @throws securityException
-	 */
 	static public function sEditExe($values) {
 
 		global $userAlliance, $userID;

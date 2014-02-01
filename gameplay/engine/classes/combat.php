@@ -28,7 +28,7 @@ class combat {
 	 *
 	 * @var combatShip
 	 */
-	protected  $player = null;
+	protected $player = null;
 
 	/**
 	 * Sojusz gracza
@@ -122,15 +122,7 @@ class combat {
 		return $retVal;
 	}
 
-	/**
-	 * Wystrzelenie z broni
-	 *
-	 * @param stdClass $tWeapon
-	 * @param combatShip $tTarget
-	 * @throws \Database\Exception
-	 * @return boolean
-	 */
-	protected function fireWeapon($tWeapon, $tTarget, $tPreparedUpdate) {
+	protected function fireWeapon($tWeapon, combatShip $tTarget, $tPreparedUpdate) {
 
 		self::$weaponCriticalHit = false;
 
@@ -538,7 +530,7 @@ class combat {
 
 		global $config;
 
-		$template = new \General\Templater ( dirname ( __FILE__ ) . '/../../templates/combat.html', $this->t );
+		$template = new \General\Templater ( dirname ( __FILE__ ) . '/../../templates/combat.html', $this->t);
 
 		$tPercentage = \General\Formater::sGetPercentage ( $this->player->shipProperties->Shield, $this->player->shipProperties->ShieldMax );
 		$tPercentage = '<span ' . getParameterColor ( $this->player->shipProperties->Shield, $this->player->shipProperties->ShieldMax ) . '>' . $tPercentage . '%</span>';
@@ -563,7 +555,7 @@ class combat {
 
 		$tString = '';
 		foreach ( $this->player->weaponFireResult as $tResult ) {
-			$tString .= $tResult->render ( $this->t, $this->Language );
+			$tString .= $tResult->render($this->t, $this->Language);
 		}
 		$template->add ( 'yourCombatReports', $tString );
 
@@ -582,9 +574,9 @@ class combat {
 		 * Sprawdz, czy jest ktokolwiek z kim można jeszcze walczyć
 		 */
 		if ($this->getUsableEnemiesCount () > 0) {
-			$template->remove ( 'closeButton' );
+			$template->remove('closeButton');
 		} else {
-			$template->remove ( 'combatButtons' );
+			$template->remove('combatButtons');
 		}
 
 		$this->retVal .= ( string ) $template;
@@ -607,14 +599,11 @@ class combat {
 		return $retVal;
 	}
 
-	/**
-	 * Wykonanie operacji
-	 *
-	 * @param string $subaction
-	 */
 	public function execute($action, $options = null) {
 
 		global $config;
+
+        $oDb = Database\Controller::getInstance();
 
 		/**
 		 * @since 2011-06-01
@@ -721,9 +710,9 @@ class combat {
 			/*
 			 * Rozpocznij transakcję
 			 */
-			\Database\Controller::getInstance()->disableAutocommit();
+            $oDb->disableAutocommit();
 
-			$sPreparedInsert = mysqli_prepare(\Database\Controller::getInstance()->getHandle(), "INSERT INTO combatmessages(CreateTime, UserID, ByUserID, Text, Type) VALUES(?,?,?,?,?)");
+			$sPreparedInsert = mysqli_prepare($oDb->getHandle(), "INSERT INTO combatmessages(CreateTime, UserID, ByUserID, Text, Type) VALUES(?,?,?,?,?)");
 
 			foreach ( $this->enemies as $tShip ) {
 
@@ -734,22 +723,21 @@ class combat {
 					continue;
 				}
 
-				foreach ( $tShip->weaponFireResult as $tResult ) {
-					$tResult->save ( $tShip->userID, $this->userID, 'defensive', $sPreparedInsert );
+				foreach($tShip->weaponFireResult as $tResult ) {
+					$tResult->save($tShip->userID, $this->userID, 'defensive', $sPreparedInsert );
 				}
 			}
 			/*
 			 * Zapisz moje raporty w bazie danych
 			 */
 			foreach ( $this->player->weaponFireResult as $tResult ) {
-				$tResult->save ( $this->userID, $this->userID, 'offensive', $sPreparedInsert );
+				$tResult->save($this->userID, $this->userID, 'offensive', $sPreparedInsert);
 			}
 			/*
 			 * Skomituj transakcję
 			 */
-			\Database\Controller::getInstance()->commit();
-			\Database\Controller::getInstance()->enableAutocommit();
-
+            $oDb->commit();
+            $oDb->enableAutocommit();
 		}
 
 		//FIXME move authcode outside combat class
@@ -762,22 +750,13 @@ class combat {
 	 *
 	 */
 	protected function renderDisengage() {
-
-		global $config;
-
 		$template = new \General\Templater ( dirname ( __FILE__ ) . '/../../templates/disengage.html', $this->t );
-
 		$this->retVal .= ( string ) $template;
 	}
 
 	protected function renderDestroyed() {
-
-		global $config;
-
 		$template = new \General\Templater ( dirname ( __FILE__ ) . '/../../templates/destroyed.html', $this->t );
-
 		$template->add ( 'otherCombatReports', $this->getMyCombatMessages () );
-
 		$this->retVal .= ( string ) $template;
 	}
 
@@ -836,7 +815,7 @@ class combat {
 	 * Pobranie średniego Lvl przeciwników
 	 *
 	 * @param array $tEnemies
-	 * @return unknown
+	 * @return float
 	 */
 	static protected function sGetAverageLevel($tEnemies) {
 
@@ -1245,19 +1224,19 @@ class combat {
      */
     protected static function computeWeaponAccuracy($tWeapon, combatShip $firingShip, combatShip $targetShip, \Gameplay\Model\SectorEntity $sectorProperties) {
 
-		$tManu = $targetShip->shipProperties->Maneuver;
+		$iManeuver = $targetShip->shipProperties->Maneuver;
 
 		if ($targetShip->getLastAction() == 'disengage') {
-			$tManu = $tManu * 2;
+			$iManeuver = $iManeuver * 2;
 		}
 
 		$tSize = $targetShip->shipSize;
 
 		$tDivider = 11-$tSize;
 
-		$tManu = ceil(($tManu / 10)*$tDivider);
+		$iManeuver = ceil(($iManeuver / 10)*$tDivider);
 
-		$retVal = $tWeapon->Accuracy + ($firingShip->shipProperties->Targetting * 10) + ($firingShip->userStats->Level - $targetShip->userStats->Level) - ($tManu / 10) + $sectorProperties->Accuracy - 100;
+		$retVal = $tWeapon->Accuracy + ($firingShip->shipProperties->Targetting * 10) + ($firingShip->userStats->Level - $targetShip->userStats->Level) - ($iManeuver / 10) + $sectorProperties->Accuracy - 100;
 
 		if ($retVal < 5) {
 			$retVal = 5;
@@ -1343,8 +1322,9 @@ class combat {
 
 		$retVal = additional::rand ( $weaponData->ShieldMin, $weaponData->ShieldMax );
 
-		if ($retVal == 0)
-		return 0;
+		if ($retVal == 0) {
+		    return 0;
+        }
 
 		/*
 		 * Zwiększenie mocy przez upgady statku strzelającego
@@ -1401,10 +1381,11 @@ class combat {
 	 * @return int
 	 */
 	protected static function computeArmorDamage($weaponData, $firingShip, $firedShip) {
-		$retVal = additional::rand ( $weaponData->ArmorMin, $weaponData->ArmorMax );
+		$retVal = additional::rand($weaponData->ArmorMin, $weaponData->ArmorMax);
 
-		if ($retVal == 0)
-		return 0;
+		if ($retVal == 0) {
+		    return 0;
+        }
 
 		/*
 		 * Zwiększenie mocy przez upgady statku strzelającego
@@ -1416,8 +1397,6 @@ class combat {
 		 * Zmniejszenie mocy przez upgrady statu w który oddawany jest strzal
 		 */
 		//		self::weaponDamageDowner ( $retVal, $firedShip->Modifiers->Weapon->Damage->Sub->ByClass [$weaponData->WeaponClassID] );
-
-
 
 		/*
 		 * Szansa na uszkodzenia krytyczne
@@ -1516,7 +1495,7 @@ class combat {
 			$allianceData->Defendable = 'yes';
 		}
 		if ($allianceData->Defendable == 'no') {
-			return;
+			return false;
 		}
 
 		$positionHash = md5($position->System.'|'.$position->X.'|'.$position->Y);
@@ -1561,11 +1540,11 @@ class combat {
 
 	}
 
-	/**
-	 * Czyszczenie informacji o statusie summonowania w polach w których już nie przebywam
-	 * @param string $positionHash
-	 */
-	static private function sNpcSummonGarbageCollector($positionHash) {
+    /**
+     * @param $positionHash
+     * @return bool
+     */
+    static private function sNpcSummonGarbageCollector($positionHash) {
 
 		if (rand(1,10) == 5) {
 

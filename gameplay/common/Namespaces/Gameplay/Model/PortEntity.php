@@ -266,6 +266,7 @@ class PortEntity extends CustomGet {
      * @param int $ID
      * @param bool $fromCache
      * @return PortEntity
+     * @deprecated
      */
     static public function quickLoad($ID, $fromCache = true) {
         return new PortEntity($ID);

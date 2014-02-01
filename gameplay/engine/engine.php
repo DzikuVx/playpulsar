@@ -228,12 +228,12 @@ try {
 
 	//Wyzeruj odpowiednie pozycje....
 	if ($shipPosition->Docked == 'yes') {
-		\Gameplay\Panel\SectorResources::getInstance()->hide ();
+		\Gameplay\Panel\SectorResources::getInstance()->hide();
 	} else {
 		\Gameplay\Panel\PortAction::getInstance()->clear();
 	}
 
-	//NPC Reset
+    //FIXME move npc reset into cron
 	if (time () - $_SESSION ['lastNPCResetTime'] > $config ['timeThresholds'] ['npcReset']) {
 		$tQuery = "SELECT
 		    users.UserID
@@ -247,7 +247,7 @@ try {
 		  ";
 		$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
 		while ( $tResult = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
-			npc::sResetNpc ( $tResult->UserID );
+			npc::sResetNpc($tResult->UserID);
 		}
 		$_SESSION ['lastNPCResetTime'] = time ();
 	}
@@ -317,11 +317,11 @@ try {
 			break;
 
 		case 'bankDeposit':
-			bank::sDeposit($value);
+			\Gameplay\Actions\Bank::sDeposit($value);
 			break;
 
 		case 'bankWithdraw':
-			bank::sWithdraw($value);
+			\Gameplay\Actions\Bank::sWithdraw($value);
 			break;
 
 		case 'stationRepair' :

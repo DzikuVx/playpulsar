@@ -14,8 +14,8 @@ class Formater {
 	/**
 	 * Obliczenie procentów wartości max.
 	 *
-	 * @param numeric $value
-	 * @param numeric $max
+	 * @param int|float $value
+	 * @param int|float $max
 	 * @return int
 	 */
 	static public function sGetPercentage($value, $max) {

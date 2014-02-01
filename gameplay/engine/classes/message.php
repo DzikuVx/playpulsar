@@ -249,6 +249,7 @@ class message extends baseItem {
 	 *
 	 * @param int $ID
 	 * @return stdClass
+     * @deprecated
 	 */
 	static public function quickLoad($ID) {
 		$item = new message ( );

@@ -5,7 +5,6 @@
  * @version $Rev: 456 $
  * @package Engine
  */
-use phpCache\CacheKey;
 
 class npc extends baseItem {
 
@@ -50,7 +49,6 @@ class npc extends baseItem {
 		$Prop = self::sComputeAttackProbabilty($userLevel, $npcLevel, $sectorVisibility);
 
 		if (additional::checkRand($Prop, 100)) {
-
 			try {
 				combat::sSetCombatLock ( $npcID, $userID, false );
 			} catch (Exception $e) {
@@ -266,6 +264,7 @@ class npc extends baseItem {
 	 *
 	 * @param int $ID
 	 * @return stdClass
+     * @deprecated
 	 */
 	static public function quickLoad($ID) {
 
@@ -337,6 +336,8 @@ class npc extends baseItem {
 
 		global $config;
 
+        $oDb = \Database\Controller::getInstance();
+
 		/*
 		 * Sprawdz, czy upłynął Twój czas ruszania NPC
 		 */
@@ -354,7 +355,7 @@ class npc extends baseItem {
 			\Database\Controller::getInstance()->disableAutocommit();
 
 			$tQuery = "UPDATE npcmove SET npcmove.Owner='$userID' WHERE npcmove.Owner IS NULL AND npcmove.MoveCount > '0' AND npcmove.SrcSystem='{$shipPosition->System}' AND  npcmove.MoveTime < '$actualTime' LIMIT {$config ['npc'] ['simulaneousMoveLimit']}";
-			\Database\Controller::getInstance()->execute ( $tQuery );
+            $oDb->execute ( $tQuery );
 
 			//Pobierz tych wszystkich NPC wraz z ich parametrami
 			$tQuery = "
@@ -387,17 +388,17 @@ class npc extends baseItem {
                     npcmove.Owner = '$userID' AND
                     userships.RookieTurns < '1'
                 ";
-			$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
+			$tQuery = $oDb->execute($tQuery);
 
-			if (\Database\Controller::getInstance()->count($tQuery) > 0) {
+			if ($oDb->count($tQuery) > 0) {
 				/*
 				 * Przygotuj zapytanie do ustawienia pozycji
 				 */
-				$sPreparedPosition = mysqli_prepare(\Database\Controller::getInstance()->getHandle(), "UPDATE shippositions SET X=?, Y=?, Docked=? WHERE UserID=?");
-				$sPreparedNpcMove = mysqli_prepare(\Database\Controller::getInstance()->getHandle(), "UPDATE npcmove SET Direction=? , MoveTime=?, MoveCount=? WHERE UserID=?");
+				$sPreparedPosition = mysqli_prepare($oDb->getHandle(), "UPDATE shippositions SET X=?, Y=?, Docked=? WHERE UserID=?");
+				$sPreparedNpcMove = mysqli_prepare($oDb->getHandle(), "UPDATE npcmove SET Direction=? , MoveTime=?, MoveCount=? WHERE UserID=?");
 			}
 
-			while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
+			while ( $tR1 = $oDb->fetch($tQuery)) {
 				//Okresl które pozycje sa docelowymi
 				if ($tR1->Direction == "Src-Dst") {
 					$DstX = $tR1->DstX;
@@ -429,7 +430,6 @@ class npc extends baseItem {
 						}
 					} else {
 						//Sprawdz, ktora os poruszyć
-
 
 						if (abs ( $xPosDiffer ) > 0) {
 							//Rusz w osi X
@@ -524,68 +524,66 @@ class npc extends baseItem {
                     npcmove.MoveCount < '1' AND
                     userships.RookieTurns < 1
                 ";
-			$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
+			$tQuery = $oDb->execute ( $tQuery );
 
-			//Jesli sa NPC do zresetowania, pobierz parametry systemu
-			if (\Database\Controller::getInstance()->count ( $tQuery ) > 0) {
-				$systemProperties = \Gameplay\Model\SystemProperties::quickLoad ( $shipPosition->System );
-			}
+			if ($oDb->count($tQuery) > 0) {
+				$systemProperties = new \Gameplay\Model\SystemProperties($shipPosition->System);
 
-			while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
-				//Pobierz dane defaultowe NPC
-				$moveCount = rand ( $tR1->MoveCountMin, $tR1->MoveCountMax );
-				$direction = "Src-Dst";
-				$srcSystem = $tR1->PositionSystem;
-				$srcX = $tR1->PositionX;
-				$srcY = $tR1->PositionY;
+                while ($tR1 = $oDb->fetch($tQuery)) {
+                    $moveCount = rand ( $tR1->MoveCountMin, $tR1->MoveCountMax );
+                    $direction = "Src-Dst";
+                    $srcSystem = $tR1->PositionSystem;
+                    $srcX = $tR1->PositionX;
+                    $srcY = $tR1->PositionY;
 
-				$moveTime = rand ( $tR1->MoveTimeMin, $tR1->MoveTimeMax ) + $actualTime;
+                    $moveTime = rand ( $tR1->MoveTimeMin, $tR1->MoveTimeMax ) + $actualTime;
 
-				if ($tR1->Dock == 'no') {
-					$dstSystem = $tR1->PositionSystem;
-					$dstX = rand ( 1, $systemProperties->Width );
-					$dstY = rand ( 1, $systemProperties->Height );
-				} else {
-					$tPos = new \Gameplay\Model\ShipPosition();
-					$tPos->System = $tR1->PositionSystem;
-					$tPos->X = $tR1->PositionX;
-					$tPos->Y = $tR1->PositionY;
-					$tPos = \Gameplay\Model\SystemProperties::randomPort($tPos);
+                    if ($tR1->Dock == 'no') {
+                        $dstSystem = $tR1->PositionSystem;
+                        $dstX = rand ( 1, $systemProperties->Width );
+                        $dstY = rand ( 1, $systemProperties->Height );
+                    } else {
+                        $tPos = new \Gameplay\Model\ShipPosition();
+                        $tPos->System = $tR1->PositionSystem;
+                        $tPos->X = $tR1->PositionX;
+                        $tPos->Y = $tR1->PositionY;
+                        $tPos = \Gameplay\Model\SystemProperties::randomPort($tPos);
 
-					$dstSystem = $tPos->System;
-					$dstX = $tPos->X;
-					$dstY = $tPos->Y;
+                        $dstSystem = $tPos->System;
+                        $dstX = $tPos->X;
+                        $dstY = $tPos->Y;
 
-				}
-				//Zapisz nowe parametry tego NPC do bazy danych
-				$t2Query = "UPDATE npcmove SET
-                    Direction='$direction' ,
-                    MoveTime='$moveTime',
-                    MoveCount='$moveCount',
-                    NextMoveTimeMin = '{$tR1->MoveTimeMin}',
-                    NextMoveTimeMax = '{$tR1->MoveTimeMax}',
-                    SrcSystem = '$srcSystem',
-                    SrcX = '$srcX',
-                    SrcY = '$srcY',
-                    DstSystem = '$dstSystem',
-                    DstX = '$dstX',
-                    DstY = '$dstY',
-                    Dock = '{$tR1->Dock}'
-                  WHERE
-                    UserID='{$tR1->NpcID}'";
-				\Database\Controller::getInstance()->execute ( $t2Query );
-			}
+                    }
+                    //Zapisz nowe parametry tego NPC do bazy danych
+                    $t2Query = "UPDATE npcmove SET
+                        Direction='$direction' ,
+                        MoveTime='$moveTime',
+                        MoveCount='$moveCount',
+                        NextMoveTimeMin = '{$tR1->MoveTimeMin}',
+                        NextMoveTimeMax = '{$tR1->MoveTimeMax}',
+                        SrcSystem = '$srcSystem',
+                        SrcX = '$srcX',
+                        SrcY = '$srcY',
+                        DstSystem = '$dstSystem',
+                        DstX = '$dstX',
+                        DstY = '$dstY',
+                        Dock = '{$tR1->Dock}'
+                      WHERE
+                        UserID='{$tR1->NpcID}'";
+                    $oDb->execute ( $t2Query );
+                }
+
+            }
 
 			//Zdejmij blokadę NPC i Nadpisz następny czas ruchu
 			$tQuery = "UPDATE npcmove JOIN usertimes ON usertimes.UserID = npcmove.UserID SET npcmove.Owner=null, usertimes.LastAction='$actualTime' WHERE npcmove.Owner='$userID'";
-			\Database\Controller::getInstance()->execute ( $tQuery );
+            $oDb->execute($tQuery);
 
-			\Database\Controller::getInstance()->commit();
-			\Database\Controller::getInstance()->enableAutocommit();
-
+            $oDb->commit();
+            $oDb->enableAutocommit();
 		}catch (Exception $e) {
-			\Database\Controller::getInstance()->rollback();
-			\Database\Controller::getInstance()->enableAutocommit();
+            $oDb->rollback();
+            $oDb->enableAutocommit();
 			psDebug::cThrow(null, $e, array('display'=>false));
 		}
 

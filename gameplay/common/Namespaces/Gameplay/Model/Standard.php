@@ -407,6 +407,7 @@ abstract class Standard {
      * @param int $ID
      * @param bool $useCache
      * @return mixed
+     * @depreciated
      */
     static public function quickLoad($ID, $useCache = true) {
         $item = new static ($ID, $useCache);
