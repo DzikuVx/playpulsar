@@ -158,12 +158,12 @@ class galaxyRouting extends systemRouting {
 			//Zacznij pobierać sektory z tablicy
 			while ( $this->current = array_pop ( $this->tToGo ) ) {
 
-				$this->tRoute [$this->current]->analized = true;
+				$this->tRoute [$this->current]->analyzed = true;
 
 				//Pobierz wszystkie systemy sąsiednie
 				foreach ( array_keys ( $this->tNodes [$this->current] ) as $key ) {
 
-					if ($this->tRoute [$key]->analized == false) {
+					if ($this->tRoute [$key]->analyzed == false) {
 						if (! in_array ( $key, $this->tArray )) {
 							array_push ( $this->tArray, $key );
 							$this->go = true;

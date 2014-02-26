@@ -8,5 +8,3 @@
 class combatException extends Exception {
 
 }
-
-?>

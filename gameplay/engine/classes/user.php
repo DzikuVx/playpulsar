@@ -321,13 +321,12 @@ class user {
 		return $equipmentCount;
 	}
 
-	/**
-	 * Wstawienie broni dla użytkownika
-	 * @param int $playerID
-	 * @param array/string $weaponsSet tablica weaponsID lub string oddzielony przecinkami
-	 * @return int liczba broni
-	 */
-	static public function sInsertWeaponsSet($playerID, $weaponsSet = '') {
+    /**
+     * @param $playerID
+     * @param Array|string $weaponsSet
+     * @return int
+     */
+    static public function sInsertWeaponsSet($playerID, $weaponsSet = '') {
 
 		$weaponsCount = 0;
 

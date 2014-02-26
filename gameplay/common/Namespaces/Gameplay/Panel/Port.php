@@ -92,7 +92,7 @@ class Port extends Renderable implements Singleton {
 			$this->retVal .= "<div style=\"text-align: center; margin-top: 30px;\">";
 
 			if ($shipPosition->Docked == "no") {
-				$this->retVal .= "<button class='btn' onclick=\"Playpulsar.gameplay.execute('shipNodeJump',null,null,null,null);\"><i class='icon-white icon-asterisk'></i> {T:jump}</button>";
+				$this->retVal .= "<button class='btn' onclick=\"Playpulsar.gameplay.execute('shipNodeJump');\"><i class='icon-white icon-asterisk'></i> {T:jump}</button>";
 			}
 
 			$this->retVal .= "</div>";

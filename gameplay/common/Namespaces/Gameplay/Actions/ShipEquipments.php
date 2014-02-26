@@ -2,6 +2,7 @@
 
 namespace Gameplay\Actions;
 
+use Gameplay\Model\EquipmentType;
 use Gameplay\PlayerModelProvider;
 
 class ShipEquipments {
@@ -30,7 +31,7 @@ class ShipEquipments {
             throw new \securityException ( );
         }
 
-        $tEquipment = \equipment::quickLoad ( $equipmentID );
+        $tEquipment = new EquipmentType($equipmentID);
 
         if ($userStats->Cash < $tEquipment->Price) {
             throw new \securityException ( );
@@ -85,7 +86,8 @@ class ShipEquipments {
 
         $tEquipment = $shipEquipment->getSingle ( $equipmentID );
 
-        $tRepairPrice = \equipment::sGetRepairPrice ( $tEquipment->EquipmentID );
+        $oObject = new EquipmentType($tEquipment->EquipmentID);
+        $tRepairPrice = $oObject->getRepairPrice();
 
         if ($userStats->Cash < $tRepairPrice) {
             throw new \securityException ( );
@@ -125,10 +127,7 @@ class ShipEquipments {
             throw new \securityException ( );
         }
 
-        /**
-         * Pobierz parametry
-         */
-        $tData = \equipment::quickLoad( $equipmentTypeId );
+        $tData = new EquipmentType($equipmentTypeId);
 
         $tPrice = floor ( $tData->Price / 2 );
 

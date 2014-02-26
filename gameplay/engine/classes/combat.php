@@ -39,14 +39,12 @@ class combat {
 	/**
 	 * Tablica 'wrogów'
 	 *
-	 * @var array
+	 * @var combatShip[]
 	 */
 	private $enemies;
 
 	/**
-	 * Transalcja
-	 *
-	 * @var translation
+	 * @var Translate
 	 */
 	protected $t;
 
@@ -522,10 +520,6 @@ class combat {
 
 	}
 
-	/**
-	 * Wyrenderowanie
-	 *
-	 */
 	protected function render() {
 
 		global $config;
@@ -743,6 +737,7 @@ class combat {
 		//FIXME move authcode outside combat class
 		\Gameplay\Model\UserTimes::genAuthCode ( $this->player->userTimes, $this->player->userFastTimes );
 		$this->authCode = $this->player->userFastTimes->AuthCode;
+        return true;
 	}
 
 	/**
@@ -873,8 +868,6 @@ class combat {
 	}
 
 	/**
-	 * Konstruktor publiczny
-	 *
 	 * @param int $userID
 	 * @param string $Language
 	 */
@@ -883,15 +876,12 @@ class combat {
 		$this->userID = $userID;
 		$this->Language = $Language;
 
-		$this->t = new translation ( $this->Language, dirname ( __FILE__ ) . '/../translations.php' );
+		$this->t = new Translate( $this->Language, dirname ( __FILE__ ) . '/../translations.php' );
 
 		$this->weaponsFireResults = array ();
 
 		$this->shipPosition = new \Gameplay\Model\ShipPosition($this->userID);
 
-		/*
-		 * Załaduj statki biorące udział w walce
-		 */
 		$this->player = new combatShip ( $userID, $Language, clone $this->shipPosition );
 
 		$tAllianceObject = new userAlliance ( );
@@ -1008,14 +998,14 @@ class combat {
 		return true;
 	}
 
-	/**
-	 * Założenie CombatLock
-	 *
-	 * @param int $userID
-	 * @param int $defenderID
-	 * @return int
-	 */
-	static public function sSetCombatLock($attackerID, $defenderID, $enablePositionCheck = true) {
+    /**
+     * @param $attackerID
+     * @param $defenderID
+     * @param bool $enablePositionCheck
+     * @return bool
+     * @throws securityException
+     */
+    static public function sSetCombatLock($attackerID, $defenderID, $enablePositionCheck = true) {
 
 		/*
 		 * Pobierz parametry
@@ -1348,8 +1338,8 @@ class combat {
 	 * Negacja obrażeń pancerza przez ArmorStrength
 	 *
 	 * @param float $damage
-	 * @param stdClass $firingShip
-	 * @param stdClass $targetShip
+	 * @param combatShip $firingShip
+	 * @param combatShip $targetShip
 	 * @return float
 	 */
 	protected static function applyArmorStrength($damage, $firingShip, $targetShip) {
@@ -1376,8 +1366,8 @@ class combat {
 	 * Obliczenie mocy uderzenie broni w pancerz
 	 *
 	 * @param stdClass $weaponData - dane broni
-	 * @param stdClass $firingShip - parametry statku strzelającego
-	 * @param stdClass $firedShip - parametry statku strzelanego
+	 * @param combatShip $firingShip - parametry statku strzelającego
+	 * @param combatShip $firedShip - parametry statku strzelanego
 	 * @return int
 	 */
 	protected static function computeArmorDamage($weaponData, $firingShip, $firedShip) {
@@ -1408,15 +1398,15 @@ class combat {
 		 */
 		$retVal = self::applyArmorStrength ( $retVal, $firingShip, $firedShip );
 
-		return floor ( $retVal );
+		return floor($retVal);
 	}
 
 	/**
 	 * Obliczenie mocy Power Drain
 	 *
 	 * @param stdClass $weaponData - dane broni
-	 * @param stdClass $firingShip - parametry statku strzelającego
-	 * @param stdClass $firedShip - parametry statku strzelanego
+	 * @param combatShip $firingShip - parametry statku strzelającego
+	 * @param combatShip $firedShip - parametry statku strzelanego
 	 * @return int
 	 */
 	protected static function computePowerDamage($weaponData, $firingShip, $firedShip) {
@@ -1449,8 +1439,8 @@ class combat {
 	 * Obliczenie mocy uszkodzeń EMP
 	 *
 	 * @param stdClass $weaponData - dane broni
-	 * @param stdClass $firingShip - parametry statku strzelającego
-	 * @param stdClass $firedShip - parametry statku strzelanego
+	 * @param combatShip $firingShip - parametry statku strzelającego
+	 * @param combatShip $firedShip - parametry statku strzelanego
 	 * @return int
 	 */
 	protected static function computeEmpDamage($weaponData, $firingShip, $firedShip) {
@@ -1537,7 +1527,7 @@ class combat {
 		 * GarbageCollector
 		 */
 		self::sNpcSummonGarbageCollector($positionHash);
-
+        return true;
 	}
 
     /**

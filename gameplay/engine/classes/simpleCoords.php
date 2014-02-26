@@ -21,8 +21,6 @@ class simpleCoords {
 	public $Y;
 
 	/**
-	 * Konstruktor
-	 *
 	 * @param int $X
 	 * @param int $Y
 	 */
@@ -33,5 +31,3 @@ class simpleCoords {
 	}
 
 }
-
-?>

@@ -8,9 +8,6 @@
 class favSectorsRegistry extends simpleRegistry {
 
 	/**
-	 * Wyrenderowanie rejestru ulubionych sektorów
-	 *
-	 * @param int $userID
 	 * @return string
 	 */
 	public function get() {

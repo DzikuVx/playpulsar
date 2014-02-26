@@ -36,7 +36,9 @@ class additional {
 	 * @return string
 	 */
 	static function getRandomName() {
-		
+
+        $npcName = '';
+
 		$tQuery2 = "SELECT Name FROM names WHERE Type='first' ORDER BY RAND() LIMIT 1";
 		$tQuery2 = \Database\Controller::getInstance()->execute ( $tQuery2 );
 		while ( $row2 = \Database\Controller::getInstance()->fetch ( $tQuery2 ) ) {

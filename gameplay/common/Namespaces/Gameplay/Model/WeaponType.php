@@ -83,22 +83,17 @@ class WeaponType extends CustomGet {
 	}
 
     /**
-     * @param $weaponID
      * @return float|int
      */
-    static public function sGetRepairPrice($weaponID) {
-		global $config;
+    public function getRepairPrice() {
+        global $config;
 
-		$tData = new WeaponType($weaponID);
-
-		if (empty ( $tData->Price )) {
-			return 0;
-		}
-
-		$retVal = ceil ( $tData->Price * $config ['weapon'] ['repairCost'] ['cash'] );
-
-		return $retVal;
-	}
+        if (empty($this->Price)) {
+            return 0;
+        } else {
+            return ceil($this->Price * $config ['weapon'] ['repairCost'] ['cash']);
+        }
+    }
 
 	/**
 	 * @param array $params - język jako pierwszy, ID jako drugi element tablicy

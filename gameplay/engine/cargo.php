@@ -32,6 +32,10 @@ if (!isset($shipEquipment)) {
     $shipEquipment = new \Gameplay\Model\ShipEquipments($userID);
 }
 
+if (!isset($shipWeapons)) {
+    $shipWeapons = new \Gameplay\Model\ShipWeapons($userID);
+}
+
 if ($action == "equipFromCargo") {
 
 	if ($shipProperties->Turns < $turnsToEquip) {
@@ -52,15 +56,15 @@ if ($action == "equipFromCargo") {
 	}
 
 	if ($subaction == "equipment") {
-		$tItem = equipment::quickLoad ( $id );
+        $tItem = new \Gameplay\Model\EquipmentType($id);
 		$onBoard = $shipCargo->checkExists ( $id, 'equipment' );
 	}
 
-	if (empty ( $tItem )) {
+	if (empty($tItem)) {
 		throw new securityException ( );
 	}
 
-	if (empty ( $onBoard )) {
+	if (empty($onBoard)) {
 		throw new securityException ( );
 	}
 
@@ -268,9 +272,7 @@ if ($action == "gather") {
 	}
 
 	if ($subaction == 'equipment') {
-		$item = new equipment ( );
-		$productData = $item->load ( $id, true, true );
-		unset($item);
+        $productData = new \Gameplay\Model\EquipmentType($id);
 		$productExp = 0;
 		$productSize = $productData->Size;
 
@@ -370,9 +372,7 @@ if ($action == 'toCargohold') {
 	}
 
 	if ($subaction == 'equipment') {
-		$item = new equipment ( );
-		$productData = $item->load ( $id, true, true );
-		unset($item);
+        $productData = new \Gameplay\Model\EquipmentType($id);
 		$productSize = $productData->Size;
 
 	}
@@ -461,9 +461,7 @@ if ($action == 'toStorehouse') {
 	}
 
 	if ($subaction == 'equipment') {
-		$item = new equipment ( );
-		$productData = $item->load ( $id, true, true );
-		unset($item);
+		$productData = new \Gameplay\Model\EquipmentType($id);
 		if (empty($productData->Size)) {
 			throw new securityException();
 		}

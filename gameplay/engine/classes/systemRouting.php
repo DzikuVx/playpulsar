@@ -2,8 +2,16 @@
 
 class systemRouting {
 	protected $routeTable = null;
-	protected $destination = null;
-	protected $systemObject = null;
+
+    /**
+     * @var stdClass
+     */
+    protected $destination = null;
+
+    /**
+     * @var \Gameplay\Model\SystemProperties
+     */
+    protected $systemObject = null;
 	protected $go = false;
 	protected $tArray;
 	protected $tToGo;
@@ -11,7 +19,6 @@ class systemRouting {
 	protected $current;
 
 	/**
-	 * Czas przechowywania cache
 	 * @var int
 	 */
 	protected $cacheTime = 604800;
@@ -140,7 +147,11 @@ class systemRouting {
 		}
 	}
 
-	public function load($destination) {
+    /**
+     * @param stdClass $destination
+     * @return bool
+     */
+    public function load(stdClass $destination) {
 
 		$this->systemObject = \Gameplay\Model\SystemProperties::quickLoad ( $destination->System );
 		$this->destination = $destination;
@@ -169,7 +180,7 @@ class systemRouting {
 	 */
 	protected function setSector($tx, $ty) {
 
-		if ($tx > 0 && $tx <= $this->systemObject->Width && $ty > 0 && $ty <= $this->systemObject->Height && $this->tRoute [$tx] [$ty]->analized == false) {
+		if ($tx > 0 && $tx <= $this->systemObject->Width && $ty > 0 && $ty <= $this->systemObject->Height && $this->tRoute [$tx] [$ty]->analyzed == false) {
 			$tObject = new simpleCoords ( $tx, $ty );
 			if (! in_array ( $tObject, $this->tArray )) {
 				array_push ( $this->tArray, $tObject );
@@ -254,7 +265,7 @@ class systemRouting {
 			//Zacznij pobierać sektory z tablicy
 			while ( $this->current = array_pop ( $this->tToGo ) ) {
 
-				$this->tRoute [$this->current->X] [$this->current->Y]->analized = true;
+				$this->tRoute [$this->current->X] [$this->current->Y]->analyzed = true;
 
 				$this->setSector ( $this->current->X - 1, $this->current->Y );
 				$this->setSector ( $this->current->X + 1, $this->current->Y );
@@ -292,7 +303,7 @@ class systemRouting {
 
 		//@todo usunąć db z konstruktora
 		if (!empty($destination)) {
-			$this->load ( $destination );
+			$this->load($destination);
 		}
 
 	}

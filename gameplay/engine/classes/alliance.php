@@ -60,6 +60,7 @@ class alliance extends baseItem {
 	 * Sprawdzenie unikalności nazwy sojuszu
 	 * @param string $string
 	 * @param int $allianceID
+     * @return boolean
 	 */
 	static private function sCheckUniqueName($string, $allianceID = null) {
 

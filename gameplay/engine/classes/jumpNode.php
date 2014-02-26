@@ -14,9 +14,7 @@ class jumpNode extends baseItem {
 	protected $useMemcached = true;
 
 	/**
-	 * Parsowanie ID cache
-	 *
-	 * @param int/stdClass $ID
+	 * @param int|stdClass $ID
 	 * @return string
 	 */
 	protected function parseCacheID($ID) {
@@ -112,4 +110,3 @@ class jumpNode extends baseItem {
 	}
 
 }
-?>

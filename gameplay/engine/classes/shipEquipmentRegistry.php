@@ -83,12 +83,10 @@ class shipEquipmentRegistry extends simpleRegistry {
 
 			} else {
 
-				/*
-				 * Jeśli zadokowany w stacji
-				 */
 				if ($shipPosition->Docked == 'yes') {
 
-					$tRepairPrice = equipment::sGetRepairPrice ( $tR1->EquipmentID );
+                    $oObject = new \Gameplay\Model\EquipmentType($tR1->EquipmentID);
+                    $tRepairPrice = $oObject->getRepairPrice();
 
 					if ($userStats->Cash > $tRepairPrice) {
 						$tString .= \General\Controls::renderImgButton ( 'repair', "Playpulsar.gameplay.execute('stationRepairEquipment','',null,{$tR1->ShipEquipmentID},null);", '{T:RepairFor}' . $tRepairPrice . '$' );

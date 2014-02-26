@@ -95,15 +95,13 @@ abstract class BaseItem {
 	}
 
 	/**
-		* Czy zawartość obiektu została zmodyfikowana
-		*
-		* @var boolean
-		*/
+    * Czy zawartość obiektu została zmodyfikowana
+    *
+    * @var boolean
+    */
 	protected $modified = false;
 
 	/**
-    * Date obiektu
-    *
     * @var \stdClass
     */
 	protected $dataObject = null;

@@ -255,15 +255,14 @@ class shipCargo {
 		return true;
 	}
 
-	/**
-	 * Ustawienie liczby itemów w ładowni
-	 *
-	 * @param int $ID
-	 * @param string $type
-	 * @param int $value
-	 * @return boolean
-	 */
-	public function setAmount($ID, $type, $value) {
+    /**
+     * @param int $ID
+     * @param string $type
+     * @param int $value
+     * @return bool
+     * @throws Database\Exception
+     */
+    public function setAmount($ID, $type, $value) {
 
 		if ($value < 1) {
 			$this->remove ( $ID, $type );
@@ -394,8 +393,6 @@ class shipCargo {
 	}
 
 	/**
-	 * Usunięcie wybranego towaru z magazynu
-	 *
 	 * @param int $ID
 	 * @param string $type
 	 * @return boolean
@@ -410,7 +407,7 @@ class shipCargo {
         " . $this->tableName . ".CargoID = '{$ID}' AND
         " . $this->tableName . ".Type='{$type}'
         ";
-		$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
+		\Database\Controller::getInstance()->execute($tQuery);
 
 		return true;
 	}
@@ -445,11 +442,11 @@ class shipCargo {
 	final public function removeAllItems() {
 
 		$tQuery = "DELETE FROM
-        " . $this->tableName . "
-      WHERE
-        " . $this->addCondition . "
-        " . $this->tableName . ".UserID='{$this->userID}'";
-		$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
+            " . $this->tableName . "
+        WHERE
+            " . $this->addCondition . "
+            " . $this->tableName . ".UserID='{$this->userID}'";
+		\Database\Controller::getInstance()->execute($tQuery);
 
 		return true;
 	}
@@ -489,7 +486,6 @@ class shipCargo {
           WHERE
             UserID='{$this->userID}'";
 		\Database\Controller::getInstance()->execute ( $tQuery );
-		$this->changed = true;
 		\Gameplay\Model\ShipProperties::updateUsedCargo ( $shipProperties );
 		return true;
 	}
@@ -562,17 +558,12 @@ class shipCargo {
 	}
 
 	/**
-	 * Pobranie wszystkich towarów z ładowni
-	 *
-	 * @param int $ID
 	 * @param string $orderBy
 	 * @return resource
 	 */
-	public function getProducts($ID = null, $orderBy = 'name') {
+	public function getProducts($orderBy = 'name') {
 
 		$retVal = null;
-		if ($ID == null)
-		$ID = $this->userID;
 
 		$tQuery = "SELECT
 	  	  products.ProductID AS ID,

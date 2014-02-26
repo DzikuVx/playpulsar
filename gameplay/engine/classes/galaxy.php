@@ -25,8 +25,7 @@ class galaxy extends baseItem {
 	}
 
 	/**
-	 * Pobranie losowego systemu spośród wszytkich aktywnych bez globalnie dostępnych map
-	 *
+	 * @param int
 	 * @return int
 	 */
 	static public function sGetRandomWithoutMap($galaxy) {

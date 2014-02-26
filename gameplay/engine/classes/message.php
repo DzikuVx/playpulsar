@@ -90,13 +90,12 @@ class message extends baseItem {
 		return true;
 	}
 
-	/**
-	 * Szczegóły wiadomości
-	 *
-	 * @param int $messageID
-	 * @return boolean
-	 */
-	static public function sGetDetail($messageID) {
+    /**
+     * @param $messageID
+     * @return bool
+     * @throws securityException
+     */
+    static public function sGetDetail($messageID) {
 
 		global $userID;
 

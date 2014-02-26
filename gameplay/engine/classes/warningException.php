@@ -8,5 +8,3 @@
 class warningException extends Exception {
 
 }
-
-?>

@@ -293,7 +293,8 @@ class MiniMap extends BaseTable implements Singleton {
 					$this->sector [$indexX] [$indexY]->border = true;
 				}
 
-				$retVal .= $this->sector[$indexX][$indexY]->render(get_class($this));
+                /** @noinspection PhpUndefinedMethodInspection */
+                $retVal .= $this->sector[$indexX][$indexY]->render(get_class($this));
 			}
 			$retVal .= $this->closeRow ();
 		}

@@ -8,8 +8,6 @@
  */
 class routingSystem {
 	public $value = 999999;
-	public $analized = false;
+	public $analyzed = false;
 	public $previous = null;
 }
-
-?>

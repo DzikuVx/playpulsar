@@ -184,6 +184,11 @@ class ShipProperties extends Standard {
     public $PowerRepair;
 
     /**
+     * @var string
+     */
+    public $ShipTypeName;
+
+    /**
      * @param ShipProperties $shipProperties
      * @return boolean
      */

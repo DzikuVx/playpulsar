@@ -11,11 +11,14 @@ class remoteSectorInfo extends \Gameplay\Panel\Sector {
 	protected $panelTag = "remoteSectorInfo";
 	protected $renderCloser = true;
 
-	static private $instance = null;
+    /**
+     * @var remoteSectorInfo
+     */
+    static private $instance = null;
 
 	/**
 	 * @throws \Exception
-	 * @return \Gameplay\Panel\ShortStats
+	 * @return remoteSectorInfo
 	 */
 	static public function getInstance() {
 
@@ -124,7 +127,7 @@ class remoteSectorInfo extends \Gameplay\Panel\Sector {
 
 			$tString = '';
 			foreach ($tArray as $tItem) {
-				$tData = equipment::quickLoad($tItem);
+				$tData = new \Gameplay\Model\EquipmentType($tItem);
 				if ($userProperties->Language == 'pl') {
 					$tString .= ', '.$tData->NamePL;
 				}else {

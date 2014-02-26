@@ -46,9 +46,9 @@ class Navigation extends Renderable implements Singleton {
 		$this->retVal .= SystemMap::sRenderAvaibleSystemsSelect($shipRouting->System);
 
 		$this->retVal .= "/";
-		$this->retVal .= "<input onkeyup=\"javascript:return maskPlot(this.value,this)\" onblur=\"javascript:return maskPlot(this.value,this)\" type=\"text\" value=\"{$shipRouting->X}\" class=\"plot\" id=\"plotX\" />";
+		$this->retVal .= "<input onkeyup=\"return maskPlot(this.value,this)\" onblur=\"return maskPlot(this.value,this)\" type=\"text\" value=\"{$shipRouting->X}\" class=\"plot\" id=\"plotX\" />";
 		$this->retVal .= "/";
-		$this->retVal .= "<input onkeyup=\"javascript:return maskPlot(this.value,this)\" onblur=\"javascript:return maskPlot(this.value,this)\" type=\"text\" value=\"{$shipRouting->Y}\" class=\"plot\" id=\"plotY\" />";
+		$this->retVal .= "<input onkeyup=\"return maskPlot(this.value,this)\" onblur=\"return maskPlot(this.value,this)\" type=\"text\" value=\"{$shipRouting->Y}\" class=\"plot\" id=\"plotY\" />";
 
 		$this->retVal .= "</div>";
 

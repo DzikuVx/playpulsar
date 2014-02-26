@@ -1,16 +1,7 @@
 <?php
-/**
- * rejestr ulubionych sektorów
- *
- * @version $Rev: 283 $
- * @package Engine
- */
 class userMapsRegistry extends simpleRegistry {
 
 	/**
-	 * Wyrenderowanie rejestru ulubionych sektorów
-	 *
-	 * @param int $userID
 	 * @return string
 	 */
 	public function get() {

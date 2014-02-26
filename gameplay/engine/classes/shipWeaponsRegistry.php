@@ -101,7 +101,9 @@ class shipWeaponsRegistry extends simpleRegistry {
 			    */
 				if ($shipPosition->Docked == 'yes') {
 
-					$tRepairPrice = \Gameplay\Model\WeaponType::sGetRepairPrice($tR1->WeaponID);
+                    $oObject = new \Gameplay\Model\WeaponType($tR1->WeaponID);
+                    $tRepairPrice = $oObject->getRepairPrice();
+
 					if ($userStats->Cash > $tRepairPrice) {
 						$tString .= \General\Controls::renderImgButton ( 'repair', "Playpulsar.gameplay.execute('weaponRepair','',null,{$tR1->ShipWeaponID},null);", TranslateController::getDefault()->get ( 'Repair for' ) . $tRepairPrice . '$' );
 					}

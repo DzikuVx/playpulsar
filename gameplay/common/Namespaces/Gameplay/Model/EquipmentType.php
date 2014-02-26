@@ -78,27 +78,19 @@ class EquipmentType extends Standard {
     public $CanActiveScan;
     public $CanWarpJump;
     public $Name;
-    
-	/**
-	 * returns equipment repair price
-	 *
-	 * @param int $equipmentId
-	 * @return int
-	 */
-	static public function sGetRepairPrice($equipmentId) {
 
-		global $config;
+    /**
+     * @return float|int
+     */
+    public function getRepairPrice() {
+        global $config;
 
-		$tData = new EquipmentType($equipmentId);
-
-		if (empty($tData->Price)) {
-			return 0;
-		}
-
-		$retVal = ceil ( $tData->Price * $config ['equipment'] ['repairCost'] ['cash'] );
-
-		return $retVal;
-	}
+        if (empty($this->Price)) {
+            return 0;
+        } else {
+            return ceil($this->Price * $config ['equipment'] ['repairCost'] ['cash']);
+        }
+    }
 
 	/**
 	 * @param array $params

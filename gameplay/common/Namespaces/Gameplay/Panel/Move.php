@@ -79,7 +79,7 @@ class Move extends Renderable implements Singleton {
 			}
 			$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('shipRefresh');\" ><i class='icon-refresh icon-white'></i></button></td>";
 			if ($shipPosition->X < $systemProperties->Width) {
-				$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('shipMove','right',null,null,null);\" ><i class='icon-chevron-right'></i></button></td>";
+				$this->retVal .= "<td><button class='btn' onclick=\"Playpulsar.gameplay.execute('shipMove','right',null,null);\" ><i class='icon-chevron-right'></i></button></td>";
 			} else {
 				$this->retVal .= "<td>&nbsp;</td>";
 			}

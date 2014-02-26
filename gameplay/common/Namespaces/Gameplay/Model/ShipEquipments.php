@@ -117,7 +117,7 @@ class ShipEquipments {
 	/**
 	 * Wstawienie wyposażenia
 	 *
-	 * @param \stdClass $equipment
+	 * @param EquipmentType $equipment
 	 * @param ShipProperties $shipProperties
 	 * @return bool
      * @throws \securityException

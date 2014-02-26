@@ -104,7 +104,7 @@ class navigation {
 
 		}
 
-		$route = new \systemRouting ( \Database\Controller::getInstance(), $tCoords );
+		$route = new \systemRouting(\Database\Controller::getInstance(), $tCoords);
 
 		if ($shipPosition->System != $shipRouting->System && $shipPosition->X == $tCoords->X && $shipPosition->Y == $tCoords->Y) {
 			$action = "shipNodeJump";

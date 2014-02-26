@@ -241,9 +241,9 @@ class allianceRights extends baseItem {
 		return md5 ( $retVal );
 	}
 
-	protected function parseCacheID($ID) {
+	protected function parseCacheID(array $ID) {
 
-		return $this->createUniqueID ( $ID );
+		return $this->createUniqueID($ID);
 	}
 
 	function __construct(array $data = null) {

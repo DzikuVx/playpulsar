@@ -96,8 +96,8 @@ $translationTable ['pl'] ['(case sensitive, not shown in the game)'] = "(wielko�
 $translationTable ['pl'] ['(shown in the game)'] = "(wyświetlany w grze)";
 $translationTable ['pl'] ['Maps'] = "Mapy";
 
-$translationTable ['pl'] ['depostFreeDescription'] = "*Od każdej wpłaty bank potrąca prowizję w wysokości 10% od wartości wpłaty";
-$translationTable ['en'] ['depostFreeDescription'] = "*Bank deducts a 10% fee from each deposit";
+$translationTable ['pl'] ['depositFreeDescription'] = "*Od każdej wpłaty bank potrąca prowizję w wysokości 10% od wartości wpłaty";
+$translationTable ['en'] ['depositFreeDescription'] = "*Bank deducts a 10% fee from each deposit";
 $translationTable ['pl'] ['cashOnHand'] = "Gotówka";
 $translationTable ['en'] ['cashOnHand'] = "Cash on hand";
 $translationTable ['pl'] ['cashInBank'] = "Gotówka w banku";
@@ -749,5 +749,3 @@ $translationTable ['pl'] ['visibility'] = "Widoczność";
 $translationTable ['en'] ['visibility'] = "Visibility";
 $translationTable ['pl'] ['accuracy'] = "Celność";
 $translationTable ['en'] ['accuracy'] = "Accuracy";
-
-?>

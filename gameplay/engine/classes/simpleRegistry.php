@@ -18,17 +18,14 @@ abstract class simpleRegistry {
 	protected $userID = null;
 	protected $language;
 
-	/**
-	 * Konstruktor statyczny
-	 *
-	 */
 	static public function sRender() {
 
 		global $userID;
 
 		$registry = new static ( $userID );
 
-		\Gameplay\Panel\Action::getInstance()->add($registry->get());
+        /** @noinspection PhpUndefinedMethodInspection */
+        \Gameplay\Panel\Action::getInstance()->add($registry->get());
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		\Gameplay\Panel\PortAction::getInstance()->clear();

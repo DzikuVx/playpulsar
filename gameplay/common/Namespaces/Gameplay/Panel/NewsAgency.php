@@ -67,8 +67,8 @@ class NewsAgency extends Renderable implements Singleton {
 					$tObject->doSave = false;
 					unset ( $tObject );
 
-				}catch (Exception $e) {
-					psDebug::cThrow(null, $e, array('display'=>false));
+				}catch (\Exception $e) {
+					\psDebug::cThrow(null, $e, array('display'=>false));
 				}
 
 			}

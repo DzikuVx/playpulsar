@@ -25,4 +25,3 @@ class routingCoords extends simpleCoords {
 		$this->direction = $direction;
 	}
 }
-?>

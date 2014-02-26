@@ -3,6 +3,7 @@
 namespace Gameplay\Actions;
 
 use Gameplay\Framework\ContentTransport;
+use Gameplay\Model\WeaponType;
 use Gameplay\PlayerModelProvider;
 
 class ShipWeapons {
@@ -260,7 +261,8 @@ class ShipWeapons {
             throw new \securityException ( );
         }
 
-        $tRepairPrice = \Gameplay\Model\WeaponType::sGetRepairPrice($tData->WeaponID);
+        $oObject = new WeaponType($tData->WeaponID);
+        $tRepairPrice = $oObject->getRepairPrice();
 
         if ($userStats->Cash < $tRepairPrice) {
             throw new \securityException ( );

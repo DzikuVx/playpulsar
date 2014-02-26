@@ -47,8 +47,7 @@ class ShipType extends Standard {
 	 */
 	public function renderDetail($params) {
 
-		$t = new \translation ( $params [0], dirname ( __FILE__ ) . '/../translations.php' );
-
+        $t = new \Translate($params [0], dirname ( __FILE__ ) . '/../translations.php');
 		$template = new \General\Templater ( dirname ( __FILE__ ) . '/../../templates/shipDetail.html', $t );
 
 		$tObject = new ShipType($params[1]);

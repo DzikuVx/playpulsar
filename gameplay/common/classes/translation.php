@@ -12,11 +12,6 @@ class translation {
 
 	static public $useCache = false;
 
-	/**
-	 * Konstruktor
-	 *
-	 * @param string $language
-	 */
 	function __construct($language, $file = 'engine/translations.php') {
 
 		$this->language = $language;

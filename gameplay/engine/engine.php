@@ -141,8 +141,8 @@ try {
 		throw new combatException ( );
 	}
 
-    $userStats     = $oPlayerModelProvider->register('UserStatistics', new \Gameplay\Model\UserStatistics($userID));
-    $userTimes     = $oPlayerModelProvider->register('UserTimes', new \Gameplay\Model\UserTimes($userID));
+    $userStats = $oPlayerModelProvider->register('UserStatistics', new \Gameplay\Model\UserStatistics($userID));
+    $userTimes = $oPlayerModelProvider->register('UserTimes', new \Gameplay\Model\UserTimes($userID));
     $userFastTimes = $oPlayerModelProvider->register('UserFastTimes', new \Gameplay\Model\UserFastTimes($userID));
 
 	//Sprawdz authorize code

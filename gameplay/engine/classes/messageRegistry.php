@@ -10,7 +10,7 @@ class messageRegistry extends simpleRegistry {
 	/**
 	 * Pobierz wiadomości
 	 *
-	 * @return unknown
+	 * @return string
 	 */
 	public function get() {
 
