@@ -9,5 +9,3 @@
 class tableCheck extends tableStatus{
 
 }
-
-?>

@@ -151,7 +151,7 @@ try {
 	}
 
     $sectorProperties = $oPlayerModelProvider->register('SectorEntity', new \Gameplay\Model\SectorEntity($shipPosition));
-    $portProperties   = $oPlayerModelProvider->register('PortEntity', new \Gameplay\Model\PortEntity($shipPosition));
+    $portProperties = $oPlayerModelProvider->register('PortEntity', new \Gameplay\Model\PortEntity($shipPosition));
 
 	/*
 	 * Inicjalizacja JumpNode
@@ -349,33 +349,33 @@ try {
 			break;
 
 		case 'myAllianceDetail':
-			alliance::sRender($userAlliance->AllianceID);
+			\Gameplay\Model\Alliance::sRender($userAlliance->AllianceID);
 			break;
 
 		case 'allianceDetail':
-			alliance::sRender($id);
+            \Gameplay\Model\Alliance::sRender($id);
 			break;
 
 			/*
 			 * Utworzenie nowego sojuszu
 			*/
 		case 'allianceCreate':
-			alliance::sNew();
+            \Gameplay\Model\Alliance::sNew();
 			break;
 
 			/*
 			 * Utworzenie nowego sojuszu
 			*/
 		case 'allianceNewExe':
-			alliance::sNewExe($value);
+            \Gameplay\Model\Alliance::sNewExe($value);
 			break;
 
 		case 'allianceEditData':
-			alliance::sEdit();
+            \Gameplay\Model\Alliance::sEdit();
 			break;
 
 		case 'allianceEditExe':
-			alliance::sEditExe($value);
+            \Gameplay\Model\Alliance::sEditExe($value);
 			break;
 
 			/**
@@ -414,7 +414,7 @@ try {
 			 * Opuszczenia sojuszu
 			*/
 		case 'allianceLeave':
-			alliance::sLeave();
+            \Gameplay\Model\Alliance::sLeave();
 			break;
 
 
@@ -422,7 +422,7 @@ try {
 			 * Opuszczenie sojuszu, wykonanie operacji
 			 */
 		case 'allianceLeaveExecute':
-			alliance::sLeaveExecute();
+            \Gameplay\Model\Alliance::sLeaveExecute();
 			break;
 
 			/*
@@ -457,14 +457,14 @@ try {
 			 * Dialog wyrzycania z sojuszu
 			*/
 		case 'allianceKick':
-			alliance::sKick($id);
+            \Gameplay\Model\Alliance::sKick($id);
 			break;
 
 			/*
 			 * Wyrzucenie z sojuszu
 			*/
 		case 'allianceKickExecute':
-			alliance::sKickExe($id);
+            \Gameplay\Model\Alliance::sKickExe($id);
 			break;
 
 			/*

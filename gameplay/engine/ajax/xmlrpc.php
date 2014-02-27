@@ -16,7 +16,7 @@ try {
 
 	$sXml = new SimpleXMLElement ( $HTTP_RAW_POST_DATA );
 
-	$tClass = ( string ) $sXml->methodName;
+	$tClass = (string) $sXml->methodName;
 
 	if (empty ( $tClass )) {
 		throw new Exception ( 'No method string specified', 1 );

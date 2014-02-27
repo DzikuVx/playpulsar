@@ -1,7 +1,10 @@
 <?php
 class TranslateController {
 
-	private static $data = array();
+    /**
+     * @var Translate[]
+     */
+    private static $data = array();
 
 	private static $defaultLanguage = 'en';
 	private static $file = 'translations.php';
@@ -32,7 +35,11 @@ class TranslateController {
 
 	}
 
-	public static function get($language) {
+    /**
+     * @param $language
+     * @return Translate
+     */
+    public static function get($language) {
 
 		if (!isset(self::$data[$language])) {
 			self::connect($language);

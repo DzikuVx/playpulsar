@@ -47,5 +47,3 @@ class playerNoticesRegistry extends cpBaseRegistry{
 	}
 
 }
-
-?>

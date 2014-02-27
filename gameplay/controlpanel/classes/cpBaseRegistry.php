@@ -39,7 +39,7 @@ abstract class cpBaseRegistry{
 	/**
 	 * User
 	 *
-	 * @var users
+	 * @var user
 	 */
 	protected $user;
 
@@ -179,38 +179,38 @@ abstract class cpBaseRegistry{
 	protected $disableNavigation = false;
 
 	/**
-	 * Czy uruchomić wyszukiwanie w rejestrze
-	 *
 	 * @var boolean
 	 */
 	protected $enableSearch = true;
 
-	protected $db = null;
+    /**
+     * @var \Database\MySQLiWrapper
+     */
+    protected $db = null;
 
-	/**
-	 * Konstruktor
-	 *
-	 * @param dataBase $db
-	 */
-	public function __construct($dbObject = null) {
+    /**
+     * @param \Database\MySQLiWrapper $dbObject
+     */
+    public function __construct(\Database\MySQLiWrapper $dbObject = null) {
 
 		if (empty($dbObject)) {
 			$this->db = \Database\Controller::getInstance();
-		}else {
+		} else {
 			$this->db = $dbObject;
 		}
 
 		$this->sessionName = get_class ( $this ) . "Search";
 	}
 
-	/**
-	 * Przeglądanie rejestru
-	 *
-	 * @param users $user
-	 * @param xml $xml
-	 * @return string
-	 */
-	public function browse($user, $params) {
+    /**
+     * Przeglądanie rejestru
+     *
+     * @param user $user
+     * @param $params
+     * @internal param $xml
+     * @return string
+     */
+	public function browse(user $user, $params) {
 
 		$retVal = "";
 
@@ -555,7 +555,6 @@ abstract class cpBaseRegistry{
 				$this->selectCondition .= " AND ";
 			}
 			$this->selectCondition .= $this->tableDateField . " >= '" . $_SESSION [$this->sessionName] ['startDate'] . "' AND " . $this->tableDateField . " <= '" . $_SESSION [$this->sessionName] ['endDate'] . "'";
-			$set = true;
 		}
 
 	}
@@ -644,97 +643,97 @@ abstract class cpBaseRegistry{
 			return $retVal;
 		}
 
-		/**
-		 * Renderuje pole operacji na pozycji rejestru
-		 *
-		 * @param int $ID
-		 * @return string
-		 */
-		protected function renderOperationsColumn($ID, $tResult = null) {
+    /**
+     * Renderuje pole operacji na pozycji rejestru
+     *
+     * @param int $ID
+     * @param null $tResult
+     * @return string
+     */
+    protected function renderOperationsColumn($ID, $tResult = null) {
 
-			$retVal = "";
+        $retVal = "";
 
-			$detailString = $this->generateDetailString ( $tResult );
+        $detailString = $this->generateDetailString ( $tResult );
 
-			if (!empty($detailString)) {
-				$retVal .= \General\Controls::bootstrapIconButton ( "Details", $detailString, null,"icon-list" );
-			}
+        if (!empty($detailString)) {
+            $retVal .= \General\Controls::bootstrapIconButton ( "Details", $detailString, null,"icon-list" );
+        }
 
-			if ($this->rightsSet ['allowEdit'] && (user::sGetRole() == $this->rightsSet ['editRight'] || user::sGetRole() == 'admin' )) {
-				$retVal .= \General\Controls::bootstrapIconButton ( "Edit", "document.location='?class={$this->itemClass}&amp;method=edit&amp;id={$ID}'", 'btn-warning',"icon-pencil" );
-			}
+        if ($this->rightsSet ['allowEdit'] && (user::sGetRole() == $this->rightsSet ['editRight'] || user::sGetRole() == 'admin' )) {
+            $retVal .= \General\Controls::bootstrapIconButton ( "Edit", "document.location='?class={$this->itemClass}&amp;method=edit&amp;id={$ID}'", 'btn-warning',"icon-pencil" );
+        }
 
-			if ($this->rightsSet ['allowDelete'] &&  (user::sGetRole() == $this->rightsSet ['deleteRight'] || user::sGetRole() == 'admin' )) {
-				$retVal .= \General\Controls::bootstrapIconButton ( "Delete", "document.location='?class={$this->itemClass}&amp;method=delete&amp;id={$ID}'","btn-danger" ,"icon-trash" );
-			}
+        if ($this->rightsSet ['allowDelete'] &&  (user::sGetRole() == $this->rightsSet ['deleteRight'] || user::sGetRole() == 'admin' )) {
+            $retVal .= \General\Controls::bootstrapIconButton ( "Delete", "document.location='?class={$this->itemClass}&amp;method=delete&amp;id={$ID}'","btn-danger" ,"icon-trash" );
+        }
 
-			return $retVal;
-		}
+        return $retVal;
+    }
 
-		/**
-		 * Zamknięcie tabeli rejestru
-		 *
-		 * @return string
-		 */
-		protected function closeTable() {
+    /**
+     * Zamknięcie tabeli rejestru
+     *
+     * @return string
+     */
+    protected function closeTable() {
 
-			$retVal = "</tbody>";
-			$retVal .= "</table>";
-			return $retVal;
-		}
+        $retVal = "</tbody>";
+        $retVal .= "</table>";
+        return $retVal;
+    }
 
-		/**
-		 * Otwarcie tabeli rejestru
-		 *
-		 * @return string
-		 */
-		protected function openTable() {
+    /**
+     * Otwarcie tabeli rejestru
+     *
+     * @return string
+     */
+    protected function openTable() {
 
-			$retVal = "<table class='table table-striped'>";
-			$retVal .= "<thead>";
-			$retVal .= "<tr>";
+        $retVal = "<table class='table table-striped'>";
+        $retVal .= "<thead>";
+        $retVal .= "<tr>";
 
-			foreach ( $this->tableColumns as $tKey => $tValue ) {
+        foreach ( $this->tableColumns as $tKey => $tValue ) {
 
-				switch ($tKey) {
+            switch ($tKey) {
 
-					case "#" :
-						$retVal .= "<th style=\"width: 1em;\">" . $tValue . "</th>";
-						break;
+                case "#" :
+                    $retVal .= "<th style=\"width: 1em;\">" . $tValue . "</th>";
+                    break;
 
-					case "__operations__" :
-						$retVal .= "<th style='width: 9em;'>" . $tValue . "</th>";
-						break;
+                case "__operations__" :
+                    $retVal .= "<th style='width: 9em;'>" . $tValue . "</th>";
+                    break;
 
-					default :
-						$retVal .= "<th>" . $tValue . "</th>";
-						break;
-				}
-			}
+                default :
+                    $retVal .= "<th>" . $tValue . "</th>";
+                    break;
+            }
+        }
 
-			$retVal .= "</tr>";
-			$retVal .= "</thead>";
-			$retVal .= "<tbody>";
+        $retVal .= "</tr>";
+        $retVal .= "</thead>";
+        $retVal .= "<tbody>";
 
-			return $retVal;
-		}
+        return $retVal;
+    }
 
-		/*
-		 * DUMMY
-		*/
-		protected function prepare() {
+    /*
+     * DUMMY
+    */
+    protected function prepare() {
 
-		}
+    }
 
-		/**
-		 * Wyrenderowanie przycisków górnych - DUMMY
-		 *
-		 * @return string
-		 */
-		protected function renderTopButtons() {
+    /**
+     * Wyrenderowanie przycisków górnych - DUMMY
+     *
+     * @return string
+     */
+    protected function renderTopButtons() {
 
-			return "";
-		}
+        return "";
+    }
 
-	}
-	?>
+}

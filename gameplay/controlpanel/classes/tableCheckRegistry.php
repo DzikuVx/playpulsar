@@ -44,5 +44,3 @@ class tableCheckRegistry extends tableStatusRegistry {
 	}
 
 }
-
-?>

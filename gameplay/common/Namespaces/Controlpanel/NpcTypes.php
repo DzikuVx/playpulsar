@@ -2,6 +2,7 @@
 
 namespace Controlpanel;
 
+use Gameplay\Model\EquipmentType;
 use Gameplay\Model\ItemType;
 use Gameplay\Model\ProductType;
 use Gameplay\Model\ShipEquipments;
@@ -557,7 +558,7 @@ class NpcTypes extends GameplayItem{
 		$tArray = explode(',', $tData->Equipment);
 		$tString = '<ul>';
 		foreach ($tArray as $tEquipmentID) {
-			$tEquipment = \equipment::quickLoad($tEquipmentID);
+			$tEquipment = new EquipmentType($tEquipmentID);
 
 			if (empty($tEquipment)) {
 				continue;

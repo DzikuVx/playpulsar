@@ -24,14 +24,12 @@ class allianceMembersRegistry extends simpleRegistry {
 	}
 
 	/**
-	 * Wyrenderowanie graczy online
-	 *
 	 * @param int $allianceID
 	 * @return string
 	 */
 	public function get($allianceID) {
 
-		global $config, $userID, $userAlliance;
+		global $userID;
 
 		$retVal = '';
 

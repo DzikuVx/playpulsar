@@ -29,7 +29,7 @@ class allianceRequest extends baseItem {
 			throw new securityException();
 		}
 
-		$tAlliance = alliance::quickLoad($allianceID);
+		$tAlliance = new \Gameplay\Model\Alliance($allianceID);
 
 		if (empty($tAlliance)) {
 			throw new securityException();
@@ -86,7 +86,7 @@ class allianceRequest extends baseItem {
 			throw new securityException();
 		}
 
-		$tAlliance = alliance::quickLoad($allianceID);
+		$tAlliance = new \Gameplay\Model\Alliance($allianceID);
 
 		if (empty($tAlliance)) {
 			throw new securityException();
@@ -113,14 +113,11 @@ class allianceRequest extends baseItem {
 	}
 
 	/**
-	 * Sprawdzenie, czy jest złożone podanie
 	 * @param int $userID
 	 * @param int $allianceID
 	 * @return boolean
 	 */
 	static public function sCheckRequest($userID, $allianceID) {
-
-		$retVal = false;
 
 		$tQuery = "SELECT COUNT(*) AS ILE FROM alliancerequests WHERE UserID='{$userID}' AND AllianceID='{$allianceID}'";
 		$tQuery = \Database\Controller::getInstance()->execute($tQuery);

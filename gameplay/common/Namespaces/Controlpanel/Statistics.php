@@ -70,7 +70,7 @@ class Statistics extends BaseItem{
 
 	/**
 	 * render statistics table
-	 * @param user $user
+	 * @param \user $user
 	 * @param array $params
 	 * @return string
 	 */

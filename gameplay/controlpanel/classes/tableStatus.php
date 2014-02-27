@@ -8,13 +8,14 @@
  */
 class tableStatus extends \Controlpanel\BaseItem{
 
-	/**
-	 * Indeksy pojedynczej tabeli
-	 *
-	 * @param user $user
-	 * @param array $params
-	 * @return string
-	 */
+    /**
+     * Indeksy pojedynczej tabeli
+     *
+     * @param user $user
+     * @param array $params
+     * @throws customException
+     * @return string
+     */
 	public function getIndexes(user $user, $params) {
 		$retVal = '';
 
@@ -109,13 +110,14 @@ class tableStatus extends \Controlpanel\BaseItem{
 		return $retVal;
 	}
 
-	/**
-	 * Szczegóły tabeli
-	 *
-	 * @param user $user
-	 * @param array $params
-	 * @return string
-	 */
+    /**
+     * Szczegóły tabeli
+     *
+     * @param user $user
+     * @param array $params
+     * @throws customException
+     * @return string
+     */
 	public function detail(user $user, $params) {
 		$retVal = '';
 
@@ -162,13 +164,14 @@ class tableStatus extends \Controlpanel\BaseItem{
 		return $retVal;
 	}
 
-	/**
-	 * Optymalizacja tabeli
-	 *
-	 * @param user $user
-	 * @param array $params
-	 * @return string
-	 */
+    /**
+     * Optymalizacja tabeli
+     *
+     * @param user $user
+     * @param array $params
+     * @throws customException
+     * @return string
+     */
 	public function optimize(user $user, $params) {
 
 		$retVal = '';
@@ -208,13 +211,14 @@ class tableStatus extends \Controlpanel\BaseItem{
 
 	}
 
-	/**
-	 * Sprawdzenie tabeli
-	 *
-	 * @param user $user
-	 * @param array $params
-	 * @return string
-	 */
+    /**
+     * Sprawdzenie tabeli
+     *
+     * @param user $user
+     * @param array $params
+     * @throws customException
+     * @return string
+     */
 	public function check(user $user, $params) {
 
 		$retVal = '';
@@ -253,13 +257,14 @@ class tableStatus extends \Controlpanel\BaseItem{
 		return $retVal;
 	}
 
-	/**
-	 * Naprawa tabeli
-	 *
-	 * @param user $user
-	 * @param array $params
-	 * @return string
-	 */
+    /**
+     * Naprawa tabeli
+     *
+     * @param user $user
+     * @param array $params
+     * @throws customException
+     * @return string
+     */
 	public function repair(user $user, $params) {
 
 		$retVal = '';
@@ -298,13 +303,14 @@ class tableStatus extends \Controlpanel\BaseItem{
 		return $retVal;
 	}
 
-	/**
-	 * ANALYZE table
-	 *
-	 * @param user $user
-	 * @param array $params
-	 * @return string
-	 */
+    /**
+     * ANALYZE table
+     *
+     * @param user $user
+     * @param array $params
+     * @throws customException
+     * @return string
+     */
 	public function analyze(user $user, $params) {
 
 		$retVal = '';

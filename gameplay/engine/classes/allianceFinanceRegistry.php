@@ -18,7 +18,7 @@ class allianceFinanceRegistry extends simpleRegistry {
 
 	public function get($allianceID) {
 
-		global $config, $userID, $userAlliance;
+		global $userAlliance;
 
 		if (\Database\Controller::getInstance()->getHandle() === false) {
 			throw new \Database\Exception('Connection lost');
@@ -30,7 +30,7 @@ class allianceFinanceRegistry extends simpleRegistry {
 
 		$retVal = '';
 
-		$tAlliance = alliance::quickLoad($userAlliance->AllianceID);
+		$tAlliance = new \Gameplay\Model\Alliance($userAlliance->AllianceID);
 
 		$retVal .= "<h1>" . TranslateController::getDefault()->get ( 'financeOperations' ) . "</h1>";
 		$retVal .= "<h2>Saldo: " . \General\Formater::formatInt($tAlliance->Cash) . "</h2>";

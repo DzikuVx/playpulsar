@@ -2,13 +2,17 @@
 
 namespace Controlpanel;
 
+use Database\MySQLiWrapper;
 use \General\Controls as Controls;
 
 abstract class BaseItem {
 
 	//@todo some kind of general usage auto form generator
 
-	protected $db;
+    /**
+     * @var MySQLiWrapper
+     */
+    protected $db;
 	protected $tableName = null;
 	protected $tableIdField = null;
 	protected $templateFileName = null;
@@ -17,7 +21,7 @@ abstract class BaseItem {
 	/**
 	 * Zwrócenie oryginału dataObject
 	 *
-	 * @return stdClass
+	 * @return \stdClass
 	 */
 	public function giveDataObject() {
 
@@ -27,7 +31,7 @@ abstract class BaseItem {
 	/**
 	 * Zwrócenie kopii dataObject
 	 *
-	 * @return stdClass
+	 * @return \stdClass
 	 */
 	public function takeDataObject() {
 
@@ -38,7 +42,7 @@ abstract class BaseItem {
 	 *
 	 * Pobranie elementu z bazy danych
 	 * @param int $itemID
-	 * @return stdClass
+	 * @return \stdClass
 	 */
 	protected function getDataObject($itemID) {
 
@@ -176,15 +180,15 @@ abstract class BaseItem {
 	 	return Controls::dialog( "Confirm", "Do you want to delete selected element?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=deleteExe&id={$params['id']}'", "window.history.back();", 'Yes','No' );
 	}
 
-	/**
-	 * Usunięcie elementu
-	 *
-	 * @param users $user
-	 * @param xml $xml
-	 * @return string
-	 * @throws customException
-	 * @since 2010-12-05
-	 */
+    /**
+     * Usunięcie elementu
+     *
+     * @param \user $user
+     * @param $params
+     * @internal param \Controlpanel\xml $xml
+     * @return string
+     * @since 2010-12-05
+     */
 	public function deleteExe($user, $params) {
 
 		//@todo ustawić prawa dostępu w CP

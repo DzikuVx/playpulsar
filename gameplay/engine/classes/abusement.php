@@ -38,8 +38,6 @@ class abusement extends baseItem {
 
 	static public function sNew($id) {
 
-		global $userID;
-
 		if (empty($id)) {
 			throw new securityException();
 		}

@@ -99,7 +99,7 @@ class combat {
 			}
 		}
 
-		if (! $tFound) {
+		if (!$tFound) {
 			return null;
 		}
 
@@ -111,7 +111,6 @@ class combat {
 			//@todo inne metody losowania przeciwników
 
 			default :
-				$tFound = false;
 				$tIndex = rand ( 0, count ( $tFireable ) - 1 );
 				$retVal = $this->enemies [$tFireable [$tIndex]];
 				break;
@@ -841,7 +840,6 @@ class combat {
 	 * @return boolean
 	 */
 	static public function sCheckDisengage($tPlayer, $tEnemies, \Gameplay\Model\SectorEntity $sectorProperties) {
-		$retVal = false;
 
 		$avgSpeed = self::sGetAverageSpeed ( $tEnemies );
 		$avgManu = self::sGetAverageManeuver( $tEnemies );
@@ -1480,7 +1478,7 @@ class combat {
 		$defenderAlliance = $tAllianceObject->load ( $defenderID, true, true )->AllianceID;
 		unset($tAllianceObject);
 
-		$allianceData = alliance::quickLoad($defenderAlliance);
+		$allianceData = new \Gameplay\Model\Alliance($defenderAlliance);
 		if (empty($allianceData->Defendable)) {
 			$allianceData->Defendable = 'yes';
 		}

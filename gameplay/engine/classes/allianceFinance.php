@@ -33,8 +33,7 @@ class allianceFinance extends baseItem {
 			throw new securityException();
 		}
 
-		$item = new alliance();
-		$data = $item->load($userAlliance->AllianceID, true, true);
+		$data = new \Gameplay\Model\Alliance($userAlliance->AllianceID);
 
 		if ($value > $data->Cash) {
 			throw new securityException();
@@ -46,7 +45,7 @@ class allianceFinance extends baseItem {
 		$data->Cash -= $value;
 
 		$tUserStats->synchronize();
-		$item->synchronize($data, true, true);
+        $data->synchronize();
 
         //TODO is this really nessesary? synchronize is setting cache right?
         \Gameplay\Model\UserStatistics::sFlushCache($id);
@@ -74,7 +73,7 @@ class allianceFinance extends baseItem {
 
 		\Gameplay\Framework\ContentTransport::getInstance()->addNotification('info', TranslateController::getDefault()->get('opSuccess'));
 
-		\Gameplay\Panel\Action::getInstance()->add(alliance::sGetDetail($userAlliance->AllianceID));
+		\Gameplay\Panel\Action::getInstance()->add(\Gameplay\Model\Alliance::sGetDetail($userAlliance->AllianceID));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		\Gameplay\Panel\PortAction::getInstance()->clear();
@@ -98,7 +97,7 @@ class allianceFinance extends baseItem {
 
 		$template  = new \General\Templater('../templates/allianceCashout.html');
 
-		$tAlliance = alliance::quickLoad($userAlliance->AllianceID);
+		$tAlliance = new \Gameplay\Model\Alliance($userAlliance->AllianceID);
         $tUser = new \Gameplay\Model\UserEntity($id);
 
 		$template->add('FormName', TranslateController::getDefault()->get('allianceCashout'));
@@ -107,7 +106,6 @@ class allianceFinance extends baseItem {
 		$template->add('action', "alliance.cashout('{$id}');");
 
 		\Gameplay\Panel\Action::getInstance()->add((string) $template);
-
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		\Gameplay\Panel\PortAction::getInstance()->clear();
@@ -146,11 +144,9 @@ class allianceFinance extends baseItem {
 
 		$userStats->Cash -= $value;
 
-		$item = new alliance();
-		$data = $item->load($userAlliance->AllianceID, true, true);
+		$data = new \Gameplay\Model\Alliance($userAlliance->AllianceID);
 		$data->Cash += $value;
-		$item->synchronize($data, true, true);
-		unset ($item);
+        $data->synchronize();
 
 		/*
 		 * Wstaw wpis do listy operacji finansowych sojuszu

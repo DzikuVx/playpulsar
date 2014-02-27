@@ -2,13 +2,13 @@
 
 namespace Controlpanel;
 
+use Gameplay\Model\EquipmentType;
 use Gameplay\Model\ShipEquipments;
 use Gameplay\Model\ShipProperties;
 
-class PlayerEquipment extends \equipment{
+class PlayerEquipment extends EquipmentType{
 
 	/**
-	 * Selektor typu wyposażenia
 	 * @param int $currentID
 	 * @param string $name
 	 * @return string
@@ -71,7 +71,7 @@ class PlayerEquipment extends \equipment{
 
 		$shipEquipment = new ShipEquipments($_SESSION['returnUser']);
 
-		$equipment = \equipment::quickLoad($params['value']);
+		$equipment = new EquipmentType($params['value']);
 
 		$shipProperties = new ShipProperties($_SESSION['returnUser']);
 

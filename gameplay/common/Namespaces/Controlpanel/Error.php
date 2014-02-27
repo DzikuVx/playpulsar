@@ -27,7 +27,7 @@ class Error extends BaseItem {
 	 * Pobranie obiektu z bazy danych
 	 *
 	 * @param int $itemID
-	 * @return stdClass
+	 * @return \stdClass
 	 */
 	protected function getDataObject($itemID) {
 

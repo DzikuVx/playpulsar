@@ -588,8 +588,6 @@ class shipCargo {
 	public function getItems($ID = null, $orderBy = 'name') {
 
 		$retVal = null;
-		if ($ID == null)
-		$ID = $this->userID;
 
 		$tQuery = "SELECT
         itemtypes.ItemID AS ID,
@@ -614,8 +612,6 @@ class shipCargo {
 	public function getWeapons($ID = null, $orderBy = 'name') {
 
 		$retVal = null;
-		if ($ID == null)
-		$ID = $this->userID;
 
 		$tQuery = "SELECT
         weapontypes.WeaponID AS ID,
@@ -640,8 +636,6 @@ class shipCargo {
 	public function getEquipments($ID = null, $orderBy = 'name') {
 
 		$retVal = null;
-		if ($ID == null)
-		$ID = $this->userID;
 
 		$tQuery = "SELECT
         equipmenttypes.EquipmentID AS ID,

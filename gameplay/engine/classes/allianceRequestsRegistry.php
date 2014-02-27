@@ -11,15 +11,12 @@
 class allianceRequestsRegistry extends simpleRegistry {
 
 	/**
-	 * Wyrenderowanie listy
 	 * @param int $allianceID
 	 * @return string
 	 * @since 2010-07-27
 	 * @throws \Database\Exception
 	 */
 	public function get($allianceID) {
-
-		global $config, $userID, $userAlliance;
 
 		if (\Database\Controller::getInstance()->getHandle() === false) {
 			throw new \Database\Exception('Connection lost');

@@ -60,8 +60,6 @@ class queryStatistics extends \Controlpanel\BaseItem{
 
 	public function detail(user $user, $params) {
 
-		global $config;
-
 		if ($user->sGetRole () != 'admin') {
 			throw new customException ( 'No rights to perform selected operation' );
 		}

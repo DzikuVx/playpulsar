@@ -46,7 +46,7 @@ class News extends BaseItem {
 	/**
 	 *
 	 * Zapisanie newsa do bazy danych
-	 * @param user $user
+	 * @param \user $user
 	 * @param array $params
 	 * @return string
 	 * @since 2010-08-11

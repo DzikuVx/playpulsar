@@ -27,12 +27,11 @@ class Controller {
 	 */
 	private static $backendInstance = null;
 
-	/**
-	 * Pobranie obiektu bazy danych gameplay
-	 * @throws Exception
-	 * @return \Database\MySQLiWrapper
-	 */
-	public static function getInstance() {
+    /**
+     * @return MySQLiWrapper
+     * @throws \Exception
+     */
+    public static function getInstance() {
 
 		if (empty(self::$instance)) {
 			self::connect();
@@ -47,8 +46,7 @@ class Controller {
 	}
 
 	/**
-	 * Pobranie obiektu bazy danych chatu
-	 * @throws Exception
+	 * @throws \Exception
 	 * @return \Database\MySQLiWrapper
 	 */
 	public static function getChatInstance() {
@@ -66,8 +64,8 @@ class Controller {
 	}
 
 	/**
-	 * Pobranie obiektu bazy danych portalu
-	 * @throws Exception
+	 * Pobranie \Gameplay\Model\Allianceobiektu bazy danych portalu
+	 * @throws \Exception
 	 * @return \Database\MySQLiWrapper
 	 */
 	public static function getPortalInstance() {

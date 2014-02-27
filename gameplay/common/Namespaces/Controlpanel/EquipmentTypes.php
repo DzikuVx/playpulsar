@@ -41,7 +41,8 @@ class EquipmentTypes extends GameplayItem{
 
 		$tQuery = BaseItem::sMakeUpdateQuery('equipmenttypes', 'EquipmentID', $tFields, $params);
 		\Database\Controller::getInstance()->execute($tQuery);
-        \equipment::sFlushCache($params['id']);
+        $tObject = new \Gameplay\Model\EquipmentType($params['id']);
+        $tObject->clearCache();
 		Controls::reloadWithMessage(\General\Session::get('returnLink'), "Data has been <strong>set</strong>", 'success');
 	}
 

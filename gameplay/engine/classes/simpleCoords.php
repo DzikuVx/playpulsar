@@ -1,21 +1,12 @@
 <?php
 
-/**
- * Klasa prostych koordynat 2D
- *
- * @version $Rev: 181 $
- * @package Engine
- */
 class simpleCoords {
 	/**
-	 * Koordynata X
 	 * @var int
 	 */
 	public $X;
 
 	/**
-	 *
-	 * Koordynata Y
 	 * @var int
 	 */
 	public $Y;

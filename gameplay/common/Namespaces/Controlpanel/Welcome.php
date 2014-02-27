@@ -7,7 +7,7 @@ class Welcome extends BaseItem{
 	/**
 	 * Browse
 	 *
-	 * @param user $user
+	 * @param \user $user
 	 * @param array $params
 	 * @return string
 	 */

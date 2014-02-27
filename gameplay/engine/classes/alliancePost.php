@@ -81,14 +81,13 @@ class alliancePost extends baseItem {
 
 		\Gameplay\Framework\ContentTransport::getInstance()->addNotification('info', TranslateController::getDefault()->get('messageDeleted'));
 
-		\Gameplay\Panel\Action::getInstance()->add(alliance::sGetDetail($userAlliance->AllianceID));
+		\Gameplay\Panel\Action::getInstance()->add(\Gameplay\Model\Alliance::sGetDetail($userAlliance->AllianceID));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		\Gameplay\Panel\PortAction::getInstance()->clear();
 	}
 
 	/**
-	 * Formularz dodawania nowej wiadomości na ścianie sojuszu
 	 * @throws securityException
 	 */
 	static public function sNew() {
@@ -115,14 +114,13 @@ class alliancePost extends baseItem {
 	}
 
 	/**
-	 * Zapisanie wiadomości na ścianie sojuszu
 	 * @param string $values
 	 * @throws securityException
 	 * @since 2011-03-14
 	 */
 	static public function sNewExe($values) {
 
-		global $userAlliance, $userID, $userAllianceObject;
+		global $userAlliance, $userID;
 
 		if (empty($userAlliance->AllianceID)) {
 			throw new securityException();
@@ -146,7 +144,7 @@ class alliancePost extends baseItem {
         \phpCache\Factory::getInstance()->create()->clear('alliancePostsRegistry::get',  md5($userAlliance->AllianceID.'|'.serialize(true)));
         \phpCache\Factory::getInstance()->create()->clear('alliancePostsRegistry::get',  md5($userAlliance->AllianceID.'|'.serialize(false)));
 
-		\Gameplay\Panel\Action::getInstance()->add(alliance::sGetDetail($userAlliance->AllianceID));
+		\Gameplay\Panel\Action::getInstance()->add(\Gameplay\Model\Alliance::sGetDetail($userAlliance->AllianceID));
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();
 		\Gameplay\Panel\PortAction::getInstance()->clear();
