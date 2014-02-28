@@ -77,7 +77,12 @@ class Maintenance extends BaseItem {
 		return Controls::dialog( "Confirm", "Do you want to <strong>flush shared cache</strong>?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=flushAllExe'", "window.history.back();", 'Yes','No' );
 	}
 
-	final public function flushAllExe($user, $params) {
+    /**
+     * @param \user $user
+     * @param $params
+     * @throws \customException
+     */
+    final public function flushAllExe($user, $params) {
 
 		if ($user->sGetRole () != 'admin') {
 			throw new \customException ( 'No rights to perform selected operation' );
@@ -90,7 +95,13 @@ class Maintenance extends BaseItem {
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail", "Operation completed");
 	}
 
-	final public function giveTraxium($user, $params) {
+    /**
+     * @param \user $user
+     * @param $params
+     * @return string
+     * @throws \customException
+     */
+    final public function giveTraxium($user, $params) {
 
 		if ($user->sGetRole () != 'admin') {
 			throw new \customException ( 'No rights to perform selected operation' );
@@ -200,7 +211,12 @@ class Maintenance extends BaseItem {
 		return $retVal;
 	}
 
-	final public function gameplayMessageExe($user, $params) {
+    /**
+     * @param \user $user
+     * @param $params
+     * @throws \customException
+     */
+    final public function gameplayMessageExe($user, $params) {
 
 		if ($user->sGetRole () != 'admin') {
 			throw new \customException ( 'No rights to perform selected operation' );
@@ -260,10 +276,6 @@ class Maintenance extends BaseItem {
 		if (! empty ( $params ['execute'] )) {
 
 			switch ($params ['execute']) {
-
-				case 'clearRouteCache' :
-					self::sDeleteOldRouteCache ();
-					break;
 
 				case 'clearMessages' :
 					self::sDeleteOldMessages ();

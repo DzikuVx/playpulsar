@@ -179,12 +179,12 @@ class MySQLiWrapper {
 	/**
 	 * Zwraca liczbę wierszy zapytania
 	 *
-	 * @param resource $query
+	 * @param \mysqli_result $query
 	 * @return int
 	 */
 	public function count($query) {
 
-		return mysqli_num_rows ( $query );
+		return mysqli_num_rows($query);
 	}
 
 	/**
@@ -205,15 +205,16 @@ class MySQLiWrapper {
 		return mysqli_affected_rows ( $this->dbHandle );
 	}
 
-	/**
-	 * Wrapper powtarzający próbę wykonania zapytania w przypadku wystąpienia deadlocka
-	 * @param string $query
-	 * @param int $delay Czas oczekiwania na kolejne powtórzenia [ms]
-	 * @param int $count Maksymalna liczba powtórzeń
-	 * @return resource
-	 * @since 2011-05-03
-	 * @see MySQLiWrapper::execute
-	 */
+    /**
+     * Wrapper powtarzający próbę wykonania zapytania w przypadku wystąpienia deadlocka
+     * @param string $query
+     * @param int $delay Czas oczekiwania na kolejne powtórzenia [ms]
+     * @param int $count Maksymalna liczba powtórzeń
+     * @throws Exception
+     * @return resource
+     * @since 2011-05-03
+     * @see MySQLiWrapper::execute
+     */
 	public function executeAndRetryOnDeadlock($query, $delay = 100, $count = 20) {
 		$tResult = null;
 
@@ -359,14 +360,14 @@ class MySQLiWrapper {
 	/**
 	 * Pobranie kolejnych pól z wyniku zapytania
 	 *
-	 * @param resource $result
+	 * @param \mysqli_result $result
 	 * @return \stdClass
 	 */
 	public function fetch($result) {
 
 		if ($this->dbHandle == null)
 			return false;
-		$tResult = mysqli_fetch_object ( $result );
+		$tResult = mysqli_fetch_object($result);
 		return $tResult;
 	}
 

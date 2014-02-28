@@ -109,12 +109,13 @@ class Controls {
 		return $retVal;
 	}
 
-	/**
-	 * Wyrenderowanie tabeli na podstawie danych
-		*
-		* @param array/stdClass $tData
-		* @return string
-		*/
+    /**
+     * Wyrenderowanie tabeli na podstawie danych
+     *
+     * @param array|\stdClass $tData
+     * @param int $cols
+     * @return string
+     */
 	static public function sBuilEditTable($tData, $cols = 4) {
 		$retVal = '<table class="table table-striped table-bordered table-condensed" border="0">';
 		$retVal .= '<tbody><tr>';
@@ -137,11 +138,12 @@ class Controls {
 		return $retVal;
 	}
 
-	/**
-		* Przeładowanie strony na adres
-		*
-		* @param string $address
-		*/
+    /**
+     * Przeładowanie strony na adres
+     *
+     * @param string $address
+     * @param bool $bSkipUri
+     */
 	static public function sPageReload($address, $bSkipUri = false) {
 		$host = $_SERVER ['HTTP_HOST'];
 
@@ -400,14 +402,15 @@ class Controls {
 		return $retVal;
 	}
 
-	/**
-	 *
-	 * Render basic button with Twitter Bootstrap
-	 * @param string $text
-	 * @param string $onclick
-	 * @param string $type
-	 * @param string $icon
-	 */
+    /**
+     *
+     * Render basic button with Twitter Bootstrap
+     * @param string $text
+     * @param string $onclick
+     * @param string $type
+     * @param string $icon
+     * @return string
+     */
 	static public function bootstrapButton($text = '', $onclick = null, $type = '', $icon = null) {
 		$retVal = '';
 
@@ -441,13 +444,14 @@ class Controls {
 		return $retVal;
 	}
 
-	/**
-	 * Render basic icon with Twitter Bootstrap
-	 * @param string $text
-	 * @param string $onclick
-	 * @param string $type
-	 * @param string $icon
-	 */
+    /**
+     * Render basic icon with Twitter Bootstrap
+     * @param string $text
+     * @param string $onclick
+     * @param string $type
+     * @param string $icon
+     * @return string
+     */
 	static public function bootstrapIconButton($text = '', $onclick = null, $type = '', $icon = null) {
 		$retVal = '';
 

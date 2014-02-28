@@ -11,11 +11,12 @@ class NpcName extends BaseItem {
 
 	protected $tableType = 'names';
 
-	/**
-	 * New NPC Name form
-	 * @param user $user
-	 * @param array $params
-	 */
+    /**
+     * New NPC Name form
+     * @param \user $user
+     * @param array $params
+     * @return string
+     */
 	public function add($user, $params) {
 
 		$retVal = '';
@@ -68,10 +69,8 @@ class NpcName extends BaseItem {
 		}catch (\Exception $e) {
 
 			if ($e->getCode() == 1062) {
-
 				//@todo some kind of nice message with return link
-				echo \psDebug::halt('Duplicate Entry',null,array('trace'=>false,'send'=>false));
-
+				\psDebug::halt('Duplicate Entry',null,array('trace'=>false,'send'=>false));
 			}else {
 				throw new \Exception($e->getMessage(), $e->getCode(), $e);
 			}
@@ -79,9 +78,8 @@ class NpcName extends BaseItem {
 		}
 
 		global $config;
-		$retVal = Controls::reloadWithMessage($config['backend']['fileName'].'?class='.get_class($this).'&method=browse', 'Item created');
-		
-		return $retVal;
+		Controls::reloadWithMessage($config['backend']['fileName'].'?class='.get_class($this).'&method=browse', 'Item created');
+		return '';
 	}
 
 	public function edit($user, $params) {

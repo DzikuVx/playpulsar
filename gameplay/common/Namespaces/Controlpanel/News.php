@@ -86,11 +86,11 @@ class News extends BaseItem {
 
 		global $config;
 
-		$retVal = Controls::reloadWithMessage($config['backend']['fileName'].'?class='.get_class($this).'&method=browse', 'Item created');
+		Controls::reloadWithMessage($config['backend']['fileName'].'?class='.get_class($this).'&method=browse', 'Item created');
 
 		$this->clearCache($params['Language']);
 
-		return $retVal;
+		return '';
 	}
 
 	/**

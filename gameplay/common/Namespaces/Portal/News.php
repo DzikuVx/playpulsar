@@ -201,10 +201,12 @@ class News extends BaseItem {
 		return $oRetVal;
 	}
 
-	/**
-	 * Pobranie i wyświetlenie szczegółow
-	 * @param array $params
-	 */
+    /**
+     * Pobranie i wyświetlenie szczegółow
+     * @param array $params
+     * @param $template
+     * @return string
+     */
 	public function detail($params, $template) {
 
 		$retVal = '';

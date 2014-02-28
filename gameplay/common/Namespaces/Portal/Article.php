@@ -2,6 +2,8 @@
 
 namespace Portal;
 
+use General\Templater;
+
 class Article extends News{
 
 	static public function sGenUrl($id, $title) {
@@ -9,11 +11,12 @@ class Article extends News{
 		return 'entry_' . $id . '_' . urlencode ( mb_substr ( $title, 0, 64 ) ) . '_.html';
 	}
 
-	/**
-	 * (non-PHPdoc)
-	 * @see Portal.News::detail()
-	 */
-	public function detail($params, $template) {
+    /**
+     * @param array $params
+     * @param Templater $template
+     * @return string
+     */
+    public function detail($params, $template) {
 
 		$retVal = '';
 
@@ -31,11 +34,12 @@ class Article extends News{
 		return $retVal;
 	}
 
-	/**
-	 * (non-PHPdoc)
-	 * @see Portal.News::render()
-	 */
-	public function render($object = null, $renderNav = false) {
+    /**
+     * @param Article $object
+     * @param bool $renderNav
+     * @return null|string
+     */
+    public function render($object = null, $renderNav = false) {
 		if (empty($object)) {
 			/**
 			 * @var \Portal\Article
