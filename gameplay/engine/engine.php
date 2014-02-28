@@ -639,7 +639,7 @@ try {
 		foreach ( $tCoords as $key => $tValue ) {
 			if (! is_numeric ( $tValue ) || $tValue == "" || $tValue == null || $tValue < 1 || $tValue > 64) {
 				$error = true;
-				throw new warningException ( TranslateController::getDefault()->get ( 'unknownCoords' ) );
+				throw new \Gameplay\Exception\WarningException( TranslateController::getDefault()->get ( 'unknownCoords' ) );
 				break;
 			}
 		}
@@ -657,7 +657,7 @@ try {
 			//Warunek rozmiaru systemu
 			if ($tPlot->X > $tSystem->Width || $tPlot->Y > $tSystem->Height || $tSystem->Enabled == 'no') {
 				$error = true;
-				throw new warningException ( TranslateController::getDefault()->get ( 'unknownCoords' ) );
+				throw new \Gameplay\Exception\WarningException( TranslateController::getDefault()->get ( 'unknownCoords' ) );
 			}
 
 		}
@@ -685,7 +685,7 @@ try {
 
 		if ($shipProperties->Turns < $sectorProperties->MoveCost) {
 			$error = true;
-			throw new warningException ( TranslateController::getDefault()->get ( 'notEnoughTurns' ) );
+			throw new \Gameplay\Exception\WarningException( TranslateController::getDefault()->get ( 'notEnoughTurns' ) );
 		}
 
 		//Sprawdzenie, czy w sektorze jest port lub stacja
@@ -735,7 +735,7 @@ try {
 		}
 
 		if ($shipProperties->Turns < $sectorProperties->MoveCost) {
-			throw new warningException ('{T:notEnoughTurns}');
+			throw new \Gameplay\Exception\WarningException('{T:notEnoughTurns}');
 		}
 
 		//Sprawdzenie, czy w sektorze jest port lub stacja
@@ -783,12 +783,12 @@ try {
 
 		if ($shipProperties->Power < $config ['node'] ['jumpCostPower']) {
 			$error = true;
-			throw new warningException ( TranslateController::getDefault()->get ( 'notEnoughPower' ) );
+			throw new \Gameplay\Exception\WarningException ( TranslateController::getDefault()->get ( 'notEnoughPower' ) );
 		}
 
 		if ($shipProperties->Turns < $config ['node'] ['jumpCostTurns']) {
 			$error = true;
-			throw new warningException ( TranslateController::getDefault()->get ( 'notEnoughTurns' ) );
+			throw new \Gameplay\Exception\WarningException ( TranslateController::getDefault()->get ( 'notEnoughTurns' ) );
 		}
 
 		if (empty($jumpNode->NodeID)) {
@@ -1064,7 +1064,7 @@ try {
 
 	echo $oContentTransport->get();
 
-} catch ( warningException $e ) {
+} catch ( \Gameplay\Exception\WarningException $e ) {
 
 	if (empty($oContentTransport)) {
 		$oContentTransport 	= ContentTransport::getInstance();

@@ -171,7 +171,7 @@ class npc extends baseItem {
 			$npcPosition = new \Gameplay\Model\ShipPosition($npcID, false);
 
 			if ($npcType->Systems == "all") {
-				$npcPosition->System = galaxy::sGetRandomSystem ();
+				$npcPosition->System = \Gameplay\Model\Galaxy::sGetRandomSystem ();
 			} else {
 				$npcPosition->System = additional::randFormList ( $npcType->Systems );
 			}

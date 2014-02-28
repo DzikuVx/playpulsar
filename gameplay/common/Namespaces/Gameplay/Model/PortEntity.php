@@ -604,7 +604,7 @@ class PortEntity extends CustomGet {
                 if (!empty($config ['port'] ['mapCreateCount'])) {
                     $tMapCount = rand(1, $config ['port'] ['mapCreateCount']);
                     for ($tIndex = 0; $tIndex < $tMapCount; $tIndex++) {
-                        $oDb->execute("INSERT INTO portcargo(PortID, CargoID, Amount, Type, Mode, UserID)VALUES ('{$this->PortID}','" . \galaxy::sGetRandomWithoutMap(SystemProperties::getGalaxy($this->System))."','1','map','buy',null)");
+                        $oDb->execute("INSERT INTO portcargo(PortID, CargoID, Amount, Type, Mode, UserID)VALUES ('{$this->PortID}','" . Galaxy::sGetRandomWithoutMap(SystemProperties::getGalaxy($this->System))."','1','map','buy',null)");
                     }
 
                 }

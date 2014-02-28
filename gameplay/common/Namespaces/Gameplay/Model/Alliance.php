@@ -2,11 +2,11 @@
 
 namespace Gameplay\Model;
 
+use Gameplay\Exception\WarningException;
 use Gameplay\PlayerModelProvider;
 use \psDebug;
 use \securityException;
 use \TranslateController;
-use \warningException;
 
 class Alliance extends Standard {
     protected $tableName = "alliances";
@@ -283,7 +283,7 @@ class Alliance extends Standard {
         }
 
         if ($userStats->Fame < $config ['alliance']['createFameCost']) {
-            throw new warningException(TranslateController::getDefault()->get('notEnoughFame').' ['.$config ['alliance']['createFameCost'].']');
+            throw new \Gameplay\Exception\WarningException(TranslateController::getDefault()->get('notEnoughFame').' ['.$config ['alliance']['createFameCost'].']');
         }
 
         $template  = new \General\Templater('../templates/allianceAdd.html');
@@ -305,7 +305,7 @@ class Alliance extends Standard {
     /**
      * @param array $values
      * @throws securityException
-     * @throws warningException
+     * @throws WarningException
      */
     static public function sNewExe($values) {
 
@@ -328,21 +328,21 @@ class Alliance extends Standard {
         $data->Description = xml::sGetValue($values, '<allianceDescription>', '</allianceDescription>');
 
         if (empty($data->Symbol)) {
-            throw new warningException($t->get('allianceSymbolCantBeEmpty'));
+            throw new WarningException($t->get('allianceSymbolCantBeEmpty'));
         }
         if (empty($data->Name)) {
-            throw new warningException($t->get('allianceNameCantBeEmpty'));
+            throw new WarningException($t->get('allianceNameCantBeEmpty'));
         }
 
         if (self::sCheckUniqueSymbol($data->Symbol) == false) {
-            throw new warningException($t->get('allianceSymbolNotUnique'));
+            throw new WarningException($t->get('allianceSymbolNotUnique'));
         }
         if (self::sCheckUniqueName($data->Name) == false) {
-            throw new warningException($t->get('allianceNameNotUnique'));
+            throw new WarningException($t->get('allianceNameNotUnique'));
         }
 
         if ($userStats->Fame < $config ['alliance']['createFameCost']) {
-            throw new warningException($t->get('notEnoughFame').' ['.$config ['alliance']['createFameCost'].']');
+            throw new WarningException($t->get('notEnoughFame').' ['.$config ['alliance']['createFameCost'].']');
         }
 
         /**
@@ -437,17 +437,17 @@ class Alliance extends Standard {
         $data->Description = xml::sGetValue($values, '<allianceDescription>', '</allianceDescription>');
 
         if (empty($data->Symbol)) {
-            throw new warningException(TranslateController::getDefault()->get('allianceSymbolCantBeEmpty'));
+            throw new \Gameplay\Exception\WarningException(TranslateController::getDefault()->get('allianceSymbolCantBeEmpty'));
         }
         if (empty($data->Name)) {
-            throw new warningException(TranslateController::getDefault()->get('allianceNameCantBeEmpty'));
+            throw new \Gameplay\Exception\WarningException(TranslateController::getDefault()->get('allianceNameCantBeEmpty'));
         }
 
         if (self::sCheckUniqueSymbol($data->Symbol, $userAlliance->AllianceID) == false) {
-            throw new warningException(TranslateController::getDefault()->get('allianceSymbolNotUnique'));
+            throw new \Gameplay\Exception\WarningException(TranslateController::getDefault()->get('allianceSymbolNotUnique'));
         }
         if (self::sCheckUniqueName($data->Name, $userAlliance->AllianceID) == false) {
-            throw new warningException(TranslateController::getDefault()->get('allianceNameNotUnique'));
+            throw new \Gameplay\Exception\WarningException(TranslateController::getDefault()->get('allianceNameNotUnique'));
         }
 
         \Database\Controller::getInstance()->quoteAll($data);

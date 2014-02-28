@@ -3,6 +3,7 @@
 namespace Controlpanel;
 
 use Gameplay\Model\EquipmentType;
+use Gameplay\Model\Galaxy;
 use Gameplay\Model\ItemType;
 use Gameplay\Model\ProductType;
 use Gameplay\Model\ShipPosition;
@@ -250,7 +251,7 @@ class NpcTypes extends GameplayItem{
 				$position = new ShipPosition();
 
 				if ($row1->Systems == "all") {
-					$position->System = \galaxy::sGetRandomSystem ();
+					$position->System = Galaxy::sGetRandomSystem ();
 				} else {
 					$position->System = \additional::randFormList ( $row1->Systems );
 				}

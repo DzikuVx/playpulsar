@@ -40,7 +40,7 @@ if ($action == "equipFromCargo") {
 
 	if ($shipProperties->Turns < $turnsToEquip) {
 		$error = true;
-		throw new warningException ( TranslateController::getDefault()->get ( 'notEnoughTurns' ) . "" );
+		throw new \Gameplay\Exception\WarningException( TranslateController::getDefault()->get ( 'notEnoughTurns' ) . "" );
 	}
 
 	$onBoard = false;
@@ -645,16 +645,16 @@ if ($action == "productBuy") {
 
 	//Sprawdz dostepnosc srodkow do zakupu
 	if ($userStats->Cash < ($productPrice * $value)) {
-		throw new warningException ( TranslateController::getDefault()->get ( 'notEnoughCash' ) );
+		throw new \Gameplay\Exception\WarningException ( TranslateController::getDefault()->get ( 'notEnoughCash' ) );
 	}
 
 	//Sprawdz, czy w ladowni jest miejsce do zakupu
 	if (($shipProperties->CargoMax - $shipProperties->Cargo) < ($productData->Size * $value)) {
-		throw new warningException ( TranslateController::getDefault()->get ( 'notEnoughSpace' ) );
+		throw new \Gameplay\Exception\WarningException( TranslateController::getDefault()->get ( 'notEnoughSpace' ) );
 	}
 
 	if ($shipProperties->Cargo > $shipProperties->CargoMax) {
-		throw new warningException ( TranslateController::getDefault()->get ( 'notEnoughSpace' ) );
+		throw new \Gameplay\Exception\WarningException( TranslateController::getDefault()->get ( 'notEnoughSpace' ) );
 	}
 
 	//Zmniejsz wartość magazynu portu
@@ -699,7 +699,7 @@ if ($action == "mapBuy") {
 	$productPrice = $config['port']['mapPrice'];
 
 	if ($userStats->Cash < $productPrice * $value) {
-		throw new warningException ( TranslateController::getDefault()->get ( 'notEnoughCash' ) );
+		throw new \Gameplay\Exception\WarningException( TranslateController::getDefault()->get ( 'notEnoughCash' ) );
 	}
 
 	//Zmniejsz wartość magazynu portu
