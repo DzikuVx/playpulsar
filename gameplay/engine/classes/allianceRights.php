@@ -1,4 +1,7 @@
 <?php
+use Gameplay\Model\UserAlliance;
+use Gameplay\PlayerModelProvider;
+
 class allianceRights extends baseItem {
 
 	protected $tableName = "alliancerights";
@@ -11,7 +14,10 @@ class allianceRights extends baseItem {
 	 */
 	static public function sPlayerSet($id, $xml) {
 
-		global $userID, $userAlliance;
+		global $userID;
+
+        /** @var UserAlliance $userAlliance */
+        $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
 		if (empty($userAlliance->AllianceID)) {
 			throw new securityException();
@@ -21,7 +27,7 @@ class allianceRights extends baseItem {
 			throw new securityException();
 		}
 
-		$tSecondAlliance = userAlliance::quickLoad($id);
+		$tSecondAlliance = new UserAlliance($id);
 		if (empty($tSecondAlliance->AllianceID)) {
 			throw new securityException();
 		}
@@ -78,7 +84,10 @@ class allianceRights extends baseItem {
 	}
 
 	static public function sRenderForm($id) {
-		global $userID, $userAlliance;
+		global $userID;
+
+        /** @var UserAlliance $userAlliance */
+        $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
 		if (empty($userAlliance->AllianceID)) {
 			throw new securityException();
@@ -88,7 +97,7 @@ class allianceRights extends baseItem {
 			throw new securityException();
 		}
 
-		$tSecondAlliance = userAlliance::quickLoad($id);
+		$tSecondAlliance = new UserAlliance($id);
 		if (empty($tSecondAlliance->AllianceID)) {
 			throw new securityException();
 		}
@@ -153,7 +162,10 @@ class allianceRights extends baseItem {
 	 */
 	static public function sRender() {
 
-		global $userID, $userAlliance;
+		global $userID;
+
+        /** @var UserAlliance $userAlliance */
+        $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
 		if (empty($userAlliance->AllianceID)) {
 			throw new securityException();

@@ -23,7 +23,8 @@ class Abusement extends BaseItem {
 		return $this->db->fetch ( $sQuery );
 	}
 
-	public function detail($user, $params) {
+	public function detail(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 
 		
 		$_SESSION['returnLink'] = $_SERVER['REQUEST_URI'];

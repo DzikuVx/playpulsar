@@ -261,17 +261,6 @@ class PortEntity extends CustomGet {
         return $retVal;
     }
 
-    //TODO get rid of of this static method
-    /**
-     * @param int $ID
-     * @param bool $fromCache
-     * @return PortEntity
-     * @deprecated
-     */
-    static public function quickLoad($ID, $fromCache = true) {
-        return new PortEntity($ID);
-    }
-
     /**
      * @throws Model
      * @return boolean

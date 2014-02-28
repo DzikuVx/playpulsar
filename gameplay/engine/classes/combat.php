@@ -32,7 +32,7 @@ class combat {
 
 	/**
 	 * Sojusz gracza
-	 * @var int
+	 * @var \Gameplay\Model\UserAlliance
 	 */
 	protected $playerAlliance = null;
 
@@ -300,7 +300,8 @@ class combat {
 	 * @param \Gameplay\Model\UserStatistics $enemyUserStats
 	 * @return int
 	 */
-	static public function sComputeExperienceIncome(\Gameplay\Model\UserStatistics $myUserStats, \Gameplay\Model\UserStatistics $enemyUserStats) {
+	static public function sComputeExperienceIncome(/** @noinspection PhpUnusedParameterInspection */
+        \Gameplay\Model\UserStatistics $myUserStats, \Gameplay\Model\UserStatistics $enemyUserStats) {
 
 		/*
 		 * Nowość: 30,000 za każdy level
@@ -507,7 +508,7 @@ class combat {
 			$retVal .= "</div>";
 			$retVal .= "</td>";
 			$retVal .= "<td class=\"shipPanel\" style=\"width: 60px;\">";
-			if ($tR1->RookieTurns < 1 && $this->player->shipProperties->RookieTurns < 1  && ($tR1->AllianceID != $this->playerAlliance || empty($this->playerAlliance))) {
+			if ($tR1->RookieTurns < 1 && $this->player->shipProperties->RookieTurns < 1  && ($tR1->AllianceID != $this->playerAlliance->AllianceID || empty($this->playerAlliance->AllianceID))) {
 				$retVal .= "<div class=\"attackButton\" onclick=\"Playpulsar.gameplay.execute('shipAttack',null,null,{$tR1->UserID},null);\">" . $this->t->get ( 'attack' ) . "</div>";
 			}
 			$retVal .= "</td>";
@@ -883,8 +884,7 @@ class combat {
 
 		$this->player = new combatShip ( $userID, $Language, clone $this->shipPosition );
 
-		$tAllianceObject = new userAlliance ( );
-		$this->playerAlliance = $tAllianceObject->load ( $userID, true, true )->AllianceID;
+		$this->playerAlliance = new \Gameplay\Model\UserAlliance($userID);
 
 		$this->sectorProperties = new \Gameplay\Model\SectorEntity($this->shipPosition);
 	}
@@ -1015,11 +1015,8 @@ class combat {
 		$attackerPosition = new \Gameplay\Model\ShipPosition($attackerID);
 		$defenderPosition = new \Gameplay\Model\ShipPosition($defenderID);
 
-		$attackerAllianceObject = new userAlliance ( );
-		$attackerAlliance = $attackerAllianceObject->load ( $attackerID, true, true );
-
-		$defenderAllianceObject = new userAlliance ( );
-		$defenderAlliance = $defenderAllianceObject->load ( $defenderID, true, true );
+		$attackerAlliance = new \Gameplay\Model\UserAlliance($attackerID);
+		$defenderAlliance = new \Gameplay\Model\UserAlliance($defenderID);
 
 		/*
 		 * Sprawdz, czy można atakować
@@ -1186,7 +1183,8 @@ class combat {
 	 * @param combatShip $targetShip
 	 * @return boolean
 	 */
-	protected static function checkEquipmentDamage($tWeapon, combatShip $firingShip, combatShip $targetShip) {
+	protected static function checkEquipmentDamage(/** @noinspection PhpUnusedParameterInspection */
+        $tWeapon, combatShip $firingShip, combatShip $targetShip) {
 		global $config;
 		return additional::checkRand ( $config ['combat'] ['equipmentDamageProbability'], 100 );
 	}
@@ -1199,7 +1197,8 @@ class combat {
 	 * @param combatShip $targetShip
 	 * @return boolean
 	 */
-	protected static function checkWeaponsDamage($tWeapon, combatShip $firingShip, combatShip $targetShip) {
+	protected static function checkWeaponsDamage(/** @noinspection PhpUnusedParameterInspection */
+        $tWeapon, combatShip $firingShip, combatShip $targetShip) {
 		global $config;
 		return additional::checkRand ( $config ['combat'] ['weaponDamageProbability'], 100 );
 	}
@@ -1307,7 +1306,9 @@ class combat {
 	 * @param combatShip $firedShip - parametry statku strzelanego
 	 * @return int
 	 */
-	protected static function computeShieldDamage($weaponData, $firingShip, $firedShip) {
+	protected static function computeShieldDamage($weaponData, /** @noinspection PhpUnusedParameterInspection */
+                                                  $firingShip, /** @noinspection PhpUnusedParameterInspection */
+                                                  $firedShip) {
 
 		$retVal = additional::rand ( $weaponData->ShieldMin, $weaponData->ShieldMax );
 
@@ -1475,11 +1476,9 @@ class combat {
      */
     static public function sProtectiveNpcController(\Gameplay\Model\ShipPosition $position, $defenderID, $initProcedure = false) {
 
-		$tAllianceObject = new userAlliance ( );
-		$defenderAlliance = $tAllianceObject->load ( $defenderID, true, true )->AllianceID;
-		unset($tAllianceObject);
+        $defenderAlliance = new \Gameplay\Model\UserAlliance($defenderID);
 
-		$allianceData = new \Gameplay\Model\Alliance($defenderAlliance);
+		$allianceData = new \Gameplay\Model\Alliance($defenderAlliance->AllianceID);
 		if (empty($allianceData->Defendable)) {
 			$allianceData->Defendable = 'yes';
 		}
@@ -1507,11 +1506,11 @@ class combat {
 		switch ($currentStatus) {
 
 			case 2:
-				npc::sSummonProtective($position, $defenderAlliance);
+				npc::sSummonProtective($position, $defenderAlliance->AllianceID);
 				break;
 
 			case 3:
-				$tArray = npc::sGetProtectiveAtPosition($position, $defenderAlliance);
+				$tArray = npc::sGetProtectiveAtPosition($position, $defenderAlliance->AllianceID);
 				foreach ($tArray as $npcID) {
 					self::sInsertCombatLock($_SESSION['userID'], $npcID);
 					self::sInsertCombatLock($npcID, $_SESSION['userID']);

@@ -36,7 +36,7 @@ class portCargo {
 	/**
 	 * lista przedmiotów jakie port kupuje
 	 *
-	 * @return resource
+	 * @return mysqli_result
 	 */
 	public function getProductsBuy() {
 
@@ -79,7 +79,7 @@ class portCargo {
 	/**
 	 * Lista przedmiotów jakie sprzedaje port
 	 *
-	 * @return resource
+	 * @return mysqli_result
 	 */
 	public function getProductsSell() {
 		

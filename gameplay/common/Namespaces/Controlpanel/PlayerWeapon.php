@@ -51,7 +51,8 @@ class PlayerWeapon extends WeaponType{
 		\General\Controls::reloadWithMessage(\General\Session::get('returnLink'), "Weapon has been <strong>deleted</strong>", 'success');
 	}
 
-	final public function add($user, $params) {
+	final public function add(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 
 		if (empty($_SESSION['returnUser'])) {
 			throw new \customException('Security error');
@@ -73,7 +74,8 @@ class PlayerWeapon extends WeaponType{
 		return $retVal;
 	}
 
-	final public function addExe($user, $params) {
+	final public function addExe(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 
 		if (empty($_SESSION['returnUser'])) {
 			throw new \customException('Security error');

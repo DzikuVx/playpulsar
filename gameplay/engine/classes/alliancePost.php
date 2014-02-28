@@ -1,4 +1,7 @@
 <?php
+use Gameplay\Model\UserAlliance;
+use Gameplay\PlayerModelProvider;
+
 class alliancePost extends baseItem {
 	protected $tableName = "allianceposts";
 	protected $tableID = "PostID";
@@ -29,7 +32,10 @@ class alliancePost extends baseItem {
 	 */
 	static public function sDelete($id) {
 
-		global $userAlliance, $userID;
+		global $userID;
+
+        /** @var UserAlliance $userAlliance */
+        $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
 		if (empty($userAlliance->AllianceID)) {
 			throw new securityException();
@@ -58,7 +64,10 @@ class alliancePost extends baseItem {
 	 */
 	static public function sDeleteExe($id) {
 
-		global $userAlliance, $userID;
+		global $userID;
+
+        /** @var UserAlliance $userAlliance */
+        $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
 		if (empty($userAlliance->AllianceID)) {
 			throw new securityException();
@@ -92,7 +101,10 @@ class alliancePost extends baseItem {
 	 */
 	static public function sNew() {
 
-		global $userAlliance, $userID;
+		global $userID;
+
+        /** @var UserAlliance $userAlliance */
+        $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
 		if (empty($userAlliance->AllianceID)) {
 			throw new securityException();
@@ -120,7 +132,10 @@ class alliancePost extends baseItem {
 	 */
 	static public function sNewExe($values) {
 
-		global $userAlliance, $userID;
+		global $userID;
+
+        /** @var UserAlliance $userAlliance */
+        $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
 		if (empty($userAlliance->AllianceID)) {
 			throw new securityException();

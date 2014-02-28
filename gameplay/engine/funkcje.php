@@ -14,9 +14,7 @@ function shipExamine($id, $userID) {
     $otheruserParameters = new \Gameplay\Model\UserEntity($id);
     $othershipParameters = new \Gameplay\Model\ShipProperties($id);
 
-	$item = new userAlliance ( );
-	$othershipAlliance = $item->load ( $id, true, true );
-	unset($item);
+	$othershipAlliance = new \Gameplay\Model\UserAlliance($id);
 
 	$otheruserTimes = new \Gameplay\Model\UserTimes($id);
 

@@ -5,7 +5,6 @@ namespace Controlpanel;
 use Gameplay\Model\EquipmentType;
 use Gameplay\Model\ItemType;
 use Gameplay\Model\ProductType;
-use Gameplay\Model\ShipEquipments;
 use Gameplay\Model\ShipPosition;
 use Gameplay\Model\ShipProperties;
 use Gameplay\Model\ShipType;
@@ -103,14 +102,16 @@ class NpcTypes extends GameplayItem{
 	}
 
 
-	final public function createAll($user, $params) {
+	final public function createAll(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 
 		global $config;
 
 		return \General\Controls::dialog( "Confirm", "Do you want to <strong>create all NPC</strong>?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=createAllExe'", "window.history.back();", 'Yes','No' );
 	}
 
-	final public function createAllExe($user, $params) {
+	final public function createAllExe(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 
 		global $config;
 
@@ -119,14 +120,16 @@ class NpcTypes extends GameplayItem{
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=browse", "Operation completed");
 	}
 
-	final public function dropAll($user, $params) {
+	final public function dropAll(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 
 		global $config;
 
 		return \General\Controls::dialog( "Confirm", "Do you want to <strong>drop all NPC</strong>?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=dropAllExe'", "window.history.back();", 'Yes','No' );
 	}
 
-	final public function dropAllExe($user, $params) {
+	final public function dropAllExe(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 
 		global $config;
 
@@ -135,14 +138,16 @@ class NpcTypes extends GameplayItem{
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=browse", "Operation completed");
 	}
 
-	final public function drop($user, $params) {
+	final public function drop(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 
 		global $config;
 
 		return \General\Controls::dialog( "Confirm", "Do you want to <strong>drop selected NPC</strong>?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=dropExe&id={$params['id']}'", "window.history.back();", 'Yes','No' );
 	}
 
-	final public function dropExe($user, $params) {
+	final public function dropExe(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 
 		global $config;
 
@@ -151,14 +156,16 @@ class NpcTypes extends GameplayItem{
 		\General\Controls::reloadWithMessage("{$config['backend']['fileName']}?class=".get_class($this)."&method=detail&id={$params['id']}", "Operation completed");
 	}
 
-	final public function create($user, $params) {
+	final public function create(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 
 		global $config;
 
 		return \General\Controls::dialog( "Confirm", "Do you want to <strong>create selected NPC</strong>?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=createExe&id={$params['id']}'", "window.history.back();", 'Yes','No' );
 	}
 
-	final public function createExe($user, $params) {
+	final public function createExe(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 
 		global $config;
 

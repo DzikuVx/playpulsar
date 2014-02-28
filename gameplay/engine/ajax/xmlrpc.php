@@ -1,11 +1,9 @@
 <?php
 
-/*
- * Inicjacja
- */
 try {
 
-	require_once '../../common.php';
+    /** @noinspection PhpIncludeInspection */
+    require_once '../../common.php';
 
 	//	header ( 'Content-Type: text/xml' );
 	header ( 'Content-Type: text/html' );

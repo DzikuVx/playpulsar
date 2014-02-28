@@ -65,7 +65,7 @@ class ftlDrive {
 			return false;
 		}
 
-		$targetSystemProperties = \Gameplay\Model\SystemProperties::quickLoad($shipRouting->System);
+		$targetSystemProperties = new \Gameplay\Model\SystemProperties($shipRouting->System);
 
 		$newX = rand($shipRouting->X - 2,$shipRouting->X + 2);
 		$newY = rand($shipRouting->Y - 2,$shipRouting->Y + 2);
@@ -122,7 +122,7 @@ class ftlDrive {
 		\Gameplay\Panel\MiniMap::getInstance()->load ( $userID, $shipPosition->System, $shipPosition );
 
 		if (shipRouting::checkArrive ( $shipPosition, $shipRouting )) {
-			\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
+			\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting);
 			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:infoArrived}');
 		}
 		\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:Jump completed}');

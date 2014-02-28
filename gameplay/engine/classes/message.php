@@ -215,7 +215,8 @@ class message extends baseItem {
 	 * @param int $author
 	 * @param int $receiver
 	 */
-	static public function sSend($author, $receiver) {
+	static public function sSend(/** @noinspection PhpUnusedParameterInspection */
+        $author, $receiver) {
 
 		\Gameplay\Panel\SectorShips::getInstance()->hide ();
 		\Gameplay\Panel\SectorResources::getInstance()->hide ();

@@ -129,7 +129,7 @@ class UserStatistics extends Standard {
              */
             if (!empty($this->UserID)) {
 
-                $tAlliance = \userAlliance::quickLoad($this->UserID);
+                $tAlliance = new UserAlliance($this->UserID);
 
                 if (!empty($tAlliance->AllianceID)) {
                     \phpCache\Factory::getInstance()->create()->clearModule(new \phpCache\CacheKey('allianceMembersRegistry::get::'.$tAlliance->AllianceID));

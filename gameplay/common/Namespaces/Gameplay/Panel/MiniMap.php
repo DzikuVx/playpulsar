@@ -9,7 +9,11 @@ use Interfaces\Singleton;
 //TODO MiniMap as a function should be independend from MiniMap as Panel. Move Rendering to separate class
 class MiniMap extends BaseTable implements Singleton {
 	protected $sector;
-	protected $system;
+
+    /**
+     * @var SystemProperties
+     */
+    protected $system;
 
     /**
      * @var ShipPosition
@@ -81,7 +85,7 @@ class MiniMap extends BaseTable implements Singleton {
     function load($userID, $system, ShipPosition $shipPosition = null, $getShips = false, $getStacks = false) {
 		$this->shipPosition = $shipPosition;
 		if (is_numeric ( $system )) {
-			$this->system = SystemProperties::quickLoad ( $system );
+            $this->system = new SystemProperties($system);
 		} else {
 			$this->system = $system;
 		}

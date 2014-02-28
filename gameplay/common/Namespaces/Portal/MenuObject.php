@@ -8,7 +8,7 @@ class MenuObject {
 	public $link = '';
 	public $description = '';
 	
-	public function render($tNumber = 1) {
+	public function render() {
 		$retVal = ' ';
 		
 		$retVal .= "<li><a href='{$this->link}' title='{$this->description}'>{$this->title}</a></li>";

@@ -126,7 +126,7 @@ class SectorEntity extends CustomGet {
         }
     }
 
-	function get() {
+	protected function get() {
 
 		global $defaultSectorProperties;
 

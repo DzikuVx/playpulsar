@@ -66,6 +66,10 @@ abstract class Standard {
      */
     protected $cacheID = null;
 
+    /**
+     * @param $id
+     * @deprecated
+     */
     static public function sFlushCache($id) {
         $oObject = new static($id);
         /** @noinspection PhpUndefinedMethodInspection */
@@ -401,17 +405,6 @@ abstract class Standard {
         }
 
         return true;
-    }
-
-    /**
-     * @param int $ID
-     * @param bool $useCache
-     * @return mixed
-     * @depreciated
-     */
-    static public function quickLoad($ID, $useCache = true) {
-        $item = new static ($ID, $useCache);
-        return $item;
     }
 
     /**

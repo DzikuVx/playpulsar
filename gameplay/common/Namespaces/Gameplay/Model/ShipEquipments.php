@@ -217,7 +217,7 @@ class ShipEquipments {
 
 	/**
 	 * @param string $mode
-	 * @return resource
+	 * @return \mysqli_result
 	 */
 	function get($mode = "working") {
 

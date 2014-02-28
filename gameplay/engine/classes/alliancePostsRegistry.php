@@ -1,4 +1,7 @@
 <?php
+use Gameplay\Model\UserAlliance;
+use Gameplay\PlayerModelProvider;
+
 class alliancePostsRegistry extends simpleRegistry {
 
 	/**
@@ -9,7 +12,10 @@ class alliancePostsRegistry extends simpleRegistry {
 	 */
 	public function get($allianceID) {
 
-		global $userID, $userAlliance;
+		global $userID;
+
+        /** @var UserAlliance $userAlliance */
+        $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
 		$tRights['post'] = allianceRights::sCheck($userID, $userAlliance->AllianceID, 'post');
 

@@ -30,7 +30,7 @@ class Formater {
 	/**
 	 * Funkcja formatująca datę do postaci YYYY-MM-DD
 	 * @param $date
-	 * @return sformatowana data
+	 * @return string
 	 */
 	static public function formatDate($date) {
 
@@ -50,7 +50,7 @@ class Formater {
 	/**
 	 * Funkcja formatująca datę do postaci YYYY-MM-DD HH:ii
 	 * @param $date
-	 * @return sformatowana data
+	 * @return string
 	 */
 	static public function formatDateTime($date) {
 

@@ -733,7 +733,8 @@ class user {
 	 * @param array $params
 	 * @return string
 	 */
-	public function register($params) {
+	public function register(/** @noinspection PhpUnusedParameterInspection */
+        $params) {
 
 		$template = new \General\Templater ( 'templates/register.html' );
 		return ( string ) $template;

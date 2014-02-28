@@ -1,4 +1,6 @@
 <?php
+use Gameplay\Model\UserAlliance;
+use Gameplay\PlayerModelProvider;
 
 /**
  * Lista sojuszy
@@ -14,7 +16,10 @@ class allianceRegistry extends simpleRegistry {
 	 */
 	static public function sRender() {
 
-		global $userID, $userAlliance;
+		global $userID;
+
+        /** @var UserAlliance $userAlliance */
+        $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
 		/*
 		 * Lista operacji na liście sojuszy

@@ -168,7 +168,7 @@ class Controls {
 		* @param string $value
 		* @param array $values
 		* @param array $opts
-		* @return unknown
+		* @return string
 		*/
 	static function renderSelect($name, $value = "", $values = array(), $opts = array()) {
 

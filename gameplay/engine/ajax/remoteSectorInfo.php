@@ -1,5 +1,6 @@
 <?php
 
+/** @noinspection PhpIncludeInspection */
 require_once '../../common.php';
 
 $out = "";

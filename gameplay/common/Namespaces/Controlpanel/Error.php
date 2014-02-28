@@ -11,7 +11,8 @@ class Error extends BaseItem {
 		$this->db = \Database\Controller::getBackendInstance();
 	}
 
-	public function clear($user, $params) {
+	public function clear(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 
 		$tQuery = "TRUNCATE TABLE st_errormessages";
 		$this->db->execute ( $tQuery );
@@ -35,7 +36,8 @@ class Error extends BaseItem {
 		return $this->db->fetch ( $tQuery );
 	}
 
-	public function detail($user, $params) {
+	public function detail(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 
 		$retVal = '';
 

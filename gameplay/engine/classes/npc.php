@@ -93,7 +93,11 @@ class npc extends baseItem {
 		return $retVal;
 	}
 
-	static public function sSummonProtective($position, $defenderAlliance) {
+    /**
+     * @param $position
+     * @param int $defenderAlliance
+     */
+    static public function sSummonProtective($position, $defenderAlliance) {
 
 		global $config;
 
@@ -498,7 +502,9 @@ class npc extends baseItem {
                 mysqli_stmt_bind_param($sPreparedPosition, 'iisi', $tR1->CurrentX, $tR1->CurrentY, $tR1->CurrentDocked, $tR1->NpcID);
 				mysqli_stmt_execute($sPreparedPosition);
 
-                \Gameplay\Model\ShipPosition::sFlushCache($tR1->NpcID);
+                //TODO create a method that allows to flush cache without loading the whole object
+                $tObject = new \Gameplay\Model\ShipPosition($tR1->NpcID);
+                $tObject->clearCache();
 			}
 
 			//Dokonaj resetu tych NPC którym skończył się czas i nie zostali zniszczeni

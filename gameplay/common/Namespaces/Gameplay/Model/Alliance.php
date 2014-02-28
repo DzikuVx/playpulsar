@@ -2,6 +2,7 @@
 
 namespace Gameplay\Model;
 
+use Gameplay\PlayerModelProvider;
 use \psDebug;
 use \securityException;
 use \TranslateController;
@@ -118,7 +119,8 @@ class Alliance extends Standard {
      */
     static public function sKick($kickedID) {
 
-        global $userAlliance;
+        /** @var UserAlliance $userAlliance */
+        $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
         if (empty($userAlliance->AllianceID)) {
             throw new securityException();
@@ -128,7 +130,7 @@ class Alliance extends Standard {
             throw new securityException();
         }
 
-        $tSecondAlliance = \userAlliance::quickLoad($kickedID);
+        $tSecondAlliance = new UserAlliance($kickedID);
         if (empty($tSecondAlliance->AllianceID)) {
             throw new securityException();
         }
@@ -155,7 +157,8 @@ class Alliance extends Standard {
      */
     static public function sKickExe($kickedID) {
 
-        global $userAlliance;
+        /** @var UserAlliance $userAlliance */
+        $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
         /*
          * Warunki bezpieczeństwa
@@ -168,7 +171,7 @@ class Alliance extends Standard {
             throw new securityException();
         }
 
-        $tSecondAlliance = \userAlliance::quickLoad($kickedID);
+        $tSecondAlliance = new UserAlliance($kickedID);
         if (empty($tSecondAlliance->AllianceID)) {
             throw new securityException();
         }
@@ -179,15 +182,11 @@ class Alliance extends Standard {
 
         \allianceRights::sGiveNone($kickedID, $tSecondAlliance->AllianceID);
 
-        $secondPlayerAllianceObject = new \userAlliance();
-        $secondPlayerAlliance = $secondPlayerAllianceObject->load($kickedID, true, true);
+        $tSecondAlliance->AllianceID = null;
+        $tSecondAlliance->Name = null;
 
-        $secondPlayerAlliance->AllianceID = null;
-        $secondPlayerAlliance->Name = null;
-
-        $secondPlayerAllianceObject->synchronize($secondPlayerAlliance, true, true);
-
-        \userAlliance::sFlushCache($kickedID);
+        $tSecondAlliance->synchronize();
+        $tSecondAlliance->clearCache();
 
         \phpCache\Factory::getInstance()->create()->clearModule(new \phpCache\CacheKey('alliance::getRegistry'));
         \phpCache\Factory::getInstance()->create()->clearModule(new \phpCache\CacheKey('allianceMembersRegistry::get'));
@@ -209,7 +208,8 @@ class Alliance extends Standard {
      */
     static public function sLeave() {
 
-        global $userAlliance;
+        /** @var UserAlliance $userAlliance */
+        $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
         if (empty($userAlliance->AllianceID)) {
             throw new securityException();
@@ -226,7 +226,10 @@ class Alliance extends Standard {
      */
     static public function sLeaveExecute() {
 
-        global $action, $userAlliance, $userID, $userAllianceObject;
+        global $action, $userID;
+
+        /** @var UserAlliance $userAlliance */
+        $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
         if (empty($userAlliance->AllianceID)) {
             throw new securityException();
@@ -235,7 +238,7 @@ class Alliance extends Standard {
         \allianceRights::sGiveNone($userID, $userAlliance->AllianceID);
         $userAlliance->AllianceID = null;
 
-        $userAllianceObject->synchronize($userAlliance, true, true);
+        $userAlliance->synchronize();
 
         self::sDeleteEmptyAlliances();
 
@@ -270,7 +273,10 @@ class Alliance extends Standard {
      */
     static public function sNew() {
 
-        global $userAlliance, $userStats, $config;
+        global $userStats, $config;
+
+        /** @var UserAlliance $userAlliance */
+        $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
         if (!empty($userAlliance->AllianceID)) {
             throw new securityException();
@@ -303,7 +309,10 @@ class Alliance extends Standard {
      */
     static public function sNewExe($values) {
 
-        global $userAlliance, $userID, $userAllianceObject, $userStats, $config;
+        global $userID, $userStats, $config;
+
+        /** @var UserAlliance $userAlliance */
+        $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
         $t = TranslateController::getDefault();
 
@@ -350,7 +359,7 @@ class Alliance extends Standard {
         /*
          * Zsychronizuj
          */
-        $userAllianceObject->synchronize($userAlliance, true, true);
+        $userAlliance->synchronize($userAlliance);
 
         /*
          * Ustaw prawa dla sojuszu
@@ -374,7 +383,10 @@ class Alliance extends Standard {
      */
     static public function sEdit() {
 
-        global $userAlliance, $userID;
+        global $userID;
+
+        /** @var UserAlliance $userAlliance */
+        $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
         if (empty($userAlliance->AllianceID)) {
             throw new securityException();
@@ -404,7 +416,10 @@ class Alliance extends Standard {
 
     static public function sEditExe($values) {
 
-        global $userAlliance, $userID;
+        global $userID;
+
+        /** @var UserAlliance $userAlliance */
+        $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
         if (empty($userAlliance->AllianceID)) {
             throw new securityException();
@@ -454,7 +469,10 @@ class Alliance extends Standard {
      */
     static public function sGetDetail($allianceID) {
 
-        global $userID, $userAlliance;
+        global $userID;
+
+        /** @var UserAlliance $userAlliance */
+        $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
         $template  = new \General\Templater('../templates/allianceDetail.html');
 

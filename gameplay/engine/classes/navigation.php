@@ -55,7 +55,7 @@ class navigation {
 		$shipRouting->X = null;
 		$shipRouting->Y = null;
 
-		\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting, $shipProperties );
+		\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting);
 
 	}
 

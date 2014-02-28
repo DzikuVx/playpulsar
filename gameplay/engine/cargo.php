@@ -718,7 +718,7 @@ if ($action == "mapBuy") {
 	\Gameplay\Panel\SectorResources::getInstance()->hide ();
 	$action = "portMarketplace";
 	\Gameplay\Model\PortEntity::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
-	\Gameplay\Panel\Navigation::getInstance()->render($shipPosition, $shipRouting, $shipProperties);
+	\Gameplay\Panel\Navigation::getInstance()->render($shipPosition, $shipRouting);
 	\Gameplay\Panel\PortAction::getInstance()->clear ();
     \Gameplay\Framework\ContentTransport::getInstance()->addNotification('success', '{T:opSuccess}');
 }

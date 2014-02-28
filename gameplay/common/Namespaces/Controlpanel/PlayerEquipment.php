@@ -37,7 +37,8 @@ class PlayerEquipment extends EquipmentType{
 		return $retVal;
 	}
 
-	final public function add($user, $params) {
+	final public function add(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 
 		if (empty($_SESSION['returnUser'])) {
 			throw new \customException('Security error');

@@ -30,7 +30,8 @@ class Maintenance extends BaseItem {
      * @return string
      * @throws \customException
      */
-    final public function resetAll($user, $params) {
+    final public function resetAll($user, /** @noinspection PhpUnusedParameterInspection */
+                                   $params) {
 
 		if ($user->sGetRole () != 'admin') {
 			throw new \customException ( 'No rights to perform selected operation' );
@@ -66,7 +67,8 @@ class Maintenance extends BaseItem {
      * @return string
      * @throws \customException
      */
-    final public function flushAll($user, $params) {
+    final public function flushAll($user, /** @noinspection PhpUnusedParameterInspection */
+                                   $params) {
 
 		if ($user->sGetRole () != 'admin') {
 			throw new \customException ( 'No rights to perform selected operation' );
@@ -654,11 +656,8 @@ class Maintenance extends BaseItem {
 		$tQuery = "SELECT PortID FROM ports WHERE ResetTime<'{$tTime}'";
 		$tQuery = Database::getInstance()->execute ( $tQuery );
 		while ( $tResult = Database::getInstance()->fetch ( $tQuery ) ) {
-
 			$tPort = new PortEntity($tResult->PortID, false);
-            PortEntity::sReset($tPort);
-			unset ( $tPort );
-
+            $tPort->reset();
 		}
 
 		$tQuery = "UPDATE ports SET ResetTime='" . time () . "' WHERE ResetTime<'{$tTime}'";
@@ -885,7 +884,7 @@ class Maintenance extends BaseItem {
 		$tTime = time () - ($maintenance ['newsAgencyValid'] * 3600);
 
 		$tQuery = "DELETE FROM newsagency WHERE Date<'{$tTime}'";
-		$tQuery = Database::getInstance()->execute ( $tQuery );
+		Database::getInstance()->execute ( $tQuery );
 
 		return true;
 	}

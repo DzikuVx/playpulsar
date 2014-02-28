@@ -36,7 +36,7 @@ class ActiveScanner extends SystemMap implements Singleton {
 	 */
 	public function setShipPosition(ShipPosition $shipPosition) {
 		$this->shipPosition = $shipPosition;
-		$this->system = SystemProperties::quickLoad ( $this->shipPosition->System );
+		$this->system = new SystemProperties($this->shipPosition->System);
 	}
 
     /**

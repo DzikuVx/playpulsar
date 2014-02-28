@@ -211,7 +211,7 @@ class MySQLiWrapper {
      * @param int $delay Czas oczekiwania na kolejne powtórzenia [ms]
      * @param int $count Maksymalna liczba powtórzeń
      * @throws Exception
-     * @return resource
+     * @return \mysqli_result
      * @since 2011-05-03
      * @see MySQLiWrapper::execute
      */

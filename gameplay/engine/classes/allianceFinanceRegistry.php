@@ -1,9 +1,15 @@
 <?php
+use Gameplay\Model\UserAlliance;
+use Gameplay\PlayerModelProvider;
+
 class allianceFinanceRegistry extends simpleRegistry {
 
 	static public function sRender() {
 
-		global $userID, $userAlliance;
+		global $userID;
+
+        /** @var UserAlliance $userAlliance */
+        $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
 		/*
 		 * Wyrenderowanie sojuszu
@@ -18,7 +24,8 @@ class allianceFinanceRegistry extends simpleRegistry {
 
 	public function get($allianceID) {
 
-		global $userAlliance;
+        /** @var UserAlliance $userAlliance */
+        $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
 		if (\Database\Controller::getInstance()->getHandle() === false) {
 			throw new \Database\Exception('Connection lost');

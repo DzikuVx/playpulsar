@@ -8,7 +8,8 @@ $retVal = 'OK';
 
 try {
 
-	require_once '../../common.php';
+    /** @noinspection PhpIncludeInspection */
+    require_once '../../common.php';
 
 	if (empty ( $_SESSION ['userID'] )) {
 		throw new customException ( 'Security Error' );

@@ -6,7 +6,9 @@ use Gameplay\Model\SectorEntity;
 use Gameplay\Model\ShipPosition;
 use Gameplay\Model\ShipProperties;
 use Gameplay\Model\SystemProperties;
+use Gameplay\Model\UserAlliance;
 use Gameplay\Model\UserStatistics;
+use Gameplay\PlayerModelProvider;
 use Interfaces\Singleton;
 
 use \TranslateController as Translate;
@@ -52,7 +54,10 @@ class SectorShips extends Renderable implements Singleton
                            SystemProperties $systemProperties, ShipPosition $shipPosition, ShipProperties $shipProperties)
     {
 
-        global $config, $userStats, $userAlliance;
+        global $config, $userStats;
+
+        /** @var UserAlliance $userAlliance */
+        $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
         $oDb = \Database\Controller::getInstance();
 

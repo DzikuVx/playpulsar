@@ -2,7 +2,8 @@
 
 try {
 
-	require_once '../../common.php';
+    /** @noinspection PhpIncludeInspection */
+    require_once '../../common.php';
 
 	$chatDb = \Database\Controller::getChatInstance();
 	

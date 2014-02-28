@@ -70,13 +70,12 @@ class Menu {
      * @param $params
      * @return string
      */
-    static private function sRenderList($tList, $params) {
+    static private function sRenderList($tList, /** @noinspection PhpUnusedParameterInspection */
+                                        $params) {
 		$retVal = '';
 
-		$tNumber = 0;
 		foreach ($tList as $tValue) {
-			$retVal .= $tValue->render($tNumber);
-			$tNumber++;
+			$retVal .= $tValue->render();
 		}
 
 		return $retVal;

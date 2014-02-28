@@ -175,7 +175,7 @@ class combatShip {
 			/*
 			 * Pętla po equipie
 			 */
-			$tQuery = $this->shipEquipment->get ( 'all' );
+			$tQuery = $this->shipEquipment->get('all');
 			while ( $tResult = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 
 				if (additional::checkRand ( $config ['combat'] ['equipmentDestroyProbability'], 100 )) {

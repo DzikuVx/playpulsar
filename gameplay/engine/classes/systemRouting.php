@@ -153,7 +153,7 @@ class systemRouting {
      */
     public function load(stdClass $destination) {
 
-		$this->systemObject = \Gameplay\Model\SystemProperties::quickLoad ( $destination->System );
+		$this->systemObject = new \Gameplay\Model\SystemProperties($destination->System);
 		$this->destination = $destination;
 
 		/*

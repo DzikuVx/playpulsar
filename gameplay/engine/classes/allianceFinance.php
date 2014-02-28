@@ -1,4 +1,7 @@
 <?php
+use Gameplay\Model\UserAlliance;
+use Gameplay\PlayerModelProvider;
+
 class allianceFinance extends baseItem {
 	protected $tableName = "alliancefinance";
 	protected $tableID = "OperationID";
@@ -7,7 +10,10 @@ class allianceFinance extends baseItem {
 
 	static public function sCashoutExe($id, $value) {
 
-		global $userAlliance, $userID;
+		global $userID;
+
+        /** @var UserAlliance $userAlliance */
+        $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
 		$value = \Database\Controller::getInstance()->quote($value);
 		$id    = \Database\Controller::getInstance()->quote($id);
@@ -16,7 +22,7 @@ class allianceFinance extends baseItem {
 			throw new securityException();
 		}
 
-		if (!userAlliance::sCheckMembership($id, $userAlliance->AllianceID)) {
+		if (!\Gameplay\Model\UserAlliance::sCheckMembership($id, $userAlliance->AllianceID)) {
 			throw new securityException();
 		}
 
@@ -48,7 +54,7 @@ class allianceFinance extends baseItem {
         $data->synchronize();
 
         //TODO is this really nessesary? synchronize is setting cache right?
-        \Gameplay\Model\UserStatistics::sFlushCache($id);
+        $tUserStats->clearCache();
 
 		//todo czyszczenie cache dla wszystkich członków sojuszu
 
@@ -80,13 +86,16 @@ class allianceFinance extends baseItem {
 	}
 
 	static public function sCashoutDialog($id) {
-		global $userAlliance, $userID;
+		global $userID;
+
+        /** @var UserAlliance $userAlliance */
+        $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
 		if (empty($userAlliance->AllianceID)) {
 			throw new securityException();
 		}
 
-		if (!userAlliance::sCheckMembership($id, $userAlliance->AllianceID)) {
+		if (UserAlliance::sCheckMembership($id, $userAlliance->AllianceID)) {
 			throw new securityException();
 		}
 
@@ -112,8 +121,10 @@ class allianceFinance extends baseItem {
 	}
 
 	static public function sDeposit() {
-		global $userStats, $action, $value, $userAlliance;
+		global $userStats, $action, $value;
 
+        /** @var UserAlliance $userAlliance */
+        $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
         $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
         $portProperties = \Gameplay\PlayerModelProvider::getInstance()->get('PortEntity');
 		$value = \Database\Controller::getInstance()->quote($value);
