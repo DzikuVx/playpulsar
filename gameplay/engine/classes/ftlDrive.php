@@ -28,7 +28,7 @@ class ftlDrive {
 	}
 
 	static public function sEngage() {
-		global $userID, $shipProperties, $shipRouting, $userStats, $config, $sectorProperties, $jumpNode, $jumpNodeObject;
+		global $userID, $shipProperties, $shipRouting, $userStats, $config, $sectorProperties;
 
         $shipPosition = PlayerModelProvider::getInstance()->get('ShipPosition');
         $systemProperties = PlayerModelProvider::getInstance()->get('SystemProperties');
@@ -109,7 +109,8 @@ class ftlDrive {
 		$portProperties->reload($shipPosition);
 		$systemProperties->reload($shipPosition->System);
 
-		$jumpNode = $jumpNodeObject->load ( $shipPosition, true, true );
+        /** @var \Gameplay\Model\JumpNode $jumpNode */
+        $jumpNode = PlayerModelProvider::getInstance()->register('JumpNode', new \Gameplay\Model\JumpNode($shipPosition));
 
         $sectorProperties->resetResources();
         $portProperties->reset();

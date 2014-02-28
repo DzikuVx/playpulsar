@@ -2,6 +2,7 @@
 
 namespace Gameplay\Panel;
 
+use Gameplay\Model\JumpNode;
 use Gameplay\Model\PortEntity;
 use Gameplay\Model\ShipPosition;
 use Gameplay\Model\ShipProperties;
@@ -38,10 +39,10 @@ class Port extends Renderable implements Singleton {
 	 * @param ShipPosition $shipPosition
 	 * @param PortEntity $portProperties
 	 * @param ShipProperties $shipProperties
-	 * @param \stdClass $jumpNode
+	 * @param JumpNode $jumpNode
 	 * @return bool
 	 */
-	public function render(ShipPosition $shipPosition, PortEntity $portProperties, ShipProperties $shipProperties, $jumpNode) {
+	public function render(ShipPosition $shipPosition, PortEntity $portProperties, ShipProperties $shipProperties, JumpNode $jumpNode) {
 		global $config;
 		$this->rendered = true;
 		$this->retVal = "";
@@ -71,14 +72,9 @@ class Port extends Renderable implements Singleton {
 		}
 
 		//Sparwdz, czy w sektorze jest JUMP NODE
-		if ($jumpNode != null) {
+		if (!empty($jumpNode->NodeID)) {
 
-			$jumpNodeObject = new \jumpNode ( );
-			$jumpNode = $jumpNodeObject->load ( $shipPosition, true, true );
-
-			$destination = $jumpNodeObject->getDestination ( $shipPosition );
-
-			unset($jumpNodeObject);
+			$destination = $jumpNode->getDestination($shipPosition);
 
 			$destination = SystemProperties::getGalaxy ( $destination->System ) . "/" . $destination->System . "/" . $destination->X . "/" . $destination->Y;
 

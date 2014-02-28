@@ -3,12 +3,8 @@
 /**
  * Klasa noda pomiędzy dwoma systemami,
  * przechowuje współrzędne startu
- *
- * @version $Rev: 455 $
- * @package Engine
- *
  */
-class transNode extends jumpNode {
+class transNode extends \Gameplay\Model\JumpNode {
 
 	/**
 	 * Pobranie transNode

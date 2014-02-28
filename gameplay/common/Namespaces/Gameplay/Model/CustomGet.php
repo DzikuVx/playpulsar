@@ -19,7 +19,7 @@ class CustomGet extends Standard {
                 if (property_exists($this, $tField)) {
                     $retVal->{$tField} = $this->{$tField};
                 } else {
-                    throw new Model('Trying to synchronize ' . $tField . ' while class field not exists');
+                    throw new Model('Trying to synchronize ' . $tField . ' while class field not exists. Class name: ' . get_class($this));
                 }
             }
         }

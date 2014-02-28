@@ -95,7 +95,7 @@ class News extends BaseItem {
 
 	/**
 	 * Formularz dodawania newsa
-	 * @param user $user
+	 * @param \user $user
 	 * @param array $params
 	 * @return string
 	 */

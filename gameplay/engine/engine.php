@@ -51,6 +51,7 @@ try {
 		exit();
 	}
 
+    /** @var \Gameplay\Model\ShipPosition $shipPosition */
     $shipPosition = $oPlayerModelProvider->register('ShipPosition', new \Gameplay\Model\ShipPosition($userID));
 
 	/*
@@ -153,11 +154,8 @@ try {
     $sectorProperties = $oPlayerModelProvider->register('SectorEntity', new \Gameplay\Model\SectorEntity($shipPosition));
     $portProperties = $oPlayerModelProvider->register('PortEntity', new \Gameplay\Model\PortEntity($shipPosition));
 
-	/*
-	 * Inicjalizacja JumpNode
-	*/
-	$jumpNodeObject = new jumpNode();
-	$jumpNode 		= $jumpNodeObject->load($shipPosition, true, true);
+    /** @var \Gameplay\Model\JumpNode $jumpNode */
+	$jumpNode = $oPlayerModelProvider->register('JumpNode', new \Gameplay\Model\JumpNode($shipPosition));
 
 	/** @var \Gameplay\Model\SystemProperties $systemProperties */
     $systemProperties = $oPlayerModelProvider->register('SystemProperties', new \Gameplay\Model\SystemProperties($shipPosition->System));
@@ -793,10 +791,10 @@ try {
 			throw new warningException ( TranslateController::getDefault()->get ( 'notEnoughTurns' ) );
 		}
 
-		if ($jumpNode == null) {
+		if (empty($jumpNode->NodeID)) {
 			throw new securityException ( );
 		} else {
-			$destination = $jumpNodeObject->getDestination ( $shipPosition );
+			$destination = $jumpNode->getDestination($shipPosition);
 		}
 
 		//Jeśli nie było będu, przenieś statek do nowego sektora
@@ -824,7 +822,7 @@ try {
 
 			$systemProperties->reload( $shipPosition->System);
 
-			$jumpNode = $jumpNodeObject->load ( $shipPosition, true, true );
+			$jumpNode = $oPlayerModelProvider->register('JumpNode', new \Gameplay\Model\JumpNode($shipPosition));
 
             $sectorProperties->resetResources();
             $portProperties->reset();
@@ -904,7 +902,7 @@ try {
             $userStats->incExperience($config ['general'] ['expForMove']);
 
             $sectorProperties->reload($shipPosition);
-            $jumpNode = $jumpNodeObject->load ( $shipPosition, true, true );
+            $jumpNode = $oPlayerModelProvider->register('JumpNode', new \Gameplay\Model\JumpNode($shipPosition));
             $portProperties->reload($shipPosition);
 
             $portProperties->reset();

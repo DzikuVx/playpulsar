@@ -47,7 +47,7 @@ class navigation {
 	 */
 	static public function sPlotReset() {
 
-		global $shipRouting, $shipProperties;
+		global $shipRouting;
 
         $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
 

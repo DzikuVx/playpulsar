@@ -10,11 +10,42 @@ class UserAlliance extends CustomGet {
 
     /** @var int */
     public $AllianceID;
+
     /** @var string */
     public $Name;
 
+    /** @var string */
+    public $Rank;
+
     /** @var int */
     public $UserID;
+
+    public $NPCAlliance;
+
+    /**
+     * @var string
+     */
+    public $Symbol;
+
+    /**
+     * @var string
+     */
+    public $Motto;
+
+    /**
+     * @var string
+     */
+    public $Description;
+
+    /**
+     * @var int
+     */
+    public $Cash;
+
+    /**
+     * @var string
+     */
+    public $Defendable;
 
     protected function formatUpdateQuery() {
 

@@ -581,11 +581,10 @@ class shipCargo {
 	/**
 	 * Pobranie wszystkich itemów z ładowni gracza
 	 *
-	 * @param int $ID
 	 * @param string $orderBy
 	 * @return mysqli_result
 	 */
-	public function getItems($ID = null, $orderBy = 'name') {
+	public function getItems($orderBy = 'name') {
 
 		$retVal = null;
 

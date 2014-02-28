@@ -45,7 +45,7 @@ class NpcName extends BaseItem {
 
     /**
      * New NPC name, save to db and confirm
-     * @param user $user
+     * @param \user $user
      * @param array $params
      * @return string
      * @throws \Exception

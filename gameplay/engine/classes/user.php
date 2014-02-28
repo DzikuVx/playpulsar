@@ -569,8 +569,6 @@ class user {
 
 			self::sInsert($params, $tUsers);
 
-		} catch ( customException $e ) {
-			$retVal = $e->getMessage ();
 		} catch ( Exception $e ) {
 			throw new Exception ( $e->getMessage (), $e->getCode () );
 		}

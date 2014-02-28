@@ -1409,7 +1409,9 @@ class combat {
 	 * @param combatShip $firedShip - parametry statku strzelanego
 	 * @return int
 	 */
-	protected static function computePowerDamage($weaponData, $firingShip, $firedShip) {
+	protected static function computePowerDamage($weaponData, /** @noinspection PhpUnusedParameterInspection */
+                                                 $firingShip, /** @noinspection PhpUnusedParameterInspection */
+                                                 $firedShip) {
 		$retVal = additional::rand ( $weaponData->PowerMin, $weaponData->PowerMax );
 
 		if ($retVal == 0)
@@ -1443,7 +1445,9 @@ class combat {
 	 * @param combatShip $firedShip - parametry statku strzelanego
 	 * @return int
 	 */
-	protected static function computeEmpDamage($weaponData, $firingShip, $firedShip) {
+	protected static function computeEmpDamage($weaponData, /** @noinspection PhpUnusedParameterInspection */
+                                               $firingShip, /** @noinspection PhpUnusedParameterInspection */
+                                               $firedShip) {
 		$retVal = additional::rand ( $weaponData->EmpMin, $weaponData->EmpMax );
 
 		if ($retVal == 0)
