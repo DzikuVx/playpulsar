@@ -3,6 +3,7 @@
 namespace Gameplay\Model;
 
 use Gameplay\PlayerModelProvider;
+use Gameplay\Exception\SecurityException;
 
 class ShipProperties extends Standard {
 
@@ -248,7 +249,7 @@ class ShipProperties extends Standard {
 
     /**
      * @return bool
-     * @throws \securityException
+     * @throws SecurityException
      */
     static public function sStationRepair() {
 
@@ -262,11 +263,11 @@ class ShipProperties extends Standard {
          * Warunki
          */
         if ($shipPosition->Docked != 'yes') {
-            throw new \securityException();
+            throw new SecurityException();
         }
 
         if (empty ( $portProperties->PortID )) {
-            throw new \securityException();
+            throw new SecurityException();
         }
 
         /*
@@ -278,11 +279,11 @@ class ShipProperties extends Standard {
                 $tPrice = ($shipProperties->ShieldMax - $shipProperties->Shield) * $config ['repairCost'] ['shield'];
 
                 if ($tPrice < 0) {
-                    throw new \securityException ( );
+                    throw new SecurityException ( );
                 }
 
                 if ($userStats->Cash < $tPrice) {
-                    throw new \securityException ( );
+                    throw new SecurityException ( );
                 }
 
                 $shipProperties->Shield = $shipProperties->ShieldMax;
@@ -293,11 +294,11 @@ class ShipProperties extends Standard {
                 $tPrice = ($shipProperties->ArmorMax - $shipProperties->Armor) * $config ['repairCost'] ['armor'];
 
                 if ($tPrice < 0) {
-                    throw new \securityException ( );
+                    throw new SecurityException ( );
                 }
 
                 if ($userStats->Cash < $tPrice) {
-                    throw new \securityException ( );
+                    throw new SecurityException ( );
                 }
 
                 $shipProperties->Armor = $shipProperties->ArmorMax;
@@ -308,11 +309,11 @@ class ShipProperties extends Standard {
                 $tPrice = ($shipProperties->PowerMax - $shipProperties->Power) * $config ['repairCost'] ['power'];
 
                 if ($tPrice < 0) {
-                    throw new \securityException ( );
+                    throw new SecurityException ( );
                 }
 
                 if ($userStats->Cash < $tPrice) {
-                    throw new \securityException ( );
+                    throw new SecurityException ( );
                 }
 
                 $shipProperties->Power = $shipProperties->PowerMax;
@@ -323,11 +324,11 @@ class ShipProperties extends Standard {
                 $tPrice = $shipProperties->Emp * $config ['repairCost'] ['emp'];
 
                 if ($tPrice < 0) {
-                    throw new \securityException ( );
+                    throw new SecurityException ( );
                 }
 
                 if ($userStats->Cash < $tPrice) {
-                    throw new \securityException ( );
+                    throw new SecurityException ( );
                 }
 
                 $shipProperties->Emp = 0;
@@ -335,7 +336,7 @@ class ShipProperties extends Standard {
                 break;
 
             default :
-                throw new \securityException ( );
+                throw new SecurityException ( );
                 break;
 
         }
@@ -787,7 +788,7 @@ class ShipProperties extends Standard {
 
     /**
      * @param int $shipID
-     * @throws \securityException
+     * @throws SecurityException
      */
     static public function sBuy($shipID) {
 
@@ -801,11 +802,11 @@ class ShipProperties extends Standard {
         $shipEquipment  = PlayerModelProvider::getInstance()->get('ShipEquipments');
 
         if ($shipPosition->Docked == 'no') {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         if ($portProperties->Type != 'station') {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         $tShip = new ShipType($shipID);
@@ -813,11 +814,11 @@ class ShipProperties extends Standard {
         $currentShipValue = floor( self::sGetValue( $userProperties->UserID ) / 2 );
 
         if ($userStats->Cash + $currentShipValue < $tShip->Price) {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         if ($userStats->Fame < $tShip->Fame) {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         /**
@@ -825,7 +826,7 @@ class ShipProperties extends Standard {
          */
         $tString = ',' . $portProperties->Ships . ',';
         if (mb_strpos ( $tString, ',' . $shipID . ',' ) === false) {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         $shipProperties->ShipID = $shipID;

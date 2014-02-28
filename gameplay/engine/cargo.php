@@ -49,7 +49,7 @@ if ($action == "equipFromCargo") {
         $tItem = new \Gameplay\Model\WeaponType($id);
 
 		if ($shipProperties->WeaponSize < $tItem->Size ) {
-			throw new securityException();
+			throw new \Gameplay\Exception\SecurityException();
 		}
 
 		$onBoard = $shipCargo->checkExists ( $id, 'weapon' );
@@ -61,11 +61,11 @@ if ($action == "equipFromCargo") {
 	}
 
 	if (empty($tItem)) {
-		throw new securityException ( );
+		throw new \Gameplay\Exception\SecurityException();
 	}
 
 	if (empty($onBoard)) {
-		throw new securityException ( );
+		throw new \Gameplay\Exception\SecurityException();
 	}
 
 	//Zmniejsz tury
@@ -113,11 +113,11 @@ if ($action == "cargoManagement") {
 if ($action == "buyStorageRoom") {
 
 	if ($shipPosition->Docked == 'no') {
-		throw new securityException ( );
+		throw new \Gameplay\Exception\SecurityException();
 	}
 
 	if ($userStats->Cash < $config ['port'] ['storageSpacePrice']) {
-		throw new securityException (TranslateController::getDefault()->get('notEnoughCash'));
+		throw new \Gameplay\Exception\SecurityException(TranslateController::getDefault()->get('notEnoughCash'));
 	}
 
 	//Pobierz aktualne miejsce w magazynie
@@ -152,13 +152,13 @@ if ($action == "jettison") {
 
 	//Sprawdz, czy zadokowany
 	if ($shipPosition->Docked == 'yes') {
-		throw new securityException ( );
+		throw new \Gameplay\Exception\SecurityException();
 	}
 
 	$inCargo = $shipCargo->getAmount ( $id, $subaction );
 
 	if ($inCargo == 0) {
-		throw new securityException ( );
+		throw new \Gameplay\Exception\SecurityException();
 	}
 
 	if ($value == 'all') {
@@ -168,11 +168,11 @@ if ($action == "jettison") {
 	}
 
 	if ($toJettison < 1) {
-		throw new securityException();
+		throw new \Gameplay\Exception\SecurityException();
 	}
 
 	if ($toJettison > $inCargo) {
-		throw new securityException ( );
+		throw new \Gameplay\Exception\SecurityException();
 	}
 
 	if (! $error) {
@@ -224,7 +224,7 @@ if ($action == "gather") {
 	$sectorAmount = $sectorCargo->getAmount($subaction, $id);
 
 	if ($sectorAmount === null) {
-		throw new securityException();
+		throw new \Gameplay\Exception\SecurityException();
 	}
 
 	$productSize = 1;
@@ -232,7 +232,7 @@ if ($action == "gather") {
 	$turnsRequired = $itemPickCost;
 
 	if ($shipProperties->CargoMax < $shipProperties->Cargo) {
-		throw new securityException ( );
+		throw new \Gameplay\Exception\SecurityException();
 	}
 
 	if ($subaction == 'product') {
@@ -242,7 +242,7 @@ if ($action == "gather") {
 		$productExp = $productData->getExperienceForGather($sectorAmount);
 
 		if (empty($shipProperties->Gather)) {
-			throw new securityException();
+			throw new \Gameplay\Exception\SecurityException();
 		}
 
 		$toGather = floor ( ($shipProperties->CargoMax - $shipProperties->Cargo) / $productSize );
@@ -337,15 +337,15 @@ if ($action == 'toCargohold') {
     $productSize = 1;
 
 	if ($portProperties->PortID == null) {
-		throw new securityException ( );
+		throw new \Gameplay\Exception\SecurityException();
 	}
 	if ($shipPosition->Docked == 'no') {
-		throw new securityException ( );
+		throw new \Gameplay\Exception\SecurityException();
 	}
 	$storageCargo = new storageCargo ( $userID, $portProperties->PortID );
 
 	if ($value < 0) {
-		throw new securityException ( );
+		throw new \Gameplay\Exception\SecurityException();
 	}
 
 	if ($value == 'all') {
@@ -358,7 +358,7 @@ if ($action == 'toCargohold') {
 	}
 
 	if ($originalValue < 1) {
-		throw new securityException ( );
+		throw new \Gameplay\Exception\SecurityException();
 	}
 
 	if ($subaction == 'product') {
@@ -389,7 +389,7 @@ if ($action == 'toCargohold') {
 	 * Zabezpieczenie na brak miejsca w ładowni
 	*/
 	if ($avaibleCargo < 1) {
-		throw new securityException ( );
+		throw new \Gameplay\Exception\SecurityException();
 	}
 
 	if ($usedByMove > $avaibleCargo) {
@@ -423,11 +423,11 @@ if ($action == 'toStorehouse') {
     $productSize = 1;
 
 	if ($portProperties->PortID == null) {
-		throw new securityException ();
+		throw new \Gameplay\Exception\SecurityException ();
 	}
 
 	if ($shipPosition->Docked == 'no') {
-		throw new securityException ();
+		throw new \Gameplay\Exception\SecurityException ();
 	}
 	$storageCargo = new storageCargo ( $userID, $portProperties->PortID );
 
@@ -441,13 +441,13 @@ if ($action == 'toStorehouse') {
 	}
 
 	if ($originalValue < 1) {
-		throw new securityException();
+		throw new \Gameplay\Exception\SecurityException();
 	}
 
 	if ($subaction == 'product') {
         $productData = new \Gameplay\Model\ProductType($id);
 		if (empty($productData->Size)) {
-			throw new securityException();
+			throw new \Gameplay\Exception\SecurityException();
 		}
 		$productSize = $productData->Size;
 	}
@@ -455,7 +455,7 @@ if ($action == 'toStorehouse') {
 	if ($subaction == 'weapon') {
         $productData = new \Gameplay\Model\WeaponType($id);
 		if (empty($productData->Size)) {
-			throw new securityException();
+			throw new \Gameplay\Exception\SecurityException();
 		}
 		$productSize = $productData->Size;
 	}
@@ -463,7 +463,7 @@ if ($action == 'toStorehouse') {
 	if ($subaction == 'equipment') {
 		$productData = new \Gameplay\Model\EquipmentType($id);
 		if (empty($productData->Size)) {
-			throw new securityException();
+			throw new \Gameplay\Exception\SecurityException();
 		}
 		$productSize = $productData->Size;
 	}
@@ -471,7 +471,7 @@ if ($action == 'toStorehouse') {
 	if ($subaction == 'item') {
         $productData = new \Gameplay\Model\ItemType($id);
 		if (empty($productData->Size)) {
-			throw new securityException();
+			throw new \Gameplay\Exception\SecurityException();
 		}
 		$productSize = $productData->Size;
 	}
@@ -490,11 +490,11 @@ if ($action == 'toStorehouse') {
 	}
 
 	if (! is_numeric ( $originalValue )) {
-		throw new securityException ( );
+		throw new \Gameplay\Exception\SecurityException();
 	}
 
 	if ($originalValue < 0) {
-		throw new securityException ( );
+		throw new \Gameplay\Exception\SecurityException();
 	}
 
 	if (! $error) {
@@ -526,19 +526,19 @@ if ($action == "itemSell") {
 	$tItems = "," . $tItems;
 
 	if (strpos ( $tItems, "," . $id ) === false) {
-		throw new securityException ( );
+		throw new \Gameplay\Exception\SecurityException();
 	}
 
 	if ($value < 1) {
-		throw new securityException ( );
+		throw new \Gameplay\Exception\SecurityException();
 	}
 
 	if (! is_numeric ( $value )) {
-		throw new securityException ( );
+		throw new \Gameplay\Exception\SecurityException();
 	}
 
 	if ($cargoAmount < $value) {
-		throw new securityException ( );
+		throw new \Gameplay\Exception\SecurityException();
 	}
 
     $productData = new \Gameplay\Model\ItemType($id);
@@ -576,15 +576,15 @@ if ($action == "productSell") {
 	$cargoAmount = $shipCargo->getProductAmount ( $id );
 
 	if ($value < 1) {
-		throw new securityException ( );
+		throw new \Gameplay\Exception\SecurityException();
 	}
 
 	if (! is_numeric ( $value )) {
-		throw new securityException ( );
+		throw new \Gameplay\Exception\SecurityException();
 	}
 
 	if ($cargoAmount < $value) {
-		throw new securityException ( );
+		throw new \Gameplay\Exception\SecurityException();
 	}
 
 	//Oblicz cenę towaru
@@ -628,15 +628,15 @@ if ($action == "productBuy") {
 	$portAmount = \Gameplay\Model\ProductType::sGetAmountInPort ( $portProperties->PortID, $id, 'product', 'sell' );
 
 	if (! is_numeric ( $value )) {
-		throw new securityException ( );
+		throw new \Gameplay\Exception\SecurityException();
 	}
 
 	if ($value < 1) {
-		throw new securityException ( );
+		throw new \Gameplay\Exception\SecurityException();
 	}
 
 	if ($portAmount < $value) {
-		throw new securityException ( );
+		throw new \Gameplay\Exception\SecurityException();
 	}
 
     $productData = new \Gameplay\Model\ProductType($id);
@@ -693,7 +693,7 @@ if ($action == "mapBuy") {
 	$value = 1;
 
 	if ($portAmount < $value) {
-		throw new securityException ( );
+		throw new \Gameplay\Exception\SecurityException();
 	}
 
 	$productPrice = $config['port']['mapPrice'];

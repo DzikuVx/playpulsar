@@ -1,6 +1,7 @@
 <?php
 use Gameplay\Model\UserAlliance;
 use Gameplay\PlayerModelProvider;
+use Gameplay\Exception\SecurityException;
 
 class alliancePost extends baseItem {
 	protected $tableName = "allianceposts";
@@ -28,7 +29,7 @@ class alliancePost extends baseItem {
 	/**
 	 * Usunięcie wiadomości na ścianie sojuszu, dialog
 	 * @param int $id
-	 * @throws securityException
+	 * @throws SecurityException
 	 */
 	static public function sDelete($id) {
 
@@ -38,17 +39,17 @@ class alliancePost extends baseItem {
         $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
 		if (empty($userAlliance->AllianceID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (! allianceRights::sCheck($userID, $userAlliance->AllianceID, 'post')) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		$tData = self::quickLoad($id);
 
 		if ($tData->AllianceID != $userAlliance->AllianceID) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		\Gameplay\Panel\Action::getInstance()->add(\General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), TranslateController::getDefault()->get('wantDeleteAlliancePost'),"Playpulsar.gameplay.execute('alliancePostDeleteExe',null,null,{$id})","Playpulsar.gameplay.execute('allianceDetail',null,null,'{$userAlliance->AllianceID}')"));
@@ -60,7 +61,7 @@ class alliancePost extends baseItem {
 	/**
 	 * usunięcie wiadomości na ścianie sojuszu, wykonanie
 	 * @param int $id
-	 * @throws securityException
+	 * @throws SecurityException
 	 */
 	static public function sDeleteExe($id) {
 
@@ -70,17 +71,17 @@ class alliancePost extends baseItem {
         $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
 		if (empty($userAlliance->AllianceID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (! allianceRights::sCheck($userID, $userAlliance->AllianceID, 'post')) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		$tData = self::quickLoad($id);
 
 		if ($tData->AllianceID != $userAlliance->AllianceID) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		self::sRemove($id);
@@ -97,7 +98,7 @@ class alliancePost extends baseItem {
 	}
 
 	/**
-	 * @throws securityException
+	 * @throws SecurityException
 	 */
 	static public function sNew() {
 
@@ -107,11 +108,11 @@ class alliancePost extends baseItem {
         $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
 		if (empty($userAlliance->AllianceID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (! allianceRights::sCheck($userID, $userAlliance->AllianceID, 'post')) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		$template  = new \General\Templater('../templates/alliancePost.html');
@@ -127,7 +128,7 @@ class alliancePost extends baseItem {
 
 	/**
 	 * @param string $values
-	 * @throws securityException
+	 * @throws SecurityException
 	 * @since 2011-03-14
 	 */
 	static public function sNewExe($values) {
@@ -138,11 +139,11 @@ class alliancePost extends baseItem {
         $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
 		if (empty($userAlliance->AllianceID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (! allianceRights::sCheck($userID, $userAlliance->AllianceID, 'post')) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		$data = new stdClass();

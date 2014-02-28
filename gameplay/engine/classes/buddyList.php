@@ -1,4 +1,7 @@
 <?php
+
+use Gameplay\Exception\SecurityException;
+
 class buddyList extends baseItem {
 	protected $tableName = "buddylist";
 	protected $tableID = 'BuddyID';
@@ -12,15 +15,15 @@ class buddyList extends baseItem {
 		 * Warunki bezpieczeństwa
 		*/
 		if (!is_numeric($id)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (empty($id)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (!self::sCheck($userID, $id)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		/*
@@ -55,15 +58,15 @@ class buddyList extends baseItem {
 		 * Warunki bezpieczeństwa
 		*/
 		if (!is_numeric($id)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (empty($id)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (!self::sCheck($userID, $id)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		$tString = TranslateController::getDefault()->get('wantAcceptBuddy');
@@ -84,15 +87,15 @@ class buddyList extends baseItem {
 		 * Warunki bezpieczeństwa
 		*/
 		if (!is_numeric($id)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (empty($id)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (!self::sCheck($userID, $id)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		$tString = TranslateController::getDefault()->get('wantDeclineBuddy');
@@ -111,7 +114,7 @@ class buddyList extends baseItem {
 		global $userID;
 
 		if (!is_numeric($id)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		self::sRemove($userID, $id);
@@ -152,16 +155,16 @@ class buddyList extends baseItem {
 	 * Sprawdzenie, czy między graczami jest relacja buddy
 	 * @param int $userID
 	 * @param int $secondUserID
-	 * @throws securityException
+	 * @throws SecurityException
 	 * @return boolean
 	 */
 	static public function sCheckEntry($userID, $secondUserID) {
 
 		if (!is_numeric($userID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 		if (!is_numeric($secondUserID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		$retVal = false;
@@ -193,7 +196,7 @@ class buddyList extends baseItem {
 	/**
 	 * Wysłanie zaproszenia do znajomych
 	 * @param int $id ID użytkownika do jakiego wysyłamy
-	 * @throws securityException
+	 * @throws SecurityException
 	 */
 	static public function sSendRequest($id) {
 		global $userID;
@@ -201,11 +204,11 @@ class buddyList extends baseItem {
         $userProperties = \Gameplay\PlayerModelProvider::getInstance()->get('UserEntity');
 
 		if (!is_numeric($id)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (self::sCheckEntry($userID, $id)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		/**
@@ -234,16 +237,16 @@ class buddyList extends baseItem {
 	 * Usunięcie wpisu z BuddyList
 	 * @param int $userID
 	 * @param int $secondUserID
-	 * @throws securityException
+	 * @throws SecurityException
      * @return bool
 	 */
 	static private function sRemove($userID, $secondUserID) {
 
 		if (!is_numeric($userID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 		if (!is_numeric($secondUserID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		\Database\Controller::getInstance()->execute("DELETE FROM buddylist WHERE UserID= '{$userID}' AND SecondUserID='{$secondUserID}'");
@@ -256,7 +259,7 @@ class buddyList extends baseItem {
 	 * @param int $userID
 	 * @param int $secondUserID
 	 * @param string $accepted
-	 * @throws securityException
+	 * @throws SecurityException
      * @return int
 	 */
 	static private function sInsert($userID, $secondUserID, $accepted) {
@@ -264,10 +267,10 @@ class buddyList extends baseItem {
 		$retVal = null;
 
 		if (!is_numeric($userID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 		if (!is_numeric($secondUserID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if ($accepted != 'yes') {

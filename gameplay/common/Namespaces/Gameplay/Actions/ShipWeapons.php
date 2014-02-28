@@ -5,6 +5,7 @@ namespace Gameplay\Actions;
 use Gameplay\Framework\ContentTransport;
 use Gameplay\Model\WeaponType;
 use Gameplay\PlayerModelProvider;
+use Gameplay\Exception\SecurityException;
 
 class ShipWeapons {
 
@@ -15,7 +16,7 @@ class ShipWeapons {
     /**
      * @param int $shipWeaponID
      * @return bool
-     * @throws \securityException
+     * @throws SecurityException
      */
     static public function sMoveUp($shipWeaponID) {
 
@@ -29,7 +30,7 @@ class ShipWeapons {
          * Warunki bezpieczeństwa
          */
         if (empty ($tData)) {
-            throw new \securityException();
+            throw new SecurityException();
         }
 
         if (! $error) {
@@ -51,7 +52,7 @@ class ShipWeapons {
     /**
      * @param int $shipWeaponID
      * @return bool
-     * @throws \securityException
+     * @throws SecurityException
      */
     static public function sMoveDown($shipWeaponID) {
 
@@ -65,7 +66,7 @@ class ShipWeapons {
          * Warunki bezpieczeństwa
          */
         if (empty ( $tData )) {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         if (! $error) {
@@ -86,7 +87,7 @@ class ShipWeapons {
 
     /**
      * @param int $weaponID
-     * @throws \securityException
+     * @throws SecurityException
      */
     static public function sSell($weaponID) {
 
@@ -99,15 +100,15 @@ class ShipWeapons {
         $shipProperties->updateWeaponsCount();
 
         if ($shipPosition->Docked == 'no') {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         if ($portProperties->Type != 'station') {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         if (! $shipWeapons->checkExists ( $weaponID )) {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         if (! $error) {
@@ -139,7 +140,7 @@ class ShipWeapons {
 
     /**
      * @param $weaponID
-     * @throws \securityException
+     * @throws SecurityException
      */
     static public function sSellFromCargo($weaponID) {
 
@@ -149,15 +150,15 @@ class ShipWeapons {
         $portProperties = \Gameplay\PlayerModelProvider::getInstance()->get('PortEntity');
 
         if ($shipPosition->Docked == 'no') {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         if ($portProperties->Type != 'station') {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         if ($shipCargo->getWeaponAmount($weaponID) < 1) {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         /**
@@ -186,7 +187,7 @@ class ShipWeapons {
 
     /**
      * @param int $shipWeaponID
-     * @throws \securityException
+     * @throws SecurityException
      */
     static public function sReload($shipWeaponID) {
 
@@ -202,25 +203,25 @@ class ShipWeapons {
          */
 
         if ($shipPosition->Docked == 'no') {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         if ($portProperties->Type != 'station') {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         $tReloadPrice = \Gameplay\Model\WeaponType::sGetReloadPrice($tData->WeaponID, $tData->Ammo);
 
         if ($userStats->Cash < $tReloadPrice) {
-            throw new \securityException();
+            throw new SecurityException();
         }
 
         if (empty ( $tData->MaxAmmo )) {
-            throw new \securityException();
+            throw new SecurityException();
         }
 
         if ($tData->Ammo == $tData->MaxAmmo) {
-            throw new \securityException();
+            throw new SecurityException();
         }
 
         /**
@@ -242,7 +243,7 @@ class ShipWeapons {
 
     /**
      * @param int $shipWeaponID
-     * @throws \securityException
+     * @throws SecurityException
      */
     static public function sRepair($shipWeaponID) {
 
@@ -258,14 +259,14 @@ class ShipWeapons {
          */
 
         if ($shipPosition->Docked == 'no') {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         $oObject = new WeaponType($tData->WeaponID);
         $tRepairPrice = $oObject->getRepairPrice();
 
         if ($userStats->Cash < $tRepairPrice) {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         if (!$error) {
@@ -281,7 +282,7 @@ class ShipWeapons {
 
     /**
      * @param int $weaponID
-     * @throws \securityException
+     * @throws SecurityException
      */
     static public function sBuy($weaponID) {
 
@@ -293,21 +294,21 @@ class ShipWeapons {
         $shipProperties->updateWeaponsCount();
 
         if ($shipPosition->Docked == 'no') {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         if ($portProperties->Type != 'station') {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         $tWeapon = new \Gameplay\Model\WeaponType($weaponID);
 
         if ($userStats->Cash < $tWeapon->Price) {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         if ($userStats->Fame < $tWeapon->Fame) {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         /**
@@ -315,7 +316,7 @@ class ShipWeapons {
          */
         $tString = ',' . $portProperties->Weapons . ',';
         if (mb_strpos ( $tString, ',' . $weaponID . ',' ) === false) {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         $shipWeapons->insert($tWeapon, $shipProperties);

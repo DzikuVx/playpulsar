@@ -199,7 +199,7 @@ class user {
 	/**
 	 * Edycja własnych danych
 	 * @param string $xml
-	 * @throws securityException
+	 * @throws \Gameplay\Exception\SecurityException
 	 */
 	static public function sEditOwnExe($xml) {
         $userProperties = \Gameplay\PlayerModelProvider::getInstance()->get('UserEntity');
@@ -210,11 +210,11 @@ class user {
 		if ($pA != '' && $pB != '') {
 
 			if ($pA != $pB) {
-				throw new securityException();
+				throw new \Gameplay\Exception\SecurityException();
 			}
 
 			if (mb_strlen($pA) < 6) {
-				throw new securityException();
+				throw new \Gameplay\Exception\SecurityException();
 			}
 
 			$userProperties->Password = self::sPasswordHash($userProperties->Login, $pA);

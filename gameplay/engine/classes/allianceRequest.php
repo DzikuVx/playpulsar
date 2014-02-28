@@ -1,6 +1,7 @@
 <?php
 use Gameplay\Model\UserAlliance;
 use Gameplay\PlayerModelProvider;
+use Gameplay\Exception\SecurityException;
 
 /**
  *
@@ -14,10 +15,9 @@ use Gameplay\PlayerModelProvider;
 class allianceRequest extends baseItem {
 
 	/**
-	 * Zapisanie do bazy podania do sojuszu
 	 * @param int $allianceID
 	 * @param string $xml
-	 * @throws securityException
+	 * @throws SecurityException
 	 */
 	static public function sNewExecute($allianceID, $xml) {
 		global $userID, $t;
@@ -27,25 +27,25 @@ class allianceRequest extends baseItem {
         $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
 		if (!empty($userAlliance->AllianceID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (empty($allianceID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		$tAlliance = new \Gameplay\Model\Alliance($allianceID);
 
 		if (empty($tAlliance)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if ($tAlliance->NPCAlliance != 'no') {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (self::sCheckRequest($userID, $allianceID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		self::sInsert($userID, $allianceID, xml::sGetValue($xml, '<text>', '</text>'));
@@ -76,7 +76,7 @@ class allianceRequest extends baseItem {
 	 *
 	 * Formularz podania o przyjęcie do sojuszu
 	 * @param int $allianceID
-	 * @throws securityException
+	 * @throws SecurityException
 	 */
 	static public function sNew($allianceID) {
 		global $userID;
@@ -86,25 +86,25 @@ class allianceRequest extends baseItem {
         $userProperties = \Gameplay\PlayerModelProvider::getInstance()->get('UserEntity');
 
 		if (!empty($userAlliance->AllianceID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (empty($allianceID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		$tAlliance = new \Gameplay\Model\Alliance($allianceID);
 
 		if (empty($tAlliance)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if ($tAlliance->NPCAlliance != 'no') {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (self::sCheckRequest($userID, $allianceID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		$template  = new \General\Templater('../templates/allianceRequest.html');
@@ -144,14 +144,14 @@ class allianceRequest extends baseItem {
 	 * @param int $userID
 	 * @param int $allianceID
 	 * @param string $text
-	 * @throws securityException
+	 * @throws SecurityException
 	 */
 	static private function sInsert($userID, $allianceID, $text = '') {
 
 		$tSecondAlliance = new UserAlliance($userID);
 
 		if (!empty($tSecondAlliance->AllianceID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		$text = \Database\Controller::getInstance()->quote($text);
@@ -218,7 +218,7 @@ class allianceRequest extends baseItem {
 	}
 
     /**
-     * @throws securityException
+     * @throws SecurityException
      */
     static public function sRender() {
 
@@ -228,11 +228,11 @@ class allianceRequest extends baseItem {
         $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
 		if (empty($userAlliance->AllianceID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (!allianceRights::sCheck($userID, $userAlliance->AllianceID, 'accept')) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		/*
@@ -248,7 +248,7 @@ class allianceRequest extends baseItem {
 
     /**
      * @param int $apprenticeID
-     * @throws securityException
+     * @throws SecurityException
      */
     static public function sAccept($apprenticeID) {
 		global $userID;
@@ -260,24 +260,24 @@ class allianceRequest extends baseItem {
 		 * Warunki bezpieczeństwa
 		 */
 		if (empty($userAlliance->AllianceID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (empty($apprenticeID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		$tSecondAlliance = new UserAlliance($apprenticeID);
 		if (! empty($tSecondAlliance->AllianceID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (allianceRights::sCheck($userID, $userAlliance->AllianceID, 'accept') === false) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (self::sCheckRequest($apprenticeID, $userAlliance->AllianceID) === false) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		$tString = TranslateController::getDefault()->get('wantAcceptPlayer');
@@ -293,7 +293,7 @@ class allianceRequest extends baseItem {
 
 	/**
 	 * @param int $apprenticeID
-	 * @throws securityException
+	 * @throws SecurityException
 	 */
 	static public function sAcceptExecute($apprenticeID) {
 		global $userID;
@@ -305,24 +305,24 @@ class allianceRequest extends baseItem {
 		 * Warunki bezpieczeństwa
 		 */
 		if (empty($userAlliance->AllianceID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (empty($apprenticeID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
         $secondPlayerAlliance = new UserAlliance($apprenticeID);
         if (! empty($secondPlayerAlliance->AllianceID)) {
-            throw new securityException();
+            throw new SecurityException();
         }
 
         if (allianceRights::sCheck($userID, $userAlliance->AllianceID, 'accept') === false) {
-            throw new securityException();
+            throw new SecurityException();
         }
 
         if (self::sCheckRequest($apprenticeID, $userAlliance->AllianceID) === false) {
-            throw new securityException();
+            throw new SecurityException();
         }
 
         $secondPlayerAlliance->UserID = $apprenticeID;
@@ -357,7 +357,7 @@ class allianceRequest extends baseItem {
 	 *
 	 * Odrzucanie podania o przyjęcie do sojuszu
 	 * @param int $apprenticeID
-	 * @throws securityException
+	 * @throws SecurityException
 	 * @since 2010-07-31
 	 */
 	static public function sDecline($apprenticeID) {
@@ -370,24 +370,24 @@ class allianceRequest extends baseItem {
 		 * Warunki bezpieczeństwa
 		 */
 		if (empty($userAlliance->AllianceID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (empty($apprenticeID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		$tSecondAlliance = new UserAlliance($apprenticeID);
 		if (! empty($tSecondAlliance->AllianceID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (allianceRights::sCheck($userID, $userAlliance->AllianceID, 'accept') === false) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (self::sCheckRequest($apprenticeID, $userAlliance->AllianceID) === false) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		$tString = TranslateController::getDefault()->get('wantDeclinePlayer');
@@ -405,7 +405,7 @@ class allianceRequest extends baseItem {
 	 *
 	 * Odrzucenie podania do sojuszu, wykonanie
 	 * @param int $apprenticeID
-	 * @throws securityException
+	 * @throws SecurityException
 	 * @since 2010-07-31
 	 */
 	static public function sDeclineExecute($apprenticeID) {
@@ -418,24 +418,24 @@ class allianceRequest extends baseItem {
 		 * Warunki bezpieczeństwa
 		 */
 		if (empty($userAlliance->AllianceID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (empty($apprenticeID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		$tSecondAlliance = new UserAlliance($apprenticeID);
 		if (! empty($tSecondAlliance->AllianceID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (allianceRights::sCheck($userID, $userAlliance->AllianceID, 'accept') === false) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (self::sCheckRequest($apprenticeID, $userAlliance->AllianceID) === false) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		self::sDelete($apprenticeID, $userAlliance->AllianceID);

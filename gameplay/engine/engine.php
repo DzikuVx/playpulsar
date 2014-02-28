@@ -148,7 +148,7 @@ try {
 
 	//Sprawdz authorize code
 	if ($oController->getParameter('action') != "pageReload" && $oController->getParameter('auth') != $userFastTimes->AuthCode) {
-		throw new securityException('Authorization Code Error');
+		throw new \Gameplay\Exception\SecurityException('Authorization Code Error');
 	}
 
     $sectorProperties = $oPlayerModelProvider->register('SectorEntity', new \Gameplay\Model\SectorEntity($shipPosition));
@@ -690,11 +690,11 @@ try {
 
 		//Sprawdzenie, czy w sektorze jest port lub stacja
 		if ($portProperties->PortID == null) {
-			throw new securityException ( );
+			throw new \Gameplay\Exception\SecurityException( );
 		}
 
 		if ($shipProperties->checkMalfunction()) {
-			throw new securityException (TranslateController::getDefault()->get('shipMalfunctionEmp') );
+			throw new \Gameplay\Exception\SecurityException(TranslateController::getDefault()->get('shipMalfunctionEmp') );
 		}
 
 		if (! $error) {
@@ -740,7 +740,7 @@ try {
 
 		//Sprawdzenie, czy w sektorze jest port lub stacja
 		if ($portProperties->PortID == null) {
-			throw new securityException ( );
+			throw new \Gameplay\Exception\SecurityException();
 		}
 
 		if (! $error) {
@@ -778,7 +778,7 @@ try {
 		}
 
 		if ($shipPosition->Docked == 'yes') {
-			throw new securityException ( );
+			throw new \Gameplay\Exception\SecurityException ( );
 		}
 
 		if ($shipProperties->Power < $config ['node'] ['jumpCostPower']) {
@@ -792,7 +792,7 @@ try {
 		}
 
 		if (empty($jumpNode->NodeID)) {
-			throw new securityException ( );
+			throw new \Gameplay\Exception\SecurityException ( );
 		} else {
 			$destination = $jumpNode->getDestination($shipPosition);
 		}
@@ -848,7 +848,7 @@ try {
 		}
 
 		if ($shipPosition->Docked == 'yes') {
-			throw new securityException ( );
+			throw new \Gameplay\Exception\SecurityException ( );
 		}
 
 		if ($shipProperties->Turns < $sectorProperties->MoveCost) {
@@ -882,7 +882,7 @@ try {
 		}
 
 		if ($newX < 1 || $newY < 1 || $newX > $systemProperties->Width || $newY > $systemProperties->Height) {
-			throw new securityException ( );
+			throw new \Gameplay\Exception\SecurityException ( );
 		}
 
 		if (! $error) {
@@ -1045,7 +1045,7 @@ try {
 
 	echo $oContentTransport->get();
 
-} catch ( securityException $e ) {
+} catch (\Gameplay\Exception\SecurityException $e ) {
 
 	if (empty($oContentTransport)) {
 		$oContentTransport	= ContentTransport::getInstance();

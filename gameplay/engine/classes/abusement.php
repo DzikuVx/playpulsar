@@ -39,7 +39,7 @@ class abusement extends baseItem {
 	static public function sNew($id) {
 
 		if (empty($id)) {
-			throw new securityException();
+			throw new \Gameplay\Exception\SecurityException();
 		}
 
 		$template  = new \General\Templater('../templates/newAbusement.html');
@@ -62,7 +62,7 @@ class abusement extends baseItem {
 		global $userID;
 
 		if (empty($id)) {
-			throw new securityException();
+			throw new \Gameplay\Exception\SecurityException();
 		}
 
 		$data = new stdClass();

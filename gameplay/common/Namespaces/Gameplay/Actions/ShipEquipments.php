@@ -2,6 +2,7 @@
 
 namespace Gameplay\Actions;
 
+use Gameplay\Exception\SecurityException;
 use Gameplay\Model\EquipmentType;
 use Gameplay\PlayerModelProvider;
 
@@ -13,7 +14,7 @@ class ShipEquipments {
 
     /**
      * @param $equipmentID
-     * @throws \securityException
+     * @throws SecurityException
      */
     static public function sBuy($equipmentID) {
 
@@ -24,25 +25,25 @@ class ShipEquipments {
         $shipEquipment = PlayerModelProvider::getInstance()->get('ShipEquipments');
 
         if ($shipPosition->Docked == 'no') {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         if ($portProperties->Type != 'station') {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         $tEquipment = new EquipmentType($equipmentID);
 
         if ($userStats->Cash < $tEquipment->Price) {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         if ($userStats->Fame < $tEquipment->Fame) {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         if ($tEquipment->Type == 'equipment' && $shipEquipment->checkExists ( $tEquipment )) {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         /**
@@ -50,7 +51,7 @@ class ShipEquipments {
          */
         $tString = ',' . $portProperties->Equipment . ',';
         if (mb_strpos ( $tString, ',' . $equipmentID . ',' ) === false) {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         if (! $error) {
@@ -67,7 +68,7 @@ class ShipEquipments {
 
     /**
      * @param $equipmentID
-     * @throws \securityException
+     * @throws SecurityException
      */
     static public function sStationRepair($equipmentID) {
 
@@ -81,7 +82,7 @@ class ShipEquipments {
         $userStats = $oProvider->get('UserStatistics');
 
         if ($shipPosition->Docked == 'no') {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         $tEquipment = $shipEquipment->getSingle ( $equipmentID );
@@ -90,7 +91,7 @@ class ShipEquipments {
         $tRepairPrice = $oObject->getRepairPrice();
 
         if ($userStats->Cash < $tRepairPrice) {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         if (! $error) {
@@ -106,7 +107,7 @@ class ShipEquipments {
 
     /**
      * @param int $equipmentTypeId
-     * @throws \securityException
+     * @throws SecurityException
      */
     static public function sSellFromCargo($equipmentTypeId) {
 
@@ -116,15 +117,15 @@ class ShipEquipments {
         $portProperties = \Gameplay\PlayerModelProvider::getInstance()->get('PortEntity');
 
         if ($shipPosition->Docked == 'no') {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         if ($portProperties->Type != 'station') {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         if ($shipCargo->getEquipmentAmount($equipmentTypeId) < 1) {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         $tData = new EquipmentType($equipmentTypeId);
@@ -150,7 +151,7 @@ class ShipEquipments {
 
     /**
      * @param int $equipmentID
-     * @throws \securityException
+     * @throws SecurityException
      */
     static public function sSell($equipmentID) {
 
@@ -161,15 +162,15 @@ class ShipEquipments {
         $shipEquipment = PlayerModelProvider::getInstance()->get('ShipEquipments');
 
         if ($shipPosition->Docked == 'no') {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         if ($portProperties->Type != 'station') {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         if (! $shipEquipment->checkExists ( $equipmentID )) {
-            throw new \securityException ( );
+            throw new SecurityException ( );
         }
 
         if (! $error) {

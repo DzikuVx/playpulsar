@@ -1,6 +1,7 @@
 <?php
 use Gameplay\Model\UserAlliance;
 use Gameplay\PlayerModelProvider;
+use Gameplay\Exception\SecurityException;
 
 class allianceRights extends baseItem {
 
@@ -10,7 +11,7 @@ class allianceRights extends baseItem {
 	/**
 	 * @param int $id
 	 * @param string $xml
-	 * @throws securityException
+	 * @throws SecurityException
 	 */
 	static public function sPlayerSet($id, $xml) {
 
@@ -20,20 +21,20 @@ class allianceRights extends baseItem {
         $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
 		if (empty($userAlliance->AllianceID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (!allianceRights::sCheck($userID, $userAlliance->AllianceID, 'rank')) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		$tSecondAlliance = new UserAlliance($id);
 		if (empty($tSecondAlliance->AllianceID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if ($userAlliance->AllianceID != $tSecondAlliance->AllianceID) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (xml::sGetValue($xml, '<editValue>', '</editValue>') == 'true') {
@@ -90,20 +91,20 @@ class allianceRights extends baseItem {
         $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
 		if (empty($userAlliance->AllianceID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (!allianceRights::sCheck($userID, $userAlliance->AllianceID, 'rank')) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		$tSecondAlliance = new UserAlliance($id);
 		if (empty($tSecondAlliance->AllianceID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if ($userAlliance->AllianceID != $tSecondAlliance->AllianceID) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
         $otheruserParameters = new \Gameplay\Model\UserEntity($id);
@@ -158,7 +159,7 @@ class allianceRights extends baseItem {
 	}
 
 	/**
-	 * @throws securityException
+	 * @throws SecurityException
 	 */
 	static public function sRender() {
 
@@ -168,11 +169,11 @@ class allianceRights extends baseItem {
         $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
 		if (empty($userAlliance->AllianceID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (!allianceRights::sCheck($userID, $userAlliance->AllianceID, 'rank')) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		/*

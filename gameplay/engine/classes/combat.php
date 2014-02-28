@@ -1002,7 +1002,7 @@ class combat {
      * @param $defenderID
      * @param bool $enablePositionCheck
      * @return bool
-     * @throws securityException
+     * @throws \Gameplay\Exception\SecurityException
      */
     static public function sSetCombatLock($attackerID, $defenderID, $enablePositionCheck = true) {
 
@@ -1023,7 +1023,7 @@ class combat {
 		 */
 
 		if ($attackerProperties->RookieTurns > 0 || $defenderProperties->RookieTurns > 0) {
-			throw new securityException ( TranslateController::getDefault()->get('Rookie protected') );
+			throw new \Gameplay\Exception\SecurityException ( TranslateController::getDefault()->get('Rookie protected') );
 		}
 
 		if ($attackerProperties->checkMalfunction()) {
@@ -1034,17 +1034,17 @@ class combat {
 
 		if ($enablePositionCheck) {
 			if ($attackerPosition->System != $defenderPosition->System) {
-				throw new securityException ( TranslateController::getDefault()->get('Player has left this sector') );
+				throw new \Gameplay\Exception\SecurityException ( TranslateController::getDefault()->get('Player has left this sector') );
 			}
 			if ($attackerPosition->X != $defenderPosition->X) {
-				throw new securityException ( TranslateController::getDefault()->get('Player has left this sector') );
+				throw new \Gameplay\Exception\SecurityException ( TranslateController::getDefault()->get('Player has left this sector') );
 			}
 			if ($attackerPosition->Y != $defenderPosition->Y) {
-				throw new securityException ( TranslateController::getDefault()->get('Player has left this sector') );
+				throw new \Gameplay\Exception\SecurityException ( TranslateController::getDefault()->get('Player has left this sector') );
 			}
 
 			if ($attackerPosition->Docked == 'yes' || $defenderPosition->Docked == 'yes') {
-				throw new securityException ( TranslateController::getDefault()->get('Player has left this sector') );
+				throw new \Gameplay\Exception\SecurityException ( TranslateController::getDefault()->get('Player has left this sector') );
 			}
 		}
 

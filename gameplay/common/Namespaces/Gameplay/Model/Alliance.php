@@ -5,7 +5,7 @@ namespace Gameplay\Model;
 use Gameplay\Exception\WarningException;
 use Gameplay\PlayerModelProvider;
 use \psDebug;
-use \securityException;
+use Gameplay\Exception\SecurityException;
 use \TranslateController;
 
 class Alliance extends Standard {
@@ -115,7 +115,7 @@ class Alliance extends Standard {
 
     /**
      * @param int $kickedID
-     * @throws securityException
+     * @throws SecurityException
      */
     static public function sKick($kickedID) {
 
@@ -123,20 +123,20 @@ class Alliance extends Standard {
         $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
         if (empty($userAlliance->AllianceID)) {
-            throw new securityException();
+            throw new SecurityException();
         }
 
         if (empty($kickedID)) {
-            throw new securityException();
+            throw new SecurityException();
         }
 
         $tSecondAlliance = new UserAlliance($kickedID);
         if (empty($tSecondAlliance->AllianceID)) {
-            throw new securityException();
+            throw new SecurityException();
         }
 
         if ($userAlliance->AllianceID != $tSecondAlliance->AllianceID) {
-            throw new securityException();
+            throw new SecurityException();
         }
 
         $tString = TranslateController::getDefault()->get('wantKickPlayer');
@@ -153,7 +153,7 @@ class Alliance extends Standard {
 
     /**
      * @param int $kickedID
-     * @throws securityException
+     * @throws SecurityException
      */
     static public function sKickExe($kickedID) {
 
@@ -164,20 +164,20 @@ class Alliance extends Standard {
          * Warunki bezpieczeństwa
          */
         if (empty($userAlliance->AllianceID)) {
-            throw new securityException();
+            throw new SecurityException();
         }
 
         if (empty($kickedID)) {
-            throw new securityException();
+            throw new SecurityException();
         }
 
         $tSecondAlliance = new UserAlliance($kickedID);
         if (empty($tSecondAlliance->AllianceID)) {
-            throw new securityException();
+            throw new SecurityException();
         }
 
         if ($userAlliance->AllianceID != $tSecondAlliance->AllianceID) {
-            throw new securityException();
+            throw new SecurityException();
         }
 
         \allianceRights::sGiveNone($kickedID, $tSecondAlliance->AllianceID);
@@ -204,7 +204,7 @@ class Alliance extends Standard {
     }
 
     /**
-     * @throws securityException
+     * @throws SecurityException
      */
     static public function sLeave() {
 
@@ -212,7 +212,7 @@ class Alliance extends Standard {
         $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
         if (empty($userAlliance->AllianceID)) {
-            throw new securityException();
+            throw new SecurityException();
         }
 
         \Gameplay\Panel\Action::getInstance()->add(\General\Controls::sRenderDialog(TranslateController::getDefault()->get ( 'confirm' ), TranslateController::getDefault()->get('wantLeaveAlliance'),"Playpulsar.gameplay.execute('allianceLeaveExecute')","Playpulsar.gameplay.execute('allianceDetail',null,null,'{$userAlliance->AllianceID}')"));
@@ -222,7 +222,7 @@ class Alliance extends Standard {
     }
 
     /**
-     * @throws securityException
+     * @throws SecurityException
      */
     static public function sLeaveExecute() {
 
@@ -232,7 +232,7 @@ class Alliance extends Standard {
         $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
         if (empty($userAlliance->AllianceID)) {
-            throw new securityException();
+            throw new SecurityException();
         }
 
         \allianceRights::sGiveNone($userID, $userAlliance->AllianceID);
@@ -269,7 +269,7 @@ class Alliance extends Standard {
     }
 
     /**
-     * @throws securityException
+     * @throws SecurityException
      */
     static public function sNew() {
 
@@ -279,7 +279,7 @@ class Alliance extends Standard {
         $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
         if (!empty($userAlliance->AllianceID)) {
-            throw new securityException();
+            throw new SecurityException();
         }
 
         if ($userStats->Fame < $config ['alliance']['createFameCost']) {
@@ -304,7 +304,7 @@ class Alliance extends Standard {
 
     /**
      * @param array $values
-     * @throws securityException
+     * @throws SecurityException
      * @throws WarningException
      */
     static public function sNewExe($values) {
@@ -317,7 +317,7 @@ class Alliance extends Standard {
         $t = TranslateController::getDefault();
 
         if (!empty($userAlliance->AllianceID)) {
-            throw new securityException();
+            throw new SecurityException();
         }
 
         $data = new Alliance();
@@ -379,7 +379,7 @@ class Alliance extends Standard {
     }
 
     /**
-     * @throws securityException
+     * @throws SecurityException
      */
     static public function sEdit() {
 
@@ -389,12 +389,12 @@ class Alliance extends Standard {
         $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
         if (empty($userAlliance->AllianceID)) {
-            throw new securityException();
+            throw new SecurityException();
         }
 
         $tRight = \allianceRights::sCheck($userID, $userAlliance->AllianceID, 'edit');
         if (empty($tRight)) {
-            throw new securityException();
+            throw new SecurityException();
         }
 
         $template  = new \General\Templater('../templates/allianceEdit.html');
@@ -422,12 +422,12 @@ class Alliance extends Standard {
         $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
         if (empty($userAlliance->AllianceID)) {
-            throw new securityException();
+            throw new SecurityException();
         }
 
         $tRight = \allianceRights::sCheck($userID, $userAlliance->AllianceID, 'edit');
         if (empty($tRight)) {
-            throw new securityException();
+            throw new SecurityException();
         }
 
         $data = new Alliance($userAlliance->AllianceID);

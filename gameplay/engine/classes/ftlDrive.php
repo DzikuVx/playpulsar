@@ -41,15 +41,15 @@ class ftlDrive {
 		}
 
 		if ($shipPosition->Docked != 'no') {
-			throw new securityException();
+			throw new \Gameplay\Exception\SecurityException();
 		}
 
 		if (empty($shipRouting->System)) {
-			throw new securityException();
+			throw new \Gameplay\Exception\SecurityException();
 		}
 
 		if (empty($shipProperties->CanWarpJump)) {
-			throw new securityException();
+			throw new \Gameplay\Exception\SecurityException();
 		}
 
 		$tPowerUsage = self::sGetPowerUsage($shipProperties);

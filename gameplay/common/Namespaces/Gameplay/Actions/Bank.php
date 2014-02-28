@@ -2,6 +2,7 @@
 
 namespace Gameplay\Actions;
 
+use Gameplay\Exception\SecurityException;
 use Gameplay\PlayerModelProvider;
 
 class Bank {
@@ -10,7 +11,7 @@ class Bank {
 
 	/**
 	 * @param int $value
-	 * @throws \securityException
+	 * @throws SecurityException
 	 */
 	static public function sWithdraw($value) {
 
@@ -22,23 +23,23 @@ class Bank {
 		$value = \Database\Controller::getInstance()->quote($value);
 
 		if (!is_numeric($value)) {
-			throw new \securityException();
+			throw new SecurityException();
 		}
 
 		if ($value < 0) {
-			throw new \securityException();
+			throw new SecurityException();
 		}
 
 		if ($value > $userStats->Bank) {
-			throw new \securityException();
+			throw new SecurityException();
 		}
 
 		if ($shipPosition->Docked != 'yes') {
-			throw new \securityException();
+			throw new SecurityException();
 		}
 
 		if ($portProperties->Type != 'station') {
-			throw new \securityException();
+			throw new SecurityException();
 		}
 
 		$userStats->Cash += $value;
@@ -51,7 +52,7 @@ class Bank {
 
 	/**
 	 * @param int $value
-	 * @throws \securityException
+	 * @throws SecurityException
 	 */
 	static public function sDeposit($value) {
 
@@ -62,23 +63,23 @@ class Bank {
 		$value = \Database\Controller::getInstance()->quote($value);
 
 		if (!is_numeric($value)) {
-			throw new \securityException();
+			throw new SecurityException();
 		}
 
 		if ($value < 0) {
-			throw new \securityException();
+			throw new SecurityException();
 		}
 
 		if ($value > $userStats->Cash) {
-			throw new \securityException();
+			throw new SecurityException();
 		}
 
 		if ($shipPosition->Docked != 'yes') {
-			throw new \securityException();
+			throw new SecurityException();
 		}
 
 		if ($portProperties->Type != 'station') {
-			throw new \securityException();
+			throw new SecurityException();
 		}
 
 		$userStats->Cash -= $value;

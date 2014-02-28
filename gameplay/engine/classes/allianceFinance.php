@@ -1,6 +1,7 @@
 <?php
 use Gameplay\Model\UserAlliance;
 use Gameplay\PlayerModelProvider;
+use Gameplay\Exception\SecurityException;
 
 class allianceFinance extends baseItem {
 	protected $tableName = "alliancefinance";
@@ -19,30 +20,30 @@ class allianceFinance extends baseItem {
 		$id    = \Database\Controller::getInstance()->quote($id);
 
 		if (empty($userAlliance->AllianceID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (!\Gameplay\Model\UserAlliance::sCheckMembership($id, $userAlliance->AllianceID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		$tRight = allianceRights::sCheck($userID, $userAlliance->AllianceID, 'cash');
 		if (empty($tRight)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (!is_numeric($value)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if ($value < 0) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		$data = new \Gameplay\Model\Alliance($userAlliance->AllianceID);
 
 		if ($value > $data->Cash) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
         $tUserStats = new \Gameplay\Model\UserStatistics($id);
@@ -92,16 +93,16 @@ class allianceFinance extends baseItem {
         $userAlliance = PlayerModelProvider::getInstance()->get('UserAlliance');
 
 		if (empty($userAlliance->AllianceID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (UserAlliance::sCheckMembership($id, $userAlliance->AllianceID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		$tRight = allianceRights::sCheck($userID, $userAlliance->AllianceID, 'cash');
 		if (empty($tRight)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		$template  = new \General\Templater('../templates/allianceCashout.html');
@@ -130,27 +131,27 @@ class allianceFinance extends baseItem {
 		$value = \Database\Controller::getInstance()->quote($value);
 
 		if (!is_numeric($value)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if ($value < 0) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if ($value > $userStats->Cash) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if ($shipPosition->Docked != 'yes') {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if ($portProperties->Type != 'station') {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		if (empty($userAlliance->AllianceID)) {
-			throw new securityException();
+			throw new SecurityException();
 		}
 
 		$userStats->Cash -= $value;

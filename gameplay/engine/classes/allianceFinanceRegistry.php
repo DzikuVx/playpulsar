@@ -32,7 +32,7 @@ class allianceFinanceRegistry extends simpleRegistry {
 		}
 
 		if (!allianceRights::sCheck($this->userID, $allianceID, 'cash')) {
-			throw new securityException();
+			throw new \Gameplay\Exception\SecurityException();
 		}
 
 		$retVal = '';

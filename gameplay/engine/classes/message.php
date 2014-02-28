@@ -38,8 +38,8 @@ class message extends baseItem {
 	 * usunięcie wiadomości
 	 *
 	 * @param int $messageID
-	 * @return boolean
-	 * @throws securityException
+	 * @return bool
+	 * @throws \Gameplay\Exception\SecurityException
 	 */
 	static public function sDelete($messageID) {
 
@@ -48,7 +48,7 @@ class message extends baseItem {
 		$tMessage = self::quickLoad ( $messageID );
 
 		if ($tMessage->Author != $userID && $tMessage->Receiver != $userID) {
-			throw new securityException ( );
+			throw new \Gameplay\Exception\SecurityException ( );
 		}
 
 		\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:messageDeleted}');
@@ -93,7 +93,7 @@ class message extends baseItem {
     /**
      * @param $messageID
      * @return bool
-     * @throws securityException
+     * @throws \Gameplay\Exception\SecurityException
      */
     static public function sGetDetail($messageID) {
 
@@ -106,7 +106,7 @@ class message extends baseItem {
 		$tMessage = self::quickLoad ( $messageID );
 
 		if ($tMessage->Author != $userID && $tMessage->Receiver != $userID) {
-			throw new securityException ( );
+			throw new \Gameplay\Exception\SecurityException();
 		}
 
 		$sRetVal = "<h1>" . TranslateController::getDefault()->get ( 'messageDetail' ) . "</h1>";

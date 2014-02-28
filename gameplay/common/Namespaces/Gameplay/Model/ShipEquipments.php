@@ -3,6 +3,7 @@
 namespace Gameplay\Model;
 
 use Database\MySQLiWrapper;
+use Gameplay\Exception\SecurityException;
 use Gameplay\PlayerModelProvider;
 
 class ShipEquipments {
@@ -120,12 +121,12 @@ class ShipEquipments {
 	 * @param EquipmentType $equipment
 	 * @param ShipProperties $shipProperties
 	 * @return bool
-     * @throws \securityException
+     * @throws SecurityException
 	 */
 	public function insert($equipment, ShipProperties $shipProperties) {
 
 		if ($shipProperties->CurrentEquipment >= $shipProperties->MaxEquipment) {
-			throw new \securityException();
+			throw new SecurityException();
 		}
 
 		/*

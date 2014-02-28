@@ -1,6 +1,7 @@
 <?php
 
 namespace Gameplay\Panel;
+use Gameplay\Exception\SecurityException;
 use Gameplay\Model\ShipPosition;
 use Gameplay\Model\ShipProperties;
 use Gameplay\Model\SystemProperties;
@@ -41,12 +42,12 @@ class ActiveScanner extends SystemMap implements Singleton {
 
     /**
      * @return bool|MiniMap
-     * @throws \securityException
+     * @throws SecurityException
      */
     public function render() {
 
 		if (empty($this->shipPosition)) {
-			throw new \securityException();
+			throw new SecurityException();
 		}
 
 		$this->rendered = true;
@@ -102,11 +103,11 @@ class ActiveScanner extends SystemMap implements Singleton {
 		}
 
 		if ($shipPosition->Docked != 'no') {
-			throw new \securityException();
+			throw new SecurityException();
 		}
 
 		if (empty($shipProperties->CanActiveScan)) {
-			throw new \securityException();
+			throw new SecurityException();
 		}
 
 		$tPowerUsage = self::sGetPowerUsage($shipProperties);

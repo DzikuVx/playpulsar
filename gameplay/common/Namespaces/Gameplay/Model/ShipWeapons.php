@@ -3,6 +3,7 @@
 namespace Gameplay\Model;
 
 use Database\MySQLiWrapper;
+use Gameplay\Exception\SecurityException;
 
 class ShipWeapons {
     /**
@@ -277,12 +278,12 @@ class ShipWeapons {
     /**
      * @param int $ID
      * @return bool
-     * @throws \securityException
+     * @throws SecurityException
      */
     public function switchState($ID) {
 
 		if ($this->entityId == null) {
-		    throw new \securityException();
+		    throw new SecurityException();
         }
 
 		$tId = null;
@@ -295,7 +296,7 @@ class ShipWeapons {
 		}
 
 		if ($tId != $this->entityId) {
-		    throw new \securityException();
+		    throw new SecurityException();
         }
 
         $this->changed = true;
