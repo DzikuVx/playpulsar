@@ -43,12 +43,13 @@ class NpcName extends BaseItem {
 		return  $retVal;
 	}
 
-	/**
-	 * New NPC name, save to db and confirm
-	 * @param user $user
-	 * @param array $params
-	 * @throws \Exception
-	 */
+    /**
+     * New NPC name, save to db and confirm
+     * @param user $user
+     * @param array $params
+     * @return string
+     * @throws \Exception
+     */
 	public function addExe($user, $params) {
 
 		$params['Type'] = $this->db->quote($params['Type']);
@@ -132,8 +133,8 @@ class NpcName extends BaseItem {
 
 			if ($e->getCode() == 1062) {
 
-				//@todo some kind of nice message with return link
-				echo \psDebug::halt('Duplicate Entry',null,array('trace'=>false,'send'=>false));
+				//TODO some kind of nice message with return link
+				\psDebug::halt('Duplicate Entry',null,array('trace'=>false,'send'=>false));
 
 			}else {
 				throw new \Exception($e->getMessage(), $e->getCode(), $e);

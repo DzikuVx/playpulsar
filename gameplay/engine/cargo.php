@@ -136,7 +136,7 @@ if ($action == "buyStorageRoom") {
 
 	$portProperties->Cash += $config ['port'] ['storageSpacePrice'];
 
-	\Gameplay\Model\PortEntity::sReset($portProperties);
+    $portProperties->reset();
 	\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
 	\Gameplay\Panel\SectorResources::getInstance()->hide ();
 	$action = "portStorehouse";
@@ -205,7 +205,7 @@ if ($action == "jettison") {
 	}
 
     $sectorProperties->resetResources();
-	\Gameplay\Model\PortEntity::sReset ( $portProperties );
+    $portProperties->reset();
 	shipCargo::management ( $userID );
 	\Gameplay\Panel\PortAction::getInstance()->clear();
     \Gameplay\Framework\ContentTransport::getInstance()->addNotification('success', '{T:opSuccess}');
@@ -324,7 +324,7 @@ if ($action == "gather") {
         \Gameplay\Model\ShipProperties::updateUsedCargo($shipProperties);
 
         $sectorProperties->resetResources();
-		\Gameplay\Model\PortEntity::sReset ( $portProperties );
+        $portProperties->reset();
 		\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
 		\Gameplay\Panel\SectorResources::getInstance()->render ( $shipPosition, $shipProperties, $sectorProperties );
 		\Gameplay\Panel\PortAction::getInstance()->clear();
@@ -412,7 +412,7 @@ if ($action == 'toCargohold') {
 		\Gameplay\Model\PortEntity::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
 
         $sectorProperties->resetResources();
-		\Gameplay\Model\PortEntity::sReset ( $portProperties );
+        $portProperties->reset();
 		\Gameplay\Panel\PortAction::getInstance()->clear();
         \Gameplay\Framework\ContentTransport::getInstance()->addNotification('success', '{T:opSuccess}');
 	}
@@ -509,7 +509,7 @@ if ($action == 'toStorehouse') {
 		shipCargo::management ( $userID );
 
         $sectorProperties->resetResources();
-		\Gameplay\Model\PortEntity::sReset ( $portProperties );
+        $portProperties->reset();
         \Gameplay\Framework\ContentTransport::getInstance()->addNotification('success', '{T:opSuccess}');
 	}
 }
@@ -557,9 +557,9 @@ if ($action == "itemSell") {
 
 	\Gameplay\Model\PortEntity::sCheckNewLevel($portProperties);
 
-	//Wypełnij odpowiednie pola
-	\Gameplay\Model\PortEntity::sReset ( $portProperties );
-	\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
+    $portProperties->reset();
+
+    \Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
 	\Gameplay\Panel\SectorResources::getInstance()->hide ();
 	$action = "portMarketplace";
 	\Gameplay\Model\PortEntity::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
@@ -611,8 +611,7 @@ if ($action == "productSell") {
 
 	\Gameplay\Model\PortEntity::sCheckNewLevel($portProperties);
 
-	//Wypełnij odpowiednie pola
-	\Gameplay\Model\PortEntity::sReset($portProperties);
+    $portProperties->reset();
 	\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
 	\Gameplay\Panel\SectorResources::getInstance()->hide ();
 	$action = "portMarketplace";
@@ -676,8 +675,7 @@ if ($action == "productBuy") {
 
 	\Gameplay\Model\PortEntity::sCheckNewLevel($portProperties);
 
-	//Wypełnij odpowiednie pola
-	\Gameplay\Model\PortEntity::sReset($portProperties);
+    $portProperties->reset();
 	\Gameplay\Panel\SectorResources::getInstance()->hide ();
 	$action = "portMarketplace";
 	\Gameplay\Model\PortEntity::sPopulatePanel ($userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );
@@ -716,7 +714,7 @@ if ($action == "mapBuy") {
 	//Update portu po zakończeniu handlu
 	$portProperties->Cash += $productPrice * $value;
 
-	\Gameplay\Model\PortEntity::sReset ( $portProperties );
+    $portProperties->reset();
 	\Gameplay\Panel\SectorResources::getInstance()->hide ();
 	$action = "portMarketplace";
 	\Gameplay\Model\PortEntity::sPopulatePanel ( $userID, $shipPosition, $portProperties, $action, $subaction, $value, $id );

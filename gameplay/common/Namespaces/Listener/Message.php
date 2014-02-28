@@ -34,7 +34,7 @@ class Message implements \Interfaces\Singleton, \Interfaces\Listener {
 	/**
 	 * 
 	 * Zapisanie tablicy kolejki do sesji
-	 * @param tabela kolejki $aArray
+	 * @param array $aArray tabela kolejki
 	 */
 	private function set($aArray) {
 		\General\Session::set('MessageQueue', $aArray);
@@ -73,7 +73,6 @@ class Message implements \Interfaces\Singleton, \Interfaces\Listener {
 	}
 	
 	/**
-	* Rejestracja listenera
 	* @param array $aParams
 	* @param \General\Templater $template
 	*/
@@ -85,18 +84,10 @@ class Message implements \Interfaces\Singleton, \Interfaces\Listener {
 			return;
 		}
 		
-		$sHtml = '';
-		
 		foreach ($aArray as $aMessage) {
-			//$sHtml .= $this->render($aMessage);
-			$sHtml .= LowLevelMessage::getInstance()->push($aMessage['type'], $aMessage['message']);
-                        
+			LowLevelMessage::getInstance()->push($aMessage['type'], $aMessage['message']);
 		}
-		
-		//$template->add('listeners',$sHtml);
-		
 		$this->clear();
-		
 	}
 	
 }

@@ -68,7 +68,7 @@ class Formater {
 	/**
 	 * Funkcja formatująca datę do postaci HH-ii
 	 * @param $date
-	 * @return sformatowana data
+	 * @return string
 	 */
 	function formatTime($date) {
 
@@ -79,7 +79,7 @@ class Formater {
 	/**
 	 * Funkcja zwaracająca datę w postaci YYYY-MM-DD z UNIX Timestam
 	 * @param $date
-	 * @return sformatowana data
+	 * @return string
 	 */
 	function getDate($date) {
 
@@ -87,12 +87,12 @@ class Formater {
 		return $retVal;
 	}
 
-	/**
-	 * Funkcja formatująca wartość do postaci xxx xxx,xx
-	 * @param $value
-	 * @param $unit jednostka wartości
-	 * @return sformatowana wartość
-	 */
+    /**
+     * Funkcja formatująca wartość do postaci xxx xxx,xx
+     * @param int|float $value
+     * @param string $unit jednostka wartości
+     * @return string
+     */
 	static public function formatValue($value, $unit = "$") {
 
 		$retVal = number_format ( $value, 2, ",", " " ) . " " . $unit;
@@ -126,10 +126,8 @@ class Formater {
 			} else {
 				break;
 			}
-				
-			return trim ( $str );
 		}
-
+        return trim($str);
 	}
 
 	static public function sParseYesNo($in) {

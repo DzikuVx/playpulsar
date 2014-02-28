@@ -324,7 +324,7 @@ class ShipWeapons {
 	/**
 	 * @param string $mode
 	 * @param int $ID
-	 * @return resource
+	 * @return \mysqli_result
 	 */
 	function get($mode = "enabled", $ID = null) {
 

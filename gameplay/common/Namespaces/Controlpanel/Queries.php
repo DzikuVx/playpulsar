@@ -71,7 +71,7 @@ class Queries extends \Controlpanel\BaseItem{
 			}
 
 			$retVal .= '<tr>';
-			foreach ( $tResult as $tKey => $tValue ) {
+			foreach ( $tResult as $tValue ) {
 				$retVal .= '<td>' . $tValue . '</td>';
 			}
 			$retVal .= '</tr>';

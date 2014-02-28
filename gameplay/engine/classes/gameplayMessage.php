@@ -36,7 +36,7 @@ class gameplayMessage {
 		return $tData;
 	}
 
-	static public function populate($announcement) {
+    static public function populate($announcement) {
 
 		$tData = self::get();
 

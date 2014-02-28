@@ -35,7 +35,7 @@ class LowLevelMessage implements \Interfaces\Singleton, \Interfaces\Listener {
 	/**
 	 * 
 	 * Zapisanie tablicy kolejki do sesji
-	 * @param tabela kolejki $aArray
+	 * @param array $aArray
 	 */
 	private function set($aArray) {
 		$this->message = $aArray;

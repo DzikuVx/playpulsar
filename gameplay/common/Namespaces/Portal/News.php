@@ -3,6 +3,7 @@
 namespace Portal;
 
 use \Database\Controller as Database;
+use General\Templater;
 
 class News extends BaseItem {
 
@@ -21,13 +22,13 @@ class News extends BaseItem {
 	 * Pobranie newsa z bazy danych
 	 *
 	 * @param int $ID
-	 * @return obiekt
+	 * @return \stdClass
 	 */
 	function get($ID) {
-		if ($ID == null)
-			$ID = $this->ID;
-		if ($ID == null)
+
+        if ($ID == null) {
 			return false;
+        }
 
 		$oCacheKey = new \phpCache\CacheKey('portalNews::get', $ID);
         $oCache    = \phpCache\Factory::getInstance()->create();
@@ -58,7 +59,12 @@ class News extends BaseItem {
 		return $this->dataObject;
 	}
 
-	public function render($object = null, $renderNav = true) {
+    /**
+     * @param \stdClass $object
+     * @param bool $renderNav
+     * @return null|string
+     */
+    public function render($object = null, $renderNav = true) {
 		if (empty($object)) {
 			/**
 			 * @var \Portal\News
@@ -159,8 +165,8 @@ class News extends BaseItem {
 	}
 
 	/**
-	 * @return stdClass
-	 * @param stdClass $object
+	 * @return \stdClass
+	 * @param \stdClass $object
 	 */
 	private function getPrev($object = null) {
 
@@ -204,7 +210,7 @@ class News extends BaseItem {
     /**
      * Pobranie i wyświetlenie szczegółow
      * @param array $params
-     * @param $template
+     * @param Templater $template
      * @return string
      */
 	public function detail($params, $template) {

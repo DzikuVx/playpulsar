@@ -167,12 +167,12 @@ class WeaponTypes extends GameplayItem{
 
 		$tArray = self::sGetStationList($params['id'], false);
 
-		$retVal .= Controls::sBuilUl($tArray);
+		$retVal .= Controls::sBuildUl($tArray);
 
 		$retVal .= '<h2>Used by NPC</h2>';
 
 		$tArray = self::sGetNpcList($params['id'], false);
-		$retVal .= Controls::sBuilUl($tArray);
+		$retVal .= Controls::sBuildUl($tArray);
 
 		return $retVal;
 	}

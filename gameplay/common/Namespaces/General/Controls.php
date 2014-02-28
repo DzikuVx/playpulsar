@@ -2,8 +2,6 @@
 
 namespace General;
 
-use \TranslateController as Translate;
-
 class Controls {
 
 	/**
@@ -68,10 +66,10 @@ class Controls {
 		return "</form>";
 	}
 
-	static public function sBuilUl($tData, $textField = 'Name') {
+	static public function sBuildUl($tData, $textField = 'Name') {
 		$retVal = '<ul>';
 		$tIndex = 0;
-		foreach ( $tData as $tKey => $tValue ) {
+		foreach ( $tData as $tValue ) {
 			$tIndex ++;
 			$retVal .= '<li>' . $tValue[$textField] . '</li>';
 		}
@@ -294,7 +292,7 @@ class Controls {
 				break;
 
 			case "assigner" :
-				$retVal .= "<input type=\"checkbox\" $value $name $id $class $style />\n";
+				$retVal .= "<input type=\"checkbox\" " . $value . "$name $id $class $style />\n";
 				break;
 
 			case "hidden" :
@@ -343,17 +341,16 @@ class Controls {
 		return $retVal;
 	}
 
-	/**
-	 * Wyświetlenie dialogu potwierdzającego
-	 *
-	 * @param string $dialogTitle
-	 * @param string $dialogText
-	 * @param string $returnLink
-	 * @return string
-	 */
+    /**
+     * Wyświetlenie dialogu potwierdzającego
+     *
+     * @param string $dialogTitle
+     * @param string $dialogText
+     * @param string $returnLink
+     * @param string $style
+     * @return string
+     */
 	static function displayConfirmDialog($dialogTitle, $dialogText, $returnLink = null, $style = "width: 350px; margin-top: 5px;") {
-
-		global $t;
 
 		$retVal = "<div class='confirmBox panel' style='" . $style . "' centerable='true'>";
 		$retVal .= "<h1>{$dialogTitle}</h1>";
@@ -412,7 +409,6 @@ class Controls {
      * @return string
      */
 	static public function bootstrapButton($text = '', $onclick = null, $type = '', $icon = null) {
-		$retVal = '';
 
 		if (empty($text)) {
 			$text = '';
@@ -453,7 +449,6 @@ class Controls {
      * @return string
      */
 	static public function bootstrapIconButton($text = '', $onclick = null, $type = '', $icon = null) {
-		$retVal = '';
 
 		if (empty($text)) {
 			$text = '';
@@ -532,7 +527,7 @@ class Controls {
 		* @param $onclick - zdarzenie onclick
 		* @param $style - opcjonalne wartości stylu dla elementu
 		* @param $class - klasa CSS, domyślnie formButton
-		* @return kod HTML
+		* @return string
 		*/
 	static function renderButton($name, $onclick = null, $style = null, $class = 'smallButton') {
 
@@ -555,14 +550,15 @@ class Controls {
 		return "<input $style class=\"$class\" type=\"button\" value=\"$name\" $onclick />";
 	}
 
-	/**
-		* Funkcja renderująca przycisk typu IMG
-		* @param $type - typ przycisku: info/edit/delete/... etc.
-		* @param $onclick - zdarzenie onclick
-		* @param $name - opis przycisku
-		* @param $class - klasa CSS, domyślnie img_link
-		* @return kod HTML
-		*/
+    /**
+     * Funkcja renderująca przycisk typu IMG
+     * @param $type - typ przycisku: info/edit/delete/... etc.
+     * @param $onclick - zdarzenie onclick
+     * @param $name - opis przycisku
+     * @param string $class - klasa CSS, domyślnie img_link
+     * @param string $style
+     * @return string
+     */
 	static function renderImgButton($type, $onclick, $name, $class = "link", $style = '') {
 
 		global $config;
@@ -708,7 +704,7 @@ class Controls {
 
 		$imgAddr = $config['general']['cdn'].$imgAddr;
 
-		return "<img src='$imgAddr' class='$class' onclick=\"$onclick\" title='$name' {$style} />";
+		return "<img src='$imgAddr' class='$class' onclick=\"" . $onclick . "\" title='$name' {$style} />";
 	}
 
 }

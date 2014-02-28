@@ -41,7 +41,7 @@ class SystemMap extends MiniMap implements Singleton{
      * @return string
      */
     static public function sRenderAvaibleSystemsSelect($currentSystem, $attr = null, $displayEmpty = true, $displayName = false) {
-		global $userID, $shipRouting;
+		global $userID;
 
 		if (!isset($attr['class'])) {
 			$attr['class'] = 'plot span1';

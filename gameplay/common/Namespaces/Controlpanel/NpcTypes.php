@@ -441,8 +441,6 @@ class NpcTypes extends GameplayItem{
 				$shipWeapons = new ShipWeapons($npcID, 'pl');
 				$shipWeapons->computeOffensiveRating($shipProperties);
 
-				$shipEquipment = new ShipEquipments($npcID, 'pl');
-
 				/**
 				 * Uaktualnij wartości maksymalne okrętu
 				 */

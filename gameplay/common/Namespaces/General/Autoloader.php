@@ -19,28 +19,32 @@ class Autoloader {
 		 * Autolodaer with Namespaces feature
 		*/
 		if (file_exists($sBaseDir.'/common/Namespaces/' . $sNamespaced . '.php')) {
-			require_once $sBaseDir.'/common/Namespaces/' . $sNamespaced . '.php';
+            /** @noinspection PhpIncludeInspection */
+            require_once $sBaseDir.'/common/Namespaces/' . $sNamespaced . '.php';
 		}
 		elseif (file_exists ( $sBaseDir.'/common/classes/' . $sClassName . '.php' )) {
 			/**
 			 * Klasy common
 			 */
 
-			require_once $sBaseDir.'/common/classes/' . $sClassName . '.php';
+            /** @noinspection PhpIncludeInspection */
+            require_once $sBaseDir.'/common/classes/' . $sClassName . '.php';
 		}
 		elseif (file_exists ( $sBaseDir.'/controlpanel/classes/' . $sClassName . '.php' )) {
 
 			/*
 			 * Klasy natywne control panel
 			*/
-			require_once $sBaseDir.'/controlpanel/classes/' . $sClassName . '.php';
+            /** @noinspection PhpIncludeInspection */
+            require_once $sBaseDir.'/controlpanel/classes/' . $sClassName . '.php';
 		}
 		elseif (file_exists ( $sBaseDir.'/engine/classes/' . $sClassName . '.php' )) {
 
 			/*
 			 * Klasy silnika gry
 			*/
-			require_once $sBaseDir.'/engine/classes/' . $sClassName . '.php';
+            /** @noinspection PhpIncludeInspection */
+            require_once $sBaseDir.'/engine/classes/' . $sClassName . '.php';
 		}
 
 	}

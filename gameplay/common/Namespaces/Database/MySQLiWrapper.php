@@ -223,7 +223,7 @@ class MySQLiWrapper {
 		/*
 		 * Nieskończona pętla
 		*/
-		while(true) {
+		while (true) {
 
 			try {
 				/*
@@ -236,7 +236,7 @@ class MySQLiWrapper {
 				*/
 				return $tResult;
 
-			}catch (Exception $e) {
+			} catch (Exception $e) {
 					
 				/*
 				 * Pobierz kod błędu
@@ -262,12 +262,9 @@ class MySQLiWrapper {
 						break;
 				}
 					
-			}catch (Exception $e) {
-				throw new Exception($e->getMessage(), $e->getCode(), $e->getPrevious());
 			}
-
 		}
-
+        return false;
 	}
 
     /**
@@ -314,10 +311,13 @@ class MySQLiWrapper {
 	 * Wykonanie zapytania bazy danych
 	 *
 	 * @param string $query
-	 * @return resource
+	 * @return \mysqli_result
 	 * @throws Exception
 	 */
 	public function execute($query) {
+
+        $tStartTime = 0;
+        $tEndTime = 0;
 
 		if (! $this->connected) {
 			$this->connect ();

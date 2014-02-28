@@ -425,21 +425,19 @@ class PortEntity extends CustomGet {
 
     }
 
-    //TODO get rid of this method, replace with dynamic
     /**
      * Reset portu
      *
-     * @param PortEntity $portProperties
-     * @param boolean $force - wymuszenie resetu nawet w przypadku, gdy nie upłynął czas
-     * @return boolean
+     * @param bool $force - force reset, even when time has not passed
+     * @return bool
      */
-    static public function sReset(PortEntity $portProperties, $force = false) {
+    public function reset($force = false) {
 
         global $actualTime, $config;
 
         $oDb = \Database\Controller::getInstance();
 
-        if ($portProperties->PortID != null && ($actualTime - $portProperties->ResetTime > $config ['timeThresholds'] ['portReset'] || $force)) {
+        if ($this->PortID != null && ($force || $actualTime - $this->ResetTime > $config ['timeThresholds'] ['portReset'])) {
 
             try{
 
@@ -447,8 +445,8 @@ class PortEntity extends CustomGet {
 
                 $oDb->disableAutocommit();
 
-                $sPreparedInsert = mysqli_prepare(\Database\Controller::getInstance()->getHandle(), "INSERT INTO portcargo(PortID, CargoID, Amount, Type, Mode, UserID)VALUES (?,?,?,'product',?,null)");
-                $sPreparedUpdate = mysqli_prepare(\Database\Controller::getInstance()->getHandle(), "UPDATE portcargo SET Amount = ?, Mode = ? WHERE PortID = ? AND CargoID = ? AND Type='product' AND portcargo.UserID IS NULL");
+                $sPreparedInsert = mysqli_prepare($oDb->getHandle(), "INSERT INTO portcargo(PortID, CargoID, Amount, Type, Mode, UserID)VALUES (?,?,?,'product',?,null)");
+                $sPreparedUpdate = mysqli_prepare($oDb->getHandle(), "UPDATE portcargo SET Amount = ?, Mode = ? WHERE PortID = ? AND CargoID = ? AND Type='product' AND portcargo.UserID IS NULL");
 
                 //Pętla po wszystkich towarach
                 $tQuery = "SELECT
@@ -458,7 +456,7 @@ class PortEntity extends CustomGet {
                     portcargo.Amount AS Amount,
                     portcargo.Mode AS Mode
                   FROM
-                    products LEFT JOIN portcargo ON portcargo.CargoID=products.ProductID AND portcargo.Type='product' AND portcargo.PortID='{$portProperties->PortID}' AND portcargo.UserID IS NULL
+                    products LEFT JOIN portcargo ON portcargo.CargoID=products.ProductID AND portcargo.Type='product' AND portcargo.PortID='{$this->PortID}' AND portcargo.UserID IS NULL
                   WHERE
                     products.Active = 'yes'
                   ";
@@ -582,7 +580,7 @@ class PortEntity extends CustomGet {
                         /*
                          * Updatey
                         */
-                        mysqli_stmt_bind_param($sPreparedUpdate, 'isii', $tR1->Amount, $tR1->Mode, $portProperties->PortID, $tR1->ProductID);
+                        mysqli_stmt_bind_param($sPreparedUpdate, 'isii', $tR1->Amount, $tR1->Mode, $this->PortID, $tR1->ProductID);
                         mysqli_stmt_execute($sPreparedUpdate);
 
                     } else {
@@ -590,14 +588,14 @@ class PortEntity extends CustomGet {
                         /*
                          * Insert
                         */
-                        mysqli_stmt_bind_param($sPreparedInsert, 'iiis', $portProperties->PortID, $tR1->ProductID, $tR1->Amount, $tR1->Mode);
+                        mysqli_stmt_bind_param($sPreparedInsert, 'iiis', $this->PortID, $tR1->ProductID, $tR1->Amount, $tR1->Mode);
                         mysqli_stmt_execute($sPreparedInsert);
 
                     }
                 }
 
                 //Wpisz czas resetu portu
-                $portProperties->ResetTime = $actualTime;
+                $this->ResetTime = $actualTime;
 
                 $oDb->commit();
                 $oDb->enableAutocommit();
@@ -609,7 +607,7 @@ class PortEntity extends CustomGet {
                 /*
                  * usuń wszystkie mapy z tego portu
                 */
-                $oDb->execute("DELETE FROM portcargo WHERE PortID='{$portProperties->PortID}' AND UserID IS NULL AND Type='map'");
+                $oDb->execute("DELETE FROM portcargo WHERE PortID='{$this->PortID}' AND UserID IS NULL AND Type='map'");
 
                 /*
                  * Wygeneruj nowe
@@ -617,11 +615,12 @@ class PortEntity extends CustomGet {
                 if (!empty($config ['port'] ['mapCreateCount'])) {
                     $tMapCount = rand(1, $config ['port'] ['mapCreateCount']);
                     for ($tIndex = 0; $tIndex < $tMapCount; $tIndex++) {
-                        $oDb->execute("INSERT INTO portcargo(PortID, CargoID, Amount, Type, Mode, UserID)VALUES ('{$portProperties->PortID}','" . \galaxy::sGetRandomWithoutMap(SystemProperties::getGalaxy($portProperties->System))."','1','map','buy',null)");
+                        $oDb->execute("INSERT INTO portcargo(PortID, CargoID, Amount, Type, Mode, UserID)VALUES ('{$this->PortID}','" . \galaxy::sGetRandomWithoutMap(SystemProperties::getGalaxy($this->System))."','1','map','buy',null)");
                     }
 
                 }
 
+                $this->clearCache();
             } catch (Exception $e) {
                 $oDb->rollback();
                 $oDb->enableAutocommit();

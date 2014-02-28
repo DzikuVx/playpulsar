@@ -10,7 +10,6 @@ use Gameplay\Model\UserStatistics;
 use Interfaces\Singleton;
 
 use \TranslateController as Translate;
-use \Database\Controller as Database;
 use \General\Controls as Controls;
 
 class SectorShips extends Renderable implements Singleton

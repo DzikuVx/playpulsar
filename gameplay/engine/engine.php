@@ -719,7 +719,7 @@ try {
 
             $sectorProperties->resetResources();
 
-			\Gameplay\Model\PortEntity::sReset ( $portProperties );
+            $portProperties->reset();
 
 			\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
 
@@ -768,7 +768,7 @@ try {
             $userStats->incExperience($config ['general'] ['expForMove']);
 
             $sectorProperties->resetResources();
-			\Gameplay\Model\PortEntity::sReset ( $portProperties );
+            $portProperties->reset();
 			\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
 			\Gameplay\Panel\Port::getInstance()->render ( $shipPosition, $portProperties, $shipProperties, $jumpNode );
 			\Gameplay\Panel\SectorResources::getInstance()->render ( $shipPosition, $shipProperties, $sectorProperties );
@@ -832,7 +832,7 @@ try {
 			$jumpNode = $jumpNodeObject->load ( $shipPosition, true, true );
 
             $sectorProperties->resetResources();
-			\Gameplay\Model\PortEntity::sReset ( $portProperties );
+            $portProperties->reset();
 			\Gameplay\Panel\Sector::getInstance()->render ( $sectorProperties, $systemProperties, $shipPosition );
 
 			\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
@@ -912,7 +912,7 @@ try {
             $jumpNode = $jumpNodeObject->load ( $shipPosition, true, true );
             $portProperties->reload($shipPosition);
 
-            \Gameplay\Model\PortEntity::sReset($portProperties);
+            $portProperties->reset();
             $sectorProperties->resetResources();
 			\Gameplay\Panel\Sector::getInstance()->render($sectorProperties, $systemProperties, $shipPosition);
 			\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
@@ -928,7 +928,7 @@ try {
 
 	if ($action == "shipRefresh") {
         $sectorProperties->resetResources(false);
-		\Gameplay\Model\PortEntity::sReset ( $portProperties );
+        $portProperties->reset();
 		\Gameplay\Panel\SectorResources::getInstance()->render ( $shipPosition, $shipProperties, $sectorProperties );
 		\Gameplay\Panel\SectorShips::getInstance()->render ( $userID, $sectorProperties, $systemProperties, $shipPosition, $shipProperties );
 		\Gameplay\Panel\Port::getInstance()->render ( $shipPosition, $portProperties, $shipProperties, $jumpNode );
@@ -937,7 +937,7 @@ try {
 
 	if ($action == "pageReload" || $action == 'shipAttack' || $action == 'refresh' || $action == 'fireWeapons' || $action == 'disengage') {
         $sectorProperties->resetResources(false);
-		\Gameplay\Model\PortEntity::sReset ( $portProperties );
+        $portProperties->reset();
 		\Gameplay\Panel\Sector::getInstance()->render ( $sectorProperties, $systemProperties, $shipPosition );
 		\Gameplay\Panel\Port::getInstance()->render ( $shipPosition, $portProperties, $shipProperties, $jumpNode );
 		\Gameplay\Panel\SectorResources::getInstance()->render ( $shipPosition, $shipProperties, $sectorProperties );

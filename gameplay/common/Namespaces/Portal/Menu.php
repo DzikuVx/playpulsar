@@ -65,7 +65,12 @@ class Menu {
 		return strcmp($a->title, $b->title);
 	}
 
-	static private function sRenderList($tList, $params) {
+    /**
+     * @param MenuObject[] $tList
+     * @param $params
+     * @return string
+     */
+    static private function sRenderList($tList, $params) {
 		$retVal = '';
 
 		$tNumber = 0;

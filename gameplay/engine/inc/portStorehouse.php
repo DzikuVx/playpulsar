@@ -69,7 +69,7 @@ if ($totalStorageRoom == 0) {
 	}
 
 	//Uzbrojenie
-	$tQuery = $storageCargo->getWeapons ();
+	$tQuery = $storageCargo->getWeapons();
 	while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 		$actionString = '';
 
@@ -86,8 +86,8 @@ if ($totalStorageRoom == 0) {
 	}
 
 	//Equipment
-	$tQuery = $storageCargo->getEquipments ();
-	while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
+	$tQuery = $storageCargo->getEquipments();
+	while ( $tR1 = \Database\Controller::getInstance()->fetch($tQuery)) {
 		$actionString = '';
 
 		$actionString .= \General\Controls::renderImgButton ( 'info', "getXmlRpc('univPanel','equipment::renderDetail','{$userProperties->Language}','{$tR1->EquipmentID}')", 'Info' );

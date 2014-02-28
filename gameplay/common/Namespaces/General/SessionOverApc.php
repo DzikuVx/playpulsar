@@ -2,6 +2,8 @@
 
 namespace General;
 
+use APCIterator;
+
 class SessionOverApc {
 
 	private static $instance;
@@ -25,7 +27,8 @@ class SessionOverApc {
 		);
 	}
 
-	public function open($savePath, $sessionName) {
+	public function open(/** @noinspection PhpUnusedParameterInspection */
+        $savePath, $sessionName) {
 		return true;
 	}
 

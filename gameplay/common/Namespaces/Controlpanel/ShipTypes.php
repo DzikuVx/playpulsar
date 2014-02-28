@@ -110,7 +110,7 @@ class ShipTypes extends GameplayItem {
 
 		$tArray = self::sGetStationList($params['id'], false);
 
-		$retVal .= \General\Controls::sBuilUl($tArray);
+		$retVal .= \General\Controls::sBuildUl($tArray);
 
 		return $retVal;
 	}

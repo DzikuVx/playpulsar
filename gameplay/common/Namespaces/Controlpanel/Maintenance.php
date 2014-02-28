@@ -655,8 +655,8 @@ class Maintenance extends BaseItem {
 		$tQuery = Database::getInstance()->execute ( $tQuery );
 		while ( $tResult = Database::getInstance()->fetch ( $tQuery ) ) {
 
-			$tPort = PortEntity::quickLoad ( $tResult->PortID, false );
-			PortEntity::sReset($tPort);
+			$tPort = new PortEntity($tResult->PortID, false);
+            PortEntity::sReset($tPort);
 			unset ( $tPort );
 
 		}
@@ -716,9 +716,7 @@ class Maintenance extends BaseItem {
 	 * @return boolean
 	 */
 	static private function sDeleteNpcClearCache() {
-
-		$tQuery = "DELETE FROM cacheclear WHERE (SELECT users.Type FROM users WHERE users.UserID=cacheclear.UserID) != 'player'";
-		$tQuery = Database::getInstance()->execute ( $tQuery );
+		Database::getInstance()->execute("DELETE FROM cacheclear WHERE (SELECT users.Type FROM users WHERE users.UserID=cacheclear.UserID) != 'player'");
 		return true;
 	}
 
@@ -871,8 +869,7 @@ class Maintenance extends BaseItem {
 
 		$tTime = time () - ($maintenance ['defensiveReportsValid'] * 3600);
 
-		$tQuery = "DELETE FROM combatmessages WHERE Type='defensive' AND CreateTime<'{$tTime}'";
-		$tQuery = Database::getInstance()->execute ( $tQuery );
+		Database::getInstance()->execute("DELETE FROM combatmessages WHERE Type='defensive' AND CreateTime<'{$tTime}'");
 		return true;
 	}
 

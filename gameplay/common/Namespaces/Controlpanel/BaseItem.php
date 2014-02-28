@@ -118,16 +118,17 @@ abstract class BaseItem {
 	/**
 	 * Przeglądanie rejestru
 	 *
-	 * @param user $user
+	 * @param \user $user
 	 * @param array $params
 	 * @return string
 	 */
 	public function browse($user, $params) {
 
-		$className = get_class ( $this ) . "Registry";
+        $className = get_class ( $this ) . "Registry";
 
-		$item = new $className ( $this->db );
-		$retVal = $item->browse ( $user, $params );
+        $item = new $className ( $this->db );
+        /** @noinspection PhpUndefinedMethodInspection */
+        $retVal = $item->browse ( $user, $params );
 
 		return $retVal;
 	}
@@ -166,13 +167,14 @@ abstract class BaseItem {
 	/**
 	 *
 	 * Dialog usuwania elementu
-	 * @param user $user
+	 * @param \user $user
 	 * @param array $params
-	 * @throws customException
+	 * @throws \customException
 	 * @return string
 	 * @since 2010-12-05
 	 */
-	public function delete($user, $params) {
+	public function delete(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 
 	 	global $config;
 
@@ -189,7 +191,8 @@ abstract class BaseItem {
      * @return string
      * @since 2010-12-05
      */
-	public function deleteExe($user, $params) {
+	public function deleteExe(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 
 		//@todo ustawić prawa dostępu w CP
 

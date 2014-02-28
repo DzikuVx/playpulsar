@@ -129,7 +129,7 @@ class EquipmentTypes extends GameplayItem{
 
 		$tArray = self::sGetStationList($params['id'], false);
 
-		$retVal .= Controls::sBuilUl($tArray);
+		$retVal .= Controls::sBuildUl($tArray);
 
 		return $retVal;
 	}

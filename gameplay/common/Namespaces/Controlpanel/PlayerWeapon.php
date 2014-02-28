@@ -6,7 +6,7 @@ use Gameplay\Model\ShipProperties;
 use Gameplay\Model\ShipWeapons;
 use Gameplay\Model\WeaponType;
 
-class PlayerWeapon extends \weapon{
+class PlayerWeapon extends WeaponType{
 
 	private function sRenderSelect($currentID = null, $name='value') {
 

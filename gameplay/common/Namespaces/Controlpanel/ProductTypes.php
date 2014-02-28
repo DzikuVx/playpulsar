@@ -12,7 +12,6 @@ class ProductTypes extends GameplayItem {
 	protected $tableIdField = 'ProductID';
 
 	public function editExe($user, $params) {
-		$retVal = '';
 
 		if (empty($_SESSION['returnUser'])) {
 			throw new \customException('Security error');

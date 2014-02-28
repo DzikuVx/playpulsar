@@ -454,34 +454,34 @@ class combat {
 		$nameField = "Name" . $this->Language;
 
 		$tQuery = "SELECT
-        userships.UserID AS UserID,
-        userships.RookieTurns AS RookieTurns,
-        users.Name AS PlayerName,
-        users.Type AS UserType,
-        userstats.Level AS Level,
-        specializations.$nameField AS SpecializationName,
-        shiptypes.$nameField AS ShipTypeName,
-        userships.OffRating AS OffRating,
-        userships.DefRating AS DefRating,
-        userships.Cloak AS Cloak,
-        alliances.Name As AllianceName,
-        alliances.AllianceID
-      FROM
-        shippositions JOIN userships USING(UserID)
-        JOIN shiptypes ON shiptypes.ShipID = userships.ShipID
-        JOIN users ON users.UserID = shippositions.UserID
-        JOIN userstats ON userstats.UserID=shippositions.UserID
-        LEFT JOIN specializations ON specializations.SpecializationID = userships.SpecializationID
-        LEFT JOIN alliancemembers ON alliancemembers.UserID=shippositions.UserID
-        LEFT JOIN alliances ON alliances.AllianceID = alliancemembers.AllianceID
-      WHERE
-        shippositions.System='{$this->shipPosition->System}' AND
-        shippositions.X='{$this->shipPosition->X}' AND
-        shippositions.Y='{$this->shipPosition->Y}' AND
-        shippositions.Docked='no' AND
-        shippositions.UserID != '{$this->userID}' AND
-        (SELECT COUNT(*) FROM combatlock AS cl WHERE cl.UserID=userships.UserID AND cl.ByUserID='{$this->userID}') = 0
-      ";
+            userships.UserID AS UserID,
+            userships.RookieTurns AS RookieTurns,
+            users.Name AS PlayerName,
+            users.Type AS UserType,
+            userstats.Level AS Level,
+            specializations.$nameField AS SpecializationName,
+            shiptypes.$nameField AS ShipTypeName,
+            userships.OffRating AS OffRating,
+            userships.DefRating AS DefRating,
+            userships.Cloak AS Cloak,
+            alliances.Name As AllianceName,
+            alliances.AllianceID
+          FROM
+            shippositions JOIN userships USING(UserID)
+            JOIN shiptypes ON shiptypes.ShipID = userships.ShipID
+            JOIN users ON users.UserID = shippositions.UserID
+            JOIN userstats ON userstats.UserID=shippositions.UserID
+            LEFT JOIN specializations ON specializations.SpecializationID = userships.SpecializationID
+            LEFT JOIN alliancemembers ON alliancemembers.UserID=shippositions.UserID
+            LEFT JOIN alliances ON alliances.AllianceID = alliancemembers.AllianceID
+          WHERE
+            shippositions.System='{$this->shipPosition->System}' AND
+            shippositions.X='{$this->shipPosition->X}' AND
+            shippositions.Y='{$this->shipPosition->Y}' AND
+            shippositions.Docked='no' AND
+            shippositions.UserID != '{$this->userID}' AND
+            (SELECT COUNT(*) FROM combatlock AS cl WHERE cl.UserID=userships.UserID AND cl.ByUserID='{$this->userID}') = 0
+          ";
 		$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
 
 		while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
@@ -490,8 +490,9 @@ class combat {
 				continue;
 			}
 
-			if ($tR1->AllianceName == null)
-			$tR1->AllianceName = $this->t->get ( 'noalliance' );
+			if ($tR1->AllianceName == null) {
+			    $tR1->AllianceName = $this->t->get ( 'noalliance' );
+            }
 
 			$retVal .= "<div class=\"shipPanel\">";
 			$retVal .= "<table class=\"shipPanel\"><tr>";

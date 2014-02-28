@@ -1,8 +1,6 @@
 <?php
 
 namespace Gameplay\Framework;
-use Gameplay\Panel\Action;
-use Gameplay\Panel\Renderable;
 
 /**
  * Content transport class responsible for transporting backend

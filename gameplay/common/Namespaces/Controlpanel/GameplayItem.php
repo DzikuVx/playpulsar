@@ -15,7 +15,6 @@ class GameplayItem extends BaseItem {
 	}
 
 	public function edit($user, $params) {
-		$retVal = '';
 
 		$tData = $this->getDataObject($params['id']);
 

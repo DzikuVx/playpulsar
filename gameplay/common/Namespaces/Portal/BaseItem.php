@@ -3,10 +3,16 @@
 namespace Portal;
 
 class BaseItem {
-	
-	protected $dataObject = null;
-	
-	public function getDataObject() {
+
+    /**
+     * @var \stdClass
+     */
+    protected $dataObject = null;
+
+    /**
+     * @return \stdClass
+     */
+    public function getDataObject() {
 		return $this->dataObject;
 	}
 	

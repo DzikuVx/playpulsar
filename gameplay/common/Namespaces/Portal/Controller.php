@@ -35,9 +35,8 @@ class Controller {
 		$_REQUEST['language'] = $language;
 
 		\TranslateController::setDefaultLanguage($language);
-		$t = \TranslateController::getDefault();
 
-		$template = new \General\Templater ( 'templates/mainPage.html' );
+		$template = new \General\Templater('templates/mainPage.html');
 
 		$template->add ( 'gameUrl', $config ['general'] ['url'] );
 

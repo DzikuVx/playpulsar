@@ -2,7 +2,6 @@
 
 namespace Gameplay\Panel;
 
-use Gameplay\Model\ShipWeapons;
 use Gameplay\PlayerModelProvider;
 use Interfaces\Singleton;
 

@@ -85,7 +85,7 @@ class shipCargo {
 		}
 
 		//Uzbrojenie
-		$tQuery = $shipCargo->getWeapons ();
+		$tQuery = $shipCargo->getWeapons();
 		while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 			$actionString = '';
 			$actionString .= \General\Controls::renderImgButton ( 'info', "getXmlRpc('univPanel','weapon::renderDetail','{$userProperties->Language}','{$tR1->WeaponID}')", 'Info' );
@@ -559,7 +559,7 @@ class shipCargo {
 
 	/**
 	 * @param string $orderBy
-	 * @return resource
+	 * @return mysqli_result
 	 */
 	public function getProducts($orderBy = 'name') {
 
@@ -583,7 +583,7 @@ class shipCargo {
 	 *
 	 * @param int $ID
 	 * @param string $orderBy
-	 * @return resource
+	 * @return mysqli_result
 	 */
 	public function getItems($ID = null, $orderBy = 'name') {
 
@@ -604,23 +604,21 @@ class shipCargo {
 
 	/**
 	 * Pobranie wszystkich broni z ładowni gracza
-	 *
-	 * @param int $ID
 	 * @param string $orderBy
-	 * @return resource
+	 * @return mysqli_result
 	 */
-	public function getWeapons($ID = null, $orderBy = 'name') {
+	public function getWeapons($orderBy = 'name') {
 
 		$retVal = null;
 
 		$tQuery = "SELECT
-        weapontypes.WeaponID AS ID,
-        weapontypes.{$this->nameField} AS Name,
-        weapontypes.*,
-        " . $this->tableName . ".Amount AS Amount
-      FROM
-        " . $this->tableName . " JOIN  weapontypes ON {$this->addCondition} {$this->tableName}.UserID='{$this->userID}' AND weapontypes.WeaponID = " . $this->tableName . ".CargoID AND {$this->tableName}.Type='weapon'
-      ORDER BY weapontypes.{$this->orderCondition($orderBy)}";
+                weapontypes.WeaponID AS ID,
+                weapontypes.{$this->nameField} AS Name,
+                weapontypes.*,
+                " . $this->tableName . ".Amount AS Amount
+            FROM
+                " . $this->tableName . " JOIN  weapontypes ON {$this->addCondition} {$this->tableName}.UserID='{$this->userID}' AND weapontypes.WeaponID = " . $this->tableName . ".CargoID AND {$this->tableName}.Type='weapon'
+            ORDER BY weapontypes.{$this->orderCondition($orderBy)}";
 		$retVal = \Database\Controller::getInstance()->execute ( $tQuery );
 
 		return $retVal;
@@ -629,11 +627,10 @@ class shipCargo {
 	/**
 	 * Pobranie wszystkich upgradów z ładowni gracza
 	 *
-	 * @param int $ID
 	 * @param string $orderBy
-	 * @return resource
+	 * @return mysqli_result
 	 */
-	public function getEquipments($ID = null, $orderBy = 'name') {
+	public function getEquipments($orderBy = 'name') {
 
 		$retVal = null;
 

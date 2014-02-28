@@ -39,8 +39,6 @@ class PlayerEquipment extends EquipmentType{
 
 	final public function add($user, $params) {
 
-		global $config;
-
 		if (empty($_SESSION['returnUser'])) {
 			throw new \customException('Security error');
 		}

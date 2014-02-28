@@ -2,11 +2,18 @@
 
 namespace Portal\Rss;
 
+use Exception;
+use psDebug;
+use SimpleXMLElement;
+
 class Aggregator {
 
 	protected $rssURI = '';
 
-	protected $xmlObject = null;
+    /**
+     * @var SimpleXMLElement
+     */
+    protected $xmlObject = null;
 
 	protected $uriCache = false;
 
@@ -76,7 +83,8 @@ class Aggregator {
 	}
 
 	public function getChannel() {
-		return $this->xmlObject->channel;
+        /** @noinspection PhpUndefinedFieldInspection */
+        return $this->xmlObject->channel;
 	}
 
 	/**
@@ -84,7 +92,8 @@ class Aggregator {
 	 * @return string
 	 */
 	public function getTitle() {
-		return (string) $this->getChannel()->title;
+        /** @noinspection PhpUndefinedFieldInspection */
+        return (string) $this->getChannel()->title;
 	}
 
 	public function __toString() {
@@ -95,7 +104,8 @@ class Aggregator {
 
 		$retVal .= '<ul class="'.$this->listClassName.'">';
 
-		foreach ($tData->item as $tItem) {
+        /** @noinspection PhpUndefinedFieldInspection */
+        foreach ($tData->item as $tItem) {
 			$retVal .= '<li>';
 			$retVal .= '<a href="'.$tItem->link.'">';
 			$retVal .= $tItem->title;
@@ -107,12 +117,4 @@ class Aggregator {
 
 		return $retVal;
 	}
-
-	/**
-	 * Public destrutor
-	 */
-	public function destoy(){
-		unset ($this);
-	}
-
 }
