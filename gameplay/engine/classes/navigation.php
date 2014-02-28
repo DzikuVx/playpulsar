@@ -90,18 +90,16 @@ class navigation {
 			$nextSystem = $galaxyRoute->next ( $shipPosition );
 
 			/**
-			 * Inicjacja obiektu transNode
+			 * Inicjacja obiektu TransNode
 			 */
 			$tNode = new \stdClass();
 			$tNode->Source = $shipPosition->System;
 			$tNode->Destination = $nextSystem;
-			$transNodeObject = new \transNode ( );
-			$transNode = $transNodeObject->load ( $tNode, true, true );
+			$transNode = new \Gameplay\Model\TransNode($tNode);
 
 			$tCoords->System = $shipPosition->System;
 			$tCoords->X = $transNode->X;
 			$tCoords->Y = $transNode->Y;
-
 		}
 
 		$route = new \systemRouting(\Database\Controller::getInstance(), $tCoords);

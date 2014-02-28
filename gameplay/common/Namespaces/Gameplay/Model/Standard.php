@@ -94,11 +94,15 @@ abstract class Standard {
         $this->cache->clearModule(new \phpCache\CacheKey($this->tableName));
     }
 
+    protected  function getCacheModule() {
+        return $this->tableName;
+    }
+
     /**
      * @param mixed $entryId
      * @param bool $useCache
      */
-    function __construct($entryId = null, $useCache = true) {
+    public function __construct($entryId = null, $useCache = true) {
 
         $this->cache = \phpCache\Factory::getInstance()->create();
         $this->db    = \Database\Controller::getInstance();
@@ -109,7 +113,7 @@ abstract class Standard {
         if (!empty($this->entryId)) {
             $this->cacheID  = $this->parseCacheID($this->entryId);
             $this->dbID     = $this->parseDbID($this->entryId);
-            $this->cacheKey = new \phpCache\CacheKey($this->tableName, $this->cacheID);
+            $this->cacheKey = new \phpCache\CacheKey($this->getCacheModule(), $this->cacheID);
 
             $this->load();
         }
@@ -374,7 +378,7 @@ abstract class Standard {
         $this->entryId  = $newID;
         $this->cacheID  = $this->parseCacheID($newID);
         $this->dbID     = $this->parseDbID($newID);
-        $this->cacheKey = new \phpCache\CacheKey($this->tableName, $this->cacheID);
+        $this->cacheKey = new \phpCache\CacheKey($this->getCacheModule(), $this->cacheID);
 
         $this->load();
     }

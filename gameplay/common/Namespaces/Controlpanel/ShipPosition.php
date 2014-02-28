@@ -17,7 +17,7 @@ class ShipPosition extends \Gameplay\Model\ShipPosition{
 		$this->useCache = false;
 		$this->cacheID  = $this->parseCacheID($params['id']);
 		$this->dbID     = $this->parseDbID($params['id']);
-		$this->cacheKey = new \phpCache\CacheKey($this->tableName, $this->cacheID);
+		$this->cacheKey = new \phpCache\CacheKey($this->getCacheModule(), $this->cacheID);
 
 		$this->load();
 

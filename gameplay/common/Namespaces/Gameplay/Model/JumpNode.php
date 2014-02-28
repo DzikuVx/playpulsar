@@ -1,7 +1,6 @@
 <?php
 namespace Gameplay\Model;
 
-
 use stdClass;
 
 class JumpNode extends CustomGet {
