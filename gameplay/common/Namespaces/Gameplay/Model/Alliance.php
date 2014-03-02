@@ -195,7 +195,7 @@ class Alliance extends Standard {
 
         $tString = TranslateController::get($tSecondPlayer->Language)->get('youBeenKickedFromAlliance');
         $tString = str_replace('{name}',$userAlliance->Name, $tString);
-        \message::sInsert(null, $kickedID, $tString);
+        Message::sInsert(null, $kickedID, $tString);
 
         \Gameplay\Panel\Action::getInstance()->add(self::sGetDetail($userAlliance->AllianceID));
         \Gameplay\Panel\SectorShips::getInstance()->hide ();

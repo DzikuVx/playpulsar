@@ -1,10 +1,5 @@
 <?php
 
-/**
- * ładunek sektora
- * @version $Rev: 453 $
- * @package Engine
- */
 class sectorCargo {
 
 	private $position = null;
@@ -25,18 +20,10 @@ class sectorCargo {
 
 	/**
 	 * @param \Gameplay\Model\ShipPosition $position
-	 * @param \phpCache\Apc $cache
 	 */
-    //FIXME $cache is depreciated, resolve
-	public function __construct(\Gameplay\Model\ShipPosition $position, $cache = null) {
-
+	public function __construct(\Gameplay\Model\ShipPosition $position) {
 		$this->position = $position;
-
-		if (empty($cache)) {
-			$this->cache = \phpCache\Factory::getInstance()->create();
-		}else {
-			$this->cache = $cache;
-		}
+        $this->cache = \phpCache\Factory::getInstance()->create();
 
 		$this->loadSector();
 	}

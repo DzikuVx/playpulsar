@@ -129,7 +129,8 @@ class News extends BaseItem {
 		return  $retVal;
 	}
 
-	protected function addAdditionalData($user, $params, $template) {
+	protected function addAdditionalData(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params, $template) {
 		return true;
 	}
 

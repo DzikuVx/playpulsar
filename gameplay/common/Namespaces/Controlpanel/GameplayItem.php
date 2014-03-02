@@ -10,11 +10,13 @@ class GameplayItem extends BaseItem {
 	protected $editTitle = '';
 	protected $addTitle = '';
 
-	protected function getAdditionalData($user, $params) {
+	protected function getAdditionalData(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 		return '';
 	}
 
-	public function edit($user, $params) {
+	public function edit(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 
 		$tData = $this->getDataObject($params['id']);
 

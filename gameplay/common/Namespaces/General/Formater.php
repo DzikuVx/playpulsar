@@ -4,12 +4,7 @@ namespace General;
 
 class Formater {
 
-	/**
-	 * Konstruktor prywatny, blokada utworzenia obiektu
-	 */
-	private function __construct() {
-		
-	}
+	private function __construct() {}
 	
 	/**
 	 * Obliczenie procentów wartości max.
@@ -49,13 +44,13 @@ class Formater {
 
 	/**
 	 * Funkcja formatująca datę do postaci YYYY-MM-DD HH:ii
-	 * @param $date
+	 * @param int|string $date
 	 * @return string
 	 */
 	static public function formatDateTime($date) {
 
-		if (! is_numeric ( $date )) {
-			$date = strtotime ( $date );
+		if (!is_numeric($date)) {
+			$date = strtotime($date);
 		}
 
 		$retVal = date ( "Y-m-d H:i", $date );
@@ -67,7 +62,7 @@ class Formater {
 
 	/**
 	 * Funkcja formatująca datę do postaci HH-ii
-	 * @param $date
+	 * @param string $date
 	 * @return string
 	 */
 	function formatTime($date) {
@@ -78,7 +73,7 @@ class Formater {
 
 	/**
 	 * Funkcja zwaracająca datę w postaci YYYY-MM-DD z UNIX Timestam
-	 * @param $date
+	 * @param int $date
 	 * @return string
 	 */
 	function getDate($date) {

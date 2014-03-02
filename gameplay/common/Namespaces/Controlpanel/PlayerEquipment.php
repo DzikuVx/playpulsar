@@ -82,14 +82,16 @@ class PlayerEquipment extends EquipmentType{
 
 	}
 
-	final public function delete($user, $params) {
+	final public function delete(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 		global $config;
 
 		return \General\Controls::dialog( "Confirm", "Do you want to <strong>delete</strong> this equipment?", "document.location='{$config['backend']['fileName']}?class=".get_class($this)."&method=deleteExe&id={$params['id']}'", "window.history.back();", 'Yes','No' );
 
 	}
 
-	final public function deleteExe($user, $params) {
+	final public function deleteExe(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 
         $oDb = \Database\Controller::getInstance();
 

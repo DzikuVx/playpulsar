@@ -498,15 +498,15 @@ try {
 			break;
 
 		case 'showMessageText' :
-			message::sGetDetail ( $id );
+			\Gameplay\Actions\Message::sGetDetail($id);
 			break;
 
 		case 'sendMessage' :
-			message::sSend ( $userID, $id );
+			\Gameplay\Actions\Message::sSend($userID, $id);
 			break;
 
 		case 'wantDeleteMessageExecute' :
-			message::sDelete ( $id );
+			\Gameplay\Actions\Message::sDelete($id);
 			break;
 
         //FIXME to chyba nie działa
@@ -523,7 +523,7 @@ try {
 			break;
 
 		case 'sendMessageExecute' :
-			message::sSendExecute ( $userID, $id, $value );
+			\Gameplay\Actions\Message::sSendExecute ( $userID, $id, $value );
 			break;
 
 		case 'deleteFavSector' :

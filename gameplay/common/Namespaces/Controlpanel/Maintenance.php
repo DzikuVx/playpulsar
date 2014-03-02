@@ -84,7 +84,8 @@ class Maintenance extends BaseItem {
      * @param $params
      * @throws \customException
      */
-    final public function flushAllExe($user, $params) {
+    final public function flushAllExe($user, /** @noinspection PhpUnusedParameterInspection */
+                                      $params) {
 
 		if ($user->sGetRole () != 'admin') {
 			throw new \customException ( 'No rights to perform selected operation' );
@@ -103,7 +104,8 @@ class Maintenance extends BaseItem {
      * @return string
      * @throws \customException
      */
-    final public function giveTraxium($user, $params) {
+    final public function giveTraxium($user, /** @noinspection PhpUnusedParameterInspection */
+                                      $params) {
 
 		if ($user->sGetRole () != 'admin') {
 			throw new \customException ( 'No rights to perform selected operation' );
@@ -218,7 +220,8 @@ class Maintenance extends BaseItem {
      * @param $params
      * @throws \customException
      */
-    final public function gameplayMessageExe($user, $params) {
+    final public function gameplayMessageExe($user, /** @noinspection PhpUnusedParameterInspection */
+                                             $params) {
 
 		if ($user->sGetRole () != 'admin') {
 			throw new \customException ( 'No rights to perform selected operation' );

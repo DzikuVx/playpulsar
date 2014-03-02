@@ -2,6 +2,7 @@
 
 namespace Gameplay\Panel;
 
+use Gameplay\Model\Message;
 use Gameplay\PlayerModelProvider;
 use Interfaces\Singleton;
 
@@ -19,7 +20,7 @@ class Icons extends Renderable implements Singleton {
 
 		$this->retVal = '';
 
-		if (\message::sGetUnreadCount ( $this->userID ) > 0) {
+		if (Message::sGetUnreadCount ( $this->userID ) > 0) {
 			$this->retVal .= \General\Controls::renderImgButton('message', "Playpulsar.gameplay.execute('showMessages');", '{T:messages}');
 		}
 

@@ -60,7 +60,7 @@ class allianceRequest extends baseItem {
 			$t = new translation($tSecondPlayer->Language, dirname ( __FILE__ ) . '/../translations.php');
 			$tString = TranslateController::getDefault()->get('allianceNewAppliance');
 			$tString = str_replace('{name}',$userProperties->Name, $tString);
-			message::sInsert(null, $tMember, $tString);
+			\Gameplay\Model\Message::sInsert(null, $tMember, $tString);
 		}
 
 		\Gameplay\Panel\Action::getInstance()->add(\General\Controls::displayConfirmDialog(TranslateController::getDefault()->get('confirm'), TranslateController::getDefault()->get('allianceApplianceSaved'),'Playpulsar.gameplay.execute(\'allianceDetail\',null,null,\''.$allianceID.'\')'));
@@ -348,7 +348,7 @@ class allianceRequest extends baseItem {
 		$t = new translation($tSecondPlayer->Language, dirname ( __FILE__ ) . '/../translations.php');
 		$tString = $t->get('allianceApplianceAccepted');
 		$tString = str_replace('{name}',$userAlliance->Name, $tString);
-		message::sInsert(null, $apprenticeID, $tString);
+		\Gameplay\Model\Message::sInsert(null, $apprenticeID, $tString);
 
 		self::sRender();
 	}
@@ -442,7 +442,7 @@ class allianceRequest extends baseItem {
 
 		$tString = TranslateController::getDefault()->get('allianceApplianceDeclined');
 		$tString = str_replace('{name}',$userAlliance->Name, $tString);
-		message::sInsert(null, $apprenticeID, $tString);
+		\Gameplay\Model\Message::sInsert(null, $apprenticeID, $tString);
 
 		\phpCache\Factory::getInstance()->create()->clear('allianceRequest::sGetCount', $userAlliance->AllianceID);
 

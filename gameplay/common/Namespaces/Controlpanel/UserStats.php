@@ -6,12 +6,14 @@ use Gameplay\Model\UserStatistics;
 
 class UserStats extends UserStatistics {
 
-	public function edit($user, $params) {
+	public function edit(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 		$this->reload($params['id']);
 		return \Controlpanel\BaseItem::sRenderEditForm($this, $this, $params['id']);
 	}
 
-	public function editExe($user, $params) {
+	public function editExe(/** @noinspection PhpUnusedParameterInspection */
+        $user, $params) {
 
 		if (empty($_SESSION['returnUser'])) {
 			throw new \customException('Security error');
