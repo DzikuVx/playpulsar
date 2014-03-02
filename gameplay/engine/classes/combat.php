@@ -339,15 +339,16 @@ class combat {
 			return false;
 		}
 
-		/*
-		 * Przygotuj zapytanie zmienjszające amunicję
+		/**
+		 * Prepare ammo lowering query
+         * @var mysqli_stmt
 		 */
 		$tPreparedUpdate = mysqli_prepare(\Database\Controller::getInstance()->getHandle(),"UPDATE shipweapons SET Ammo=Ammo-1 WHERE ShipWeaponID=?");
 
 		/*
 		 * Pobierz strzelające uzbrojenie okrętu
 		 */
-		$tQuery = $this->player->shipWeapons->get ( 'fireable' );
+		$tQuery = $this->player->shipWeapons->get('fireable');
 		while ( $tWeapon = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 
 			/*
@@ -403,16 +404,16 @@ class combat {
 		 */
 
 		$tPercentage = \General\Formater::sGetPercentage ( $object->shipProperties->Shield, $object->shipProperties->ShieldMax );
-		$tPercentage = '<span ' . getParameterColor ( $object->shipProperties->Shield, $object->shipProperties->ShieldMax ) . '> SHD: ' . $tPercentage . '%</span>';
+		$tPercentage = '<span ' . \General\Controls::sGetParameterColor ( $object->shipProperties->Shield, $object->shipProperties->ShieldMax ) . '> SHD: ' . $tPercentage . '%</span>';
 		$retVal .= $tPercentage;
 		$tPercentage = \General\Formater::sGetPercentage ( $object->shipProperties->Armor, $object->shipProperties->ArmorMax );
-		$tPercentage = '<span ' . getParameterColor ( $object->shipProperties->Armor, $object->shipProperties->ArmorMax ) . '> ARM: ' . $tPercentage . '%</span>';
+		$tPercentage = '<span ' . \General\Controls::sGetParameterColor ( $object->shipProperties->Armor, $object->shipProperties->ArmorMax ) . '> ARM: ' . $tPercentage . '%</span>';
 		$retVal .= $tPercentage;
 		$tPercentage = \General\Formater::sGetPercentage ( $object->shipProperties->Power, $object->shipProperties->PowerMax );
-		$tPercentage = '<span ' . getParameterColor ( $object->shipProperties->Power, $object->shipProperties->PowerMax ) . '> POW: ' . $tPercentage . '%</span>';
+		$tPercentage = '<span ' . \General\Controls::sGetParameterColor ( $object->shipProperties->Power, $object->shipProperties->PowerMax ) . '> POW: ' . $tPercentage . '%</span>';
 		$retVal .= $tPercentage;
 		$tPercentage = \General\Formater::sGetPercentage ( $object->shipProperties->EmpMax - $object->shipProperties->Emp, $object->shipProperties->EmpMax );
-		$tPercentage = '<span ' . getParameterColor ( $object->shipProperties->EmpMax - $object->shipProperties->Emp, $object->shipProperties->EmpMax ) . '> EMP: ' . $tPercentage . '%</span>';
+		$tPercentage = '<span ' . \General\Controls::sGetParameterColor ( $object->shipProperties->EmpMax - $object->shipProperties->Emp, $object->shipProperties->EmpMax ) . '> EMP: ' . $tPercentage . '%</span>';
 		$retVal .= $tPercentage;
 
 		$retVal .= "</td>";
@@ -528,16 +529,16 @@ class combat {
 		$template = new \General\Templater ( dirname ( __FILE__ ) . '/../../templates/combat.html', $this->t);
 
 		$tPercentage = \General\Formater::sGetPercentage ( $this->player->shipProperties->Shield, $this->player->shipProperties->ShieldMax );
-		$tPercentage = '<span ' . getParameterColor ( $this->player->shipProperties->Shield, $this->player->shipProperties->ShieldMax ) . '>' . $tPercentage . '%</span>';
+		$tPercentage = '<span ' . \General\Controls::sGetParameterColor ( $this->player->shipProperties->Shield, $this->player->shipProperties->ShieldMax ) . '>' . $tPercentage . '%</span>';
 		$template->add ( 'ShieldValue', $tPercentage );
 		$tPercentage = \General\Formater::sGetPercentage ( $this->player->shipProperties->Armor, $this->player->shipProperties->ArmorMax );
-		$tPercentage = '<span ' . getParameterColor ( $this->player->shipProperties->Armor, $this->player->shipProperties->ArmorMax ) . '>' . $tPercentage . '%</span>';
+		$tPercentage = '<span ' . \General\Controls::sGetParameterColor ( $this->player->shipProperties->Armor, $this->player->shipProperties->ArmorMax ) . '>' . $tPercentage . '%</span>';
 		$template->add ( 'ArmorValue', $tPercentage );
 		$tPercentage = \General\Formater::sGetPercentage ( $this->player->shipProperties->Power, $this->player->shipProperties->PowerMax );
-		$tPercentage = '<span ' . getParameterColor ( $this->player->shipProperties->Power, $this->player->shipProperties->PowerMax ) . '>' . $tPercentage . '%</span>';
+		$tPercentage = '<span ' . \General\Controls::sGetParameterColor ( $this->player->shipProperties->Power, $this->player->shipProperties->PowerMax ) . '>' . $tPercentage . '%</span>';
 		$template->add ( 'PowerValue', $tPercentage );
 		$tPercentage = \General\Formater::sGetPercentage ( $this->player->shipProperties->EmpMax - $this->player->shipProperties->Emp, $this->player->shipProperties->EmpMax );
-		$tPercentage = '<span ' . getParameterColor ( $this->player->shipProperties->EmpMax - $this->player->shipProperties->Emp, $this->player->shipProperties->EmpMax ) . '>' . $tPercentage . '%</span>';
+		$tPercentage = '<span ' . \General\Controls::sGetParameterColor ( $this->player->shipProperties->EmpMax - $this->player->shipProperties->Emp, $this->player->shipProperties->EmpMax ) . '>' . $tPercentage . '%</span>';
 		$template->add ( 'EmpValue', $tPercentage );
 
 		$tString = '';

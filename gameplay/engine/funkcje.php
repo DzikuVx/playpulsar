@@ -74,32 +74,3 @@ function shipExamine($id, $userID) {
 	\Gameplay\Panel\Action::getInstance()->add($sRetVal);
 
 }
-
-/**
- * @deprecated
- * @param int $current
- * @param int $max
- * @return string
- */
-function getParameterColor($current, $max) {
-
-	global $colorTable;
-
-	if (empty ( $max )) {
-		return "style=\"color: " . $colorTable ['red'] . ";\"";
-	}
-
-	$out = "style=\"color: ";
-
-	$temp = $current / $max;
-
-	if ($temp > 0.66)
-		$out .= $colorTable ['green'];
-	if (($temp <= 0.66) and ($temp >= 0.33))
-		$out .= $colorTable ['yellow'];
-	if ($temp < 0.33)
-		$out .= $colorTable ['red'];
-
-	$out .= ";\"";
-	return $out;
-}

@@ -1,10 +1,4 @@
 <?php
-/**
- * Klasa wyniku strzelania pojedynczej broni
- *
- * @version $Rev: 460 $
- * @package Engine
- */
 class weaponFireResult {
 	/**
 	 * Kontent (firer, target)
@@ -105,14 +99,14 @@ class weaponFireResult {
 	}
 
     /**
-     * @param $userID
-     * @param $byUserID
+     * @param int $userID
+     * @param int $byUserID
      * @param string $type
-     * @param $preparedQuery
+     * @param mysqli_stmt $preparedQuery
      * @return bool
      * @throws Database\Exception
      */
-    public function save($userID, $byUserID, $type = 'defensive', $preparedQuery) {
+    public function save($userID, $byUserID, $type = 'defensive', mysqli_stmt $preparedQuery) {
 
 		$time = time();
 		$content = self::sEncodeSaveModel ( $this );
@@ -281,7 +275,7 @@ class weaponFireResult {
 	 * Czy są jakies combat messages
 	 *
 	 * @param int $userID
-	 * @return boolean
+	 * @return bool
 	 */
 	static public function sCheckMessages($userID) {
 
