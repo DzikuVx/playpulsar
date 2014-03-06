@@ -1,6 +1,6 @@
 <?php
 
-class galaxyRouting extends systemRouting {
+class galaxyRouting extends \Gameplay\Model\SystemRouting {
 	protected $tNodes;
 
 	/**
@@ -48,17 +48,10 @@ class galaxyRouting extends systemRouting {
 		return $retVal;
 	}
 
-	/**
-	 * (non-PHPdoc)
-	 * @see systemRouting::getCacheProperty()
-	 */
 	protected function getCacheProperty() {
 		return $this->destination->System;
 	}
 
-	/**
-	 * Pobranie tablicy wszystkich nodów
-	 */
 	private function getNodes() {
 
 		$oCacheKey = new \phpCache\CacheKey('galaxyRouting::getNodes', '');
@@ -127,10 +120,6 @@ class galaxyRouting extends systemRouting {
 		return true;
 	}
 
-	/**
-	 * (non-PHPdoc)
-	 * @see systemRouting::generate()
-	 */
 	public function generate($destination) {
 		
 		/**

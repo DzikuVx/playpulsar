@@ -1,29 +1,29 @@
 <?php
-/**
- * Metody nawigacyjne
- *
- * @version $Rev: 460 $
- * @package Engine
- */
-class navigation {
+
+namespace Gameplay\Actions;
+
+use Gameplay\Framework\ContentTransport;
+use Gameplay\Model\Coordinates;
+use Gameplay\Model\ShipPosition;
+use Gameplay\Model\SystemRouting;
+use Gameplay\PlayerModelProvider;
+
+class Navigation {
 
 	static public function sAddCurrentToFavourities() {
 
-        $userProperties = \Gameplay\PlayerModelProvider::getInstance()->get('UserEntity');
-        $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
+        $userProperties = PlayerModelProvider::getInstance()->get('UserEntity');
+        $shipPosition = PlayerModelProvider::getInstance()->get('ShipPosition');
 
-		/*
-		 * Próba update
-		 */
 		$tQuery = "SELECT COUNT(*) AS Ile FROM favouritesectors WHERE UserID='{$userProperties->UserID}' AND System='{$shipPosition->System}' AND X='{$shipPosition->X}' AND Y='{$shipPosition->Y}' ";
 		$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
 
 		if (\Database\Controller::getInstance()->fetch ( $tQuery )->Ile == 0) {
 			$tQuery = "INSERT INTO favouritesectors(UserID, System, X, Y) VALUES('{$userProperties->UserID}','{$shipPosition->System}','{$shipPosition->X}','{$shipPosition->Y}')";
-			\Database\Controller::getInstance()->execute ( $tQuery );
+			\Database\Controller::getInstance()->execute($tQuery);
 		}
 
-		\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:sectorAddedToFavs}');
+		ContentTransport::getInstance()->addNotification( 'success', '{T:sectorAddedToFavs}');
 	}
 
 	/**
@@ -33,12 +33,12 @@ class navigation {
 	 */
 	static public function sDeleteFavSector($sector) {
 		$tArray = explode ( '/', $sector );
-        $userProperties = \Gameplay\PlayerModelProvider::getInstance()->get('UserEntity');
+        $userProperties = PlayerModelProvider::getInstance()->get('UserEntity');
 
 		$tQuery = "DELETE FROM favouritesectors WHERE UserID='{$userProperties->UserID}' AND System='{$tArray[0]}' AND X='{$tArray[1]}' AND Y='{$tArray[2]}'";
 		\Database\Controller::getInstance()->execute ( $tQuery );
 
-		\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:sectorDeletedFromFavs}');
+		ContentTransport::getInstance()->addNotification( 'success', '{T:sectorDeletedFromFavs}');
 	}
 
 	/**
@@ -49,7 +49,7 @@ class navigation {
 
 		global $shipRouting;
 
-        $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
+        $shipPosition = PlayerModelProvider::getInstance()->get('ShipPosition');
 
 		$shipRouting->System = null;
 		$shipRouting->X = null;
@@ -67,12 +67,13 @@ class navigation {
 
 		global $shipRouting, $action, $subaction;
 
-        $shipPosition = \Gameplay\PlayerModelProvider::getInstance()->get('ShipPosition');
+        /** @var ShipPosition $shipPosition */
+        $shipPosition = PlayerModelProvider::getInstance()->get('ShipPosition');
 
 		/**
 		 * Pobierz współrzędne docelowe
 		 */
-		$tCoords = new \stdClass();
+		$tCoords = new Coordinates();
 
 		if ($shipPosition->System == $shipRouting->System) {
 			$tCoords->System = $shipRouting->System;
@@ -102,13 +103,13 @@ class navigation {
 			$tCoords->Y = $transNode->Y;
 		}
 
-		$route = new \systemRouting(\Database\Controller::getInstance(), $tCoords);
+		$route = new SystemRouting($tCoords);
 
 		if ($shipPosition->System != $shipRouting->System && $shipPosition->X == $tCoords->X && $shipPosition->Y == $tCoords->Y) {
 			$action = "shipNodeJump";
 		} else {
 			$action = "shipMove";
-			$subaction = $route->next ( $shipPosition )->direction;
+			$subaction = $route->next($shipPosition)->direction;
 		}
 	}
 

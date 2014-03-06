@@ -1,22 +1,49 @@
 <?php
 
-class systemRouting {
+namespace Gameplay\Model;
+
+use Gameplay\Helpers\RoutingCoordinates;
+use Gameplay\Helpers\RoutingSector;
+use phpCache\CacheKey;
+
+class SystemRouting {
 	protected $routeTable = null;
 
     /**
-     * @var stdClass
+     * @var Coordinates
      */
     protected $destination = null;
 
     /**
-     * @var \Gameplay\Model\SystemProperties
+     * @var SystemProperties
      */
     protected $systemObject = null;
 	protected $go = false;
-	protected $tArray;
-	protected $tToGo;
-	protected $tRoute;
-	protected $current;
+
+    /**
+     * @var Coordinates[]
+     */
+    protected $tToGo;
+
+    /**
+     * @var RoutingCoordinates[]
+     */
+    protected $routingOutput;
+
+    /**
+     * @var Coordinates[]
+     */
+    protected $temporaryRoutingCoordinates;
+
+    /**
+     * @var Array
+     */
+    protected $tRoute;
+
+    /**
+     * @var Coordinates
+     */
+    protected $current;
 
 	/**
 	 * @var int
@@ -26,53 +53,31 @@ class systemRouting {
 	protected function nextPush($tx, $ty, $direction) {
 
 		if ($tx > 0 && $tx <= $this->systemObject->Width && $ty > 0 && $ty <= $this->systemObject->Height) {
-			$object = new routingCoords ( $tx, $ty, $this->routeTable [$tx] [$ty], $direction );
-			array_push ( $this->tArray, $object );
+			array_push($this->routingOutput, new RoutingCoordinates($tx, $ty, $this->routeTable[$tx][$ty], $direction));
 		}
 		return true;
 	}
 
 	/**
-	 * Pobranie następnej pozycji przy routingu
-	 *
-	 * @param stdClass $current
-	 * @return stdClass
+	 * @param ShipPosition $current
+	 * @return \stdClass
 	 */
-	public function next($current) {
+	public function next(ShipPosition $current) {
 
-		$retVal = new \stdClass();
+		if ($this->routeTable == null) {
+		    return false;
+        }
 
-		if ($this->routeTable == null)
-		return false;
+		$this->routingOutput = array ();
 
-		/*
-		 * Wrzuć do tablicy sąsiednie sektory z tablicy routingu
-		 */
-		$this->tArray = array ();
+		$this->nextPush($current->X, $current->Y - 1, 'up');
+		$this->nextPush($current->X, $current->Y + 1, 'down');
+		$this->nextPush($current->X - 1, $current->Y, 'left');
+		$this->nextPush($current->X + 1, $current->Y, 'right');
 
-		$this->nextPush ( $current->X, $current->Y - 1, 'up' );
-		$this->nextPush ( $current->X, $current->Y + 1, 'down' );
-		$this->nextPush ( $current->X - 1, $current->Y, 'left' );
-		$this->nextPush ( $current->X + 1, $current->Y, 'right' );
+		usort($this->routingOutput, "routingSort");
 
-		/*
-		 * Dokonaj sortowania
-		 */
-		usort ( $this->tArray, "routingSort" );
-
-		/*
-		 * Pobierz pierwszą wartość:
-		 */
-		$tClass = array_pop ( $this->tArray );
-
-		$retVal->X = $tClass->X;
-		$retVal->Y = $tClass->Y;
-		$retVal->direction = $tClass->direction;
-
-		unset ( $this->tArray );
-		unset ( $tClass );
-
-		return $retVal;
+		return array_pop($this->routingOutput);
 	}
 
 	/**
@@ -92,7 +97,6 @@ class systemRouting {
 	}
 
 	/**
-	 * Pobranie pierwszej składowej identyfikatiora cache
 	 * @return string
 	 */
 	protected function getCacheModule() {
@@ -111,7 +115,7 @@ class systemRouting {
 	 * @return bool
 	 */
 	protected function delete() {
-        \phpCache\Factory::getInstance()->create()->clear(new \phpCache\CacheKey($this->getCacheModule(), $this->getCacheProperty()));
+        \phpCache\Factory::getInstance()->create()->clear(new CacheKey($this->getCacheModule(), $this->getCacheProperty()));
 		return true;
 	}
 
@@ -125,7 +129,7 @@ class systemRouting {
 			return false;
 		}
 
-		$oCacheKey = new \phpCache\CacheKey($this->getCacheModule(), $this->getCacheProperty());
+		$oCacheKey = new CacheKey($this->getCacheModule(), $this->getCacheProperty());
         \phpCache\Factory::getInstance()->create()->set($oCacheKey, serialize ( $this->routeTable ), $this->cacheTime);
 
 		return true;
@@ -139,7 +143,7 @@ class systemRouting {
 
 		$this->routeTable = null;
 
-		$oCacheKey = new \phpCache\CacheKey($this->getCacheModule(), $this->getCacheProperty());
+		$oCacheKey = new CacheKey($this->getCacheModule(), $this->getCacheProperty());
         $oCache    = \phpCache\Factory::getInstance()->create();
 
 		if ($oCache->check($oCacheKey)) {
@@ -148,25 +152,22 @@ class systemRouting {
 	}
 
     /**
-     * @param stdClass $destination
+     * @param Coordinates $destination
      * @return bool
      */
-    public function load(stdClass $destination) {
+    public function load(Coordinates $destination) {
 
-		$this->systemObject = new \Gameplay\Model\SystemProperties($destination->System);
+		$this->systemObject = new SystemProperties($destination->System);
 		$this->destination = $destination;
 
-		/*
-		 * Pobierz tablicę routingu z bazy danych
-		 */
-		$this->get ();
+		$this->get();
 
 		/**
 		 * Jeśli w bazie nie ma tablicy, wygenruj ją i zapisz
 		 */
 		if ($this->routeTable == null) {
-			$this->routeTable = $this->generate ( $this->destination );
-			$this->put ();
+			$this->routeTable = $this->generate($this->destination);
+			$this->put();
 		}
 
 		return true;
@@ -181,12 +182,10 @@ class systemRouting {
 	protected function setSector($tx, $ty) {
 
 		if ($tx > 0 && $tx <= $this->systemObject->Width && $ty > 0 && $ty <= $this->systemObject->Height && $this->tRoute [$tx] [$ty]->analyzed == false) {
-			$tObject = new simpleCoords ( $tx, $ty );
-			if (! in_array ( $tObject, $this->tArray )) {
-				array_push ( $this->tArray, $tObject );
+			$tObject = new Coordinates(null, $tx, $ty);
+			if (!in_array($tObject, $this->temporaryRoutingCoordinates)) {
+				array_push ( $this->temporaryRoutingCoordinates, $tObject );
 				$this->go = true;
-			} else {
-				unset($tObject);
 			}
 
 			if ($this->tRoute [$this->current->X] [$this->current->Y]->value + $this->tRoute [$tx] [$ty]->cost < $this->tRoute [$tx] [$ty]->value) {
@@ -200,18 +199,21 @@ class systemRouting {
 	 */
 	private function getSectors($systemID) {
 
-		$oCacheKey = new \phpCache\CacheKey('systemRouting::getSectors', $systemID);
+		$oCacheKey = new CacheKey('systemRouting::getSectors', $systemID);
         $oCache    = \phpCache\Factory::getInstance()->create();
 		
 		if (!$oCache->check($oCacheKey)) {
 			$this->tRoute = null;
 
+            $oDb = \Database\Controller::getInstance();
+
 			/*
 			 * Inicjuj
 			 */
+            $oBaseSector = new RoutingSector();
 			for($indexX = 1; $indexX <= $this->systemObject->Width; $indexX ++) {
 				for($indexY = 1; $indexY <= $this->systemObject->Height; $indexY ++) {
-					$this->tRoute [$indexX] [$indexY] = new routingSector ( );
+					$this->tRoute [$indexX] [$indexY] = clone $oBaseSector;
 				}
 			}
 
@@ -227,9 +229,9 @@ class systemRouting {
               WHERE
                 sectors.System = '{$systemID}'
               ";
-			$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
-			while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
-				$this->tRoute [$tR1->X] [$tR1->Y]->cost = $tR1->MoveCost;
+			$tQuery = $oDb->execute ( $tQuery );
+			while ( $tR1 = $oDb->fetch ( $tQuery ) ) {
+				$this->tRoute[$tR1->X][$tR1->Y]->cost = $tR1->MoveCost;
 			}
 
 			$oCache->set($oCacheKey, serialize($this->tRoute), $this->cacheTime);
@@ -241,29 +243,27 @@ class systemRouting {
 	}
 
 	/**
-	 * Wygenerowanie tablicy routingu
-	 *
-	 * @param stdClass $destination
+	 * @param Coordinates $destination
 	 * @return array
 	 */
-	protected function generate($destination) {
+	protected function generate(Coordinates $destination) {
 
 		$this->getSectors($destination->System);
 
 		$this->tToGo = array ();
 
-		array_push ( $this->tToGo, new simpleCoords ( $destination->X, $destination->Y ) );
+		array_push($this->tToGo, clone $destination);
 
-		$this->tRoute [$destination->X] [$destination->Y]->value = 0;
+		$this->tRoute[$destination->X][$destination->Y]->value = 0;
 
 		$this->go = true;
 		//Póki tablica jest wypełniona
 		while ( $this->go ) {
 
-			$this->tArray = array ();
+			$this->temporaryRoutingCoordinates = array();
 			$this->go = false;
-			//Zacznij pobierać sektory z tablicy
-			while ( $this->current = array_pop ( $this->tToGo ) ) {
+
+			while ($this->current = array_pop ($this->tToGo)) {
 
 				$this->tRoute [$this->current->X] [$this->current->Y]->analyzed = true;
 
@@ -271,12 +271,9 @@ class systemRouting {
 				$this->setSector ( $this->current->X + 1, $this->current->Y );
 				$this->setSector ( $this->current->X, $this->current->Y - 1 );
 				$this->setSector ( $this->current->X, $this->current->Y + 1 );
-
-				unset($this->current);
 			}
 
-			$this->tToGo = $this->tArray;
-			unset ( $this->tArray );
+			$this->tToGo = $this->temporaryRoutingCoordinates;
 		}
 
 		$tRoute = null;
@@ -284,28 +281,14 @@ class systemRouting {
 		for($indexX = 1; $indexX <= $this->systemObject->Width; $indexX ++) {
 			for($indexY = 1; $indexY <= $this->systemObject->Height; $indexY ++) {
 				$tRoute [$indexX] [$indexY] = $this->tRoute [$indexX] [$indexY]->value;
-				unset ( $this->tRoute [$indexX] [$indexY] );
 			}
 		}
-
-		unset ( $this->tRoute );
 
 		return $tRoute;
 	}
 
-	/**
-	 * Konstruktor
-	 *
-	 * @param \Database\MySQLiWrapper $db
-	 * @param stdClass $destination
-	 */
-	function __construct($db, $destination = null) {
-
-		//@todo usunąć db z konstruktora
-		if (!empty($destination)) {
-			$this->load($destination);
-		}
-
+	public function __construct(Coordinates $destination) {
+        $this->load($destination);
 	}
 
 }

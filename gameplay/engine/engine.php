@@ -527,12 +527,12 @@ try {
 			break;
 
 		case 'deleteFavSector' :
-			navigation::sDeleteFavSector ( $id );
+			\Gameplay\Actions\Navigation::sDeleteFavSector ( $id );
 			favSectorsRegistry::sRender ();
 			break;
 
 		case 'addToFavSectors' :
-			navigation::sAddCurrentToFavourities ();
+			\Gameplay\Actions\Navigation::sAddCurrentToFavourities ();
 			break;
 
 		case 'sellWeapon' :
@@ -597,11 +597,11 @@ try {
 			break;
 
 		case 'nextWaypoint' :
-			navigation::sNextWaypoint ();
+			\Gameplay\Actions\Navigation::sNextWaypoint ();
 			break;
 
 		case 'plotReset' :
-			navigation::sPlotReset ();
+			\Gameplay\Actions\Navigation::sPlotReset ();
 			break;
 
 		case 'weaponsManagement' :
