@@ -21,37 +21,38 @@ $template->add ( 'EmpRegeneration', $config ['emp'] ['repairRatio'] );
 
 $sRetVal .= $template;
 
+$oDb = \Database\Controller::getInstance();
+
 if ($portProperties->Type == 'station') {
 
 	$nameField = "Name" . strtoupper ( $userProperties->Language );
 
-	$sRetVal .= "<h2>" . TranslateController::getDefault()->get ( 'weapons' ) . "</h2>";
+	$sRetVal .= "<h2>{T:weapons}</h2>";
 	$sRetVal .= "<table class='table table-striped table-condensed'>";
 
 	$sRetVal .= "<tr>";
-	$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'name' ) . "</th>";
-	$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'price' ) . " [$]</th>";
-	$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'Fame' ) . "</th>";
-	$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'size' ) . "</th>";
+	$sRetVal .= "<th>{T:name}</th>";
+	$sRetVal .= "<th>{T:price} [$]</th>";
+	$sRetVal .= "<th>{T:Fame}</th>";
+	$sRetVal .= "<th>{T:size}</th>";
 	$sRetVal .= "<th style='width: 75px;'>&nbsp;</th>";
 	$sRetVal .= "</tr>";
 
 	if (!empty($portProperties->Weapons)) {
 
 		$tQuery = "SELECT
-      weapontypes.*,
-      weapontypes.{$nameField} AS Name
-    FROM
-      weapontypes
-    WHERE
-      weapontypes.Active='yes' AND
-      weapontypes.PortWeapon='no' AND
-      weapontypes.WeaponID IN (" . $portProperties->Weapons . ")
-    ORDER BY
-      weapontypes.{$nameField} ASC
-  ";
-		$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
-		while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
+                weapontypes.*,
+                weapontypes.{$nameField} AS Name
+            FROM
+                weapontypes
+            WHERE
+                weapontypes.Active='yes' AND
+                weapontypes.PortWeapon='no' AND
+                weapontypes.WeaponID IN (" . $portProperties->Weapons . ")
+            ORDER BY
+                weapontypes.{$nameField} ASC";
+		$tQuery = $oDb->execute ( $tQuery );
+		while ( $tR1 = $oDb->fetch ( $tQuery ) ) {
 
 			$sRetVal .= "<tr>";
 			$sRetVal .= "<td>" . $tR1->Name . "</td>";
@@ -72,14 +73,14 @@ if ($portProperties->Type == 'station') {
 	}
 	$sRetVal .= "</table>";
 
-	$sRetVal .= "<h2>" . TranslateController::getDefault()->get ( 'equipment' ) . "</h2>";
+	$sRetVal .= "<h2>{T:equipment}</h2>";
 	$sRetVal .= "<table class='table table-striped table-condensed'>";
 
 	$sRetVal .= "<tr>";
-	$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'name' ) . "</th>";
-	$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'price' ) . " [$]</th>";
-	$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'Fame' ) . "</th>";
-	$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'size' ) . "</th>";
+	$sRetVal .= "<th>{T:name}</th>";
+	$sRetVal .= "<th>{T:price} [$]</th>";
+	$sRetVal .= "<th>{T:Fame}</th>";
+	$sRetVal .= "<th>{T:size}</th>";
 	$sRetVal .= "<th style='width: 75px;'>&nbsp;</th>";
 	$sRetVal .= "</tr>";
 
@@ -87,18 +88,17 @@ if ($portProperties->Type == 'station') {
 
 	if (!empty($portProperties->Equipment)) {
 		$tQuery = "SELECT
-      equipmenttypes.*,
-      equipmenttypes.{$nameField} AS Name
-    FROM
-      equipmenttypes
-    WHERE
-      equipmenttypes.Active='yes' AND
-      equipmenttypes.EquipmentID IN (" . $portProperties->Equipment . ")
-    ORDER BY
-      equipmenttypes.{$nameField} ASC
-  ";
-		$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
-		while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
+                equipmenttypes.*,
+                equipmenttypes.{$nameField} AS Name
+            FROM
+                equipmenttypes
+            WHERE
+                equipmenttypes.Active='yes' AND
+                equipmenttypes.EquipmentID IN (" . $portProperties->Equipment . ")
+            ORDER BY
+                equipmenttypes.{$nameField} ASC";
+		$tQuery = $oDb->execute ( $tQuery );
+		while ( $tR1 = $oDb->fetch ( $tQuery ) ) {
 
 			$sRetVal .= "<tr>";
 			$sRetVal .= "<td>" . $tR1->Name . "</td>";

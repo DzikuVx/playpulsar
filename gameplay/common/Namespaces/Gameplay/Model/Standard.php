@@ -163,9 +163,9 @@ abstract class Standard {
 
         $this->originalData = $data;
 
-        foreach ($this->tableUseFields as $tField) {
-            if (isset($data->{$tField})) {
-                $this->{$tField} = $data->{$tField};
+        foreach ($data as $sKey => $tValue) {
+            if (property_exists($this, $sKey)) {
+                $this->{$sKey} = $tValue;
             }
         }
 
@@ -178,10 +178,8 @@ abstract class Standard {
     protected function serializeData() {
         $retVal = new \stdClass();
 
-        foreach ($this->tableUseFields as $tField) {
-            if (isset($this->{$tField})) {
-                $retVal->{$tField} = $this->{$tField};
-            }
+        foreach ($this->originalData as $sKey => $tField) {
+            $retVal->{$sKey} = $this->{$sKey};
         }
 
         return serialize($retVal);
@@ -197,7 +195,7 @@ abstract class Standard {
 
         $tStr = "";
         foreach($this as $key => $value) {
-            if (in_array( $key, $this->tableUseFields) && $value != $this->originalData->{$key}) {
+            if (in_array($key, $this->tableUseFields) && $value != $this->originalData->{$key}) {
 
                 if ($value != null) {
                     $tStr .= "," . $key . "='" . \Database\Controller::getInstance()->quote($value) . "'";

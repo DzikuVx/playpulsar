@@ -13,6 +13,11 @@ class PortEntity extends CustomGet {
     /**
      * @var int
      */
+    public $PortID;
+
+    /**
+     * @var int
+     */
     public $ResetTime;
 
     /**
@@ -79,11 +84,6 @@ class PortEntity extends CustomGet {
      * @var int
      */
     public $PortTypeID;
-
-    /**
-     * @var int
-     */
-    public $PortID;
 
     /**
      * @var string

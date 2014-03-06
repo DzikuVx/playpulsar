@@ -9,6 +9,9 @@ class UserTimes extends Standard {
 	protected $tableUseFields = array ("LastLogin", "LastAction", "TurnReset", "FameReset", "LastSalvo" );
 	protected $defaultCacheExpire = 3600;
 
+    /** @var int */
+    public $UserID;
+
     /**
      * @var int
      */

@@ -12,6 +12,9 @@ class ShipProperties extends Standard {
     protected $tableUseFields = array ('Targetting', 'Scan', 'Cloak', "ArmorStrength", "ArmorPiercing", "Emp", "EmpMax", "Maneuver", "OffRating", "DefRating", "ShipName", "ShipID", "ShieldRegeneration", "PowerRegeneration", "ArmorRegeneration", "Shield", "ShieldMax", "Armor", "ArmorMax", "Power", "PowerMax", "Cargo", "CargoMax", "CurrentWeapons", "MaxWeapons", "CurrentEquipment", "MaxEquipment", "Gather", "Turns", "Speed", "RookieTurns", "SpecializationID", "CanRepairWeapons", "CanRepairEquipment", "Squadron", 'CanActiveScan', 'CanWarpJump', 'ShieldRepair', 'ArmorRepair', 'PowerRepair');
     protected $cacheExpire = 1440;
 
+    /** @var  int */
+    public $UserID;
+
     /**
      * @var int
      */
@@ -188,6 +191,16 @@ class ShipProperties extends Standard {
      * @var string
      */
     public $ShipTypeName;
+
+    /**
+     * @var int
+     */
+    public $WeaponSize;
+
+    /**
+     * @var int
+     */
+    public $Price;
 
     /**
      * @param ShipProperties $shipProperties
@@ -723,7 +736,7 @@ class ShipProperties extends Standard {
                 userships.UserID='{$this->dbID}'";
 
         $tResult = $this->db->execute($tQuery);
-        while($resultRow = $this->db->fetch($tResult)) {
+        while ($resultRow = $this->db->fetch($tResult)) {
             $this->loadData($resultRow, false);
         }
         return true;

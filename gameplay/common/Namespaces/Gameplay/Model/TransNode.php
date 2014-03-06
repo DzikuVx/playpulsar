@@ -13,6 +13,9 @@ class TransNode extends CustomGet {
     protected $cacheExpire = 604800;
 
     /** @var int */
+    public $NodeID;
+
+    /** @var int */
     public $System;
     /** @var int */
     public $X;

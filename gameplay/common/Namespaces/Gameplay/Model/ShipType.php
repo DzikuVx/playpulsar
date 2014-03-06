@@ -8,6 +8,8 @@ class ShipType extends Standard {
 	protected $tableUseFields = array('UserBuyable', 'NamePL', 'NameEN', 'Price', 'Fame', 'Size', 'Targetting', 'Weapons', 'WeaponSize', 'Cargo', 'Space', 'Speed', 'Maneuver', 'Shield', 'Armor', 'ArmorStrength', 'ArmorPiercing', 'Power', 'ShieldRegeneration', 'ArmorRegeneration', 'PowerRegeneration', 'ShieldRepair', 'ArmorRepair', 'PowerRepair', 'Scan', 'Cloak', 'Gather', 'Emp', 'CanWarpJump', 'CanActiveScan');
 	protected $cacheExpire = 86400;
 
+    public $ShipID;
+
     public $UserBuyable;
     public $NamePL;
     public $NameEN;

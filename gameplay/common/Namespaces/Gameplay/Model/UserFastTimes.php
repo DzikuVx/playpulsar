@@ -23,6 +23,10 @@ class UserFastTimes extends Standard {
 		if (!$this->fromCache()) {
 			$this->AuthCode = 0;
 			$this->LastRepair = time();
+
+            $this->originalData = new \stdClass();
+            $this->originalData->AuthCode = $this->AuthCode;
+            $this->originalData->LastRepair = $this->LastRepair;
 		}
 	}
 

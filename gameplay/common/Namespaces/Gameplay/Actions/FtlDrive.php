@@ -1,25 +1,34 @@
 <?php
 
+namespace Gameplay\Actions;
+
+use Gameplay\Exception\SecurityException;
+use Gameplay\Framework\ContentTransport;
+use Gameplay\Model\ShipPosition;
+use Gameplay\Model\ShipProperties;
+use Gameplay\Model\SystemProperties;
+use Gameplay\Panel\MiniMap;
+use Gameplay\Panel\PortAction;
 use Gameplay\PlayerModelProvider;
 
-class ftlDrive {
+class FtlDrive {
 
     /**
-     * @param \Gameplay\Model\ShipProperties $shipProperties
+     * @param ShipProperties $shipProperties
      * @return float
      */
-    static private function sGetPowerUsage(\Gameplay\Model\ShipProperties $shipProperties) {
+    static private function sGetPowerUsage(ShipProperties $shipProperties) {
 		return ceil($shipProperties->PowerMax / 2);
 	}
 
     /**
-     * @param stdClass $shipRouting
-     * @param \Gameplay\Model\ShipPosition $shipPosition
+     * @param \stdClass $shipRouting
+     * @param ShipPosition $shipPosition
      * @return int
      */
-    static private function sGetAmUsage($shipRouting, \Gameplay\Model\ShipPosition $shipPosition) {
+    static private function sGetAmUsage($shipRouting, ShipPosition $shipPosition) {
 
-		$galaxyRoute = new galaxyRouting (\Database\Controller::getInstance(), $shipRouting );
+		$galaxyRoute = new \galaxyRouting (\Database\Controller::getInstance(), $shipRouting );
 		$tDistance = $galaxyRoute->getDistance($shipPosition);
 
 		$retVal = 20 + ($tDistance * 20);
@@ -36,36 +45,36 @@ class ftlDrive {
         $portProperties = PlayerModelProvider::getInstance()->get('PortEntity');
 
 		if ($shipProperties->checkMalfunction()) {
-			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'error', '{T:shipMalfunctionEmp}');
+			ContentTransport::getInstance()->addNotification( 'error', '{T:shipMalfunctionEmp}');
 			return false;
 		}
 
 		if ($shipPosition->Docked != 'no') {
-			throw new \Gameplay\Exception\SecurityException();
+			throw new SecurityException();
 		}
 
 		if (empty($shipRouting->System)) {
-			throw new \Gameplay\Exception\SecurityException();
+			throw new SecurityException();
 		}
 
 		if (empty($shipProperties->CanWarpJump)) {
-			throw new \Gameplay\Exception\SecurityException();
+			throw new SecurityException();
 		}
 
 		$tPowerUsage = self::sGetPowerUsage($shipProperties);
 		$tAmUsage = self::sGetAmUsage($shipRouting, $shipPosition);
 
 		if ($shipProperties->Power < $tPowerUsage) {
-			\Gameplay\Framework\ContentTransport::getInstance()->addNotification('warning', '{T:notEnoughPower}');
+			ContentTransport::getInstance()->addNotification('warning', '{T:notEnoughPower}');
 			return false;
 		}
 
 		if ($shipProperties->Turns < $tAmUsage) {
-			\Gameplay\Framework\ContentTransport::getInstance()->addNotification('warning', '{T:notEnoughTurns}');
+			ContentTransport::getInstance()->addNotification('warning', '{T:notEnoughTurns}');
 			return false;
 		}
 
-		$targetSystemProperties = new \Gameplay\Model\SystemProperties($shipRouting->System);
+		$targetSystemProperties = new SystemProperties($shipRouting->System);
 
 		$newX = rand($shipRouting->X - 2,$shipRouting->X + 2);
 		$newY = rand($shipRouting->Y - 2,$shipRouting->Y + 2);
@@ -120,15 +129,15 @@ class ftlDrive {
 		\Gameplay\Panel\SectorResources::getInstance()->render ( $shipPosition, $shipProperties, $sectorProperties );
 		\Gameplay\Panel\Port::getInstance()->render ( $shipPosition, $portProperties, $shipProperties, $jumpNode );
 
-		\Gameplay\Panel\MiniMap::getInstance()->load ( $userID, $shipPosition->System, $shipPosition );
+		MiniMap::getInstance()->load ( $userID, $shipPosition->System, $shipPosition );
 
-		if (shipRouting::checkArrive ( $shipPosition, $shipRouting )) {
+		if (\shipRouting::checkArrive ( $shipPosition, $shipRouting )) {
 			\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting);
-			\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:infoArrived}');
+			ContentTransport::getInstance()->addNotification( 'success', '{T:infoArrived}');
 		}
-		\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:Jump completed}');
+		ContentTransport::getInstance()->addNotification( 'success', '{T:Jump completed}');
 
-		\Gameplay\Panel\PortAction::getInstance()->clear ();
+		PortAction::getInstance()->clear ();
         return true;
 	}
 

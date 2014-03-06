@@ -5,6 +5,7 @@
  * @author Paweł Spychalski
  *
  */
+use Gameplay\Model\UserEntity;
 
 
 /** @noinspection PhpIncludeInspection */
@@ -17,7 +18,8 @@ if (empty( $_SESSION ['userID'])) {
 
 $userID = $_SESSION ['userID'];
 
-$userProperties = new \Gameplay\Model\UserEntity($userID);
+/** @var UserEntity */
+$userProperties = \Gameplay\PlayerModelProvider::getInstance()->register('UserEntity', new \Gameplay\Model\UserEntity($userID));
 
 TranslateController::setDefaultLanguage($userProperties->Language);
 $t = TranslateController::getDefault();

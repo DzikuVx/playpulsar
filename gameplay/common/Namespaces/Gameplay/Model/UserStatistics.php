@@ -7,6 +7,9 @@ class UserStatistics extends Standard {
     protected $tableID = 'UserID';
     protected $tableUseFields = array ('Deaths', 'Kills', 'Npc', 'Pirates', 'Raids', 'Cash', 'Bank', 'Experience', 'Level', 'TalentsUsed', 'Fame');
 
+    /** @var int */
+    public $UserID;
+
     /**
      * @var int
      */

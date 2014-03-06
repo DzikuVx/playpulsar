@@ -254,7 +254,7 @@ try {
 	switch ($action) {
 
 		case 'engageFtl':
-			ftlDrive::sEngage();
+			\Gameplay\Actions\FtlDrive::sEngage();
 			break;
 
 		case 'addToFiends':
