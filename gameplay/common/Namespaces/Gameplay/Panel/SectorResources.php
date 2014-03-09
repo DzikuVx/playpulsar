@@ -2,6 +2,7 @@
 
 namespace Gameplay\Panel;
 
+use Gameplay\Model\SectorCargo;
 use Gameplay\Model\SectorEntity;
 use Gameplay\Model\ShipPosition;
 use Gameplay\Model\ShipProperties;
@@ -50,7 +51,7 @@ class SectorResources extends Renderable implements Singleton {
 
 		$this->rendered = true;
 
-		$sectorCargo = new \sectorCargo($shipPosition);
+		$sectorCargo = new SectorCargo($shipPosition->getCoordinates());
 
 		$nameField = "Name" . strtoupper($this->language);
 

@@ -1,30 +1,40 @@
 <?php
 
-class sectorCargo {
+namespace Gameplay\Model;
 
-	private $position = null;
+use Database\Controller;
+
+class SectorCargo {
 
     /**
-     * @var \Gameplay\Model\SectorEntity
+     * @var Coordinates
+     */
+    private $position = null;
+
+    /**
+     * @var SectorEntity
      */
     private $sectorProperties = null;
-	private $cache = null;
+
+    /**
+     * @var \phpCache\Apc
+     */
+    private $cache = null;
 	private $cacheValid = 3600;
 
 	/**
 	 * Pobranie właściwości sektora
 	 */
 	private function loadSector() {
-		$this->sectorProperties = new \Gameplay\Model\SectorEntity($this->position);
+		$this->sectorProperties = new SectorEntity($this->position);
 	}
 
-	/**
-	 * @param \Gameplay\Model\ShipPosition $position
-	 */
-	public function __construct(\Gameplay\Model\ShipPosition $position) {
+    /**
+     * @param Coordinates $position
+     */
+	public function __construct(Coordinates $position) {
 		$this->position = $position;
         $this->cache = \phpCache\Factory::getInstance()->create();
-
 		$this->loadSector();
 	}
 
@@ -36,10 +46,15 @@ class sectorCargo {
 	}
 
 	private function clearCache($type = 'product') {
-		$this->cache->clear(new \phpCache\CacheKey('sectorCargo::sGetList::'.$type, '|'.$this->getCacheID()));
+		$this->cache->clear(new \phpCache\CacheKey('SectorCargo::sGetList::'.$type, '|'.$this->getCacheID()));
 	}
 
-	public function getAmount($type, $productID) {
+    /**
+     * @param string $type
+     * @param int $productID
+     * @return null|int
+     */
+    public function getAmount($type, $productID) {
 
 		$out = null;
 
@@ -50,8 +65,8 @@ class sectorCargo {
 		} else {
 			$tQuery = "SELECT sectorcargo.Amount AS Amount FROM sectorcargo WHERE sectorcargo.CargoID='$productID' AND sectorcargo.Type='$type' AND sectorcargo.SectorID='{$this->sectorProperties->SectorID}'";
 		}
-		$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
-		while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
+		$tQuery = Controller::getInstance()->execute ( $tQuery );
+		while ( $tR1 = Controller::getInstance()->fetch ( $tQuery ) ) {
 			$out = $tR1->Amount;
 		}
 
@@ -59,7 +74,6 @@ class sectorCargo {
 	}
 
 	/**
-	 * Pobranie listy rzeczy w sektorze
 	 * @param string $type
 	 * @return array
 	 */
@@ -73,6 +87,8 @@ class sectorCargo {
 
 			$retVal = array();
 
+            $oDb = Controller::getInstance();
+
 			switch ($type) {
 
 				/*
@@ -85,9 +101,9 @@ class sectorCargo {
 					} else {
 						$tQuery = "SELECT products.Size AS Size, sectorcargo.Amount AS Amount, products.NamePL, products.NameEN, sectorcargo.CargoID AS CargoID FROM sectorcargo LEFT JOIN products ON products.ProductID=sectorcargo.CargoID WHERE sectorcargo.Type='product' AND sectorcargo.SectorID='{$this->sectorProperties->SectorID}'";
 					}
-					$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
+					$tQuery = $oDb->execute ( $tQuery );
 
-					while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
+					while ( $tR1 = $oDb->fetch ( $tQuery ) ) {
 						$retVal[] = $tR1;
 					}
 					break;
@@ -101,8 +117,8 @@ class sectorCargo {
 					} else {
 						$tQuery = "SELECT sectorcargo.Amount AS Amount, weapontypes.NamePL, weapontypes.NameEN, sectorcargo.CargoID AS CargoID FROM sectorcargo LEFT JOIN weapontypes ON weapontypes.WeaponID=sectorcargo.CargoID WHERE sectorcargo.Type='weapon' AND sectorcargo.SectorID='{$this->sectorProperties->SectorID}'";
 					}
-					$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
-					while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
+					$tQuery = $oDb->execute ( $tQuery );
+					while ( $tR1 = $oDb->fetch ( $tQuery ) ) {
 						$retVal[] = $tR1;
 					}
 					break;
@@ -116,8 +132,8 @@ class sectorCargo {
 					} else {
 						$tQuery = "SELECT sectorcargo.Amount AS Amount, equipmenttypes.NamePL, equipmenttypes.NameEN, sectorcargo.CargoID AS CargoID FROM sectorcargo LEFT JOIN equipmenttypes ON equipmenttypes.EquipmentID=sectorcargo.CargoID WHERE sectorcargo.Type='equipment' AND sectorcargo.SectorID='{$this->sectorProperties->SectorID}'";
 					}
-					$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
-					while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
+					$tQuery = $oDb->execute ( $tQuery );
+					while ( $tR1 = $oDb->fetch ( $tQuery ) ) {
 						$retVal[] = $tR1;
 					}
 					break;
@@ -131,8 +147,8 @@ class sectorCargo {
 					} else {
 						$tQuery = "SELECT sectorcargo.Amount AS Amount, itemtypes.NamePL, itemtypes.NameEN, sectorcargo.CargoID AS CargoID FROM sectorcargo LEFT JOIN itemtypes ON itemtypes.ItemID=sectorcargo.CargoID WHERE sectorcargo.Type='item' AND sectorcargo.SectorID='{$this->sectorProperties->SectorID}'";
 					}
-					$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
-					while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
+					$tQuery = $oDb->execute ( $tQuery );
+					while ( $tR1 = $oDb->fetch ( $tQuery ) ) {
 						$retVal[] = $tR1;
 					}
 					break;
@@ -175,7 +191,7 @@ class sectorCargo {
 				$tQuery = "INSERT INTO sectorcargo(System, X, Y, CargoID, Amount, Type) VALUES('{$this->position->System}','{$this->position->X}','{$this->position->Y}', '$id', '$newState', '$type')";
 			}
 		}
-		\Database\Controller::getInstance()->execute ( $tQuery );
+		Controller::getInstance()->execute ( $tQuery );
 
 		$this->clearCache($type);
 
@@ -214,7 +230,7 @@ class sectorCargo {
 				$tQuery = "INSERT INTO sectorcargo(System, X, Y, CargoID, Amount, Type) VALUES('{$this->position->System}','{$this->position->X}','{$this->position->Y}', '$id', '$newState', '$type')";
 			}
 		}
-		\Database\Controller::getInstance()->execute ( $tQuery );
+		Controller::getInstance()->execute ( $tQuery );
 
 		//@todo ujednolicić insert i update, większość kodu jest identyczna
 		//@todo nadmiarowy ruch przy czyszczeniu. Trzeba przemyśleć
@@ -236,7 +252,7 @@ class sectorCargo {
 			$tQuery = "DELETE FROM sectorcargo WHERE Type='{$type}' AND System='{$this->position->System}' AND X='{$this->position->X}' AND Y='{$this->position->Y}'";
 		}
 
-		\Database\Controller::getInstance()->execute($tQuery);
+		Controller::getInstance()->execute($tQuery);
 
 		$this->clearCache($type);
 

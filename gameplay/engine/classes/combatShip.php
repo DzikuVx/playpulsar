@@ -146,7 +146,7 @@ class combatShip {
 			 */
             $this->userStats->decExperience(combat::sComputeExperienceLoss($this->userStats) );
 
-			$sectorCargo = new sectorCargo($this->shipPosition);
+			$sectorCargo = new \Gameplay\Model\SectorCargo($this->shipPosition->getCoordinates());
 
 			/*
 			 * Pętla po uzbrojeniu

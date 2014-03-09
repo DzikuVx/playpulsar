@@ -179,7 +179,7 @@ if ($action == "jettison") {
 		$shipCargo->setAmount ( $id, $subaction, $inCargo - $toJettison );
 
 		if (empty($sectorCargo)) {
-			$sectorCargo = new sectorCargo($shipPosition);
+			$sectorCargo = new \Gameplay\Model\SectorCargo($shipPosition->getCoordinates());
 		}
 
 		$sectorCargo->insert($subaction, $id, $toJettison);
@@ -220,7 +220,7 @@ if ($action == "gather") {
 
     $productExp = 0;
 
-	$sectorCargo = new sectorCargo($shipPosition);
+	$sectorCargo = new \Gameplay\Model\SectorCargo($shipPosition->getCoordinates());
 	$sectorAmount = $sectorCargo->getAmount($subaction, $id);
 
 	if ($sectorAmount === null) {

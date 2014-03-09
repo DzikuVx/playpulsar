@@ -74,13 +74,12 @@ class SectorEntity extends CustomGet {
 
         global $actualTime, $config, $itemCastProbability, $itemCastMaxProbability;
 
-        $shipPosition = new ShipPosition();
-        $shipPosition->setCoordinates($this->System, $this->X, $this->Y);
+        $shipPosition = new Coordinates($this->System, $this->X, $this->Y);
 
         if ($enableItemReset && \additional::checkRand ( $itemCastProbability, $itemCastMaxProbability )) {
 
             if (empty($sectorCargo)) {
-                $sectorCargo = new \sectorCargo($shipPosition);
+                $sectorCargo = new SectorCargo($shipPosition);
             }
 
             $itemID = null;
@@ -100,7 +99,7 @@ class SectorEntity extends CustomGet {
         if (($this->Name != 'deepspace') && ($this->ResetTime < $actualTime) && ($this->Resources != "")) {
 
             if (empty($sectorCargo)) {
-                $sectorCargo = new \sectorCargo($shipPosition);
+                $sectorCargo = new SectorCargo($shipPosition);
             }
 
             $resourcesArray = explode ( ",", $this->Resources );

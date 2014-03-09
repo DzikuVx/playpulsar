@@ -1,7 +1,9 @@
 <?php
 
 namespace Controlpanel;
+use Gameplay\Model\Coordinates;
 use Gameplay\Model\PortEntity;
+use Gameplay\Model\SectorCargo;
 use \General\Controls as Controls;
 use \General\Formater as Formater;
 use \Database\Controller as Database;
@@ -934,7 +936,7 @@ class Maintenance extends BaseItem {
 		$tQuery = Database::getInstance()->execute ( $tQuery );
 		while ($tResult = Database::getInstance()->fetch($tQuery)) {
 
-			$tPosition = new stdClass();
+			$tPosition = new Coordinates();
 
 			if (!empty($tResult->System)) {
 				$tPosition->System = $tResult->System;
@@ -946,7 +948,7 @@ class Maintenance extends BaseItem {
 				$tPosition->Y = $tResult->Y2;
 			}
 
-			$tObject = new \sectorCargo($tPosition);
+			$tObject = new SectorCargo($tPosition);
 			$tObject->drop($type);
 			unset($tObject);
 		}

@@ -48,4 +48,11 @@ class ShipPosition extends Standard {
         $this->Docked = $Docked;
     }
 
+    /**
+     * @return Coordinates
+     */
+    public function getCoordinates() {
+        return new Coordinates($this->System, $this->X, $this->Y, $this->Docked);
+    }
+
 }
