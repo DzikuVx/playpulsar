@@ -72,7 +72,7 @@ class remoteSectorInfo extends \Gameplay\Panel\Sector {
 			if (!empty($portProperties->PortID)) {
 
 				//Sprzedaż portu
-				$item = new portCargo ( 0, $portProperties, $userProperties->Language );
+				$item = new \Gameplay\Model\PortCargo( 0, $portProperties, $userProperties->Language );
 				$tQuery = $item->getProductsSell ();
 
 				$this->retVal .= "<h2 style=\"text-align: center;\">" . TranslateController::getDefault()->get ( 'sell' ) . "</h2>";

@@ -18,7 +18,7 @@ $sRetVal .= "<th>{T:price} [$]</th>";
 $sRetVal .= "<th style=\"width: 10em;\">&nbsp;</th>";
 $sRetVal .= "</tr>";
 
-$portCargo = new portCargo ( $userID, $portProperties, $userProperties->Language );
+$portCargo = new \Gameplay\Model\PortCargo( $userID, $portProperties, $userProperties->Language );
 
 $tQuery = $portCargo->getProductsSell ();
 while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
@@ -53,13 +53,13 @@ while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 }
 $sRetVal .= "</table>";
 
-$sRetVal .= "<h2>" . TranslateController::getDefault()->get ( 'sell' ) . "</h2>";
+$sRetVal .= "<h2>{T:sell}</h2>";
 $sRetVal .= "<table class='table table-striped table-condensed'>";
 
 $sRetVal .= "<tr>";
-$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'cargo' ) . "</th>";
-$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'instock' ) . "</th>";
-$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'price' ) . " [$]</th>";
+$sRetVal .= "<th>{T:cargo}</th>";
+$sRetVal .= "<th>{T:instock}</th>";
+$sRetVal .= "<th>{T:price} [$]</th>";
 $sRetVal .= "<th style=\"width: 10em;\">&nbsp;</th>";
 $sRetVal .= "</tr>";
 
@@ -80,7 +80,7 @@ while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 		$sRetVal .= "&nbsp;";
 	} else {
 		$sRetVal .= "<input class='input-mini noSpacing' onkeyup='maskNumber(this.value,this,0,{$tR1->ShipAmount})' onblur=\"javascript:return maskNumber(this.value,this,0,{$tR1->ShipAmount})\" type=\"text\" size=\"3\" id=\"sell_" . $tR1->ID . "\" value=\"" . $tR1->ShipAmount . "\" />";
-		$sRetVal .= \General\Controls::renderImgButton('sell', "Playpulsar.gameplay.execute('productSell',null,null,'{$tR1->ID}',null);", TranslateController::getDefault()->get('sell'));
+		$sRetVal .= \General\Controls::renderImgButton('sell', "Playpulsar.gameplay.execute('productSell',null,null,'{$tR1->ID}');", "{T:sell}");
 	}
 	$sRetVal .= "</td>";
 	$sRetVal .= "</tr>";
@@ -126,18 +126,18 @@ if ($portProperties->Items != '') {
 $sRetVal .= "</table>";
 
 
-$sRetVal .= "<h1>" . TranslateController::getDefault()->get ( 'Maps' ) . "</h1>";
+$sRetVal .= "<h1>{T:Maps}</h1>";
 
-$sRetVal .= "<h2>" . TranslateController::getDefault()->get ( 'buy' ) . "</h2>";
+$sRetVal .= "<h2>{T:buy}</h2>";
 $sRetVal .= "<table class='table table-striped table-condensed'>";
 
 $sRetVal .= "<tr>";
-$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'System' ) . "</th>";
-$sRetVal .= "<th>" . TranslateController::getDefault()->get ( 'price' ) . " [$]</th>";
+$sRetVal .= "<th>{T:System}</th>";
+$sRetVal .= "<th>{T:price} [$]</th>";
 $sRetVal .= "<th style=\"width: 10em;\">&nbsp;</th>";
 $sRetVal .= "</tr>";
 
-$portCargo = new portCargo ( $userID, $portProperties, $userProperties->Language );
+$portCargo = new \Gameplay\Model\PortCargo( $userID, $portProperties, $userProperties->Language );
 
 $tQuery = $portCargo->getMapsSell ();
 while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
@@ -148,7 +148,7 @@ while ( $tR1 = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
 	$sRetVal .= "<td>";
 
 	if ($userStats->Cash >=  $config ['port'] ['mapPrice']) {
-		$sRetVal .= \General\Controls::renderImgButton('buy', "Playpulsar.gameplay.execute('mapBuy',null,null,'{$tR1->SystemID}',null);", 'OK');
+		$sRetVal .= \General\Controls::renderImgButton('buy', "Playpulsar.gameplay.execute('mapBuy',null,null,'{$tR1->SystemID}');", 'OK');
 	}else {
 		$sRetVal .= '&nbsp;';
 	}

@@ -1,13 +1,18 @@
 <?php
-/**
- * Ładownia portu
- *
- * @version $Rev: 453 $
- * @package Engine
- */
-class portCargo {
-	protected $language = 'pl';
-	protected $nameField = "";
+
+namespace Gameplay\Model;
+
+class PortCargo {
+
+    /**
+     * @var string
+     */
+    protected $language = 'pl';
+
+    /**
+     * @var string
+     */
+    protected $nameField = "";
 
     /**
      * @var string
@@ -15,18 +20,21 @@ class portCargo {
     protected $tableName = "portcargo";
 
     /**
-     * @var \Gameplay\Model\PortEntity
+     * @var PortEntity
      */
     protected $portProperties = null;
 
-	protected $userID;
+    /**
+     * @var int
+     */
+    protected $userID;
 
     /**
-     * @param $userID
-     * @param \Gameplay\Model\PortEntity $portProperties
+     * @param int $userID
+     * @param PortEntity $portProperties
      * @param string $language
      */
-    function __construct($userID, \Gameplay\Model\PortEntity $portProperties, $language = 'pl') {
+    function __construct($userID, PortEntity $portProperties, $language = 'pl') {
 		$this->language = $language;
 		$this->nameField = "Name" . strtoupper ( $this->language );
 		$this->portProperties = $portProperties;
@@ -36,7 +44,7 @@ class portCargo {
 	/**
 	 * lista przedmiotów jakie port kupuje
 	 *
-	 * @return mysqli_result
+	 * @return \mysqli_result
 	 */
 	public function getProductsBuy() {
 
@@ -61,15 +69,15 @@ class portCargo {
 		    products.ExpMin AS ExpMin,
 		    products.ExpMax AS ExpMax,
 		    shipcargo.Amount AS ShipAmount
-		  FROM
+		FROM
 		    (products JOIN portcargo ON portcargo.CargoID=products.ProductID AND portcargo.Type='product' AND portcargo.PortID='{$ID}' AND portcargo.Mode='buy' AND portcargo.UserID IS NULL)
 		    LEFT JOIN shipcargo ON shipcargo.CargoID=products.ProductID AND shipcargo.Type='product' AND shipcargo.UserID='{$this->userID}'
-		  WHERE
+		WHERE
 		    ($addQuery products.RegularBuy='yes') AND
-		$addQuery2
+		    $addQuery2
 		    portcargo.Amount >= '0' AND portcargo.Amount IS NOT NULL AND
 		    products.Active = 'yes'
-		  ORDER BY
+		ORDER BY
 		    products.{$this->nameField}";
 		$retVal = \Database\Controller::getInstance()->execute ( $tQuery );
 
@@ -79,7 +87,7 @@ class portCargo {
 	/**
 	 * Lista przedmiotów jakie sprzedaje port
 	 *
-	 * @return mysqli_result
+	 * @return \mysqli_result
 	 */
 	public function getProductsSell() {
 		

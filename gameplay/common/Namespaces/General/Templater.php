@@ -37,7 +37,7 @@ class Templater {
      * @param string $fileName
      * @param \Translate $translation
      */
-    public function __construct($fileName, $translation = null) {
+    public function __construct($fileName, \Translate $translation = null) {
 
 		$this->fileName = $fileName;
 		$this->load ();
