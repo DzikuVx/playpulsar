@@ -67,6 +67,14 @@ abstract class Standard {
     protected $cacheID = null;
 
     /**
+     * If set true, then entry ID will be copied to table ID field.
+     * Required for auto-insert feature
+     *
+     * @var bool
+     */
+    protected $entryIdIsTableId = false;
+
+    /**
      * @param $id
      * @deprecated
      */
@@ -114,6 +122,10 @@ abstract class Standard {
             $this->cacheID  = $this->parseCacheID($this->entryId);
             $this->dbID     = $this->parseDbID($this->entryId);
             $this->cacheKey = new \phpCache\CacheKey($this->getCacheModule(), $this->cacheID);
+
+            if ($this->entryIdIsTableId) {
+                $this->{$this->tableID} = $this->entryId;
+            }
 
             $this->load();
         }
@@ -178,8 +190,10 @@ abstract class Standard {
     protected function serializeData() {
         $retVal = new \stdClass();
 
-        foreach ($this->originalData as $sKey => $tField) {
-            $retVal->{$sKey} = $this->{$sKey};
+        if (!empty($this->originalData)) {
+            foreach ($this->originalData as $sKey => $tField) {
+                $retVal->{$sKey} = $this->{$sKey};
+            }
         }
 
         return serialize($retVal);
@@ -226,9 +240,7 @@ abstract class Standard {
 
         foreach ( $this as $key => $value ) {
             if (in_array ( $key, $this->tableUseFields ) || $key == $this->tableID) {
-
                 $tStr .= "," . $key;
-
             }
         }
 
@@ -363,7 +375,7 @@ abstract class Standard {
 
     /**
      * Method reloads entry with new entryId
-     * @param int $newID
+     * @param mixed $newID
      */
     public function reload($newID) {
 

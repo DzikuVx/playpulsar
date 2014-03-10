@@ -4,6 +4,7 @@ namespace Gameplay\Panel;
 use Gameplay\Exception\SecurityException;
 use Gameplay\Model\ShipPosition;
 use Gameplay\Model\ShipProperties;
+use Gameplay\Model\ShipRouting;
 use Gameplay\Model\SystemProperties;
 use Gameplay\PlayerModelProvider;
 use Interfaces\Singleton;
@@ -78,19 +79,22 @@ class ActiveScanner extends SystemMap implements Singleton {
 	}
 
     /**
-     * @param \stdClass $shipRouting
+     * @param ShipRouting $shipRouting
      * @param ShipPosition $shipPosition
      * @return mixed
      */
     static private function sGetAmUsage(/** @noinspection PhpUnusedParameterInspection */
-        $shipRouting, ShipPosition $shipPosition) {
+        ShipRouting $shipRouting, ShipPosition $shipPosition) {
 		global $config;
 
 		return $config['activeScanner']['amUsage'];
 	}
 
 	static public function sEngage() {
-		global $userID, $shipRouting;
+		global $userID;
+
+        /** @var ShipRouting $shipRouting */
+        $shipRouting = PlayerModelProvider::getInstance()->get('ShipRouting');
 
         $userProperties = PlayerModelProvider::getInstance()->get('UserEntity');
         $shipPosition   = PlayerModelProvider::getInstance()->get('ShipPosition');

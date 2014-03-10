@@ -163,8 +163,8 @@ try {
     /** @var \Gameplay\Model\ShipProperties $shipProperties */
     $shipProperties = $oPlayerModelProvider->register('ShipProperties', new \Gameplay\Model\ShipProperties($userID));
 
-	$shipRoutingObject 	= new shipRouting ( );
-	$shipRouting 		= $shipRoutingObject->load ( $userID, true, true );
+    /** @var \Gameplay\Model\ShipRouting $shipRouting */
+	$shipRouting = $oPlayerModelProvider->register('ShipRouting', new \Gameplay\Model\ShipRouting($userID));
 
     /** @var \Gameplay\Model\UserAlliance $userAlliance */
     $userAlliance = $oPlayerModelProvider->register('UserAlliance', new \Gameplay\Model\UserAlliance($userID));
@@ -667,9 +667,8 @@ try {
 			$shipRouting->X = $tPlot->X;
 			$shipRouting->Y = $tPlot->Y;
 		}
-		unset ( $tSystem );
 
-		shipRouting::checkArrive ( $shipPosition, $shipRouting );
+		$shipRouting->checkArrive($shipPosition->getCoordinates());
 
 		\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting);
 
@@ -833,7 +832,7 @@ try {
 			\Gameplay\Panel\Port::getInstance()->render ( $shipPosition, $portProperties, $shipProperties, $jumpNode );
             \Gameplay\Panel\MiniMap::initiateInstance($userID, $shipPosition->System, $shipPosition);
 
-			if (shipRouting::checkArrive($shipPosition, $shipRouting)) {
+			if ($shipRouting->checkArrive($shipPosition->getCoordinates())) {
 				\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting);
 				\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:infoArrived}');
 			}
@@ -912,7 +911,7 @@ try {
 			\Gameplay\Panel\SectorResources::getInstance()->render ( $shipPosition, $shipProperties, $sectorProperties );
 			\Gameplay\Panel\Port::getInstance()->render($shipPosition, $portProperties, $shipProperties, $jumpNode );
 
-			if (shipRouting::checkArrive ( $shipPosition, $shipRouting )) {
+			if ($shipRouting->checkArrive($shipPosition->getCoordinates())) {
 				\Gameplay\Framework\ContentTransport::getInstance()->addNotification( 'success', '{T:infoArrived}');
 			}
 			\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting);
@@ -992,8 +991,7 @@ try {
     $portProperties->synchronize();
     $sectorProperties->synchronize();
     $userProperties->synchronize();
-
-	$shipRoutingObject->synchronize($shipRouting, true, true);
+	$shipRouting->synchronize();
 
 // 	$out .= announcementPanel::getInstance()->out ();
 

@@ -39,7 +39,7 @@ class buddyList extends baseItem {
 		$t2 = new translation($tSecondPlayer->Language, dirname ( __FILE__ ) . '/../translations.php');
 		$tString = $t2->get('buddyRequestAccepted');
 		$tString = str_replace('{name}',$tSecondPlayer->Name, $tString);
-		message::sInsert(null, $id, $tString);
+		\Gameplay\Model\Message::sInsert(null, $id, $tString);
 		unset($tSecondPlayer);
 
         \phpCache\Factory::getInstance()->create()->clear('buddyRegistry::get', $userID);

@@ -6,6 +6,7 @@ use Gameplay\Framework\ContentTransport;
 use Gameplay\Model\Coordinates;
 use Gameplay\Model\GalaxyRouting;
 use Gameplay\Model\ShipPosition;
+use Gameplay\Model\ShipRouting;
 use Gameplay\Model\SystemRouting;
 use Gameplay\Model\TransNode;
 use Gameplay\PlayerModelProvider;
@@ -49,7 +50,8 @@ class Navigation {
 	 */
 	static public function sPlotReset() {
 
-		global $shipRouting;
+        /** @var ShipRouting $shipRouting */
+        $shipRouting = PlayerModelProvider::getInstance()->get('ShipRouting');
 
         $shipPosition = PlayerModelProvider::getInstance()->get('ShipPosition');
 
@@ -67,7 +69,10 @@ class Navigation {
 	 */
 	static public function sNextWaypoint() {
 
-		global $shipRouting, $action, $subaction;
+		global $action, $subaction;
+
+        /** @var ShipRouting $shipRouting */
+        $shipRouting = PlayerModelProvider::getInstance()->get('ShipRouting');
 
         /** @var ShipPosition $shipPosition */
         $shipPosition = PlayerModelProvider::getInstance()->get('ShipPosition');

@@ -7,6 +7,7 @@ use Gameplay\Framework\ContentTransport;
 use Gameplay\Model\GalaxyRouting;
 use Gameplay\Model\ShipPosition;
 use Gameplay\Model\ShipProperties;
+use Gameplay\Model\ShipRouting;
 use Gameplay\Model\SystemProperties;
 use Gameplay\Panel\MiniMap;
 use Gameplay\Panel\PortAction;
@@ -23,13 +24,13 @@ class FtlDrive {
 	}
 
     /**
-     * @param \stdClass $shipRouting
+     * @param ShipRouting $shipRouting
      * @param ShipPosition $shipPosition
      * @return int
      */
-    static private function sGetAmUsage($shipRouting, ShipPosition $shipPosition) {
+    static private function sGetAmUsage(ShipRouting $shipRouting, ShipPosition $shipPosition) {
 
-		$galaxyRoute = new GalaxyRouting(\Database\Controller::getInstance(), $shipRouting );
+		$galaxyRoute = new GalaxyRouting($shipRouting->getCoordinates());
 		$tDistance = $galaxyRoute->getDistance($shipPosition->getCoordinates());
 
 		$retVal = 20 + ($tDistance * 20);
@@ -38,12 +39,17 @@ class FtlDrive {
 	}
 
 	static public function sEngage() {
-		global $userID, $shipProperties, $shipRouting, $userStats, $config, $sectorProperties;
+		global $userID, $shipProperties, $userStats, $config, $sectorProperties;
 
+        /** @var ShipPosition $shipPosition */
         $shipPosition = PlayerModelProvider::getInstance()->get('ShipPosition');
+        /** @var SystemProperties $systemProperties */
         $systemProperties = PlayerModelProvider::getInstance()->get('SystemProperties');
         /** @var \Gameplay\Model\PortEntity $portProperties */
         $portProperties = PlayerModelProvider::getInstance()->get('PortEntity');
+
+        /** @var ShipRouting $shipRouting */
+        $shipRouting = PlayerModelProvider::getInstance()->get('ShipRouting');
 
 		if ($shipProperties->checkMalfunction()) {
 			ContentTransport::getInstance()->addNotification( 'error', '{T:shipMalfunctionEmp}');
@@ -114,9 +120,8 @@ class FtlDrive {
 
         $userStats->incExperience($config ['general'] ['expForWarpJump']);
 
-		//Odświerz informacje o sektorze
-        $sectorProperties->reload($shipPosition);
-		$portProperties->reload($shipPosition);
+        $sectorProperties->reload($shipPosition->getCoordinates());
+		$portProperties->reload($shipPosition->getCoordinates());
 		$systemProperties->reload($shipPosition->System);
 
         /** @var \Gameplay\Model\JumpNode $jumpNode */
@@ -132,7 +137,7 @@ class FtlDrive {
 
 		MiniMap::getInstance()->load ( $userID, $shipPosition->System, $shipPosition );
 
-		if (\shipRouting::checkArrive ( $shipPosition, $shipRouting )) {
+		if ($shipRouting->checkArrive($shipPosition->getCoordinates())) {
 			\Gameplay\Panel\Navigation::getInstance()->render ( $shipPosition, $shipRouting);
 			ContentTransport::getInstance()->addNotification( 'success', '{T:infoArrived}');
 		}
