@@ -49,6 +49,8 @@ class NpcTypesRegistry extends \cpBaseRegistry{
 
 	protected function renderSearch() {
 
+        $retVal = '';
+
 		if ((\user::sGetRole () == 'admin')) {
 			$retVal = '<div style="float: right;">';
 			$retVal .= \General\Controls::bootstrapButton ( 'Drop All', "document.location='?class=" . $this->itemClass . "&amp;method=dropAll'", 'btn-danger','icon-trash' );

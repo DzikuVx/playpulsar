@@ -22,7 +22,7 @@ class TransNode extends CustomGet {
     /** @var int */
     public $Y;
 
-    public function get($ID) {
+    public function get() {
 
         $tResult = \Database\Controller::getInstance()->execute ( "
             SELECT
@@ -40,14 +40,16 @@ class TransNode extends CustomGet {
                 (DstSystem='{$this->entryId->Source}' AND SrcSystem='{$this->entryId->Destination}'))
             LIMIT 1");
         while ( $resultRow = \Database\Controller::getInstance()->fetch ( $tResult ) ) {
-            $this->System = $this->entryId->Source;
+            $tData = new \stdClass();
+            $tData->System = $this->entryId->Source;
             if ($resultRow->SrcSystem == $this->entryId->Source) {
-                $this->X = $resultRow->SrcX;
-                $this->Y = $resultRow->SrcY;
+                $tData->X = $resultRow->SrcX;
+                $tData->Y = $resultRow->SrcY;
             } else {
-                $this->X = $resultRow->DstX;
-                $this->Y = $resultRow->DstY;
+                $tData->X = $resultRow->DstX;
+                $tData->Y = $resultRow->DstY;
             }
+            $this->loadData($tData, false);
         }
         return true;
     }

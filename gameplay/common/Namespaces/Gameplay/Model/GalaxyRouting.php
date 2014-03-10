@@ -1,44 +1,40 @@
 <?php
 
-class galaxyRouting extends \Gameplay\Model\SystemRouting {
+namespace Gameplay\Model;
+
+use Gameplay\Helpers\RoutingSystem;
+
+class GalaxyRouting extends SystemRouting
+{
 	protected $tNodes;
 
-	/**
-	 * Pobranie numeru nastepnego systemu po drodze
-	 *
-	 * @param stdClass $current
-	 * @return int
-	 */
-	public function next($current) {
+    /**
+     * @param Coordinates $current
+     * @return int
+     */
+	public function next(Coordinates $current) {
 
-		if ($this->routeTable == null)
-		return false;
+		if ($this->routeTable == null) {
+		    return false;
+        }
 			
-		/*
-		 * Czy jest route do systemu docelowego
-		 */
-		if ($this->routeTable [$current->System] ['previous'] == null)
-		return false;
-
-		$retVal = $this->routeTable [$current->System] ['previous'];
-
-		return $retVal;
+		if ($this->routeTable [$current->System] ['previous'] == null) {
+		    return false;
+        }
+		return $this->routeTable [$current->System] ['previous'];
 	}
 
     /**
      * Get distance between current and remote location (number of systems)
-     * @param \Gameplay\Model\ShipPosition $current
+     * @param Coordinates $current
      * @return bool|int
      */
-    public function getDistance(\Gameplay\Model\ShipPosition $current) {
+    public function getDistance(Coordinates $current) {
 
         if ($this->routeTable == null) {
 		    return false;
         }
 
-		/*
-		 * Czy jest route do systemu docelowego
-		 */
 		if ($this->routeTable [$current->System] ['value'] == null) {
 			return 0;
 		}
@@ -59,6 +55,8 @@ class galaxyRouting extends \Gameplay\Model\SystemRouting {
 
 		if (!$oCache->check($oCacheKey)) {
 
+            $oDb = \Database\Controller::getInstance();
+
 			$this->tNodes = array ();
 
 			$tQuery = "
@@ -72,8 +70,8 @@ class galaxyRouting extends \Gameplay\Model\SystemRouting {
 		        nodes.Active = 'yes' AND
 		        s1.Enabled = 'yes' AND s2.Enabled = 'yes'
 		    ";
-			$tQuery = \Database\Controller::getInstance()->execute ( $tQuery );
-			while ( $resultRow = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
+			$tQuery = $oDb->execute ( $tQuery );
+			while ( $resultRow = $oDb->fetch ( $tQuery ) ) {
 				$this->tNodes [$resultRow->SrcSystem] [$resultRow->DstSystem] = true;
 				$this->tNodes [$resultRow->DstSystem] [$resultRow->SrcSystem] = true;
 			}
@@ -88,7 +86,6 @@ class galaxyRouting extends \Gameplay\Model\SystemRouting {
 	}
 
 	/**
-	 * Pobranie listy wszystkich systemów
 	 * @uses mCache
 	 */
 	private function getSystems() {
@@ -98,17 +95,19 @@ class galaxyRouting extends \Gameplay\Model\SystemRouting {
 
 		if (!$oCache->check($oCacheKey)) {
 
+            $oDb = \Database\Controller::getInstance();
+
 			$this->tRoute = array ();
 
-			$tQuery = \Database\Controller::getInstance()->execute ( "SELECT
+			$tQuery = $oDb->execute ( "SELECT
                 systems.SystemID
               FROM
                 systems
               WHERE
                 systems.Enabled = 'yes'
                 " );
-			while ( $resultRow = \Database\Controller::getInstance()->fetch ( $tQuery ) ) {
-				$this->tRoute [$resultRow->SystemID] = new routingSystem ( );
+			while ( $resultRow = $oDb->fetch ( $tQuery ) ) {
+				$this->tRoute [$resultRow->SystemID] = new RoutingSystem();
 			}
 
 			$oCache->set($oCacheKey, serialize($this->tRoute), $this->cacheTime);
@@ -120,16 +119,13 @@ class galaxyRouting extends \Gameplay\Model\SystemRouting {
 		return true;
 	}
 
-	public function generate($destination) {
+	public function generate(Coordinates $destination) {
 		
 		/**
 		 * Wygeneruj mapę nodów
 		 */
 		$this->getNodes();
 
-		/*
-		 * Zainicjuj mapę systemów
-		 */
 		$this->getSystems();
 
 		$this->tToGo = array ();
@@ -139,10 +135,9 @@ class galaxyRouting extends \Gameplay\Model\SystemRouting {
 		$this->tRoute [$destination->System]->value = 0;
 
 		$this->go = true;
-		//Póki tablica jest wypełniona
 		while ( $this->go ) {
 
-			$this->tArray = array ();
+			$this->temporaryRoutingCoordinates = array ();
 			$this->go = false;
 			//Zacznij pobierać sektory z tablicy
 			while ( $this->current = array_pop ( $this->tToGo ) ) {
@@ -153,8 +148,8 @@ class galaxyRouting extends \Gameplay\Model\SystemRouting {
 				foreach ( array_keys ( $this->tNodes [$this->current] ) as $key ) {
 
 					if ($this->tRoute [$key]->analyzed == false) {
-						if (! in_array ( $key, $this->tArray )) {
-							array_push ( $this->tArray, $key );
+						if (! in_array ( $key, $this->temporaryRoutingCoordinates )) {
+							array_push ( $this->temporaryRoutingCoordinates, $key );
 							$this->go = true;
 						}
 
@@ -166,13 +161,8 @@ class galaxyRouting extends \Gameplay\Model\SystemRouting {
 				}
 			}
 
-			$this->tToGo = $this->tArray;
-			unset ( $this->tArray );
+			$this->tToGo = $this->temporaryRoutingCoordinates;
 		}
-
-		/*
-		 * Po zakończeniu budowania tablicy, przepisz do prostszej formy
-		 */
 
 		$tRoute = array ();
 
@@ -180,9 +170,6 @@ class galaxyRouting extends \Gameplay\Model\SystemRouting {
 			$tRoute [$key] ['value'] = $value->value;
 			$tRoute [$key] ['previous'] = $value->previous;
 		}
-
-		unset ( $this->tRoute );
-
 		return $tRoute;
 	}
 }

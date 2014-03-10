@@ -59,10 +59,10 @@ class SystemRouting {
 	}
 
 	/**
-	 * @param ShipPosition $current
+	 * @param Coordinates $current
 	 * @return \stdClass
 	 */
-	public function next(ShipPosition $current) {
+	public function next(Coordinates $current) {
 
 		if ($this->routeTable == null) {
 		    return false;
@@ -257,7 +257,6 @@ class SystemRouting {
 		$this->tRoute[$destination->X][$destination->Y]->value = 0;
 
 		$this->go = true;
-		//Póki tablica jest wypełniona
 		while ( $this->go ) {
 
 			$this->temporaryRoutingCoordinates = array();

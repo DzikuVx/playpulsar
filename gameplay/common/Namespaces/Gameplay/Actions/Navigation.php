@@ -4,8 +4,10 @@ namespace Gameplay\Actions;
 
 use Gameplay\Framework\ContentTransport;
 use Gameplay\Model\Coordinates;
+use Gameplay\Model\GalaxyRouting;
 use Gameplay\Model\ShipPosition;
 use Gameplay\Model\SystemRouting;
+use Gameplay\Model\TransNode;
 use Gameplay\PlayerModelProvider;
 
 class Navigation {
@@ -73,22 +75,15 @@ class Navigation {
 		/**
 		 * Pobierz współrzędne docelowe
 		 */
-		$tCoords = new Coordinates();
+		$tCoords = new Coordinates($shipRouting->System, $shipRouting->X, $shipRouting->Y);
 
-		if ($shipPosition->System == $shipRouting->System) {
-			$tCoords->System = $shipRouting->System;
-			$tCoords->X = $shipRouting->X;
-			$tCoords->Y = $shipRouting->Y;
-		} else {
+		if ($shipPosition->System != $shipRouting->System) {
 			/**
-			 * Przypadek gdy lecisz do innego systemu, pobierz współrzędne następnego Jump Node
+			 * Get next jump node coordinates
 			 */
 
-			/**
-			 * Inicjacja obiektu galaxyRoute
-			 */
-			$galaxyRoute = new \galaxyRouting ( \Database\Controller::getInstance(), $shipRouting );
-			$nextSystem = $galaxyRoute->next ( $shipPosition );
+			$galaxyRoute = new GalaxyRouting($tCoords);
+			$nextSystem = $galaxyRoute->next($shipPosition->getCoordinates());
 
 			/**
 			 * Inicjacja obiektu TransNode
@@ -96,7 +91,7 @@ class Navigation {
 			$tNode = new \stdClass();
 			$tNode->Source = $shipPosition->System;
 			$tNode->Destination = $nextSystem;
-			$transNode = new \Gameplay\Model\TransNode($tNode);
+			$transNode = new TransNode($tNode);
 
 			$tCoords->System = $shipPosition->System;
 			$tCoords->X = $transNode->X;
@@ -109,7 +104,7 @@ class Navigation {
 			$action = "shipNodeJump";
 		} else {
 			$action = "shipMove";
-			$subaction = $route->next($shipPosition)->direction;
+			$subaction = $route->next($shipPosition->getCoordinates())->direction;
 		}
 	}
 

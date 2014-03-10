@@ -4,6 +4,7 @@ namespace Gameplay\Actions;
 
 use Gameplay\Exception\SecurityException;
 use Gameplay\Framework\ContentTransport;
+use Gameplay\Model\GalaxyRouting;
 use Gameplay\Model\ShipPosition;
 use Gameplay\Model\ShipProperties;
 use Gameplay\Model\SystemProperties;
@@ -28,8 +29,8 @@ class FtlDrive {
      */
     static private function sGetAmUsage($shipRouting, ShipPosition $shipPosition) {
 
-		$galaxyRoute = new \galaxyRouting (\Database\Controller::getInstance(), $shipRouting );
-		$tDistance = $galaxyRoute->getDistance($shipPosition);
+		$galaxyRoute = new GalaxyRouting(\Database\Controller::getInstance(), $shipRouting );
+		$tDistance = $galaxyRoute->getDistance($shipPosition->getCoordinates());
 
 		$retVal = 20 + ($tDistance * 20);
 

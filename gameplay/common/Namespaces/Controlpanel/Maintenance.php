@@ -7,7 +7,6 @@ use Gameplay\Model\SectorCargo;
 use \General\Controls as Controls;
 use \General\Formater as Formater;
 use \Database\Controller as Database;
-use \stdClass as stdClass;
 
 class Maintenance extends BaseItem {
 
