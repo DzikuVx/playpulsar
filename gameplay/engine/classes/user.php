@@ -402,6 +402,8 @@ class user {
 		*/
 		$playerID = $tUsers->insert();
 
+        \Gameplay\PlayerModelProvider::getInstance()->register('UserEntity', new \Gameplay\Model\UserEntity($playerID));
+
 		/*
 		 * System
 		*/
@@ -806,7 +808,7 @@ class user {
 			$template->reset();
 			$template->add('text', $e->getMessage());
 		} catch ( Exception $e ) {
-			throw new Exception ( $e->getMessage (), $e->getCode () );
+			throw new Exception ( $e->getMessage (), $e->getCode(), $e->getPrevious());
 		}
 
 		$template->add ( 'text', TranslateController::getDefault()->get ( 'accountCreated' ) );
